@@ -7,4 +7,4 @@ Example:
 
 .. code-block:: bash
 
-  Charon.exe SERVE ./gamedata.json --port 8080 --launchDefaultBrowser --resetPrefs
+  Charon.exe SERVE ./gamedata.json --port 8080 --launchDefaultBrowser --resetPreferences
