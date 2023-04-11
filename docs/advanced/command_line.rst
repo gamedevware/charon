@@ -85,3 +85,24 @@ More advanced authentication schemes are not supported.
 
 Commands
 ========
+
+- `SERVE <commands/serve.rst>`_
+- `VERSION <commands/version.rst>`_
+- `DATA EXPORT <commands/data_export.rst>`_
+- `DATA IMPORT <commands/data_import.rst>`_
+- `DATA BACKUP <commands/data_backup.rst>`_
+- `DATA RESTORE <commands/data_restore.rst>`_
+- `DATA VALIDATE <commands/data_validate.rst>`_
+- `DATA CREATE <commands/data_create.rst>`_
+- `DATA UPDATE <commands/data_update.rst>`_
+- `DATA DELETE <commands/data_delete.rst>`_
+- `DATA FIND <commands/data_find.rst>`_
+- `DATA CREATEPATCH <commands/data_create_patch.rst>`_
+- `DATA APPLYPATCH <commands/data_apply_patch.rst>`_
+- `DATA VERSION <commands/data_version.rst>`_
+- `DATA I18N EXPORT <commands/data_i18n_export.rst>`_
+- `DATA I18N IMPORT <commands/data_i18n_import.rst>`_
+- `DATA I18N LANGUAGES <commands/data_i18n_languages.rst>`_
+- `GENERATE TEMPLATES <commands/generate_templates.rst>`_
+- `GENERATE CSHARPCODE <commands/generate_csharp_code.rst>`_
+- `GENERATE TEXT <commands/generate_text.rst>`_
