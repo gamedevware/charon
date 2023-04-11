@@ -1,9 +1,10 @@
 Step By Step
 =============
 
-1. Download installation scripts from `/scripts <../../scripts/>`_ into a local folder.
-2. Run ``update_and_launch.bat`` or ``update_and_launch.sh`` depending on your OS.
-3. Wait for the script to automatically download and upgrade ``Charon.exe``, and launch it for you.
+1. Download scripts from `/scripts <../../scripts/>`_ into a local folder ``/charon``.
+2. Navigate to local folder ``cd /charon``.
+3. Run ``update_and_launch.bat`` or ``update_and_launch.sh`` depending on your OS.
+4. Wait for the script to automatically download and upgrade ``Charon.exe``, and launch it for you.
 
 .NET Tool
 ===========
