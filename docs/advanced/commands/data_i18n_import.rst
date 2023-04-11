@@ -31,12 +31,15 @@ Import translated text from a specified file into game data.
      --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"
      
 --entities <entityNameOrId1 entityNameOrId2 ...>
-   A list of types of documents (entities) to import from ``--input``. Default value is ``*``. This parameter is required some cases (see below).
+   A list of types of documents (entities) to import from ``--input``. This parameter is required some cases (see below).
 
    .. code-block:: bash
    
      # entity name
      --entities Character Item
+     
+     # all (default)
+     --entities *
      
      # masks
      --entities Char*
@@ -75,11 +78,11 @@ Import translated text from a specified file into game data.
      --input "ftp://user:password@example.com/input.json"
      
 --inputFormat <auto | format>
-   Format of imported data. Default value is ``auto``.
+   Format of imported data.
    
    .. code-block:: bash
    
-     # Auto-detect by extension
+     # Auto-detect by extension (default)
      --inputFormat auto
    
      # XLIFF v2
