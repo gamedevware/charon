@@ -1,0 +1,50 @@
+URL input/output parameters
+===========================
+
+Some command accept `URL <https://en.wikipedia.org/wiki/Uniform_Resource_Identifier>`_ as input/output parameter.
+
+Table below show supported URL schemes:
+
++---------+----------------------------+-----------------------------------------------------+
+| Scheme  | Input parameter            | Output parameter                                    |
++=========+============================+=====================================================+
+| HTTP[S] | A GET request will be sent | A POST request with body containing output will be  |
+|         |                            | sent                                                |
++---------+----------------------------+-----------------------------------------------------+
+| FTP(S)  | A RETR command will be sent| A STOR command with output content will be sent     |
++---------+----------------------------+-----------------------------------------------------+
+| FILE    | File will be read          | File will be written                                |
++---------+----------------------------+-----------------------------------------------------+
+
+Any authentication data could be passed in *user* part of `URL <https://en.wikipedia.org/wiki/Uniform_Resource_Identifier>`_. 
+More advanced authentication schemes are not supported.
+
+Examples:
+
+.. code-block:: bash
+  
+  # publish data to FTP
+  Charon.exe DATA EXPORT 
+    --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"     
+    --output "ftp://user:password@example.com/public/gamedata.json"
+    --mode publication 
+    --outputFormat json
+    --credentials 87758CC0D7C745D0948F2A8AFE61BC81 
+    
+  # import localization from remote HTTP server 
+  Charon.exe DATA I18N IMPORT
+    --dataBase "file:///c:/my app/gamedata.json" 
+    --input "https://example.com/translated/gamedata.xliff"
+    --inputFormat xliff
+
+  # print languages for game data in local file
+  Charon.exe DATA I18N LANGUAGES --dataBase "file:///c:/my app/gamedata.json" 
+  
+  # print languages for game data in local file relative to current working directory
+  Charon.exe DATA I18N LANGUAGES --dataBase "file:///./gamedata.json" 
+  
+  # print languages for game data at remote server using API Key
+  export CHARON_API_KEY=87758CC0D7C745D0948F2A8AFE61BC81
+  Charon.exe DATA I18N LANGUAGES --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"  
+  
+    
