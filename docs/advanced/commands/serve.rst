@@ -20,34 +20,24 @@ Starts Charon in standalone mode for specified game data. Path to game data coul
 ---------------
 
 --dataBase <path>
----------------------
+   Path to game data file. Use quotation marks if your path contains spaces.
 
-Path to game data file. Use quotation marks if your path contains spaces.
-
-.. code-block:: bash
-
-  # local file
-  --dataBase "c:\my app\gamedata.json"
-  
-  # remote server
-  --dataBase "https://charon.live/view/data/My_Game/develop/dashboard
+   .. code-block:: bash
+   
+     # local file
+     --dataBase "c:\my app\gamedata.json"
+     
+     # remote server
+     --dataBase "https://charon.live/view/data/My_Game/develop/dashboard
 
 --port <1-65535>
-----------------
-
-Number of an `IP port <https://en.wikipedia.org/wiki/Port_(computer_networking)>`_ to be used to listen for browser based UI.
-
-.. code-block:: bash
-
-  --port 8080
+   Number of an `IP port <https://en.wikipedia.org/wiki/Port_(computer_networking)>`_ to be used to listen for browser based UI.
+   .. code-block:: bash
+     --port 8080
   
 --launchDefaultBrowser
-----------------------
-
-Set this flag to open system-default browser on successful start.
+   Set this flag to open system-default browser on successful start.
 
 --resetPreferences
-----------------------
-
-Set this flag to reset UI preferences on successful start.
+   Set this flag to reset UI preferences on successful start.
  
