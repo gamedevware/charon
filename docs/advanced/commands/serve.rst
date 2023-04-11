@@ -28,7 +28,7 @@ Starts Charon in standalone mode for specified game data. Path to game data coul
      --dataBase "c:\my app\gamedata.json"
      
      # remote server
-     --dataBase "https://charon.live/view/data/My_Game/develop/dashboard
+     --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"
 
 --port <1-65535>
    Number of an `IP port <https://en.wikipedia.org/wiki/Port_(computer_networking)>`_ to be used to listen for browser based UI.
