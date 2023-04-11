@@ -13,7 +13,8 @@ Unity plugin uses `Charon.exe`, which is a .NET application built for .NET Frame
 .. rubric:: Linux
 
 1. Download and install `Mono runtime 5.18.0+ <https://www.mono-project.com/download/stable/#download-lin>`_.
-2. Make sure ``mono`` is available to the current user.
+2. Make sure you have write access to ``~/.config``.
+3. Make sure ``mono`` is available to the current user.
 
 .. code-block:: bash
 
