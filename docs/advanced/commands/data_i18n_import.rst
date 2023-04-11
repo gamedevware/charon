@@ -1,7 +1,7 @@
 Importing Translated Data
 =========================
 
-Importing translated game data from a specified file.
+Import translated text from a specified file into game data.
 
 ---------------
  Command
