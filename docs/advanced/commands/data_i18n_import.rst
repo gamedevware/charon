@@ -98,7 +98,7 @@ Import translated text from a specified file into game data.
    
   
 ------------------
- Input Data Format
+ Input Data Schema
 ------------------
 
 The data you input should follow this schema (recommended):
