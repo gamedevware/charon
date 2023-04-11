@@ -23,7 +23,7 @@ If you have trouble identifying an issue, you might want to change log
 to *verbose*. This way more information is included in logs.
 
 - In Unity plugin select ``Tools → Charon → Troubleshooting → Verbose Logs``.
-- For CLI and standalone lauch just add ``--verbose`` parameter.
+- For CLI and standalone launch just add ``--verbose`` parameter.
 
 Then repeat the action that causes the bug (or the one you want analyzed
 anyway) and check log file again.
