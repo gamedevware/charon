@@ -62,27 +62,6 @@ To display list of available commands type `--help` or `/?`.
   >               ] [--outputFormat <TEXT>] [--outputFormattingOptions [<TEXT>]] [--mode <EXPORTMODE>] [--credentials [<
   >               TEXT>]]
   
-URL input/output parameters
-===========================
-
-Some command accept `URL <https://en.wikipedia.org/wiki/Uniform_Resource_Identifier>`_ as input/output parameter.
-
-Table below show supported URL schemes:
-
-+---------+----------------------------+-----------------------------------------------------+
-| Scheme  | Input parameter            | Output parameter                                    |
-+=========+============================+=====================================================+
-| HTTP[S] | A GET request will be sent | A POST request with body containing output will be  |
-|         |                            | sent                                                |
-+---------+----------------------------+-----------------------------------------------------+
-| FTP(S)  | A RETR command will be sent| A STOR command with output content will be sent     |
-+---------+----------------------------+-----------------------------------------------------+
-| FILE    | File will be read          | File will be written                                |
-+---------+----------------------------+-----------------------------------------------------+
-
-Any authentication data could be passed in *user* part of `URL <https://en.wikipedia.org/wiki/Uniform_Resource_Identifier>`_. 
-More advanced authentication schemes are not supported.
-
 Commands
 ========
 
