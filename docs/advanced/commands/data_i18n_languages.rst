@@ -34,11 +34,11 @@ Get a list of supported translation languages. Primary language always shows up 
     Path to a file to which data will be exported. If the file exists, it will be overwritten. The directory must already exist. 
     Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
     `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-    `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_. Default value is ``out``.
+    `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.
      
    .. code-block:: bash
 
-     # standart output
+     # standart output (default)
      --output out
      --output con
 
@@ -64,11 +64,11 @@ Get a list of supported translation languages. Primary language always shows up 
      --output "ftp://user:password@example.com/input.json"
      
 --outputFormat <format>
-   Format of exported data. Default value is ``json ``.
+   Format of exported data.
    
    .. code-block:: bash
     
-     # JSON
+     # JSON (default)
      --outputFormat json
      
      # Space separated list
