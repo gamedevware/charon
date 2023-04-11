@@ -1,0 +1,97 @@
+Importing Translated Data
+=========================
+
+Importing translated game data from a specified file.
+
+---------------
+ Command
+---------------
+
+.. code-block:: bash
+
+  # Windows
+  Charon.exe DATA I18N IMPORT --dataBase "c:\my app\gamedata.json" --input "c:\my app\character_loc.xliff" --inputFormat xliff
+  
+  # Linux or OSX
+  mono Charon.exe DATA I18N IMPORT --dataBase "~\gamedata.json" --input "~\character_loc.xliff" --inputFormat xliff
+  
+---------------
+ Parameters
+---------------
+
+--dataBase <path>
+   Absolute or relative oath to game data. Use quotation marks if your path contains spaces.
+
+   .. code-block:: bash
+   
+     # local file
+     --dataBase "c:\my app\gamedata.json"
+     
+     # remote server
+     --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"
+     
+--entities <entityNameOrId1 entityNameOrId2 ...>
+   A list of types of documents (entities) to import from ``--input``. This parameter is required some cases (see below).
+
+   .. code-block:: bash
+   
+     # entity name
+     --entities Character Item
+     
+     # masks
+     --entities Char*
+     --entities *Modifier
+     --entities *Mod*
+     
+     # entity id
+     --entities {18d4bf318f3c49688087dbed}
+     
+     # negation
+     --entities Char* !Character
+     --entities !*Item*
+
+--input <path>
+   Path to a file with data to import. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_.28stdin.29>`_ or `URL <universal_parameters.rst>`_.
+
+   .. code-block:: bash
+
+     # standart input
+     --input in
+     --input con
+
+     # absolute path (windows)
+     --input "c:\my app\input.json"
+     
+     # absolute path (unix)
+     --input /user/data/input.json
+     
+     # relative path (universal)
+     --input "./input.json"
+     
+     # remote location (HTTP)
+     http://example.com/input.json
+     
+     # remote location with authentification (FTP)
+     ftp://user:password@example.com/input.json
+     
+--inputFormat <auto | format>
+   Format of imported data.
+   
+   .. code-block:: bash
+   
+     # Auto-detect by extension
+     --inputFormat auto
+   
+     # XLIFF v2
+     --inputFormat xliff
+     --inputFormat xliff2
+     
+     # XLIFF v1
+     --inputFormat xliff1
+     
+     # XSLX Spreadsheet
+     --inputFormat xslx
+     
+
+--inputFormattingOptions <options>
+   Additional options for specified format.
