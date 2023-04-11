@@ -95,3 +95,49 @@ Import translated text from a specified file into game data.
 
 --inputFormattingOptions <options>
    Additional options for specified format.
+   
+  
+------------------
+ Input Data Format
+------------------
+
+The data you input should follow this schema (recommended):
+
+   .. code-block:: js
+     
+     {
+       "Collections": {
+         "<EntityName>": [
+           {
+             // <Document>
+           },
+           // ...
+         ]
+       }
+     }
+     
+This schema is also accepted:
+
+   .. code-block:: js
+     
+
+     {
+       "<EntityName>": [
+         {
+           // <Document>
+         },
+         // ...
+       ]
+     }
+     
+And the following schema requires specifying exactly one ``--entities`` parameter:
+
+   .. code-block:: js
+   
+     // --entities Character
+     
+     [
+       {
+         // <Document>
+       },
+     ]
