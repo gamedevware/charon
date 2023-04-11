@@ -57,7 +57,8 @@ Export text that can be translated into a file.
    Use `DATA I18N LANGUAGES <data_i18n_languages.rst>`_ to get list of used languages.
    
    .. code-block:: bash
-   
+     
+     # it is used as <source> in XLIFF
      --sourceLanguage en-US
      
 --targetLanguage 
@@ -65,6 +66,7 @@ Export text that can be translated into a file.
    
    .. code-block:: bash
    
+     # it is used as <target> in XLIFF
      --targetLanguage es-ES
      
 --output
