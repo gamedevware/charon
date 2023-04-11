@@ -20,7 +20,7 @@ Starts Charon in standalone mode for specified game data. Path to game data coul
 ---------------
 
 --dataBase <path>
-   Path to game data file. Use quotation marks if your path contains spaces.
+   Absolute or relative oath to game data. Use quotation marks if your path contains spaces.
 
    .. code-block:: bash
    
