@@ -51,7 +51,7 @@ Import translated text from a specified file into game data.
      --entities !*Item*
 
 --input <path>
-   Path to a file with data to import. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_.28stdin.29>`_ or `URL <universal_parameters.rst>`_.
+   Path to a file with data to import. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <universal_parameters.rst>`_.
 
    .. code-block:: bash
 
