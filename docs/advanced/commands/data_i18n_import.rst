@@ -96,6 +96,8 @@ Import translated text from a specified file into game data.
 --inputFormattingOptions <options>
    Additional options for specified format.
    
+--dryRun
+   Allows you to run the command without actually making any changes to the game data, providing a preview of what would happen.
   
 ------------------
  Input Data Schema
