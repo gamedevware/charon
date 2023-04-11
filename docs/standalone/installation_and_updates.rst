@@ -25,4 +25,4 @@ Finally, execute the Cake script:
 .. code-block:: bash
 
     # launch update_and_launch.cake with normal log verbosity
-    dotnet cake ".\update_and_launch.cake" -v normal
+    dotnet cake "./update_and_launch.cake" -v normal
