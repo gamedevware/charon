@@ -38,8 +38,10 @@ Export text that can be translated into a file.
      # entity name
      --entities Character Item
      
+     # all (default)
+     --entities * 
+     
      # masks
-     --entities *
      --entities Char*
      --entities *Modifier
      --entities *Mod*
@@ -77,7 +79,7 @@ Export text that can be translated into a file.
      
    .. code-block:: bash
 
-     # standart output
+     # standart output (default)
      --output out
      --output con
 
@@ -103,11 +105,11 @@ Export text that can be translated into a file.
      --output "ftp://user:password@example.com/input.json"
      
 --outputFormat <format>
-   Format of exported data. Default value is ``xliff2``.
+   Format of exported data.
    
    .. code-block:: bash
     
-     # XLIFF v2
+     # XLIFF v2 (default)
      --outputFormat xliff
      --outputFormat xliff2
      
