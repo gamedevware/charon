@@ -69,10 +69,10 @@ Import translated text from a specified file into game data.
      --input "./input.json"
      
      # remote location (HTTP)
-     http://example.com/input.json
+     --input "http://example.com/input.json"
      
      # remote location with authentification (FTP)
-     ftp://user:password@example.com/input.json
+     --input "ftp://user:password@example.com/input.json"
      
 --inputFormat <auto | format>
    Format of imported data.
