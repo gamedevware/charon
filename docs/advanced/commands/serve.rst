@@ -1,4 +1,4 @@
-Start in standalone mode
+Start in Standalone Mode
 ========================
 
 Starts Charon in standalone mode for specified game data. Path to game data could be local file system's file or remote server address.
