@@ -123,7 +123,7 @@ Create Document
      --output "ftp://user:password@example.com/document.json"
      
 --outputFormat
-   Format of exported data.
+   Format of created data.
    
    .. code-block:: bash
     
