@@ -29,7 +29,7 @@ Imports documents from file to a game data.
      
 --entities
    A list of types of documents (entities) to import. By default all entities *EXCEPT* metadata are imported.
-
+       
    - Use space to separate multiple entities.
    - You can use wildcards (*) at the beginning and end of names.
    - You can use identifiers in {} instead of names.
