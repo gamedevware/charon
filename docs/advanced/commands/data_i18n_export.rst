@@ -13,7 +13,7 @@ Export text that can be translated into a file.
   Charon.exe DATA I18N EXPORT --dataBase "c:\my app\gamedata.json" --entities Character --sourceLanguage en-US --targetLanguage fr --output "c:\my app\character_loc.xliff" --outputFormat xliff
 
   # remote game data
-  Charon.exe DATA I18N EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --entities Character --sourceLanguage en-US --targetLanguage fr --output "./character_loc.xliff" --outputFormat xliff --credentials <API-Key>
+  Charon.exe DATA I18N EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --entities Character --sourceLanguage en-US --targetLanguage fr --output "./character_loc.xliff" --outputFormat xliff --credentials "<API-Key>"
 
 ---------------
  Parameters

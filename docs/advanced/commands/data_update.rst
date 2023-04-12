@@ -15,7 +15,7 @@ Update Document
   Charon.exe DATA UPDATE --dataBase "c:\my app\gamedata.json" --entity Item --input "c:\my app\item.json" --inputFormat json 
 
   # remote game data
-  Charon.exe DATA UPDATE --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Item --input "./item.json" --inputFormat json --credentials <API-Key>
+  Charon.exe DATA UPDATE --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Item --input "./item.json" --inputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters

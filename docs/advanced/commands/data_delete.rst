@@ -13,7 +13,7 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
   Charon.exe DATA DELETE --dataBase "c:\my app\gamedata.json" --entity Item --id "Sword"
 
   # remote game data
-  Charon.exe DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Item --id "Sword" --credentials <API-Key>
+  Charon.exe DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Item --id "Sword" --credentials "<API-Key>"
 
 ---------------
  Parameters

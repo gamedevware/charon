@@ -13,7 +13,7 @@ Seaches for a document.
   Charon.exe DATA FIND --dataBase "c:\my app\gamedata.json" --entity Character --id John
   
   # remote game data
-  Charon.exe DATA FIND --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Character --id John --credentials <API-Key>
+  Charon.exe DATA FIND --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Character --id John --credentials "<API-Key>"
   
 ---------------
  Parameters

@@ -13,7 +13,7 @@ Apply patch created by `DATA CREATEPATCH <commands/data_create_patch.rst>`_ to a
   Charon.exe DATA APPLYPATCH --dataBase "c:\my app\gamedata.json" --input "c:\my app\gamedata_patch.json" --inputFormat json
   
   # remote game data
-  Charon.exe DATA APPLYPATCH --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./gamedata_patch.json" --inputFormat json --credentials <API-Key>
+  Charon.exe DATA APPLYPATCH --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./gamedata_patch.json" --inputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters

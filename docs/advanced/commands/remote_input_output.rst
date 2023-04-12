@@ -29,7 +29,7 @@ Examples:
     --output "ftp://user:password@example.com/public/gamedata.json"
     --mode publication 
     --outputFormat json
-    --credentials <API-Key> 
+    --credentials "<API-Key>" 
     
   # import localization from remote HTTP server 
   Charon.exe DATA I18N IMPORT

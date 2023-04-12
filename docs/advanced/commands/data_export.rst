@@ -13,7 +13,7 @@ Exports documents into a file.
   Charon.exe DATA EXPORT --dataBase "c:\my app\gamedata.json" --entities Character --output "c:\my app\characters.json" --outputFormat json
   
   # remote game data
-  Charon.exe DATA EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --entities Character --output "./characters.json" --outputFormat json --credentials <API-Key>
+  Charon.exe DATA EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --entities Character --output "./characters.json" --outputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters

@@ -13,7 +13,7 @@ Get a list of supported translation languages. Primary language always shows up 
   Charon.exe DATA I18N LANGUAGES --dataBase "c:\my app\gamedata.json" --output out --outputFormat table
 
   # remote game data
-  Charon.exe DATA I18N LANGUAGES --dataBase "https://charon.live/view/data/My_Game/develop/" --output out --outputFormat table --credentials <API-Key>
+  Charon.exe DATA I18N LANGUAGES --dataBase "https://charon.live/view/data/My_Game/develop/" --output out --outputFormat table --credentials "<API-Key>"
 
 ---------------
  Parameters

@@ -15,7 +15,7 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
   Charon.exe DATA DELETE --dataBase "c:\my app\gamedata.json" --entity Item --id "Sword"
   
   # remote game data
-  Charon.exe DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Item --id "Sword" --credentials <API-Key>
+  Charon.exe DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Item --id "Sword" --credentials "<API-Key>"
   
 ---------------
  Parameters

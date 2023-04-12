@@ -13,7 +13,7 @@ Outputs the differences between two game datas as a file that can be used later 
   Charon.exe DATA CREATEPATCH --dataBase "c:\my app\gamedata.json" --input "c:\my app\gamedata_patch.json" --inputFormat json
   
   # remote game data
-  Charon.exe DATA CREATEPATCH --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./gamedata_patch.json" --inputFormat json --credentials <API-Key>
+  Charon.exe DATA CREATEPATCH --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./gamedata_patch.json" --inputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters

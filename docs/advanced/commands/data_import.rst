@@ -13,7 +13,7 @@ Imports documents from file to a game data.
   Charon.exe DATA IMPORT --dataBase "c:\my app\gamedata.json" --entities Character --input "c:\my app\characters.json" --inputFormat json --mode safeUpdate
   
   # remote game data
-  Charon.exe DATA IMPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --entities Character --input "./characters.json" --inputFormat json --mode safeUpdate --credentials <API-Key>
+  Charon.exe DATA IMPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --entities Character --input "./characters.json" --inputFormat json --mode safeUpdate --credentials "<API-Key>"
   
 ---------------
  Parameters

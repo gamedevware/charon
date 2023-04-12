@@ -15,7 +15,7 @@ This command does not delete previously generated files, and it is the responsib
   Charon.exe Charon.exe GENERATE CSHARPCODE --dataBase "c:\my app\gamedata.json" --namespace "MyGame.Parameters" --outputDirectory "c:\my app\scripts"
 
   # remote game data
-  Charon.exe Charon.exe GENERATE CSHARPCODE --dataBase "https://charon.live/view/data/My_Game/develop/" --namespace "MyGame.Parameters" --outputDirectory "./scripts" --credentials <API-Key>
+  Charon.exe Charon.exe GENERATE CSHARPCODE --dataBase "https://charon.live/view/data/My_Game/develop/" --namespace "MyGame.Parameters" --outputDirectory "./scripts" --credentials "<API-Key>"
   
 ---------------
  Parameters

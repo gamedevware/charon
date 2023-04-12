@@ -14,7 +14,7 @@ Create Backup
   Charon.exe DATA BACKUP --dataBase "c:\my app\gamedata.json" --output "c:\my app\backup.msgpkg" --outputFormat msgpack
   
   # remote game data
-  Charon.exe DATA BACKUP --dataBase "https://charon.live/view/data/My_Game/develop/" --output "./backup.msgpkg" --outputFormat msgpack --credentials <API-Key>
+  Charon.exe DATA BACKUP --dataBase "https://charon.live/view/data/My_Game/develop/" --output "./backup.msgpkg" --outputFormat msgpack --credentials "<API-Key>"
   
 ---------------
  Parameters
