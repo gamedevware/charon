@@ -11,10 +11,10 @@ Create Document
 .. code-block:: bash
 
   # Windows
-  Charon.exe DATA CREATE --dataBase "c:\my app\gamedata.json" --entity Item --input "c:\my app\document.json" --inputFormat json 
+  Charon.exe DATA CREATE --dataBase "c:\my app\gamedata.json" --entity Item --input "c:\my app\item.json" --inputFormat json 
   
   # Linux or OSX
-  mono Charon.exe DATA CREATE --dataBase "~/gamedata.json" --entity Item --input "~/document.json" --inputFormat json 
+  mono Charon.exe DATA CREATE --dataBase "~/gamedata.json" --entity Item --input "~/item.json" --inputFormat json 
   
 ---------------
  Parameters
@@ -52,19 +52,19 @@ Create Document
      --input con
 
      # absolute path (windows)
-     --input "c:\my app\document.json"
+     --input "c:\my app\item.json"
      
      # absolute path (unix)
-     --input "/user/data/document.json"
+     --input "/user/data/item.json"
      
      # relative path (universal)
-     --input "./document.json"
+     --input "./item.json"
      
      # remote location (HTTP)
-     --input "http://example.com/document.json"
+     --input "http://example.com/item.json"
      
      # remote location with authentification (FTP)
-     --input "ftp://user:password@example.com/document.json"
+     --input "ftp://user:password@example.com/item.json"
      
 --inputFormat
    Format of imported data.
@@ -108,19 +108,19 @@ Create Document
      --output null
      
      # absolute path (windows)
-     --output "c:\my app\document.json"
+     --output "c:\my app\created_item.json"
      
      # absolute path (unix)
-     --output /user/data/document.json
+     --output /user/data/created_item.json
      
      # relative path (universal)
-     --output "./document.json"
+     --output "./created_item.json"
      
      # remote location (HTTP)
-     --output "http://example.com/document.json"
+     --output "http://example.com/created_item.json"
      
      # remote location with authentification (FTP)
-     --output "ftp://user:password@example.com/document.json"
+     --output "ftp://user:password@example.com/created_item.json"
      
 --outputFormat
    Format of created data.
