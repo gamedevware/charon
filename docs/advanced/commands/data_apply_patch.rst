@@ -1,0 +1,78 @@
+Apply Patch
+===========
+
+Apply patch created by `DATA CREATEPATCH <commands/data_create_patch.rst>`_ to a game data.
+
+---------------
+ Command
+---------------
+
+.. code-block:: bash
+
+  # Windows
+  Charon.exe DATA CREATEPATCH --dataBase "c:\my app\gamedata.json" --input "c:\my app\gamedata_patch.json" --inputFormat json
+  
+  # Linux or OSX
+  mono Charon.exe DATA CREATEPATCH --dataBase "~/gamedata.json" --input "~/gamedata_patch.json" --inputFormat json
+  
+---------------
+ Parameters
+---------------
+
+--dataBase
+   Absolute or relative oath to game data. Use quotation marks if your path contains spaces.
+
+   .. code-block:: bash
+   
+     # local file
+     --dataBase "c:\my app\gamedata.json"
+     
+     # remote server
+     --dataBase "https://charon.live/view/data/My_Game/develop/"
+     
+--input
+   Path to a file with patch to apply. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <universal_parameters.rst>`_.
+
+   .. code-block:: bash
+
+     # standart input
+     --input in
+     --input con
+
+     # absolute path (windows)
+     --input "c:\my app\gamedata_patch.json"
+     
+     # absolute path (unix)
+     --input "/user/data/gamedata_patch.json"
+     
+     # relative path (universal)
+     --input "./gamedata_patch.json"
+     
+     # remote location (HTTP)
+     --input "http://example.com/gamedata_patch.json"
+     
+     # remote location with authentification (FTP)
+     --input "ftp://user:password@example.com/gamedata_patch.json"
+     
+--inputFormat
+   Format of imported data.
+   
+   .. code-block:: bash
+   
+     # Auto-detect by extension (default)
+     --inputFormat auto
+   
+     # JSON
+     --inputFormat json
+     
+     # BSON
+     --inputFormat bson
+     
+     # BSON
+     --inputFormat msgpack
+     
+     # XML
+     --inputFormat xml
+
+--inputFormattingOptions
+   Additional options for specified format.
