@@ -61,7 +61,7 @@ Imports documents from file to a game data.
    
    .. code-block:: bash
    
-     # creates new documents and updates existing ones
+     # creates new documents and updates existing ones (default)
      --mode createAndUpdate
    
      # only creates new documents, existing documents are kept unchanged
@@ -128,6 +128,9 @@ Imports documents from file to a game data.
 
 --inputFormattingOptions
    Additional options for specified format.
+   
+--dryRun
+   Allows you to run the command without actually making any changes to the game data, providing a preview of what would happen.
    
 ------------------
  Input Data Schema
