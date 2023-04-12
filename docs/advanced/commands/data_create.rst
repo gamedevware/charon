@@ -11,10 +11,10 @@ Create Document
 .. code-block:: bash
 
   # Windows
-  Charon.exe DATA CREATE --dataBase "c:\my app\gamedata.json" --input "c:\my app\document.json" --inputFormat json 
+  Charon.exe DATA CREATE --dataBase "c:\my app\gamedata.json" --entity Item --input "c:\my app\document.json" --inputFormat json 
   
   # Linux or OSX
-  mono Charon.exe DATA CREATE --dataBase "~/gamedata.json" --input "~/document.json" --inputFormat json 
+  mono Charon.exe DATA CREATE --dataBase "~/gamedata.json" --entity Item --input "~/document.json" --inputFormat json 
   
 ---------------
  Parameters
