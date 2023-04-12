@@ -101,35 +101,28 @@ Exports documents into a file.
    Export mode controls stripping and inclusion rules for exported data.
 
    .. code-block:: bash
+      
+     # (default)   
+     --mode normal  
      
-     # default
-     --mode normal
-   
-   Export all related data without any modification.
-   This mode always export valid graph of documents without broken references.
-
-
-   .. code-block:: bash
-   
      --mode publication
-   
-   Same as *default*, but all non-essential data will be stripped. 
-   The result of the export can be safely loaded within the game with the `generated code <generate_csharp_code.rst>`_.
-
-
-   .. code-block:: bash
-   
      --mode extraction
-     
-   Export only selected entities without any related data. 
-   This mode may export a broken graph of documents, so it is recommended to use the ``safeupdate`` import mode.
-
-
-   .. code-block:: bash
-   
      --mode localization
 
-   Same as *extraction* but only ``LocalizedText`` attributes are exported.
+   normal
+      Export all related data without any modification.
+      This mode always export valid graph of documents without broken references.
+      
+   publication
+      Same as *default*, but all non-essential data will be stripped. 
+      The result of the export can be safely loaded within the game with the `generated code <generate_csharp_code.rst>`_.
+   
+   extraction
+      Export only selected entities without any related data. 
+      This mode may export a broken graph of documents, so it is recommended to use the ``safeupdate`` import mode.
+   
+   localization
+       Same as *extraction* but only ``LocalizedText`` attributes are exported.
     
 --output
    Path to a exported data file. If the file exists, it will be overwritten. The directory must already exist. 
