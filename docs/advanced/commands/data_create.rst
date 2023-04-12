@@ -133,7 +133,7 @@ Create Document
      # BSON
      --outputFormat bson
      
-     # BSON
+     # Message Pack
      --outputFormat msgpack
      
      # XML
