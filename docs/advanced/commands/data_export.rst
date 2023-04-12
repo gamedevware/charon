@@ -10,10 +10,10 @@ Export text that can be translated into a file.
 .. code-block:: bash
 
   # Windows
-  Charon.exe DATA I18N EXPORT --dataBase "c:\my app\gamedata.json" --entities Character --sourceLanguage en-US --targetLanguage fr --output "c:\my app\character_loc.xliff" --outputFormat xliff
+  Charon.exe DATA EXPORT --dataBase "c:\my app\gamedata.json" --entities Character --output "c:\my app\characters.json" --outputFormat json
   
   # Linux or OSX
-  mono Charon.exe DATA I18N EXPORT --dataBase "~\gamedata.json" --entities Item --sourceLanguage en-US --targetLanguage fr --output "~\character_loc.xslx"
+  mono Charon.exe DATA EXPORT --dataBase "~/gamedata.json" --entities Character --output "~/characters.json" --outputFormat json
   
 ---------------
  Parameters
@@ -100,10 +100,10 @@ Export text that can be translated into a file.
 --mode
    Export mode controls stripping and inclusion rules for exported data.
 
-
    .. code-block:: bash
      
-     --mode default
+     # default
+     --mode normal
    
    Export all related data without any modification.
    This mode always export valid graph of documents without broken references.
@@ -139,14 +139,14 @@ Export text that can be translated into a file.
   
    .. code-block:: bash
 
-     # standart output
+     # standart output (default)
      --output out
      --output con
 
      # standart error
      --output err
      
-     # null device (default)
+     # null device
      --output null
      
      # absolute path (windows)
@@ -180,6 +180,9 @@ Export text that can be translated into a file.
      
      # XML
      --outputFormat xml
+     
+     # XLSX Spreadsheet
+     --outputFormat xlsx
      
 --outputFormattingOptions
    Additional options for specified format.
