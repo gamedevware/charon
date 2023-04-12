@@ -86,7 +86,7 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
      --output "ftp://user:password@example.com/document.json"
      
 --outputFormat
-   Format of exported data.
+   Format of deleted data.
    
    .. code-block:: bash
     
