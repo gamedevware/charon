@@ -28,7 +28,7 @@ Import translated text from a specified file into game data.
      --dataBase "c:\my app\gamedata.json"
      
      # remote server
-     --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"
+     --dataBase "https://charon.live/view/data/My_Game/develop/"
      
 --entities <entityNameOrId1 entityNameOrId2 ...>
    A list of types of documents (entities) to import from ``--input``. This parameter is required some cases (see below).
