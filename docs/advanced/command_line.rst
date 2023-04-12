@@ -78,7 +78,6 @@ Commands
 - `DATA FIND <commands/data_find.rst>`_
 - `DATA CREATEPATCH <commands/data_create_patch.rst>`_
 - `DATA APPLYPATCH <commands/data_apply_patch.rst>`_
-- `DATA VERSION <commands/data_version.rst>`_
 - `DATA I18N EXPORT <commands/data_i18n_export.rst>`_
 - `DATA I18N IMPORT <commands/data_i18n_import.rst>`_
 - `DATA I18N LANGUAGES <commands/data_i18n_languages.rst>`_
