@@ -61,23 +61,27 @@ Imports documents from file to a game data.
    
    .. code-block:: bash
    
-     # creates new documents and updates existing ones (default)
+     # (default)
      --mode createAndUpdate
    
-     # only creates new documents, existing documents are kept unchanged
      --mode create
-   
-     # only updates existing documents, no new ones are created
      --mode update
-   
-     # same as update but without creating, moving and erasing embedded documents
      --mode safeUpdate
-   
-     # replaces the entire collection with the imported documents
      --mode replace
-   
-     # deletes documents found in the imported data
      --mode delete
+   
+   createAndUpdate
+      creates new documents and updates existing ones 
+   create
+      only creates new documents, existing documents are kept unchanged
+   update
+      only updates existing documents, no new ones are created
+   safeUpdate
+      same as *update* but without creating, moving and erasing embedded documents
+   replace
+      replaces the entire collection with the imported documents
+   delete
+      deletes documents found in the imported data  
     
 --input
    Path to a data file. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <universal_parameters.rst>`_.
