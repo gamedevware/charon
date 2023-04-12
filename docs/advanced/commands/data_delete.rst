@@ -71,19 +71,19 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
      --output null
      
      # absolute path (windows)
-     --output "c:\my app\document.json"
+     --output "c:\my app\deleted_item.json"
      
      # absolute path (unix)
-     --output /user/data/document.json
+     --output /user/data/deleted_item.json
      
      # relative path (universal)
-     --output "./document.json"
+     --output "./deleted_item.json"
      
      # remote location (HTTP)
-     --output "http://example.com/document.json"
+     --output "http://example.com/deleted_item.json"
      
      # remote location with authentification (FTP)
-     --output "ftp://user:password@example.com/document.json"
+     --output "ftp://user:password@example.com/deleted_item.json"
      
 --outputFormat
    Format of deleted data.
