@@ -1,0 +1,35 @@
+Export Code Generation Templates
+========================
+
+Exports `T4 <https://learn.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates>`_ code generation templates to a specified directory. 
+These templates can be used with Visual Studio, Rider, Visual Studio Code with plugin, ``dotnet`` `tool <https://www.nuget.org/packages/dotnet-t4>`_ or other tools to generate source code.
+
+---------------
+ Command
+---------------
+
+.. code-block:: bash
+
+  # Windows
+  Charon.exe GENERATE TEMPLATES --outputDirectory "c:\templates"
+  
+  # Linux or OSX
+  mono Charon.exe GENERATE TEMPLATES --outputDirectory "~/templates"
+  
+---------------
+ Parameters
+---------------
+
+--outputDirectory
+   Specifies the path where the templates should be written. It can be either an absolute or relative path to a directory. The specified directory must already be present.
+
+   .. code-block:: bash
+   
+     # Windows
+     --outputDirectory "c:\templates"
+     
+     # Linux or OSX
+     --outputDirectory "~/templates"
+     
+     # Relative path
+     --outputDirectory "./templates"
