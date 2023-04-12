@@ -28,7 +28,7 @@ Get a list of supported translation languages. Primary language always shows up 
      --dataBase "c:\my app\gamedata.json"
      
      # remote server
-     --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"
+     --dataBase "https://charon.live/view/data/My_Game/develop/"
      
 --output
     Path to a file to which data will be exported. If the file exists, it will be overwritten. The directory must already exist. 
