@@ -1,7 +1,8 @@
 Create Backup
 =============
 
-Backs up game data to a specified file. Can be used to convert game data into different format.
+| Backs up game data to a specified file. Saved data could be later used with `DATA RESTORE <data_restore.rst>`_ command.
+| Also this command can be used to convert game data into different format.
 
 ---------------
  Command
@@ -34,7 +35,7 @@ Backs up game data to a specified file. Can be used to convert game data into di
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
 --output
-   Path to a file to which data will be exported. If the file exists, it will be overwritten. The directory must already exist. 
+   Path to a backup file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
    `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.
@@ -84,4 +85,4 @@ Backs up game data to a specified file. Can be used to convert game data into di
  Output Data Schema
 ------------------
 
-The backed up data follow `game data <../game_data_schema.rst>`_  schema.
+The backed-up data follows the schema of game data <../game_data_schema.rst>_.
