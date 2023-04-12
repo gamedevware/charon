@@ -47,7 +47,7 @@ Create Document
 
    .. code-block:: bash
 
-     # standart input
+     # standart input (default)
      --input in
      --input con
 

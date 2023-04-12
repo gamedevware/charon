@@ -35,7 +35,7 @@ Apply patch created by `DATA CREATEPATCH <commands/data_create_patch.rst>`_ to a
 
    .. code-block:: bash
 
-     # standart input
+     # standart input (default)
      --input in
      --input con
 

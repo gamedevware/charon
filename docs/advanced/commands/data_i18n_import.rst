@@ -64,7 +64,7 @@ Import translated text from a specified file into game data.
 
    .. code-block:: bash
 
-     # standart input
+     # standart input (default)
      --input in
      --input con
 

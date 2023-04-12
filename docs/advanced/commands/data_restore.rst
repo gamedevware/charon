@@ -38,7 +38,7 @@ Restores game data from a file created by `DATA BACKUP <data_backup.rst>`_ comma
 
    .. code-block:: bash
 
-     # standart input
+     # standart input (default)
      --input in
      --input con
 
