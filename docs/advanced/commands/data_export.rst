@@ -1,7 +1,7 @@
-Export Translated Data
-=========================
+Export Data
+===========
 
-Export text that can be translated into a file.
+Exports documents into a file.
 
 ---------------
  Command
