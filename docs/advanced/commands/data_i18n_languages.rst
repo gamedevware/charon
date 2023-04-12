@@ -19,7 +19,7 @@ Get a list of supported translation languages. Primary language always shows up 
  Parameters
 ---------------
 
---dataBase <path>
+--dataBase
    Absolute or relative oath to game data. Use quotation marks if your path contains spaces.
 
    .. code-block:: bash
@@ -31,11 +31,8 @@ Get a list of supported translation languages. Primary language always shows up 
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
 --output
-    Path to a file to which data will be exported. If the file exists, it will be overwritten. The directory must already exist. 
-    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
-    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-    `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.
-     
+   Path to a file to which data will be exported. If the file exists, it will be overwritten. The directory must already exist. Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_,  `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.
+
    .. code-block:: bash
 
      # standart output (default)
@@ -63,7 +60,7 @@ Get a list of supported translation languages. Primary language always shows up 
      # remote location with authentification (FTP)
      --output "ftp://user:password@example.com/input.json"
      
---outputFormat <format>
+--outputFormat
    Format of exported data.
    
    .. code-block:: bash
@@ -77,6 +74,6 @@ Get a list of supported translation languages. Primary language always shows up 
      # New line (OS specific) separated list
      --outputFormat table
 
---outputFormattingOptions <options>
+--outputFormattingOptions
    Additional options for specified format.
      
