@@ -1,4 +1,4 @@
-Start in standalone mode
+Generate C# Source Code
 ========================
 
 Generates C# source code for game data into output directory.
