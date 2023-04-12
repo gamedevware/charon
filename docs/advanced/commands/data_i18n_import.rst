@@ -19,7 +19,7 @@ Import translated text from a specified file into game data.
  Parameters
 ---------------
 
---dataBase <path>
+--dataBase
    Absolute or relative oath to game data. Use quotation marks if your path contains spaces.
 
    .. code-block:: bash
@@ -30,7 +30,7 @@ Import translated text from a specified file into game data.
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
---entities <entityNameOrId1 entityNameOrId2 ...>
+--entities
    A list of types of documents (entities) to import from ``--input``. This parameter is required some cases (see below).
 
    .. code-block:: bash
@@ -53,7 +53,7 @@ Import translated text from a specified file into game data.
      --entities Char* !Character
      --entities !*Item*
 
---input <path>
+--input
    Path to a file with data to import. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <universal_parameters.rst>`_.
 
    .. code-block:: bash
@@ -77,7 +77,7 @@ Import translated text from a specified file into game data.
      # remote location with authentification (FTP)
      --input "ftp://user:password@example.com/input.json"
      
---inputFormat <auto | format>
+--inputFormat
    Format of imported data.
    
    .. code-block:: bash
@@ -96,7 +96,7 @@ Import translated text from a specified file into game data.
      --inputFormat xslx
      
 
---inputFormattingOptions <options>
+--inputFormattingOptions
    Additional options for specified format.
    
 --dryRun
