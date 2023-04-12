@@ -68,7 +68,7 @@ Apply patch created by `DATA CREATEPATCH <commands/data_create_patch.rst>`_ to a
      # BSON
      --inputFormat bson
      
-     # BSON
+     # Message Pack
      --inputFormat msgpack
      
      # XML
