@@ -10,10 +10,10 @@ Apply patch created by `DATA CREATEPATCH <commands/data_create_patch.rst>`_ to a
 .. code-block:: bash
 
   # Windows
-  Charon.exe DATA CREATEPATCH --dataBase "c:\my app\gamedata.json" --input "c:\my app\gamedata_patch.json" --inputFormat json
+  Charon.exe DATA APPLYPATCH --dataBase "c:\my app\gamedata.json" --input "c:\my app\gamedata_patch.json" --inputFormat json
   
   # Linux or OSX
-  mono Charon.exe DATA CREATEPATCH --dataBase "~/gamedata.json" --input "~/gamedata_patch.json" --inputFormat json
+  mono Charon.exe DATA APPLYPATCH --dataBase "~/gamedata.json" --input "~/gamedata_patch.json" --inputFormat json
   
 ---------------
  Parameters
