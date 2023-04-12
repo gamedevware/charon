@@ -1,9 +1,9 @@
-Validate Game Data
+Update Document
 ===============
 
-Checks the game data for validity and produces a report.
-
-The exit code will be ``1`` if the report contains errors and the ``--output`` is set to ``err``. Otherwise, the exit code will be ``0``.
+| Updates a document. For a bulk updates use `DATA IMPORT <data_import.rst>`_ command with ``--mode update``.
+| The update document in ``--input`` may be partial, with non-included fields being omitted.
+| Only the first document from the ``--input`` will be processed.
 
 ---------------
  Command
@@ -12,8 +12,8 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
 .. code-block:: bash
 
   # Windows
-  Charon.exe DATA DELETE --dataBase "c:\my app\gamedata.json" --entity Item --id "Sword"
-  
+  Charon.exe DATA UPDATE --dataBase "c:\my app\gamedata.json" --entity Item --input "c:\my app\item.json" --inputFormat json 
+
 ---------------
  Parameters
 ---------------
@@ -29,28 +29,77 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
---validationOptions
-   List of validation checks and repairs to perform.
+--entity
+   Name or identifier of the type (entity) of updated document.
      
    .. code-block:: bash
 
-     # repairs
-     --validationOptions repair     
-     --validationOptions deduplicateIds
-     --validationOptions repairRequiredWithDefaultValue
-     --validationOptions eraseInvalidValue
+     # name
+     --entity Item
      
-     # checks (default)
-     --validationOptions checkTranslation
-     --validationOptions checkRequirements
-     --validationOptions checkFormat
-     --validationOptions checkUniqueness
-     --validationOptions checkReferences
-     --validationOptions checkSpecification
-     --validationOptions checkConstraints
+     # id
+     --entity 55a4f32faca22e191098f3d9
+     
+--id
+   Identifier of updated document. Could be omitted if `Id` is specified in ``--input`` document.
 
+   .. code-block:: bash
+
+     # text
+     --id Sword
+     
+     # number
+     --id 101
+     
+--input
+   Path to a file with update data. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <universal_parameters.rst>`_.
+
+   .. code-block:: bash
+
+     # standart input (default)
+     --input in
+     --input con
+
+     # absolute path (windows)
+     --input "c:\my app\item.json"
+     
+     # absolute path (unix)
+     --input "/user/data/item.json"
+     
+     # relative path (universal)
+     --input "./item.json"
+     
+     # remote location (HTTP)
+     --input "http://example.com/item.json"
+     
+     # remote location with authentification (FTP)
+     --input "ftp://user:password@example.com/item.json"
+     
+--inputFormat
+   Format of update data.
+   
+   .. code-block:: bash
+   
+     # Auto-detect by extension (default)
+     --inputFormat auto
+   
+     # JSON
+     --inputFormat json
+     
+     # BSON
+     --inputFormat bson
+     
+     # Message Pack
+     --inputFormat msgpack
+     
+     # XML
+     --inputFormat xml
+
+--inputFormattingOptions
+   Additional options for specified format.
+   
 --output
-   Path to a validation report file. If the file exists, it will be overwritten. The directory must already exist. 
+   Path to a updated document file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
    `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.
@@ -68,22 +117,22 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
      --output null
      
      # absolute path (windows)
-     --output "c:\my app\document.json"
+     --output "c:\my app\updated_item.json"
      
      # absolute path (unix)
-     --output /user/data/document.json
+     --output /user/data/updated_item.json
      
      # relative path (universal)
-     --output "./document.json"
+     --output "./updated_item.json"
      
      # remote location (HTTP)
-     --output "http://example.com/document.json"
+     --output "http://example.com/updated_item.json"
      
      # remote location with authentification (FTP)
-     --output "ftp://user:password@example.com/document.json"
+     --output "ftp://user:password@example.com/updated_item.json"
      
 --outputFormat
-   Format of exported data.
+   Format of updated data.
    
    .. code-block:: bash
     
@@ -103,28 +152,49 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
    Additional options for specified format.
    
 ------------------
- Output Data Schema
+ Input Data Schema
 ------------------
 
-The report follow this schema:
+The data you input should follow this schema (recommended):
 
    .. code-block:: js
      
-    {
-      records: [
-        {
-          id: "<document-id>",
-          entityId: "<entity-id>",
-          entityName: "<entity-name>",
-          errors: [ // could be null if no errors
-            {
-              path: "<path-in-document>",
-              message: "<error-message>",
-              code: "<error-code>"
-            },
-            // ...
-          ]
-        },
-        // ...
-      ]
-    }
+     {
+       "Collections": {
+         "<EntityName>": [
+           {
+             // <Document>
+           }
+         ]
+       }
+     }
+     
+This schema is also accepted:
+
+   .. code-block:: js
+     
+     {
+       "<EntityName>": [
+         {
+           // <Document>
+         }
+       ]
+     }
+     
+A list of documents is accepted:
+
+   .. code-block:: js
+   
+     [
+       {
+         // <Document>
+       }
+     ]
+     
+And single document too:
+
+   .. code-block:: js
+   
+     {
+       // <Document>
+     }
