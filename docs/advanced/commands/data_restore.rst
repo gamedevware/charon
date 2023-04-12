@@ -34,7 +34,7 @@ Restores game data from a file created by `DATA BACKUP <data_backup.rst>`_ comma
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
 --input
-   Path to a file with backup to restore. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <universal_parameters.rst>`_.
+   Path to a backup file. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <universal_parameters.rst>`_.
 
    .. code-block:: bash
 
