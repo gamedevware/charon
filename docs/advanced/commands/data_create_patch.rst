@@ -85,7 +85,7 @@ Outputs the differences between two game datas as a file that can be used later 
      # BSON
      --outputFormat bson
      
-     # BSON
+     # Message Pack
      --outputFormat msgpack
      
      # XML
