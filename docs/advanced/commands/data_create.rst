@@ -1,7 +1,7 @@
 Create Document
 ===============
 
-| Creates a new document.
+| Creates a new document. For a bulk creations use `DATA IMPORT <data_import.rst>`_ command with ``--mode create``.
 | Only the first document from the ``--input`` will be processed.
 
 ---------------
