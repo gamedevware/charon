@@ -10,14 +10,11 @@ Create Backup
 
 .. code-block:: bash
 
-  # Windows
+  # local game data (windows)
   Charon.exe DATA BACKUP --dataBase "c:\my app\gamedata.json" --output "c:\my app\backup.msgpkg" --outputFormat msgpack
   
-  # Linux or OSX
-  mono Charon.exe DATA BACKUP --dataBase "~/gamedata.json" --output "~/backup.msgpkg" --outputFormat msgpack
-  
-  # With remote game data
-  Charon.exe DATA BACKUP --dataBase "https://charon.live/view/data/My_Game/develop/" --output "./backup.msgpkg" --outputFormat msgpack --credentials 87758CC0D7C745D0948F2A8AFE61BC81
+  # remote game data
+  Charon.exe DATA BACKUP --dataBase "https://charon.live/view/data/My_Game/develop/" --output "./backup.msgpkg" --outputFormat msgpack --credentials <API-Key>
   
 ---------------
  Parameters
@@ -38,7 +35,7 @@ Create Backup
    Path to a backup file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
   
    .. code-block:: bash
 
@@ -80,6 +77,8 @@ Create Backup
 
 --outputFormattingOptions
    Additional options for specified format.
+ 
+This command supports `universal parameters <universal_parameters.rst>`_.
 
 ------------------
  Output Data Schema

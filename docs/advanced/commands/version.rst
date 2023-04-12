@@ -20,5 +20,5 @@ Gets version of ``Charon.exe`` application.
 ---------------
  Parameters
 ---------------
-
-`Universal parameters <universal_parameters.rst>`_ apply to this command.
+ 
+This command supports `universal parameters <universal_parameters.rst>`_.

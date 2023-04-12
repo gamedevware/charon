@@ -9,11 +9,11 @@ Outputs the differences between two game datas as a file that can be used later 
 
 .. code-block:: bash
 
-  # Windows
+  # local game data (windows)
   Charon.exe DATA CREATEPATCH --dataBase "c:\my app\gamedata.json" --input "c:\my app\gamedata_patch.json" --inputFormat json
   
-  # Linux or OSX
-  mono Charon.exe DATA CREATEPATCH --dataBase "~/gamedata.json" --input "~/gamedata_patch.json" --inputFormat json
+  # remote game data
+  Charon.exe DATA CREATEPATCH --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./gamedata_patch.json" --inputFormat json --credentials <API-Key>
   
 ---------------
  Parameters
@@ -45,7 +45,7 @@ Outputs the differences between two game datas as a file that can be used later 
    Path to a patch file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
   
    .. code-block:: bash
 
@@ -98,3 +98,5 @@ Outputs the differences between two game datas as a file that can be used later 
 --credentials
    This parameter sets the API key used to access *BOTH* remote servers. 
    If this is not suitable, consider `downloading <https://github.com/gamedevware/charon/blob/main/docs/advanced/commands/data_backup.rst>`_ the data locally and running this command on local files instead.
+ 
+This command supports `universal parameters <universal_parameters.rst>`_.

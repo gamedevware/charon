@@ -9,11 +9,11 @@ Apply patch created by `DATA CREATEPATCH <commands/data_create_patch.rst>`_ to a
 
 .. code-block:: bash
 
-  # Windows
+  # local game data (windows)
   Charon.exe DATA APPLYPATCH --dataBase "c:\my app\gamedata.json" --input "c:\my app\gamedata_patch.json" --inputFormat json
   
-  # Linux or OSX
-  mono Charon.exe DATA APPLYPATCH --dataBase "~/gamedata.json" --input "~/gamedata_patch.json" --inputFormat json
+  # remote game data
+  Charon.exe DATA APPLYPATCH --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./gamedata_patch.json" --inputFormat json --credentials <API-Key>
   
 ---------------
  Parameters
@@ -31,7 +31,7 @@ Apply patch created by `DATA CREATEPATCH <commands/data_create_patch.rst>`_ to a
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
 --input
-   Path to a file with patch to apply. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <universal_parameters.rst>`_.
+   Path to a file with patch to apply. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
 
    .. code-block:: bash
 
@@ -76,3 +76,5 @@ Apply patch created by `DATA CREATEPATCH <commands/data_create_patch.rst>`_ to a
 
 --inputFormattingOptions
    Additional options for specified format.
+ 
+This command supports `universal parameters <universal_parameters.rst>`_.

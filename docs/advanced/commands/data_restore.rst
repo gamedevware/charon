@@ -9,14 +9,11 @@ Restores game data from a file created by `DATA BACKUP <data_backup.rst>`_ comma
 
 .. code-block:: bash
 
-  # Windows
+  # local game data (windows)
   Charon.exe DATA RESTORE --dataBase "c:\my app\gamedata.json" --input "c:\my app\backup.msgpkg" --inputFormat msgpack
-  
-  # Linux or OSX
-  mono Charon.exe DATA RESTORE --dataBase "c:\my app\gamedata.json" --input "c:\my app\backup.msgpkg" --inputFormat msgpack
-  
-  # With remote game data
-  Charon.exe DATA RESTORE --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./backup.msgpkg" --inputFormat msgpack --credentials 87758CC0D7C745D0948F2A8AFE61BC81
+
+  # remote game data
+  Charon.exe DATA RESTORE --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./backup.msgpkg" --inputFormat msgpack --credentials <API-Key>
   
 ---------------
  Parameters
@@ -34,7 +31,7 @@ Restores game data from a file created by `DATA BACKUP <data_backup.rst>`_ comma
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
 --input
-   Path to a backup file. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <universal_parameters.rst>`_.
+   Path to a backup file. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
 
    .. code-block:: bash
 
@@ -73,3 +70,5 @@ Restores game data from a file created by `DATA BACKUP <data_backup.rst>`_ comma
 
 --inputFormattingOptions
    Additional options for specified format.
+
+This command supports `universal parameters <universal_parameters.rst>`_.

@@ -9,8 +9,11 @@ Imports documents from file to a game data.
 
 .. code-block:: bash
 
-  # Windows
+  # local game data (windows)
   Charon.exe DATA IMPORT --dataBase "c:\my app\gamedata.json" --entities Character --input "c:\my app\characters.json" --inputFormat json --mode safeUpdate
+  
+  # remote game data
+  Charon.exe DATA IMPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --entities Character --input "./characters.json" --inputFormat json --mode safeUpdate --credentials <API-Key>
   
 ---------------
  Parameters
@@ -84,7 +87,7 @@ Imports documents from file to a game data.
       deletes documents found in the imported data  
     
 --input
-   Path to a data file. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <universal_parameters.rst>`_.
+   Path to a data file. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
 
    .. code-block:: bash
 
@@ -135,7 +138,9 @@ Imports documents from file to a game data.
    
 --dryRun
    Allows you to run the command without actually making any changes to the game data, providing a preview of what would happen.
-   
+
+This command supports `universal parameters <universal_parameters.rst>`_.
+
 ------------------
  Input Data Schema
 ------------------

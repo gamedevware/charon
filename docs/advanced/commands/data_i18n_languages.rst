@@ -9,12 +9,12 @@ Get a list of supported translation languages. Primary language always shows up 
 
 .. code-block:: bash
 
-  # Windows
-  Charon.exe DATA I18N LANGUAGES --dataBase "c:\my app\gamedata.json" --output out --outputFormat json
-  
-  # Linux or OSX
-  mono Charon.exe DATA I18N LANGUAGES --dataBase "~\gamedata.json" --output out --outputFormat list
-  
+  # local game data (windows)
+  Charon.exe DATA I18N LANGUAGES --dataBase "c:\my app\gamedata.json" --output out --outputFormat table
+
+  # remote game data
+  Charon.exe DATA I18N LANGUAGES --dataBase "https://charon.live/view/data/My_Game/develop/" --output out --outputFormat table --credentials <API-Key>
+
 ---------------
  Parameters
 ---------------
@@ -31,7 +31,7 @@ Get a list of supported translation languages. Primary language always shows up 
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
 --output
-   Path to language list file. If the file exists, it will be overwritten. The directory must already exist. Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_,  `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.
+   Path to language list file. If the file exists, it will be overwritten. The directory must already exist. Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_,  `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
 
    .. code-block:: bash
 
@@ -76,4 +76,6 @@ Get a list of supported translation languages. Primary language always shows up 
 
 --outputFormattingOptions
    Additional options for specified format.
-     
+
+This command supports `universal parameters <universal_parameters.rst>`_.
+

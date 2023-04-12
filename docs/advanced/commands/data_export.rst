@@ -9,11 +9,11 @@ Exports documents into a file.
 
 .. code-block:: bash
 
-  # Windows
+  # local game data (windows)
   Charon.exe DATA EXPORT --dataBase "c:\my app\gamedata.json" --entities Character --output "c:\my app\characters.json" --outputFormat json
   
-  # Linux or OSX
-  mono Charon.exe DATA EXPORT --dataBase "~/gamedata.json" --entities Character --output "~/characters.json" --outputFormat json
+  # remote game data
+  Charon.exe DATA EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --entities Character --output "./characters.json" --outputFormat json --credentials <API-Key>
   
 ---------------
  Parameters
@@ -128,7 +128,7 @@ Exports documents into a file.
    Path to a exported data file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
   
    .. code-block:: bash
 
@@ -179,7 +179,9 @@ Exports documents into a file.
      
 --outputFormattingOptions
    Additional options for specified format.
-   
+
+This command supports `universal parameters <universal_parameters.rst>`_.
+
 ------------------
  Output Data Schema
 ------------------

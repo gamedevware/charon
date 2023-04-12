@@ -9,12 +9,12 @@ Export text that can be translated into a file.
 
 .. code-block:: bash
 
-  # Windows
+  # local game data (windows)
   Charon.exe DATA I18N EXPORT --dataBase "c:\my app\gamedata.json" --entities Character --sourceLanguage en-US --targetLanguage fr --output "c:\my app\character_loc.xliff" --outputFormat xliff
-  
-  # Linux or OSX
-  mono Charon.exe DATA I18N EXPORT --dataBase "~\gamedata.json" --entities Item --sourceLanguage en-US --targetLanguage fr --output "~\character_loc.xslx"
-  
+
+  # remote game data
+  Charon.exe DATA I18N EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --entities Character --sourceLanguage en-US --targetLanguage fr --output "./character_loc.xliff" --outputFormat xliff --credentials <API-Key>
+
 ---------------
  Parameters
 ---------------
@@ -81,7 +81,7 @@ Export text that can be translated into a file.
    Path to a file to which data will be exported. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
   
    .. code-block:: bash
 
@@ -128,7 +128,9 @@ Export text that can be translated into a file.
 
 --outputFormattingOptions
    Additional options for specified format.
-   
+
+This command supports `universal parameters <universal_parameters.rst>`_.
+
 ------------------
  Output Data Schema
 ------------------

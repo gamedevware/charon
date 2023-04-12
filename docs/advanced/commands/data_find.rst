@@ -9,8 +9,11 @@ Seaches for a document.
 
 .. code-block:: bash
 
-  # Windows
+  # local game data (windows)
   Charon.exe DATA FIND --dataBase "c:\my app\gamedata.json" --entity Character --id John
+  
+  # remote game data
+  Charon.exe DATA FIND --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Character --id John --credentials <API-Key>
   
 ---------------
  Parameters
@@ -53,7 +56,7 @@ Seaches for a document.
    Path to a found document file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
   
    .. code-block:: bash
 
@@ -101,3 +104,5 @@ Seaches for a document.
 
 --outputFormattingOptions
    Additional options for specified format.
+
+This command supports `universal parameters <universal_parameters.rst>`_.

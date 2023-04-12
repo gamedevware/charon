@@ -13,9 +13,7 @@ These templates can be used with Visual Studio, Rider, Visual Studio Code with p
   # Windows
   Charon.exe GENERATE TEMPLATES --outputDirectory "c:\templates"
   
-  # Linux or OSX
-  mono Charon.exe GENERATE TEMPLATES --outputDirectory "~/templates"
-  
+
 ---------------
  Parameters
 ---------------

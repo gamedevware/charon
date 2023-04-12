@@ -13,11 +13,8 @@ Generate Text from Templates
 .. code-block:: bash
 
   # Windows
-  Charon.exe Charon.exe GENERATE TEXT --templatePath "c:\my app\template.tt" --namespaces System System.Collection.Generic --outputPath "c:\my app\template.txt"
-  
-  # Linux or OSX
-  mono Charon.exe Charon.exe GENERATE TEXT --templatePath "~/template.tt" --namespaces System System.Collection.Generic --outputPath "~/template.txt"
-  
+  Charon.exe GENERATE TEXT --templatePath "c:\my app\template.tt" --namespaces System System.Collection.Generic --outputPath "c:\my app\template.txt"
+
 ---------------
  Parameters
 ---------------

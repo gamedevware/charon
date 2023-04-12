@@ -10,11 +10,11 @@ Create Document
 
 .. code-block:: bash
 
-  # Windows
+  # local game data (windows)
   Charon.exe DATA CREATE --dataBase "c:\my app\gamedata.json" --entity Item --input "c:\my app\item.json" --inputFormat json 
-  
-  # Linux or OSX
-  mono Charon.exe DATA CREATE --dataBase "~/gamedata.json" --entity Item --input "~/item.json" --inputFormat json 
+
+  # remote game data
+  Charon.exe DATA CREATE --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Item --input "./item.json" --inputFormat json --credentials <API-Key> 
   
 ---------------
  Parameters
@@ -43,7 +43,7 @@ Create Document
      --entity 55a4f32faca22e191098f3d9
      
 --input
-   Path to a file with document. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <universal_parameters.rst>`_.
+   Path to a file with document. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
 
    .. code-block:: bash
 
@@ -93,7 +93,7 @@ Create Document
    Path to a created document file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
   
    .. code-block:: bash
 
@@ -141,8 +141,9 @@ Create Document
      
 --outputFormattingOptions
    Additional options for specified format.
-   
-   
+ 
+This command supports `universal parameters <universal_parameters.rst>`_.
+
 ------------------
  Input Data Schema
 ------------------

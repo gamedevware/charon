@@ -9,12 +9,12 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
 
 .. code-block:: bash
 
-  # Windows
+  # local game data (windows)
   Charon.exe DATA DELETE --dataBase "c:\my app\gamedata.json" --entity Item --id "Sword"
-  
-  # Linux or OSX
-  mono Charon.exe DATA DELETE --dataBase "c:\my app\gamedata.json" --entity Item --id "Sword"
-  
+
+  # remote game data
+  Charon.exe DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Item --id "Sword" --credentials <API-Key>
+
 ---------------
  Parameters
 ---------------
@@ -56,7 +56,7 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
    Path to a deleted document file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
   
    .. code-block:: bash
 
@@ -104,3 +104,5 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
      
 --outputFormattingOptions
    Additional options for specified format.
+ 
+This command supports `universal parameters <universal_parameters.rst>`_.

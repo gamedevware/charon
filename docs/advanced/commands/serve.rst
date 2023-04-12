@@ -9,11 +9,8 @@ Starts Charon in standalone mode for specified game data. Path to game data coul
 
 .. code-block:: bash
 
-  # Windows
+  # local game data (windows)
   Charon.exe SERVE --dataBase "c:\my app\gamedata.json" --port 8080 --launchDefaultBrowser
-  
-  # Linux or OSX
-  mono Charon.exe SERVE --dataBase "~/gamedata.json" --port 8080 --launchDefaultBrowser
   
 ---------------
  Parameters
@@ -26,9 +23,6 @@ Starts Charon in standalone mode for specified game data. Path to game data coul
    
      # local file
      --dataBase "c:\my app\gamedata.json"
-     
-     # remote server
-     --dataBase "https://charon.live/view/data/My_Game/develop/"
 
 --port
    Number of an `IP port <https://en.wikipedia.org/wiki/Port_(computer_networking)>`_ (1-65535) to be used to listen for browser based UI.
@@ -42,3 +36,4 @@ Starts Charon in standalone mode for specified game data. Path to game data coul
 --resetPreferences
    Set this flag to reset UI preferences on successful start.
  
+This command supports `universal parameters <universal_parameters.rst>`_.

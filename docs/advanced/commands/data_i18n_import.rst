@@ -9,12 +9,12 @@ Import translated text from a specified file into game data.
 
 .. code-block:: bash
 
-  # Windows
+  # local game data (windows)
   Charon.exe DATA I18N IMPORT --dataBase "c:\my app\gamedata.json" --input "c:\my app\character_loc.xliff" --inputFormat xliff
   
-  # Linux or OSX
-  mono Charon.exe DATA I18N IMPORT --dataBase "~\gamedata.json" --input "~\character_loc.xliff" --inputFormat xliff
-  
+  # remote game data
+  Charon.exe DATA I18N IMPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./character_loc.xliff" --inputFormat xliff --credentials <API-Key>
+
 ---------------
  Parameters
 ---------------
@@ -60,7 +60,7 @@ Import translated text from a specified file into game data.
      --entities !*Item*
 
 --input
-   Path to a file with data to import. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <universal_parameters.rst>`_.
+   Path to a file with data to import. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
 
    .. code-block:: bash
 
@@ -107,7 +107,8 @@ Import translated text from a specified file into game data.
    
 --dryRun
    Allows you to run the command without actually making any changes to the game data, providing a preview of what would happen.
-  
+
+This command supports `universal parameters <universal_parameters.rst>`_.
 
 ------------------
  Input Data Schema

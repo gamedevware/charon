@@ -11,11 +11,11 @@ This command does not delete previously generated files, and it is the responsib
 
 .. code-block:: bash
 
-  # Windows
+  # local game data (windows)
   Charon.exe Charon.exe GENERATE CSHARPCODE --dataBase "c:\my app\gamedata.json" --namespace "MyGame.Parameters" --outputDirectory "c:\my app\scripts"
-  
-  # Linux or OSX
-  mono Charon.exe Charon.exe GENERATE CSHARPCODE --dataBase "~/gamedata.json" --namespace "MyGame.Parameters" --outputDirectory "~/my app/scripts"
+
+  # remote game data
+  Charon.exe Charon.exe GENERATE CSHARPCODE --dataBase "https://charon.live/view/data/My_Game/develop/" --namespace "MyGame.Parameters" --outputDirectory "./scripts" --credentials <API-Key>
   
 ---------------
  Parameters
@@ -131,4 +131,6 @@ This command does not delete previously generated files, and it is the responsib
      
      # Exclude code responsible to patch loading to reduce generated code size
      --optimizations disablePatching
-     
+
+This command supports `universal parameters <universal_parameters.rst>`_.
+
