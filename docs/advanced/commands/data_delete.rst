@@ -20,7 +20,7 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
 ---------------
 
 --dataBase
-   Absolute or relative oath to game data. Use quotation marks if your path contains spaces.
+   Absolute or relative path to game data. Use quotation marks if your path contains spaces.
 
    .. code-block:: bash
    
@@ -31,7 +31,7 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
 --entity
-   Name or identifier of an entity of deleting document.
+   Name or identifier of the type (entity) of deleting document.
      
    .. code-block:: bash
 

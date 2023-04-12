@@ -20,7 +20,7 @@ Apply patch created by `DATA CREATEPATCH <commands/data_create_patch.rst>`_ to a
 ---------------
 
 --dataBase
-   Absolute or relative oath to game data. Use quotation marks if your path contains spaces.
+   Absolute or relative path to game data. Use quotation marks if your path contains spaces.
 
    .. code-block:: bash
    

@@ -20,7 +20,7 @@ Export text that can be translated into a file.
 ---------------
 
 --dataBase
-   Absolute or relative oath to game data. Use quotation marks if your path contains spaces.
+   Absolute or relative path to game data. Use quotation marks if your path contains spaces.
 
    .. code-block:: bash
    
@@ -29,13 +29,19 @@ Export text that can be translated into a file.
      
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
-     
+
 --entities
-   A list of types of documents (entities) to scan for texts. By default all entities are scanned.
+   A list of types of documents (entities) to export. By default all entities *EXCEPT* metadata are exported.
+
+   - Use space to separate multiple entities.
+   - You can use wildcards (*) at the beginning and end of names.
+   - You can use identifiers in {} instead of names.
+   - You can exclude certain names by using an exclamation mark (!) at the beginning of their names.
 
    .. code-block:: bash
    
      # entity name
+     --entities Character
      --entities Character Item
      
      # all (default)
@@ -52,7 +58,7 @@ Export text that can be translated into a file.
      # negation
      --entities Char* !Character
      --entities !*Item*
-     
+
 --sourceLanguage
    Source (original) language for translation. Value is `language tag (BCP 47) <https://msdn.microsoft.com/en-US/library/system.globalization.cultureinfo.name(v=vs.110).aspx>`_. 
    

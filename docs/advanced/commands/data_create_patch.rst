@@ -42,7 +42,7 @@ Outputs the differences between two game datas as a file that can be used later 
      --dataBase2 "https://charon.live/view/data/My_Game/develop/"
      
 --output
-   Path to a file to which patch will be saved. If the file exists, it will be overwritten. The directory must already exist. 
+   Path to a patch file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
    `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <universal_parameters.rst>`_.

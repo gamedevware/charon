@@ -23,7 +23,7 @@ Restores game data from a file created by `DATA BACKUP <data_backup.rst>`_ comma
 ---------------
 
 --dataBase
-   Absolute or relative oath to game data. Use quotation marks if your path contains spaces.
+   Absolute or relative path to game data. Use quotation marks if your path contains spaces.
 
    .. code-block:: bash
    

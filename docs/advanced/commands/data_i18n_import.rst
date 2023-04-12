@@ -20,7 +20,7 @@ Import translated text from a specified file into game data.
 ---------------
 
 --dataBase
-   Absolute or relative oath to game data. Use quotation marks if your path contains spaces.
+   Absolute or relative path to game data. Use quotation marks if your path contains spaces.
 
    .. code-block:: bash
    
@@ -31,15 +31,21 @@ Import translated text from a specified file into game data.
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
 --entities
-   A list of types of documents (entities) to import from ``--input``. This parameter is required some cases (see below).
+   A list of types of documents (entities) to import. By default all entities *EXCEPT* metadata are imported.
+
+   - Use space to separate multiple entities.
+   - You can use wildcards (*) at the beginning and end of names.
+   - You can use identifiers in {} instead of names.
+   - You can exclude certain names by using an exclamation mark (!) at the beginning of their names.
 
    .. code-block:: bash
    
      # entity name
+     --entities Character
      --entities Character Item
      
      # all (default)
-     --entities *
+     --entities * 
      
      # masks
      --entities Char*

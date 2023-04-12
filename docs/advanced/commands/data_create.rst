@@ -21,7 +21,7 @@ Create Document
 ---------------
 
 --dataBase
-   Absolute or relative oath to game data. Use quotation marks if your path contains spaces.
+   Absolute or relative path to game data. Use quotation marks if your path contains spaces.
 
    .. code-block:: bash
    
@@ -32,7 +32,7 @@ Create Document
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
 --entity
-   Name or identifier of an entity of the new document.
+   Name or identifier of the type (entity) of the new document.
      
    .. code-block:: bash
 
