@@ -28,7 +28,7 @@ Export text that can be translated into a file.
      --dataBase "c:\my app\gamedata.json"
      
      # remote server
-     --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"
+     --dataBase "https://charon.live/view/data/My_Game/develop/"
      
 --entities <entityNameOrId1 entityNameOrId2 ...>
    A list of types of documents (entities) to scan for texts. By default all entities are scanned.
