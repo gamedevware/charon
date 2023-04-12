@@ -108,6 +108,7 @@ Import translated text from a specified file into game data.
 --dryRun
    Allows you to run the command without actually making any changes to the game data, providing a preview of what would happen.
   
+
 ------------------
  Input Data Schema
 ------------------
@@ -121,8 +122,7 @@ The data you input should follow this schema (recommended):
          "<EntityName>": [
            {
              // <Document>
-           },
-           // ...
+           }
          ]
        }
      }
@@ -131,24 +131,28 @@ This schema is also accepted:
 
    .. code-block:: js
      
-
      {
        "<EntityName>": [
          {
            // <Document>
-         },
-         // ...
+         }
        ]
      }
      
-And the following schema requires specifying exactly one ``--entities`` parameter:
+A list of documents is accepted if only one name in ``--entities`` is specified:
 
    .. code-block:: js
    
-     // --entities Character
-     
      [
        {
          // <Document>
-       },
+       }
      ]
+     
+And single document is accepted too if only one name in ``--entities`` is specified:
+
+   .. code-block:: js
+   
+     {
+       // <Document>
+     }
