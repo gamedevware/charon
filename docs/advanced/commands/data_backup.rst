@@ -10,10 +10,13 @@ Backs up game data to a specified file. Can be used to convert game data into di
 .. code-block:: bash
 
   # Windows
-  Charon.exe DATA BACKUP --dataBase "https://charon.live/view/data/My_Game/develop/" --output "c:\my app\backup.msgpkg" --outputFormat msgpack
+  Charon.exe DATA BACKUP --dataBase "c:\my app\gamedata.json" --output "c:\my app\backup.msgpkg" --outputFormat msgpack
   
   # Linux or OSX
-  mono Charon.exe DATA BACKUP --dataBase "https://charon.live/view/data/My_Game/develop/" --output "~/backup.msgpkg" --outputFormat msgpack
+  mono Charon.exe DATA BACKUP --dataBase "~/gamedata.json" --output "~/backup.msgpkg" --outputFormat msgpack
+  
+  # With remote game data
+  Charon.exe DATA BACKUP --dataBase "https://charon.live/view/data/My_Game/develop/" --output "./backup.msgpkg" --outputFormat msgpack --credentials 87758CC0D7C745D0948F2A8AFE61BC81
   
 ---------------
  Parameters
