@@ -78,6 +78,7 @@ Commands
 - `DATA UPDATE <commands/data_update.rst>`_
 - `DATA DELETE <commands/data_delete.rst>`_
 - `DATA FIND <commands/data_find.rst>`_
+- `DATA LIST <commands/data_list.rst>`_
 - `DATA CREATEPATCH <commands/data_create_patch.rst>`_
 - `DATA APPLYPATCH <commands/data_apply_patch.rst>`_
 - `DATA I18N EXPORT <commands/data_i18n_export.rst>`_
