@@ -24,6 +24,20 @@ Commands have the following syntax:
   # some parameters don't require a value (e.g. flag).
   Charon.exe VERSION --verbose
   
+Installation
+============
+
+The ``Charon.exe`` package can be `downloaded from Nuget <https://www.nuget.org/packages/GameDevWare.Charon>`_ and extracted as a `ZIP <https://www.7-zip.org/>`_ archive, containing the application located in the ``tools/`` directory.
+
+
+Alternatively, you can follow the guide for `standalone launch <../standalone/installation_and_updates.rst>`_. To pass commands to the ``update_and_launch.cake`` script, use the ``--`` parameter and continue with the command and it's parameters.
+
+.. code-block:: bash
+
+  dotnet cake "./update_and_launch.cake" -- DATA EXPORT --help
+                                          ^
+                            your command goes after this
+  
 OSX and Linux
 =============
 To run ``Charon.exe`` on non-Windows systems, you need to have the ``mono`` runtime installed, which can be 
