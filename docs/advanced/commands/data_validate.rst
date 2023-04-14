@@ -111,25 +111,80 @@ This command supports `universal parameters <universal_parameters.rst>`_.
  Output Data Schema
 ------------------
 
-The report follow this schema:
+The report follow this pattern:
 
    .. code-block:: js
+   
+     {
+       records: 
+       [
+         {
+           id: "<document-id>",
+           entityId: "<entity-id>",
+           entityName: "<entity-name>",
+           errors: // could be null if no errors
+           [
+             {
+               path: "<path-in-document>",
+               message: "<error-message>",
+               code: "<error-code>"
+             },
+             // ...
+           ]
+         },
+         // ...
+       ]
+     }
      
-    {
-      records: [
-        {
-          id: "<document-id>",
-          entityId: "<entity-id>",
-          entityName: "<entity-name>",
-          errors: [ // could be null if no errors
-            {
-              path: "<path-in-document>",
-              message: "<error-message>",
-              code: "<error-code>"
-            },
-            // ...
-          ]
-        },
-        // ...
-      ]
-    }
+or `JSON schema <https://json-schema.org/>`_:
+
+   .. code-block:: json
+   
+     {
+       "type": "object",
+       "x-name": "ValidationReport",
+       "additionalProperties": false,
+       "properties": {
+         "records": {
+           "type": "array",
+           "items": {
+             "type": "object",
+             "x-name": "ValidationRecord",
+             "additionalProperties": false,
+             "properties": {
+               "id": { },
+               "entityName": {
+                 "type": "string"
+               },
+               "entityId": {
+                 "type": "string"
+               },
+               "errors": {
+                 "type": "array",
+                 "items": {
+                   "type": "object",
+                   "x-name": "ValidationError",
+                   "additionalProperties": true,
+                   "readOnly": true,
+                   "properties": {
+                     "path": {
+                       "type": "string"
+                     },
+                     "message": {
+                       "type": "string"
+                     },
+                     "code": {
+                       "type": "string"
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "metadataHashCode": {
+           "type": "integer",
+           "format": "int32"
+         }
+       }
+     }
