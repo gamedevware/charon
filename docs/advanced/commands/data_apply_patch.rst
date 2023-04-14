@@ -1,7 +1,12 @@
 Apply Patch
 ===========
 
-Apply patch created by `DATA CREATEPATCH <commands/data_create_patch.rst>`_ to a game data.
+Applies patch created with `DATA CREATEPATCH <commands/data_create_patch.rst>`_ command to a game data.
+
+- `Installation <../command_line.rst#installation>`_
+- `Commands Reference <../command_line.rst>`_
+- `Universal Parameters <universal_parameters.rst>`_
+- `URL-based Input/Output <remote_input_output.rst>`_
 
 ---------------
  Command
