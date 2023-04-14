@@ -3,7 +3,8 @@ URL input/output parameters
 
 Some command accept `URL <https://en.wikipedia.org/wiki/Uniform_Resource_Identifier>`_ as input/output parameter.
 
-Table below show supported URL schemes:
+Supported URL Schemes
+---------------------
 
 +---------+----------------------------+-----------------------------------------------------+
 | Scheme  | Input parameter            | Output parameter                                    |
@@ -16,10 +17,13 @@ Table below show supported URL schemes:
 | FILE    | File will be read          | File will be written                                |
 +---------+----------------------------+-----------------------------------------------------+
 
-Any authentication data could be passed in *user* part of `URL <https://en.wikipedia.org/wiki/Uniform_Resource_Identifier>`_. 
+Authentication
+--------------
+Authentication data could be passed in *user* part of `URL <https://en.wikipedia.org/wiki/Uniform_Resource_Identifier>`_. 
 More advanced authentication schemes are not supported.
 
-Examples:
+Examples
+--------
 
 .. code-block:: bash
   
