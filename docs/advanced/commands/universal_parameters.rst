@@ -13,7 +13,7 @@ All commands accept universal parameters and environment variables.
    
      --log "./logs/charon.log"
    
---log
+--log out
    Add additional terminal (`standard output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_) logging to the existing logging configuration from ``appsettings.json``.
    
    .. code-block:: bash
