@@ -18,5 +18,5 @@ Step By Step
 See also
 ========
 
-- `Plugin Requirements <unity/requirements.rst>`_
+- `Plugin Requirements <requirements.rst>`_
 - `Creating and Editing Game Data <creating_and_editing_game_data.rst>`_
