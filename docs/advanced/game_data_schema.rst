@@ -23,11 +23,14 @@ The game data follow this pattern, but additional properties are allowed at top 
          
          "ProjectSettings":
          [
-           "Id": "049bc0604c363a980b000088", // example id
-           "Name": "New Project",
-           "PrimaryLanguage": "en-US",
-           "Languages": null,
-           "Copyright": ""
+           {
+             "Id": "049bc0604c363a980b000088", // example id
+             "Name": "New Project",
+             "PrimaryLanguage": "en-US",
+             "Languages": null,
+             "Version": "1.0.0.0",
+             "Copyright": ""
+           }
          ],
          
          "<Entity-Name>": 
@@ -58,7 +61,7 @@ or `JSON schema <https://json-schema.org/>`_:
            "type": "object",
            "x-name": "GameDataCollections",
            "additionalProperties": {
-             "type": array,
+             "type": "array",
              "items": {}
            }
          }
