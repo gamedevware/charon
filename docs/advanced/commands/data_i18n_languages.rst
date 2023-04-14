@@ -3,6 +3,11 @@ List Translation Languages
 
 Get a list of supported translation languages. Primary language always shows up first in the list.
 
+- `Installation <../command_line.rst#installation>`_
+- `Commands Reference <../command_line.rst>`_
+- `Universal Parameters <universal_parameters.rst>`_
+- `URL-based Input/Output <remote_input_output.rst>`_
+
 ---------------
  Command
 ---------------

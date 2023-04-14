@@ -4,6 +4,11 @@ Create Backup
 | Backs up game data to a specified file. Saved data could be later used with `DATA RESTORE <data_restore.rst>`_ command.
 | Also this command can be used to convert game data into different format.
 
+- `Installation <../command_line.rst#installation>`_
+- `Commands Reference <../command_line.rst>`_
+- `Universal Parameters <universal_parameters.rst>`_
+- `URL-based Input/Output <remote_input_output.rst>`_
+
 ---------------
  Command
 ---------------

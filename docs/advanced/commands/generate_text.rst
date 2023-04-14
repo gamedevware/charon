@@ -6,6 +6,9 @@ Generate Text from Templates
 | It is recommended to use an IDE or open-source alternatives for generating text with T4 templates.
 | See `GENERATE TEMPLATES <generate_templates.rst>`_ for details.
 
+- `Installation <../command_line.rst#installation>`_
+- `Commands Reference <../command_line.rst>`_
+
 ---------------
  Command
 ---------------

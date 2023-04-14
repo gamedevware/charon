@@ -5,6 +5,11 @@ Update Document
 | The update document in ``--input`` may be partial, with non-included fields being omitted.
 | Only the first document from the ``--input`` will be processed.
 
+- `Installation <../command_line.rst#installation>`_
+- `Commands Reference <../command_line.rst>`_
+- `Universal Parameters <universal_parameters.rst>`_
+- `URL-based Input/Output <remote_input_output.rst>`_
+
 ---------------
  Command
 ---------------

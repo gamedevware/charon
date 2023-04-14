@@ -3,6 +3,11 @@ Create Patch
 
 Outputs the differences between two game datas as a file that can be used later to `DATA APPLYPATCH <data_apply_patch.rst>`_ to another game data.
 
+- `Installation <../command_line.rst#installation>`_
+- `Commands Reference <../command_line.rst>`_
+- `Universal Parameters <universal_parameters.rst>`_
+- `URL-based Input/Output <remote_input_output.rst>`_
+
 ---------------
  Command
 ---------------

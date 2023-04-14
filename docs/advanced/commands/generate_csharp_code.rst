@@ -5,6 +5,11 @@ Generates C# source code for game data into output directory.
 
 This command does not delete previously generated files, and it is the responsibility of the user to ensure that any previous files are removed before running the command again.
 
+- `Installation <../command_line.rst#installation>`_
+- `Commands Reference <../command_line.rst>`_
+- `Universal Parameters <universal_parameters.rst>`_
+- `URL-based Input/Output <remote_input_output.rst>`_
+
 ---------------
  Command
 ---------------

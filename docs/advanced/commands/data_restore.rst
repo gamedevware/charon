@@ -3,6 +3,11 @@ Restore from Backup
 
 Restores game data from a file created by `DATA BACKUP <data_backup.rst>`_ command.
 
+- `Installation <../command_line.rst#installation>`_
+- `Commands Reference <../command_line.rst>`_
+- `Universal Parameters <universal_parameters.rst>`_
+- `URL-based Input/Output <remote_input_output.rst>`_
+
 ---------------
  Command
 ---------------

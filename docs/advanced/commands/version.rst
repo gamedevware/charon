@@ -3,6 +3,9 @@ Get Charon Version
 
 Gets version of ``Charon.exe`` application.
 
+- `Installation <../command_line.rst#installation>`_
+- `Commands Reference <../command_line.rst>`_
+
 ---------------
  Command
 ---------------

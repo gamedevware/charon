@@ -5,6 +5,11 @@ Checks the game data for validity and produces a report.
 
 The exit code will be ``1`` if the report contains errors and the ``--output`` is set to ``err``. Otherwise, the exit code will be ``0``.
 
+- `Installation <../command_line.rst#installation>`_
+- `Commands Reference <../command_line.rst>`_
+- `Universal Parameters <universal_parameters.rst>`_
+- `URL-based Input/Output <remote_input_output.rst>`_
+
 ---------------
  Command
 ---------------
