@@ -24,7 +24,7 @@ The game data follow this pattern, but additional properties are allowed at top 
          "ProjectSettings":
          [
            {
-             "Id": "049bc0604c363a980b000088", // example id
+             "Id": "049bc0604c363a980b000088", // expected id from starter template
              "Name": "New Project",
              "PrimaryLanguage": "en-US",
              "Languages": null,
