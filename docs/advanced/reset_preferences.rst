@@ -1,7 +1,7 @@
 If for some reason editor behaves erratically (grids aren't displayed correctly or aren't displayed at all), you can restore default UI settings.
 
 - In Unity plugin select ``Tools → Charon → Troubleshooting → Reset Preferences``.
-- For CLI and standalone launch just add ``--resetPrefs.`` parameter.
+- For CLI and standalone launch just add ``--resetPreferences.`` parameter.
 
 Example:
 

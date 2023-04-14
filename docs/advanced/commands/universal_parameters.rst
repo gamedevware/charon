@@ -13,7 +13,7 @@ All commands accept universal parameters and environment variables.
    
      --log "./logs/charon.log"
    
---log <con|out>
+--log out
    Add additional terminal (`standard output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_) logging to the existing logging configuration from ``appsettings.json``.
    
    .. code-block:: bash
@@ -32,7 +32,7 @@ In addition to the standard configuration redefinition `mechanism <https://learn
 using environment variables, the following environment variables are also supported.
 
 CHARON_API_KEY
-   The API key which is used to access the remote server. This environment variable is usually used in 
+   The `API key <../../online/cli_access_to_your_project.rst>`_ which is used to access the remote server. This environment variable is usually used in 
    conjunction with ``--dataBase``, which points to a remote server.
    
    .. code-block:: bash

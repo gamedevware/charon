@@ -1,3 +1,7 @@
+Overview
+========
+Currently, using a `cakescript <https://cakebuild.net/>`_ is the most convenient method to obtain the latest version of ``Charon.exe``.
+
 Step By Step
 =============
 
@@ -26,3 +30,9 @@ Finally, execute the Cake script:
 
     # launch update_and_launch.cake with normal log verbosity
     dotnet cake "./update_and_launch.cake" -v normal
+
+See also
+========
+
+- `Requirements <requirements.rst>`_
+- `Creating and Editing Game Data <creating_and_editing_game_data.rst>`_

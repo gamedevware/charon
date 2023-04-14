@@ -1,10 +1,27 @@
-CLI
-======
+.. contents:: Table of Contents
+   :depth: 3
+
+CLI - Command Line Interface
+============================
 
 Most of Charon functionality could be accessed via CLI commands. The application itself uses the `getops <https://en.wikipedia.org/wiki/Getopts>`_ syntax.
 You should be familiar with terminal on your OS to fully tap potential of CLI.
 
-Syntax
+Installation
+============
+
+The ``Charon.exe`` package can be `downloaded from Nuget <https://www.nuget.org/packages/GameDevWare.Charon>`_ and extracted as a `ZIP <https://www.7-zip.org/>`_ archive, containing the application located in the ``tools/`` directory.
+
+
+Alternatively, you can follow the guide for `standalone launch <../standalone/installation_and_updates.rst>`_. To pass commands to the ``update_and_launch.cake`` script, use the ``--`` parameter and continue with the command and it's parameters.
+
+.. code-block:: bash
+
+  dotnet cake "./update_and_launch.cake" -- DATA EXPORT --help
+                                          ^
+                            your command goes after this
+
+Command Syntax
 ======
 
 Commands have the following syntax:
@@ -40,8 +57,8 @@ either a global one from ``$PATH`` or a local installation.
   # for some linux installations
   /usr/bin/mono Charon.exe VERSION
 
-Help
-====
+Getting Help Text
+=================
 
 To display list of available commands add `--help` or `/?`.
 
@@ -64,8 +81,8 @@ To display list of available commands add `--help` or `/?`.
   #>               ] [--outputFormat <TEXT>] [--outputFormattingOptions [<TEXT>]] [--mode <EXPORTMODE>] [--credentials [<
   #>               TEXT>]]
   
-Commands
-========
+List of Commands
+================
 
 - `SERVE <commands/serve.rst>`_
 - `VERSION <commands/version.rst>`_
