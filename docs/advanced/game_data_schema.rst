@@ -51,8 +51,8 @@ or `JSON schema <https://json-schema.org/>`_:
      
      {
        "type": "object",
-       "additionalProperties": true,
        "x-name": "GameData",
+       "additionalProperties": true,
        "properties": {
          "ToolsVersion": {
            "type": "string"
