@@ -34,9 +34,9 @@ To export translatable text data as *XLSX*, run the `DATA EXPORT <commands/data_
 
 .. code-block:: bash
 
-  Charon.exe DATA EXPORT --dataBase "c:\my app\gamedata.json" --attributes [LocalizedText] --output "c:\my app\text_all_languages.xlsx" --outputFormat xlsx
+  Charon.exe DATA EXPORT --dataBase "c:\my app\gamedata.json" --properties [LocalizedText] --output "c:\my app\text_all_languages.xlsx" --outputFormat xlsx
   
-- Use ``--attributes [LocalizedText]`` parameter to indicate that only the attributes containing ``LocalizedText`` should be exported.
+- Use ``--properties [LocalizedText]`` parameter to indicate that only the properties containing ``LocalizedText`` should be exported.
 - Use ``--languages`` parameter to limit the number of exported languages.
 
 Extra columns may be present in the export files, which are required for the correct import of the translated data.

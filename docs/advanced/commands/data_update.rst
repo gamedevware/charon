@@ -17,10 +17,10 @@ Update Document
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA UPDATE --dataBase "c:\my app\gamedata.json" --entity Item --input "c:\my app\item.json" --inputFormat json 
+  Charon.exe DATA UPDATE --dataBase "c:\my app\gamedata.json" --schema Item --input "c:\my app\item.json" --inputFormat json 
 
   # remote game data
-  Charon.exe DATA UPDATE --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Item --input "./item.json" --inputFormat json --credentials "<API-Key>"
+  Charon.exe DATA UPDATE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --input "./item.json" --inputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -37,16 +37,16 @@ Update Document
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
---entity
-   Name or identifier of the type (entity) of updated document.
+--schema
+   Name or identifier of the type (schema) of updated document.
      
    .. code-block:: bash
 
      # name
-     --entity Item
+     --schema Item
      
      # id
-     --entity 55a4f32faca22e191098f3d9
+     --schema 55a4f32faca22e191098f3d9
      
 --id
    Identifier of updated document. Could be omitted if `Id` is specified in ``--input`` document.
@@ -171,7 +171,7 @@ The data you input should follow this schema (recommended):
      
      {
        "Collections": {
-         "<EntityName>": [
+         "<Schema-Name>": [
            {
              // <Document>
            }
@@ -184,7 +184,7 @@ This schema is also accepted:
    .. code-block:: js
      
      {
-       "<EntityName>": [
+       "<Schema-Name>": [
          {
            // <Document>
          }

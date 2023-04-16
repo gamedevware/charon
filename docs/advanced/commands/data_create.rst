@@ -16,10 +16,10 @@ Create Document
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA CREATE --dataBase "c:\my app\gamedata.json" --entity Item --input "c:\my app\item.json" --inputFormat json 
+  Charon.exe DATA CREATE --dataBase "c:\my app\gamedata.json" --schema Item --input "c:\my app\item.json" --inputFormat json 
 
   # remote game data
-  Charon.exe DATA CREATE --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Item --input "./item.json" --inputFormat json --credentials "<API-Key>" 
+  Charon.exe DATA CREATE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --input "./item.json" --inputFormat json --credentials "<API-Key>" 
   
 ---------------
  Parameters
@@ -36,16 +36,16 @@ Create Document
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
---entity
-   Name or identifier of the type (entity) of the new document.
+--schema
+   Name or identifier of the type (schema) of the new document.
      
    .. code-block:: bash
 
      # name
-     --entity Item
+     --schema Item
      
      # id
-     --entity 55a4f32faca22e191098f3d9
+     --schema 55a4f32faca22e191098f3d9
      
 --input
    Path to a file with document. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
@@ -159,7 +159,7 @@ The data you input should follow this schema (recommended):
      
      {
        "Collections": {
-         "<EntityName>": [
+         "<Schema-Name>": [
            {
              // <Document>
            }
@@ -172,7 +172,7 @@ This schema is also accepted:
    .. code-block:: js
      
      {
-       "<EntityName>": [
+       "<Schema-Name>": [
          {
            // <Document>
          }

@@ -15,10 +15,10 @@ Exports documents into a file.
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA EXPORT --dataBase "c:\my app\gamedata.json" --entities Character --output "c:\my app\characters.json" --outputFormat json
+  Charon.exe DATA EXPORT --dataBase "c:\my app\gamedata.json" --schemas Character --output "c:\my app\characters.json" --outputFormat json
   
   # remote game data
-  Charon.exe DATA EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --entities Character --output "./characters.json" --outputFormat json --credentials "<API-Key>"
+  Charon.exe DATA EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --output "./characters.json" --outputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -35,40 +35,40 @@ Exports documents into a file.
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
---entities
-   A list of types of documents (entities) to export. By default all entities *EXCEPT* metadata are exported.
+--schemas
+   A list of types of documents (schemas) to export. By default all schemas *EXCEPT* metadata are exported.
 
-   - Use space to separate multiple entities.
+   - Use space to separate multiple schemas.
    - You can use wildcards (*) at the beginning and end of names.
    - You can use identifiers in {} instead of names.
    - You can exclude certain names by using an exclamation mark (!) at the beginning of their names.
 
    .. code-block:: bash
    
-     # entity name
-     --entities Character
-     --entities Character Item
+     # schema name
+     --schemas Character
+     --schemas Character Item
      
      # all (default)
-     --entities * 
+     --schemas * 
      
      # masks
-     --entities Char*
-     --entities *Modifier
-     --entities *Mod*
+     --schemas Char*
+     --schemas *Modifier
+     --schemas *Mod*
      
-     # entity id
-     --entities {18d4bf318f3c49688087dbed}
+     # schema id
+     --schemas {18d4bf318f3c49688087dbed}
      
      # negation
-     --entities Char* !Character
-     --entities !*Item*
+     --schemas Char* !Character
+     --schemas !*Item*
      
---attributes
-   A list of attributes or attribute types to export. By default all attributes are exported.
+--properties
+   A list of properties or property types to export. By default all properties are exported.
    
-   - Id attribute always included
-   - Use space to separate multiple entities.
+   - *Id* property always included
+   - Use space to separate multiple properties.
    - You can use wildcards (*) at the beginning and end of names.
    - You can use identifiers in {} instead of names.
    - You can exclude certain names by using an exclamation mark (!) at the beginning of their names.
@@ -123,11 +123,11 @@ Exports documents into a file.
       The result of the export can be safely loaded within the game with the `generated code <generate_csharp_code.rst>`_.
    
    extraction
-      Export only selected entities without any related data. 
+      Export only selected schemas without any related data. 
       This mode may export a broken graph of documents, so it is recommended to use the ``safeupdate`` import mode.
    
    localization
-       Same as *extraction* but only ``LocalizedText`` attributes are exported.
+       Same as *extraction* but only ``LocalizedText`` properties are exported.
     
 --output
    Path to a exported data file. If the file exists, it will be overwritten. The directory must already exist. 
@@ -197,7 +197,7 @@ The expored data follow this schema:
      
      {
        "Collections": {
-         "<EntityName>": [
+         "<Schema-Name>": [
            {
              // <Document>
            },

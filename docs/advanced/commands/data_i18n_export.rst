@@ -15,10 +15,10 @@ Export text that can be translated into a file.
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA I18N EXPORT --dataBase "c:\my app\gamedata.json" --entities Character --sourceLanguage en-US --targetLanguage fr --output "c:\my app\character_loc.xliff" --outputFormat xliff
+  Charon.exe DATA I18N EXPORT --dataBase "c:\my app\gamedata.json" --schemas Character --sourceLanguage en-US --targetLanguage fr --output "c:\my app\character_loc.xliff" --outputFormat xliff
 
   # remote game data
-  Charon.exe DATA I18N EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --entities Character --sourceLanguage en-US --targetLanguage fr --output "./character_loc.xliff" --outputFormat xliff --credentials "<API-Key>"
+  Charon.exe DATA I18N EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --sourceLanguage en-US --targetLanguage fr --output "./character_loc.xliff" --outputFormat xliff --credentials "<API-Key>"
 
 ---------------
  Parameters
@@ -35,34 +35,34 @@ Export text that can be translated into a file.
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
 
---entities
-   A list of types of documents (entities) to export. By default all entities *EXCEPT* metadata are exported.
+--schemas
+   A list of types of documents (schemas) to export. By default all schemas *EXCEPT* metadata are exported.
 
-   - Use space to separate multiple entities.
+   - Use space to separate multiple schemas.
    - You can use wildcards (*) at the beginning and end of names.
    - You can use identifiers in {} instead of names.
    - You can exclude certain names by using an exclamation mark (!) at the beginning of their names.
 
    .. code-block:: bash
    
-     # entity name
-     --entities Character
-     --entities Character Item
+     # schema name
+     --schemas Character
+     --schemas Character Item
      
      # all (default)
-     --entities * 
+     --schemas * 
      
      # masks
-     --entities Char*
-     --entities *Modifier
-     --entities *Mod*
+     --schemas Char*
+     --schemas *Modifier
+     --schemas *Mod*
      
-     # entity id
-     --entities {18d4bf318f3c49688087dbed}
+     # schema id
+     --schemas {18d4bf318f3c49688087dbed}
      
      # negation
-     --entities Char* !Character
-     --entities !*Item*
+     --schemas Char* !Character
+     --schemas !*Item*
 
 --sourceLanguage
    Source (original) language for translation. Value is `language tag (BCP 47) <https://msdn.microsoft.com/en-US/library/system.globalization.cultureinfo.name(v=vs.110).aspx>`_. 
@@ -146,7 +146,7 @@ The expored data follow this schema:
      
      {
        "Collections": {
-         "<EntityName>": [
+         "<Schema-Name>": [
            {
              // <Document>
            },

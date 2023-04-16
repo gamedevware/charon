@@ -15,10 +15,10 @@ Seaches for a document.
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA FIND --dataBase "c:\my app\gamedata.json" --entity Character --id John
+  Charon.exe DATA FIND --dataBase "c:\my app\gamedata.json" --schema Character --id John
   
   # remote game data
-  Charon.exe DATA FIND --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Character --id John --credentials "<API-Key>"
+  Charon.exe DATA FIND --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Character --id John --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -35,16 +35,16 @@ Seaches for a document.
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
---entity
-   Name or identifier of the type (entity) of document.
+--schema
+   Name or identifier of the type (schema) of document.
      
    .. code-block:: bash
 
      # name
-     --entity Item
+     --schema Item
      
      # id
-     --entity 55a4f32faca22e191098f3d9
+     --schema 55a4f32faca22e191098f3d9
      
 --id
    Identifier of document. 

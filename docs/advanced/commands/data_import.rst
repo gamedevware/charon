@@ -15,10 +15,10 @@ Imports documents from file to a game data.
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA IMPORT --dataBase "c:\my app\gamedata.json" --entities Character --input "c:\my app\characters.json" --inputFormat json --mode safeUpdate
+  Charon.exe DATA IMPORT --dataBase "c:\my app\gamedata.json" --schemas Character --input "c:\my app\characters.json" --inputFormat json --mode safeUpdate
   
   # remote game data
-  Charon.exe DATA IMPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --entities Character --input "./characters.json" --inputFormat json --mode safeUpdate --credentials "<API-Key>"
+  Charon.exe DATA IMPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --input "./characters.json" --inputFormat json --mode safeUpdate --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -35,34 +35,34 @@ Imports documents from file to a game data.
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
---entities
-   A list of types of documents (entities) to import. By default all entities *EXCEPT* metadata are imported.
+--schemas
+   A list of types of documents (schemas) to import. By default all schemas *EXCEPT* metadata are imported.
        
-   - Use space to separate multiple entities.
+   - Use space to separate multiple schemas.
    - You can use wildcards (*) at the beginning and end of names.
    - You can use identifiers in {} instead of names.
    - You can exclude certain names by using an exclamation mark (!) at the beginning of their names.
 
    .. code-block:: bash
    
-     # entity name
-     --entities Character
-     --entities Character Item
+     # schema name
+     --schemas Character
+     --schemas Character Item
      
      # all (default)
-     --entities * 
+     --schemas * 
      
      # masks
-     --entities Char*
-     --entities *Modifier
-     --entities *Mod*
+     --schemas Char*
+     --schemas *Modifier
+     --schemas *Mod*
      
-     # entity id
-     --entities {18d4bf318f3c49688087dbed}
+     # schema id
+     --schemas {18d4bf318f3c49688087dbed}
      
      # negation
-     --entities Char* !Character
-     --entities !*Item*
+     --schemas Char* !Character
+     --schemas !*Item*
      
 --mode
    Import mode controls merge behavior during import.
@@ -156,7 +156,7 @@ The data you input should follow this schema (recommended):
      
      {
        "Collections": {
-         "<EntityName>": [
+         "<Schema-Name>": [
            {
              // <Document>
            }
@@ -169,14 +169,14 @@ This schema is also accepted:
    .. code-block:: js
      
      {
-       "<EntityName>": [
+       "<Schema-Name>": [
          {
            // <Document>
          }
        ]
      }
      
-A list of documents is accepted if only one name in ``--entities`` is specified:
+A list of documents is accepted if only one name in ``--schemas`` is specified:
 
    .. code-block:: js
    
@@ -186,7 +186,7 @@ A list of documents is accepted if only one name in ``--entities`` is specified:
        }
      ]
      
-And single document is accepted too if only one name in ``--entities`` is specified:
+And single document is accepted too if only one name in ``--schemas`` is specified:
 
    .. code-block:: js
    

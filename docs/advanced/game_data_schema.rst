@@ -11,13 +11,13 @@ The game data follow this pattern, but additional properties are allowed at top 
          
        "Collections": 
        {
-         "Entity":
+         "Schema":
          [
            {
              "Id": "18d4bf318f3c49688087dbed", // example id
              "Name": "<Name>"
              
-             // rest of entity
+             // rest of schema
            }
          ],
          
@@ -33,7 +33,7 @@ The game data follow this pattern, but additional properties are allowed at top 
            }
          ],
          
-         "<Entity-Name>": 
+         "<Schema-Name>": 
          [
            {
              "Id": "<Id>"

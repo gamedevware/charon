@@ -17,10 +17,10 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA DELETE --dataBase "c:\my app\gamedata.json" --entity Item --id "Sword"
+  Charon.exe DATA DELETE --dataBase "c:\my app\gamedata.json" --schema Item --id "Sword"
   
   # remote game data
-  Charon.exe DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Item --id "Sword" --credentials "<API-Key>"
+  Charon.exe DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --id "Sword" --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -125,8 +125,8 @@ The report follow this pattern:
        [
          {
            id: "<document-id>",
-           entityId: "<entity-id>",
-           entityName: "<entity-name>",
+           schemaId: "<schema-id>",
+           schemaName: "<schema-name>",
            errors: // could be null if no errors
            [
              {
@@ -158,10 +158,10 @@ or `JSON schema <https://json-schema.org/>`_:
              "additionalProperties": false,
              "properties": {
                "id": { },
-               "entityName": {
+               "schemaName": {
                  "type": "string"
                },
-               "entityId": {
+               "schemaId": {
                  "type": "string"
                },
                "errors": {

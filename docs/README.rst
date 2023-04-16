@@ -23,7 +23,7 @@ Working with Game Data
 =======================
 
 - `Basics <gamedata/basics.rst>`_
-- `Creating Document Type (Entity) <gamedata/creating_entity.rst>`_
+- `Creating Document Type (Schema) <gamedata/creating_schema.rst>`_
 - `Creating Document <gamedata/creating_document.rst>`_
 - `Publishing Game Data <gamedata/publishing.rst>`_
 - `Generating Source Code (C#) <gamedata/generating_source_code.rst>`_

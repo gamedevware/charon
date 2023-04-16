@@ -35,34 +35,34 @@ Import translated text from a specified file into game data.
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
---entities
-   A list of types of documents (entities) to import. By default all entities *EXCEPT* metadata are imported.
+--schemas
+   A list of types of documents (schemas) to import. By default all schemas *EXCEPT* metadata are imported.
 
-   - Use space to separate multiple entities.
+   - Use space to separate multiple schemas.
    - You can use wildcards (*) at the beginning and end of names.
    - You can use identifiers in {} instead of names.
    - You can exclude certain names by using an exclamation mark (!) at the beginning of their names.
 
    .. code-block:: bash
    
-     # entity name
-     --entities Character
-     --entities Character Item
+     # schema name
+     --schemas Character
+     --schemas Character Item
      
      # all (default)
-     --entities * 
+     --schemas * 
      
      # masks
-     --entities Char*
-     --entities *Modifier
-     --entities *Mod*
+     --schemas Char*
+     --schemas *Modifier
+     --schemas *Mod*
      
-     # entity id
-     --entities {18d4bf318f3c49688087dbed}
+     # schema id
+     --schemas {18d4bf318f3c49688087dbed}
      
      # negation
-     --entities Char* !Character
-     --entities !*Item*
+     --schemas Char* !Character
+     --schemas !*Item*
 
 --input
    Path to a file with data to import. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
@@ -125,7 +125,7 @@ The data you input should follow this schema (recommended):
      
      {
        "Collections": {
-         "<EntityName>": [
+         "<Schema-Name>": [
            {
              // <Document>
            }
@@ -138,14 +138,14 @@ This schema is also accepted:
    .. code-block:: js
      
      {
-       "<EntityName>": [
+       "<Schema-Name>": [
          {
            // <Document>
          }
        ]
      }
      
-A list of documents is accepted if only one name in ``--entities`` is specified:
+A list of documents is accepted if only one name in ``--schemas`` is specified:
 
    .. code-block:: js
    
@@ -155,7 +155,7 @@ A list of documents is accepted if only one name in ``--entities`` is specified:
        }
      ]
      
-And single document is accepted too if only one name in ``--entities`` is specified:
+And single document is accepted too if only one name in ``--schemas`` is specified:
 
    .. code-block:: js
    

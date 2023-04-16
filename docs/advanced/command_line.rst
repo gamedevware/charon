@@ -33,7 +33,7 @@ Commands have the following syntax:
    
   # parameters can have more than one value. 
   # Use space to separate values
-  Charon.exe EXPORT --entities Item Armor "Project Settings" Quest
+  Charon.exe EXPORT --schemas Item Armor "Project Settings" Quest
 
   # if your value contains a space, put it inside the quotation marks.
   # Escape characters and other rules depend on the OS you are running.
@@ -78,7 +78,7 @@ To display list of available commands add `--help` or `/?`.
   Charon.exe DATA EXPORT --help
   
   #> Usage:
-  #>   DATA EXPORT --dataBase <URI> [--entities [<TEXT>]] [--attributes [<TEXT>]] [--languages [<TEXT>]] [--output <TEXT>
+  #>   DATA EXPORT --dataBase <URI> [--schemas [<TEXT>]] [--properties [<TEXT>]] [--languages [<TEXT>]] [--output <TEXT>
   #>               ] [--outputFormat <TEXT>] [--outputFormattingOptions [<TEXT>]] [--mode <EXPORTMODE>] [--credentials [<
   #>               TEXT>]]
   

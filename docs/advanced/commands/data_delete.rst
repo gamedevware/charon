@@ -15,10 +15,10 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA DELETE --dataBase "c:\my app\gamedata.json" --entity Item --id "Sword"
+  Charon.exe DATA DELETE --dataBase "c:\my app\gamedata.json" --schema Item --id "Sword"
 
   # remote game data
-  Charon.exe DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --entity Item --id "Sword" --credentials "<API-Key>"
+  Charon.exe DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --id "Sword" --credentials "<API-Key>"
 
 ---------------
  Parameters
@@ -35,16 +35,16 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
      
---entity
-   Name or identifier of the type (entity) of deleting document.
+--schema
+   Name or identifier of the type (schema) of deleting document.
      
    .. code-block:: bash
 
      # name
-     --entity Item
+     --schema Item
      
      # id
-     --entity 55a4f32faca22e191098f3d9
+     --schema 55a4f32faca22e191098f3d9
      
 --id
    Identifier of deleting document. 
