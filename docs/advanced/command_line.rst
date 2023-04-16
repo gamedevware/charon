@@ -16,7 +16,8 @@ The ``Charon.exe`` package can be `downloaded from Nuget <https://www.nuget.org/
 Alternatively, you can follow the guide for `standalone launch <../standalone/installation_and_updates.rst>`_. To pass commands to the ``update_and_launch.cake`` script, use the ``--`` parameter and continue with the command and it's parameters.
 
 .. code-block:: bash
-
+  
+  dotnet tool restore
   dotnet cake "./update_and_launch.cake" -- DATA EXPORT --help
                                           ^
                             your command goes after this
