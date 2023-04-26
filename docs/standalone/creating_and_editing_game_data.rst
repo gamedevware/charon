@@ -20,7 +20,7 @@ See also
 - `Basic Navigation and User Interface Overview <../gamedata/basics.rst>`_
 - `Creating Document Type (Schema) <../gamedata/creating_schema.rst>`_
 - `Creating Document <../gamedata/creating_document.rst>`_
-- `Publishing Game Data <../gamedata/publishing.rst>`_
+- `Publication of Game Data <../gamedata/publication.rst>`_
 - `Generating Source Code (C#) <../gamedata/generating_source_code.rst>`_
 - `Working with Source Code (C#) <../gamedata/working_with_source_code.rst>`_
 - `Frequently Asked Questions (FAQ) <../gamedata/faq.rst>`_
