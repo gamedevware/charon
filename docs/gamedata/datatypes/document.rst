@@ -15,6 +15,7 @@ Example
 For example, in a **Dialog**, each node can be a ``Document`` with dialog `text  <localized_text.rst>`_, response options, and `actions  <formula.rst>`_ that occur after a response is chosen. Each response option can be a sub-document that is another **Dialog** node.
 
 .. code-block:: js
+
   {
       "Text": "Welcome to the game. What's your name?",
       "Options": [
