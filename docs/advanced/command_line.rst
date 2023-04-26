@@ -10,8 +10,22 @@ You should be familiar with terminal on your OS to fully tap potential of CLI.
 Installation
 ============
 
+Manual Download
+_______________
+
 The ``Charon.exe`` package can be `downloaded from Nuget <https://www.nuget.org/packages/GameDevWare.Charon>`_ and extracted as a `ZIP <https://www.7-zip.org/>`_ archive, containing the application located in the ``tools/`` directory.
 
+Nuget Client
+____________
+
+Or use `Nuget client <https://learn.microsoft.com/en-us/nuget/install-nuget-client-tools>`_ to download and unpack package:
+
+.. code-block:: bash
+
+  nuget install GameDevWare.Charon -ExcludeVersion -PackageSaveMode nupkg -PreRelease -OutputDirectory ./
+
+Cake Script (dotnet tool)
+_________________________
 
 Alternatively, you can follow the guide for `standalone launch <../standalone/installation_and_updates.rst>`_. To pass commands to the ``update_and_launch.cake`` script, use the ``--`` parameter and continue with the command and it's parameters.
 
