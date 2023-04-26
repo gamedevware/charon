@@ -1,0 +1,17 @@
+Overview
+==========
+
+The ``Date`` data type is used to store dates in ISO 8601 format, which includes the year, month, day, and time with UTC time zone. The format of the date is ``yyyy-MM-ddTHH:mm:ss.fffZ``. This data type is particularly useful for storing information about events that occur on specific dates or for tracking the age of entities. Since dates are stored with UTC time zone, the data can be consistently interpreted across different time zones.
+
+
+C# Type
+   ``System.DateTime``
+Uniqueness
+   May NOT be checked for uniqueness.
+
+Example
+=======
+.. code-block:: js
+
+  "2017-12-27T00:00:00.000Z"
+  "1970-01-01T00:00:00.000Z" // it is better not to store dates before this mark for compatibility reasons
