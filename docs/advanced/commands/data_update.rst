@@ -36,7 +36,10 @@ Update Document
      
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
-     
+
+--credentials
+   The API key used to access remote server in case of `--dataBase` being URL.
+
 --schema
    Name or identifier of the type (schema) of updated document.
      

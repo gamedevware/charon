@@ -35,7 +35,10 @@ Create Backup
      
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
-     
+
+--credentials
+   The API key used to access remote server in case of `--dataBase` being URL.
+
 --output
    Path to a backup file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 

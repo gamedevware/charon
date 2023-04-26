@@ -34,7 +34,10 @@ Get a list of supported translation languages. Primary language always shows up 
      
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
-     
+
+--credentials
+   The API key used to access remote server in case of `--dataBase` being URL.
+
 --output
    Path to language list file. If the file exists, it will be overwritten. The directory must already exist. Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_,  `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
 

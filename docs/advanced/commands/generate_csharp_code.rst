@@ -36,7 +36,10 @@ This command does not delete previously generated files, and it is the responsib
      
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
-     
+
+--credentials
+   The API key used to access remote server in case of `--dataBase` being URL.
+
 --outputDirectory
    Specifies the path where the source code should be written. It can be either an absolute or relative path to a directory. The specified directory must already be present.
 

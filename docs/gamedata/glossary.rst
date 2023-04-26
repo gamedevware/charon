@@ -34,5 +34,8 @@ Project
 Branch
    In the web application, a branch is a specific variant of game data within a project. It can be used to manage different versions or stages of the game data.
 
+API Key
+   A unique identifier generated for a user in the User's Profile "API Keys" section, which can be used to access the REST API and CLI for various operations. It allows for automation of game build processes, such as pushing game data to local GIT repositories.
+
 Publication
    The process of exporting game data in a format that can be loaded into the game.

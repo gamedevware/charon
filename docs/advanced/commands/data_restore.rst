@@ -34,7 +34,10 @@ Restores game data from a file created by `DATA BACKUP <data_backup.rst>`_ comma
      
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
-     
+
+--credentials
+   The API key used to access remote server in case of `--dataBase` being URL.
+
 --input
    Path to a backup file. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
 

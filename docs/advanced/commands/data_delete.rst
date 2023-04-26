@@ -34,7 +34,10 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
      
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
-     
+
+--credentials
+   The API key used to access remote server in case of `--dataBase` being URL.
+
 --schema
    Name or identifier of the type (schema) of deleting document.
      

@@ -34,7 +34,10 @@ Import translated text from a specified file into game data.
      
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
-     
+
+--credentials
+   The API key used to access remote server in case of `--dataBase` being URL.
+
 --schemas
    A list of types of documents (schemas) to import. By default all schemas *EXCEPT* metadata are imported.
 
