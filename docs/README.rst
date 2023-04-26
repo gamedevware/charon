@@ -36,7 +36,6 @@ Working with Game Data
 - `Working with Source Code (C#) <gamedata/working_with_source_code.rst>`_
 - `Frequently Asked Questions (FAQ) <gamedata/faq.rst>`_
 - `Glossary <gamedata/glossary.rst>`_
-- `Examples <gamedata/example.rst>`_
 
 Advanced Features
 ==================
