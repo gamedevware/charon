@@ -24,7 +24,7 @@ To perform the publication process from the CLI, please follow the steps below:
 
 1. Open the command-line interface.
 2. Navigate to the game data's directory.
-3. Use the ``DATA EXPORT command to publish the game data.
+3. Use the ``DATA EXPORT`` command to publish the game data.
 
 Example
 --------
