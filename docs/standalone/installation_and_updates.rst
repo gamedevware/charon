@@ -1,6 +1,7 @@
 Overview
 ========
 Currently, using a `cakescript <https://cakebuild.net/>`_ is the most convenient method to obtain the latest version of ``Charon.exe``.
+Alternatively `Nuget Package <https://www.nuget.org/packages/GameDevWare.Charon>`_ could be used. Read `CLI <../advanced/command_line.rst>`_ overview for details.
 
 Step By Step
 =============
