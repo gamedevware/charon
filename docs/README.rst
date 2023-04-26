@@ -1,6 +1,11 @@
+Overview
+==================
+Charon is a powerful game development tool that streamlines the game development process. It provides a structured approach to designing and modeling game data, with automatic source code generation that reduces the load on programmers and eliminates human errors. Charon also offers support for working with text in multiple languages, with easy loading and unloading of translated text. With Charon, game developers can focus on creating engaging gameplay experiences without worrying about the technical details of managing game data. It is available in three deployment variants, including a `standalone  <standalone/overview.rst>`_ application, `web<online/overview.rst>`_ application, and `Unity <unity/overview.rst>`_ plugin.
+
 Unity Quick Start
 ==================
 
+- `Overview <unity/overview.rst>`_
 - `Requirements <unity/requirements.rst>`_
 - `Plugin Installation <unity/plugin_installation.rst>`_
 - `Creating and Editing Game Data <unity/creating_and_editing_game_data.rst>`_
@@ -8,26 +13,31 @@ Unity Quick Start
 Standalone Quick Start
 =======================
 
+- `Overview <standalone/overview.rst>`_
 - `Requirements <standalone/requirements.rst>`_
 - `Installation and Updates <standalone/installation_and_updates.rst>`_
 - `Creating and Editing Game Data <standalone/creating_and_editing_game_data.rst>`_
 
-Online Quick Start
+Web Quick Start
 ===================
 
-- `Basics <online/basics.rst>`_
-- `Creation and Project Setup <online/creation_and_project_setup.rst>`_
-- `CLI Access to Your Project <online/cli_access_to_your_project.rst>`_
+- `Overview <web/overview.rst>`_
+- `Basics <web/basics.rst>`_
+- `Creation and Project Setup <web/creation_and_project_setup.rst>`_
+- `CLI Access to Your Project <web/cli_access_to_your_project.rst>`_
 
 Working with Game Data
 =======================
 
-- `Basics <gamedata/basics.rst>`_
+- `Basic Navigation and User Interface Overview <gamedata/basics.rst>`_
 - `Creating Document Type (Schema) <gamedata/creating_schema.rst>`_
 - `Creating Document <gamedata/creating_document.rst>`_
 - `Publishing Game Data <gamedata/publishing.rst>`_
 - `Generating Source Code (C#) <gamedata/generating_source_code.rst>`_
 - `Working with Source Code (C#) <gamedata/working_with_source_code.rst>`_
+- `Frequently Asked Questions (FAQ) <gamedata/faq.rst>`_
+- `Glossary <gamedata/glossary.rst>`_
+- `Examples <gamedata/example.rst>`_
 
 Advanced Features
 ==================
