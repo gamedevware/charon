@@ -1,9 +1,9 @@
 Overview
 ========
 
-Charon provides a REST API and CLI for accessing and modifying game data. To access the API, you need to generate an API Key in the *API Keys* section of your *User Profile*.
+Charon provides a ``REST API`` and ``CLI`` for accessing and modifying game data. To access the API, users need to generate an API Key in the *API Keys* section of their *User Profile*.
 
-With the API Key, you can easily integrate Charon into your existing game development workflow. For example, the API Key can be used to export game data from the web into a local GIT repository.
+With the API Key, Charon can easily be integrated into existing game development workflows. For example, the API Key can be used to export game data from the web into a local GIT repository
 
 Step By Step
 =============

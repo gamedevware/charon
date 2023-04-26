@@ -23,7 +23,7 @@ Web Quick Start
 
 - `Overview <web/overview.rst>`_
 - `Basics <web/basics.rst>`_
-- `CLI Access to Your Project <web/cli_access_to_your_project.rst>`_
+- `CLI Access to Web Project <web/cli_access_to_project.rst>`_
 
 Working with Game Data
 =======================

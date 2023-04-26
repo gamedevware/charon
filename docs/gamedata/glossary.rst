@@ -1,8 +1,8 @@
 Game Data
-   Your static information for your game, like items, quests, dialogues, etc. Also includes 'schemas' for organizing and structuring your game data.
+   The static information for the game, such as items, quests, dialogues, etc., is stored as game data. Schemas are also included to organize and structure game data.
 
 Schema
-   A description of the structure for your documents in game data. It defines the properties and structure of each document in the game data.
+   A schema is a description of the structure for documents in game data. It defines the properties and structure of each document in the game data.
 
 Schema Property
    A part of a schema that defines a specific property or attribute of a document in the game data.
@@ -26,7 +26,7 @@ Metadata
    All the schemas and relations between them. This data is used by Charon to generate the source code for the game data.
 
 Workspace
-   In the web application, the workspace is the place where you can manage your projects and branches.
+   In the web application, the workspace is the place where users can manage their projects and subscription.
 
 Project
    In the web application, a project is a container for organizing related game data. It can contain multiple branches.

@@ -7,6 +7,5 @@ See also
 ========
 
 - `Basics <basics.rst>`_
-- `Creation and Project Setup <creation_and_project_setup.rst>`_
-- `CLI Access to Your Project <cli_access_to_your_project.rst>`_
+- `CLI Access to Web Project <cli_access_to_your_project.rst>`_
 - `Web-based Application <https://charon.live>`_
