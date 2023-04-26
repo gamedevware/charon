@@ -17,8 +17,8 @@ Example
 One example use case for ``DocumentCollection`` is storing a list of items in a game, such as a chest and its contents. Each item in the chest could be represented by a sub-document containing information such as `reference <reference.rst>`_ to an item and its `quantity <integer.rst>`_.
 
 .. code-block:: js
+
   {
-      "Id": 1,
       "Name": "Silver Chest",
       "Loot": [
           {
