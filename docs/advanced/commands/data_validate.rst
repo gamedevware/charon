@@ -38,7 +38,7 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
      --dataBase "https://charon.live/view/data/My_Game/develop/"
 
 --credentials
-   The API key used to access remote server in case of `--dataBase` being URL.
+   The API key used to access remote server in case of *--dataBase* being URL.
 
 --validationOptions
    List of validation checks and repairs to perform.

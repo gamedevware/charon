@@ -36,7 +36,7 @@ Applies patch created with `DATA CREATEPATCH <commands/data_create_patch.rst>`_ 
      --dataBase "https://charon.live/view/data/My_Game/develop/"
 
 --credentials
-   The API key used to access remote server in case of `--dataBase` being URL.
+   The API key used to access remote server in case of *--dataBase* being URL.
 
 --input
    Path to a file with patch to apply. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
