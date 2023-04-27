@@ -9,12 +9,12 @@ C# Type
    ``System.TimeSpan``
 Uniqueness
    May NOT be checked for uniqueness.
-
+Format
+   ``[DD.]HH:mm:ss`` or `<seconds>`
+   
 Example
 =======
 .. code-block:: js
-
-  // format: [DD.]HH:mm:ss
 
   "02:30:00" // 2 hours and 30 minutes
   "1.00:00:00" // 1 day

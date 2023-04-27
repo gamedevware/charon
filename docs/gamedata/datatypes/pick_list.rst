@@ -12,7 +12,7 @@ C# Type
 Uniqueness
    May be checked for uniqueness.
 Size
-   May be set between 1-8 bytes. Maximum size is 8.
+   32 or 64bit
 
 Example
 =======
