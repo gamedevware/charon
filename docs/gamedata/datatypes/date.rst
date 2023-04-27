@@ -16,4 +16,6 @@ Example
 .. code-block:: js
 
   "2017-12-27T00:00:00.000Z"
-  "1970-01-01T00:00:00.000Z" // it is better not to store dates before this mark for compatibility reasons
+  
+   // it is better not to store dates before this mark for compatibility reasons
+  "1970-01-01T00:00:00.000Z"
