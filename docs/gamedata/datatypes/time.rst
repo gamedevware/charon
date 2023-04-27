@@ -10,7 +10,7 @@ C# Type
 Uniqueness
    May NOT be checked for uniqueness.
 Format
-   ``[DD.]HH:mm:ss`` or `<seconds>`
+   ``[DD.]HH:mm:ss`` or ``<number-of-seconds>``
    
 Example
 =======
