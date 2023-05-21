@@ -6,7 +6,7 @@ Accessing game data during runtime is possible by utilizing the generated source
 This section provides examples using default class names, but it is possible to customize class names during the source code generation process. Additionally, this customization allows to avoid naming collisions with existing code.
 
 Loading Game Data
-=================
+-----------------
 
 The following C# code creates ``GameData`` class and loads your game data into memory.
 
@@ -19,7 +19,7 @@ The following C# code creates ``GameData`` class and loads your game data into m
 The file ``gamedata.json`` could be `published <publication>` game data or original database file.  
   
 Accessing Documents
-===================
+-------------------
 
 You can access your documents as a list:
 
@@ -42,7 +42,8 @@ Or you can access specific documents by their ``Id`` or ``Unique`` properties:
   var resetTime = gameData.LootSettings.ResetTime; // -> TimeSpan
   
 Formulas
-========
+--------
+
 Formulas are executed with Invoke method:
 
 .. code-block:: csharp
@@ -52,7 +53,8 @@ Formulas are executed with Invoke method:
 Formula's parameters are passed as arguments of ``Invoke`` method.
 
 Generated Code Extensions
-=========================
+-------------------------
+
 When generating source code for game data, the resulting C# classes are declared as `partial <https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/partial-classes-and-methods>`_. This means that the classes can be extended by the programmer to add custom functionality.
 
 For example, let's say that you have generated a ``GameData`` class for your game data. This class contains properties and methods for accessing and manipulating the data. However, you want to add some custom functionality to this class, such as a method for getting specific documents by criteria.

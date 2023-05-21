@@ -1,5 +1,5 @@
 Resetting UI Preferences
-=====================
+========================
 
 If for some reason editor behaves erratically (grids aren't displayed correctly or aren't displayed at all), you can restore default UI settings.
 
