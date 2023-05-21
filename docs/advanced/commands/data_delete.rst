@@ -61,7 +61,7 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
      --id 101
 
 --output
-   Path to a deleted document file. If the file exists, it will be overwritten. The directory must already exist. 
+   The path to a file where the *deleted document* should be placed. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
    `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
@@ -94,7 +94,7 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
      --output "ftp://user:password@example.com/deleted_item.json"
      
 --outputFormat
-   Format of deleted data.
+   Format for deleted document.
    
    .. code-block:: bash
     
