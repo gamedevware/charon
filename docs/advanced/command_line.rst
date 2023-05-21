@@ -1,4 +1,4 @@
-CLI - Command Line Interface
+Command Line Interface (CLI)
 ============================
 
 Most of Charon functionality could be accessed via CLI commands. The application itself uses the `getops <https://en.wikipedia.org/wiki/Getopts>`_ syntax.

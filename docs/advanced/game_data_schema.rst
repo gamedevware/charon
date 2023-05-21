@@ -1,6 +1,5 @@
-------------------
- Game Data Schema
-------------------
+Game Data Schema
+================
 
 The game data follow this pattern, but additional properties are allowed at top level ``/``:
 

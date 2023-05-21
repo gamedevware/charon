@@ -1,3 +1,6 @@
+Glossary
+========
+
 Game Data
    The static information for the game, such as items, quests, dialogues, etc., is stored as game data. Schemas are also included to organize and structure game data.
 

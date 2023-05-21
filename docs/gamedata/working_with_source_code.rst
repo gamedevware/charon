@@ -1,5 +1,5 @@
-Overview
-========
+Working with Source Code (C#)
+=============================
 
 Accessing game data during runtime is possible by utilizing the generated source code.
 

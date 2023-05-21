@@ -1,5 +1,5 @@
-Overview
-========
+Generating Source Code (C#)
+===========================
 
 The process of generating source code allows game data to be used inside a game. This process involves specifying the language (e.g. C#) and various generation parameters/optimizations. It can be done from both the project's dashboard user interface and the command-line interface (CLI).
 

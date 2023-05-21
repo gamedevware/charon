@@ -1,5 +1,5 @@
-Overview
-========
+Publication Game Data
+=====================
 
 The publication process is a crucial step in preparing game data for usage inside the game. This process involves removing unused data, unused localization, and exporting data in a supported format - ``JSON`` or ``MessagePack``. This documentation will provide an overview of how to perform the publication process from both the project's dashboard user interface and the command-line interface (CLI).
 

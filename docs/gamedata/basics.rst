@@ -1,4 +1,4 @@
-Overview
+Basic Navigation and User Interface Overview
 ========
 
 The UI consists of a left-side menu displaying all schemas of the game data, a middle working area with a dashboard/document list or document form, and a headline on the top with the project name and settings button. Depending on the installation, the UI may also include a user menu.

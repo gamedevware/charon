@@ -1,74 +1,38 @@
-.. toctree::
-   :titlesonly:
-   :caption: Unity Quick Start
-
-   /unity/overview
-   /unity/requirements
-   /unity/plugin_installation
-   /unity/creating_and_editing_game_data
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Standalone Quick Start
-
-   /standalone/overview
-   /standalone/requirements
-   /standalone/installation_and_updates
-   /standalone/creating_and_editing_game_data
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Web Quick Start
-
-   /web/overview
-   /web/basics
-   /web/cli_access_to_web_project
-
 Overview
 ==================
 Charon is a powerful game development tool that streamlines the game development process. It provides a structured approach to designing and modeling game data, with automatic source code generation that reduces the load on programmers and eliminates human errors. Charon also offers support for working with text in multiple languages, with easy loading and unloading of translated text. With Charon, game developers can focus on creating engaging gameplay experiences without worrying about the technical details of managing game data. It is available in three deployment variants, including a :doc:`standalone  <standalone/overview>` application, :doc:`web <web/overview>` application, and :doc:`Unity <unity/overview>` plugin.
 
-Unity Quick Start
-==================
+.. toctree::
+   :caption: Unity Quick Start
+   :titlesonly:
+   :glob:
 
-- :doc:`Overview <unity/overview>`
-- :doc:`Requirements <unity/requirements>`
-- :doc:`Plugin Installation <unity/plugin_installation>`
-- :doc:`Creating and Editing Game Data <unity/creating_and_editing_game_data>`
+   /unity/*
 
-Standalone Quick Start
-=======================
+.. toctree::
+   :caption: Standalone Quick Start
+   :titlesonly:
+   :glob:
 
-- :doc:`Overview <standalone/overview>`
-- :doc:`Requirements <standalone/requirements>`
-- :doc:`Installation and Updates <standalone/installation_and_updates>`
-- :doc:`Creating and Editing Game Data <standalone/creating_and_editing_game_data>`
+   /standalone/*
 
-Web Quick Start
-===================
+.. toctree::
+   :caption: Web Quick Start
+   :titlesonly:
+   :glob:
 
-- :doc:`Overview <web/overview>`
-- :doc:`Basics <web/basics>`
-- :doc:`CLI Access to Web Project <web/cli_access_to_web_project>`
+   /web/*
 
-Working with Game Data
-=======================
+.. toctree::
+   :caption: Working with Game Data
+   :titlesonly:
+   :glob:
 
-- :doc:`Basic Navigation and User Interface Overview <gamedata/basics>`
-- :doc:`Creating Document Type (Schema) <gamedata/creating_schema>`
-- :doc:`Creating Document <gamedata/creating_document>`
-- :doc:`Publication Game Data <gamedata/publication>`
-- :doc:`Generating Source Code (C#) <gamedata/generating_source_code>`
-- :doc:`Working with Source Code (C#) <gamedata/working_with_source_code>`
-- :doc:`Frequently Asked Questions (FAQ) <gamedata/faq>`
-- :doc:`Glossary <gamedata/glossary>`
+   /gamedata/*
 
-Advanced Features
-==================
+.. toctree::
+   :caption: Advanced Features
+   :titlesonly:
+   :glob:
 
-- :doc:`Command Line Interface (CLI) <advanced/command_line>`
-- :doc:`Internationalization (i18n) <advanced/internationalization>`
-- Troubleshooting
-    - :doc:`Working with Logs <advanced/logs>`
-    - :doc:`Resetting UI Preferences <advanced/reset_preferences>`
-- :doc:`Game Data Schema <advanced/game_data_schema>`
+   /advanced/*
