@@ -82,7 +82,6 @@ To display list of available commands add `--help` or `/?`.
   #> Usage: Charon.exe <action> [--<param> || (--<param> <paramValue> ...) ...]
   #>
   #> Verbs:
-  #>  SERVE       Start a HTTP Server at specified 'port'.
   #>  DATA        Data manipulation actions.
   #>  GENERATE    Code generation actions.
   #>  VERSION     Print version.

@@ -36,3 +36,10 @@ Charon is a powerful game development tool that streamlines the game development
    :glob:
 
    /advanced/*
+
+.. toctree::
+   :caption: Reference
+   :titlesonly:
+
+   /faq
+   /glossary

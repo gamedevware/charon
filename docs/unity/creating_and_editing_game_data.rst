@@ -17,9 +17,9 @@ See also
 - :doc:`Plugin Installation <plugin_installation>`
 - :doc:`Basic Navigation and User Interface Overview <../gamedata/basics>`
 - :doc:`Creating Document Type (Schema) <../gamedata/creating_schema>`
-- :doc:`Creating Document <../gamedata/creating_document>`
+- :doc:`Filling Documents <../gamedata/filling_documents>`
 - :doc:`Publication of Game Data <../gamedata/publication>`
 - :doc:`Generating Source Code (C#) <../gamedata/generating_source_code>`
 - :doc:`Working with Source Code (C#) <../gamedata/working_with_source_code>`
-- :doc:`Frequently Asked Questions (FAQ) <../gamedata/faq>`
-- :doc:`Glossary <../gamedata/glossary>`
+- :doc:`Frequently Asked Questions (FAQ) <../faq>`
+- :doc:`Glossary <../glossary>`
