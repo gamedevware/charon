@@ -5,10 +5,10 @@ Charon is a powerful game development tool that streamlines the game development
 Unity Quick Start
 ==================
 
-- :doc:`Overview <unity/overview>`_
-- :doc:`Requirements <unity/requirements>`_
-- :doc:`Plugin Installation <unity/plugin_installation>`_
-- :doc:`Creating and Editing Game Data <unity/creating_and_editing_game_data>`_
+- :doc:`Overview <unity/overview>`
+- :doc:`Requirements <unity/requirements>`
+- :doc:`Plugin Installation <unity/plugin_installation>`
+- :doc:`Creating and Editing Game Data <unity/creating_and_editing_game_data>`
 
 Standalone Quick Start
 =======================
