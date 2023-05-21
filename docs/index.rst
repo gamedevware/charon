@@ -1,22 +1,22 @@
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :hidden:
    :caption: Unity Quick Start
 
-   Overview <unity/overview>
-   Requirements <unity/requirements>
-   Plugin Installation <unity/plugin_installation>
-   Creating and Editing Game Data <unity/creating_and_editing_game_data>
+   Overview </unity/overview>
+   Requirements </unity/requirements>
+   Plugin Installation </unity/plugin_installation>
+   Creating and Editing Game Data </unity/creating_and_editing_game_data>
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :hidden:
    :caption: Standalone Quick Start
 
-   Overview <standalone/overview>
-   Requirements <standalone/requirements>
-   Installation and Updates <standalone/installation_and_updates>
-   Creating and Editing Game Data <standalone/creating_and_editing_game_data>
+   Overview </standalone/overview>
+   Requirements </standalone/requirements>
+   Installation and Updates </standalone/installation_and_updates>
+   Creating and Editing Game Data </standalone/creating_and_editing_game_data>
 
 Overview
 ==================
