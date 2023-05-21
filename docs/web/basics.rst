@@ -27,4 +27,3 @@ See also
 - :doc:`Working with Source Code (C#) <../gamedata/working_with_source_code>`
 - :doc:`Frequently Asked Questions (FAQ) <../gamedata/faq>`
 - :doc:`Glossary <../gamedata/glossary>`
-- :doc:`Examples <../gamedata/example>`

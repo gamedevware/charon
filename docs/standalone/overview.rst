@@ -6,8 +6,8 @@ The standalone version of the game development `tool <https://www.nuget.org/pack
 See also
 ========
 
-- :doc:`Requirements <standalone/requirements>`
-- :doc:`Installation and Updates <standalone/installation_and_updates>`
-- :doc:`Creating and Editing Game Data <standalone/creating_and_editing_game_data>`
+- :doc:`Requirements <requirements>`
+- :doc:`Installation and Updates <installation_and_updates>`
+- :doc:`Creating and Editing Game Data <creating_and_editing_game_data>`
 - `Nuget Package <https://www.nuget.org/packages/GameDevWare.Charon>`_
 - `Bootstrap Scripts <../../scripts/>`_

@@ -3,7 +3,7 @@ Apply Patch
 
 Applies patch created with :doc:`DATA CREATEPATCH <commands/data_create_patch>` command to a game data.
 
-- :doc:`Installation <../command_line#installation>`
+- :doc:`Installation <../command_line:installation>`
 - :doc:`Commands Reference <../command_line>`
 - :doc:`Universal Parameters <universal_parameters>`
 - :doc:`URL-based Input/Output <remote_input_output>`

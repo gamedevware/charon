@@ -5,7 +5,7 @@ Update Document
 | The update document in ``--input`` may be partial, with non-included fields being omitted.
 | Only the first document from the ``--input`` will be processed.
 
-- :doc:`Installation <../command_line#installation>`
+- :doc:`Installation <../command_line:installation>`
 - :doc:`Commands Reference <../command_line>`
 - :doc:`Universal Parameters <universal_parameters>`
 - :doc:`URL-based Input/Output <remote_input_output>`

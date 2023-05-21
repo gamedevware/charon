@@ -1,6 +1,3 @@
-.. contents:: Table of Contents
-   :depth: 3
-
 CLI - Command Line Interface
 ============================
 
@@ -99,7 +96,7 @@ To display list of available commands add `--help` or `/?`.
 List of Commands
 ================
 
-- :doc:`SERVE <commands/serve>`
+- :doc:`SERVER START <commands/serve>`
 - :doc:`VERSION <commands/version>`
 - :doc:`DATA EXPORT <commands/data_export>`
 - :doc:`DATA IMPORT <commands/data_import>`

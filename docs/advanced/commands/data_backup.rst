@@ -4,7 +4,7 @@ Create Backup
 | Backs up game data to a specified file. Saved data could be later used with :doc:`DATA RESTORE <data_restore>` command.
 | Also this command can be used to convert game data into different format.
 
-- :doc:`Installation <../command_line#installation>`
+- :doc:`Installation <../command_line:installation>`
 - :doc:`Commands Reference <../command_line>`
 - :doc:`Universal Parameters <universal_parameters>`
 - :doc:`URL-based Input/Output <remote_input_output>`

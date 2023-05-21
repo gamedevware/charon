@@ -3,7 +3,7 @@ Start in Standalone Mode
 
 Starts Charon in standalone mode for specified game data. Path to game data could be local file system's file or remote server address.
 
-- :doc:`Installation <../command_line#installation>`
+- :doc:`Installation <../command_line:installation>`
 - :doc:`Commands Reference <../command_line>`
 - :doc:`Universal Parameters <universal_parameters>`
 - :doc:`URL-based Input/Output <remote_input_output>`

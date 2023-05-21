@@ -3,7 +3,7 @@ List Translation Languages
 
 Get a list of supported translation languages. Primary language always shows up first in the list.
 
-- :doc:`Installation <../command_line#installation>`
+- :doc:`Installation <../command_line:installation>`
 - :doc:`Commands Reference <../command_line>`
 - :doc:`Universal Parameters <universal_parameters>`
 - :doc:`URL-based Input/Output <remote_input_output>`

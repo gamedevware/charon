@@ -5,7 +5,7 @@ Generates C# source code for game data into output directory.
 
 This command does not delete previously generated files, and it is the responsibility of the user to ensure that any previous files are removed before running the command again.
 
-- :doc:`Installation <../command_line#installation>`
+- :doc:`Installation <../command_line:installation>`
 - :doc:`Commands Reference <../command_line>`
 - :doc:`Universal Parameters <universal_parameters>`
 - :doc:`URL-based Input/Output <remote_input_output>`

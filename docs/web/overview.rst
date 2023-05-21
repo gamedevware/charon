@@ -7,5 +7,5 @@ See also
 ========
 
 - :doc:`Basics <basics>`
-- :doc:`CLI Access to Web Project <cli_access_to_your_project>`
+- :doc:`CLI Access to Web Project <cli_access_to_web_project>`
 - `Web-based Application <https://charon.live>`_
