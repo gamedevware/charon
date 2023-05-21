@@ -1,10 +1,11 @@
-Overview
-========
+Installation and Updates
+========================
+
 Currently, using a `cakescript <https://cakebuild.net/>`_ is the most convenient method to obtain the latest version of ``Charon.exe``.
 Alternatively `Nuget Package <https://www.nuget.org/packages/GameDevWare.Charon>`_ could be used. Read :doc:`CLI <../advanced/command_line>` overview for details.
 
 Step By Step
-=============
+------------
 
 1. Download scripts from `/scripts <../../scripts/>`_ into a local folder ``/charon``.
 2. Navigate to local folder ``cd /charon``.
@@ -12,7 +13,7 @@ Step By Step
 4. Wait for the script to automatically download and upgrade ``Charon.exe``, and launch it for you.
 
 .NET Tool
-===========
+---------
 Alternatively, you could execute ``update_and_launch.cake`` with ``dotnet``.
 
 First, install the Cake tool:
@@ -33,7 +34,7 @@ Finally, execute the Cake script:
     dotnet cake "./update_and_launch.cake" -v normal
 
 See also
-========
+--------
 
 - :doc:`Requirements <requirements>`
 - :doc:`Creating and Editing Game Data <creating_and_editing_game_data>`

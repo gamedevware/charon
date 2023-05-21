@@ -1,6 +1,5 @@
 .. toctree::
    :maxdepth: 2
-   :hidden:
    :caption: Unity Quick Start
 
    Overview </unity/overview>
@@ -10,17 +9,15 @@
 
 .. toctree::
    :maxdepth: 2
-   :hidden:
    :caption: Standalone Quick Start
 
-   Overview </standalone/overview>
-   Requirements </standalone/requirements>
-   Installation and Updates </standalone/installation_and_updates>
-   Creating and Editing Game Data </standalone/creating_and_editing_game_data>
+    /standalone/overview
+    /standalone/requirements
+    /standalone/installation_and_updates
+    /standalone/creating_and_editing_game_data
 
 .. toctree::
    :maxdepth: 2
-   :hidden:
    :caption: Web Quick Start
 
    Overview <web/overview>

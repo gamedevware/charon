@@ -1,5 +1,5 @@
-Overview
-========
+Creating and Editing Game Data
+==============================
 
 Any empty file could be used as starting point for standalone application launch.
 
@@ -13,7 +13,7 @@ Any empty file could be used as starting point for standalone application launch
     charon.exe SERVE ./gamedata.json --port 8080 --launchDefaultBrowser
 
 See also
-========
+--------
 
 - :doc:`Requirements <requirements>`
 - :doc:`Installation <installation_and_updates>`
