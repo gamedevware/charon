@@ -27,7 +27,7 @@ Or use `Nuget client <https://learn.microsoft.com/en-us/nuget/install-nuget-clie
 Cake Script (dotnet tool)
 _________________________
 
-Alternatively, you can follow the guide for `standalone launch <../standalone/installation_and_updates.rst>`_. To pass commands to the ``update_and_launch.cake`` script, use the ``--`` parameter and continue with the command and it's parameters.
+Alternatively, you can follow the guide for :doc:`standalone launch <../standalone/installation_and_updates>`. To pass commands to the ``update_and_launch.cake`` script, use the ``--`` parameter and continue with the command and it's parameters.
 
 .. code-block:: bash
   
@@ -99,23 +99,23 @@ To display list of available commands add `--help` or `/?`.
 List of Commands
 ================
 
-- `SERVE <commands/serve.rst>`_
-- `VERSION <commands/version.rst>`_
-- `DATA EXPORT <commands/data_export.rst>`_
-- `DATA IMPORT <commands/data_import.rst>`_
-- `DATA BACKUP <commands/data_backup.rst>`_
-- `DATA RESTORE <commands/data_restore.rst>`_
-- `DATA VALIDATE <commands/data_validate.rst>`_
-- `DATA CREATE <commands/data_create.rst>`_
-- `DATA UPDATE <commands/data_update.rst>`_
-- `DATA DELETE <commands/data_delete.rst>`_
-- `DATA FIND <commands/data_find.rst>`_
-- `DATA LIST <commands/data_list.rst>`_
-- `DATA CREATEPATCH <commands/data_create_patch.rst>`_
-- `DATA APPLYPATCH <commands/data_apply_patch.rst>`_
-- `DATA I18N EXPORT <commands/data_i18n_export.rst>`_
-- `DATA I18N IMPORT <commands/data_i18n_import.rst>`_
-- `DATA I18N LANGUAGES <commands/data_i18n_languages.rst>`_
-- `GENERATE TEMPLATES <commands/generate_templates.rst>`_
-- `GENERATE CSHARPCODE <commands/generate_csharp_code.rst>`_
-- `GENERATE TEXT <commands/generate_text.rst>`_
+- :doc:`SERVE <commands/serve>`
+- :doc:`VERSION <commands/version>`
+- :doc:`DATA EXPORT <commands/data_export>`
+- :doc:`DATA IMPORT <commands/data_import>`
+- :doc:`DATA BACKUP <commands/data_backup>`
+- :doc:`DATA RESTORE <commands/data_restore>`
+- :doc:`DATA VALIDATE <commands/data_validate>`
+- :doc:`DATA CREATE <commands/data_create>`
+- :doc:`DATA UPDATE <commands/data_update>`
+- :doc:`DATA DELETE <commands/data_delete>`
+- :doc:`DATA FIND <commands/data_find>`
+- :doc:`DATA LIST <commands/data_list>`
+- :doc:`DATA CREATEPATCH <commands/data_create_patch>`
+- :doc:`DATA APPLYPATCH <commands/data_apply_patch>`
+- :doc:`DATA I18N EXPORT <commands/data_i18n_export>`
+- :doc:`DATA I18N IMPORT <commands/data_i18n_import>`
+- :doc:`DATA I18N LANGUAGES <commands/data_i18n_languages>`
+- :doc:`GENERATE TEMPLATES <commands/generate_templates>`
+- :doc:`GENERATE CSHARPCODE <commands/generate_csharp_code>`
+- :doc:`GENERATE TEXT <commands/generate_text>`

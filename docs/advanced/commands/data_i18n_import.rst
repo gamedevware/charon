@@ -3,10 +3,10 @@ Importing Translated Data
 
 Import translated text from a specified file into game data.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command
@@ -68,7 +68,7 @@ Import translated text from a specified file into game data.
      --schemas !*Item*
 
 --input
-   Path to a file with data to import. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
+   Path to a file with data to import. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or :doc:`URL <remote_input_output>`.
 
    .. code-block:: bash
 
@@ -88,7 +88,7 @@ Import translated text from a specified file into game data.
      # remote location (HTTP)
      --input "http://example.com/input.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --input "ftp://user:password@example.com/input.json"
      
 --inputFormat
@@ -116,7 +116,7 @@ Import translated text from a specified file into game data.
 --dryRun
    Allows you to run the command without actually making any changes to the game data, providing a preview of what would happen.
 
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.
 
 ------------------
  Input Data Schema

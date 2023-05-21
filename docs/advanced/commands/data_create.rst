@@ -1,13 +1,13 @@
 Create Document
 ===============
 
-| Creates a new document. For a bulk creations use `DATA IMPORT <data_import.rst>`_ command with ``--mode create``.
+| Creates a new document. For a bulk creations use :doc:`DATA IMPORT <data_import>` command with ``--mode create``.
 | Only the first document from the ``--input`` will be processed.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command
@@ -51,7 +51,7 @@ Create Document
      --schema 55a4f32faca22e191098f3d9
      
 --input
-   Path to a file with document. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
+   Path to a file with document. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or :doc:`URL <remote_input_output>`.
 
    .. code-block:: bash
 
@@ -71,7 +71,7 @@ Create Document
      # remote location (HTTP)
      --input "http://example.com/item.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --input "ftp://user:password@example.com/item.json"
      
 --inputFormat
@@ -101,7 +101,7 @@ Create Document
    Path to a created document file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a :doc:`URL <remote_input_output>`.
   
    .. code-block:: bash
 
@@ -127,7 +127,7 @@ Create Document
      # remote location (HTTP)
      --output "http://example.com/created_item.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --output "ftp://user:password@example.com/created_item.json"
      
 --outputFormat
@@ -150,7 +150,7 @@ Create Document
 --outputFormattingOptions
    Additional options for specified format.
  
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.
 
 ------------------
  Input Data Schema

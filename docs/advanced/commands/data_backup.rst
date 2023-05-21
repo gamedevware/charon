@@ -1,13 +1,13 @@
 Create Backup
 =============
 
-| Backs up game data to a specified file. Saved data could be later used with `DATA RESTORE <data_restore.rst>`_ command.
+| Backs up game data to a specified file. Saved data could be later used with :doc:`DATA RESTORE <data_restore>` command.
 | Also this command can be used to convert game data into different format.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command
@@ -43,7 +43,7 @@ Create Backup
    Path to a backup file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a :doc:`URL <remote_input_output>`.
   
    .. code-block:: bash
 
@@ -69,7 +69,7 @@ Create Backup
      # remote location (HTTP)
      --output "http://example.com/backup.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --output "ftp://user:password@example.com/backup.json"
      
 --outputFormat
@@ -86,10 +86,10 @@ Create Backup
 --outputFormattingOptions
    Additional options for specified format.
  
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.
 
 ------------------
  Output Data Schema
 ------------------
 
-The backed-up data follows the schema of game data <../game_data_schema.rst>_.
+The backed-up data follows the schema of :doc:`game data <../game_data_schema>`.

@@ -4,10 +4,10 @@ Export Code Generation Templates
 Exports `T4 <https://learn.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates>`_ code generation templates to a specified directory. 
 These templates can be used with Visual Studio, Rider, Visual Studio Code with plugin, ``dotnet`` `tool <https://www.nuget.org/packages/dotnet-t4>`_ or other tools to generate source code.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command

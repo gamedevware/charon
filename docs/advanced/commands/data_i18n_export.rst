@@ -3,10 +3,10 @@ Export Translated Data
 
 Export text that can be translated into a file.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command
@@ -70,7 +70,7 @@ Export text that can be translated into a file.
 --sourceLanguage
    Source (original) language for translation. Value is `language tag (BCP 47) <https://msdn.microsoft.com/en-US/library/system.globalization.cultureinfo.name(v=vs.110).aspx>`_. 
    
-   Use `DATA I18N LANGUAGES <data_i18n_languages.rst>`_ to get list of used languages.
+   Use :doc:`DATA I18N LANGUAGES <data_i18n_languages>` to get list of used languages.
    
    .. code-block:: bash
      
@@ -89,7 +89,7 @@ Export text that can be translated into a file.
    Path to a file to which data will be exported. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a :doc:`URL <remote_input_output>`.
   
    .. code-block:: bash
 
@@ -115,7 +115,7 @@ Export text that can be translated into a file.
      # remote location (HTTP)
      --output "http://example.com/input.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --output "ftp://user:password@example.com/input.json"
      
 --outputFormat
@@ -137,7 +137,7 @@ Export text that can be translated into a file.
 --outputFormattingOptions
    Additional options for specified format.
 
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.
 
 ------------------
  Output Data Schema

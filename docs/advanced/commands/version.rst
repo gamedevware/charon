@@ -3,8 +3,8 @@ Get Charon Version
 
 Gets version of ``Charon.exe`` application.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
 
 ---------------
  Command
@@ -24,4 +24,4 @@ Gets version of ``Charon.exe`` application.
  Parameters
 ---------------
  
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.

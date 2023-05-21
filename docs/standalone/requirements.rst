@@ -34,5 +34,5 @@ Linux
 See also
 ========
 
-- `Installation and Updates <installation_and_updates.rst>`_
-- `Creating and Editing Game Data <creating_and_editing_game_data.rst>`_
+- :doc:`Installation and Updates <installation_and_updates>`
+- :doc:`Creating and Editing Game Data <creating_and_editing_game_data>`

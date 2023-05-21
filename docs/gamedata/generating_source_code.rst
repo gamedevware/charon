@@ -42,5 +42,5 @@ Once the process is complete, the generated source code will be available at ``-
 See also
 ========
 
-- `Command Line Interface (CLI) <../advanced/command_line.rst>`_
-- `GENERATE CSHARPCODE Command <../advanced/commands/generate_csharp_code.rst>`_
+- :doc:`Command Line Interface (CLI) <../advanced/command_line>`
+- :doc:`GENERATE CSHARPCODE Command <../advanced/commands/generate_csharp_code>`

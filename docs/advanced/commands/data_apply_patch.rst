@@ -1,12 +1,12 @@
 Apply Patch
 ===========
 
-Applies patch created with `DATA CREATEPATCH <commands/data_create_patch.rst>`_ command to a game data.
+Applies patch created with :doc:`DATA CREATEPATCH <commands/data_create_patch>` command to a game data.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command
@@ -39,7 +39,7 @@ Applies patch created with `DATA CREATEPATCH <commands/data_create_patch.rst>`_ 
    The API key used to access remote server in case of *--dataBase* being URL.
 
 --input
-   Path to a file with patch to apply. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
+   Path to a file with patch to apply. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output>`.
 
    .. code-block:: bash
 
@@ -59,7 +59,7 @@ Applies patch created with `DATA CREATEPATCH <commands/data_create_patch.rst>`_ 
      # remote location (HTTP)
      --input "http://example.com/gamedata_patch.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --input "ftp://user:password@example.com/gamedata_patch.json"
      
 --inputFormat
@@ -85,4 +85,4 @@ Applies patch created with `DATA CREATEPATCH <commands/data_create_patch.rst>`_ 
 --inputFormattingOptions
    Additional options for specified format.
  
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.

@@ -39,5 +39,5 @@ To examine your current .NET Framework runtime or Mono runtime version, you need
 See also
 ========
 
-- `Plugin Installation <plugin_installation.rst>`_
-- `Creating and Editing Game Data <creating_and_editing_game_data.rst>`_
+- :doc:`Plugin Installation <plugin_installation>`
+- :doc:`Creating and Editing Game Data <creating_and_editing_game_data>`

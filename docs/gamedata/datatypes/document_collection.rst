@@ -14,7 +14,7 @@ Size
 Example
 =======
 
-One example use case for ``DocumentCollection`` is storing a list of items in a game, such as a chest and its contents. Each item in the chest could be represented by a sub-document containing information such as `reference <reference.rst>`_ to an item and its `quantity <integer.rst>`_.
+One example use case for ``DocumentCollection`` is storing a list of items in a game, such as a chest and its contents. Each item in the chest could be represented by a sub-document containing information such as :doc:`reference <reference>` to an item and its :doc:`quantity <integer>`.
 
 .. code-block:: js
 

@@ -5,10 +5,10 @@ Checks the game data for validity and produces a report.
 
 The exit code will be ``1`` if the report contains errors and the ``--output`` is set to ``err``. Otherwise, the exit code will be ``0``.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command
@@ -64,7 +64,7 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
    Path to a validation report file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a :doc:`URL <remote_input_output>`.
   
    .. code-block:: bash
 
@@ -90,7 +90,7 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
      # remote location (HTTP)
      --output "http://example.com/document.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --output "ftp://user:password@example.com/document.json"
      
 --outputFormat
@@ -113,7 +113,7 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
 --outputFormattingOptions
    Additional options for specified format.
 
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.
 
 ------------------
  Output Data Schema

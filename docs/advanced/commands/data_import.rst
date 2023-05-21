@@ -3,10 +3,10 @@ Import Data
 
 Imports documents from file to a game data.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command
@@ -95,7 +95,7 @@ Imports documents from file to a game data.
       deletes documents found in the imported data  
     
 --input
-   Path to a data file. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
+   Path to a data file. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or :doc:`URL <remote_input_output>`.
 
    .. code-block:: bash
 
@@ -115,7 +115,7 @@ Imports documents from file to a game data.
      # remote location (HTTP)
      --input "http://example.com/characters.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --input "ftp://user:password@example.com/characters.json"
      
 --inputFormat
@@ -147,7 +147,7 @@ Imports documents from file to a game data.
 --dryRun
    Allows you to run the command without actually making any changes to the game data, providing a preview of what would happen.
 
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.
 
 ------------------
  Input Data Schema

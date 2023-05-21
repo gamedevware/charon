@@ -1,12 +1,12 @@
 Restore from Backup
 ===================
 
-Restores game data from a file created by `DATA BACKUP <data_backup.rst>`_ command.
+Restores game data from a file created by :doc:`DATA BACKUP <data_backup>` command.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command
@@ -39,7 +39,7 @@ Restores game data from a file created by `DATA BACKUP <data_backup.rst>`_ comma
    The API key used to access remote server in case of *--dataBase* being URL.
 
 --input
-   Path to a backup file. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
+   Path to a backup file. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or :doc:`URL <remote_input_output>`.
 
    .. code-block:: bash
 
@@ -59,7 +59,7 @@ Restores game data from a file created by `DATA BACKUP <data_backup.rst>`_ comma
      # remote location (HTTP)
      --input "http://example.com/backup.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --input "ftp://user:password@example.com/backup.json"
      
 --inputFormat
@@ -79,4 +79,4 @@ Restores game data from a file created by `DATA BACKUP <data_backup.rst>`_ comma
 --inputFormattingOptions
    Additional options for specified format.
 
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.

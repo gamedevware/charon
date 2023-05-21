@@ -4,10 +4,10 @@ Generate Text from Templates
 | Generates text from T4 templates into output directory.
 | Note that this command is experimental and may not be reliable.
 | It is recommended to use an IDE or open-source alternatives for generating text with T4 templates.
-| See `GENERATE TEMPLATES <generate_templates.rst>`_ for details.
+| See :doc:`GENERATE TEMPLATES <generate_templates>` for details.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
 
 ---------------
  Command

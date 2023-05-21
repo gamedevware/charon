@@ -1,7 +1,7 @@
 Overview
 ==========
 
-The ``Number`` data type is used to represent decimal numbers. It conforms to the `IEEE 754 <https://en.wikipedia.org/wiki/IEEE_754>`_ floating-point standard and can represent both positive and negative numbers, as well as zero. However, due to the limitations of the floating-point representation, precision may be lost when performing certain arithmetic operations. Therefore, it is recommended to use the `Integer <integer.rst>`_ data type for financial calculations and other scenarios that require high precision.
+The ``Number`` data type is used to represent decimal numbers. It conforms to the `IEEE 754 <https://en.wikipedia.org/wiki/IEEE_754>`_ floating-point standard and can represent both positive and negative numbers, as well as zero. However, due to the limitations of the floating-point representation, precision may be lost when performing certain arithmetic operations. Therefore, it is recommended to use the :doc:`Integer <integer>` data type for financial calculations and other scenarios that require high precision.
 
 Some use cases for the ``Number`` data type include representing quantities, such as the count of an items or the amount of gold reward in the chest, or representing percentages, such as the chance of an event occurring. It can also be used to represent measurements, such as the height of a character or the length of a weapon.
 

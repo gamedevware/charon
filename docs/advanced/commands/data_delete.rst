@@ -1,12 +1,12 @@
 Delete Document
 ===============
 
-Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ command with ``--mode delete``.
+Deletes a document. For a bulk deletion use :doc:`DATA IMPORT <data_import>` command with ``--mode delete``.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command
@@ -64,7 +64,7 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
    The path to a file where the *deleted document* should be placed. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a :doc:`URL <remote_input_output>`.
   
    .. code-block:: bash
 
@@ -90,7 +90,7 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
      # remote location (HTTP)
      --output "http://example.com/deleted_item.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --output "ftp://user:password@example.com/deleted_item.json"
      
 --outputFormat
@@ -113,4 +113,4 @@ Deletes a document. For a bulk deletion use `DATA IMPORT <data_import.rst>`_ com
 --outputFormattingOptions
    Additional options for specified format.
  
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.

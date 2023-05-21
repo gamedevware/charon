@@ -17,7 +17,7 @@ To generate an API Key:
 See also
 ========
 
-- `Command Line Interface (CLI) <../advanced/command_line.rst>`_
-- `DATA EXPORT Command <../advanced/commands/data_export.rst>`_
-- `DATA IMPORT Command <../advanced/commands/data_import.rst>`_
-- `GENERATE CSHARPCODE Command <../advanced/commands/generate_csharp_code.rst>`_
+- :doc:`Command Line Interface (CLI) <../advanced/command_line>`
+- :doc:`DATA EXPORT Command <../advanced/commands/data_export>`
+- :doc:`DATA IMPORT Command <../advanced/commands/data_import>`
+- :doc:`GENERATE CSHARPCODE Command <../advanced/commands/generate_csharp_code>`

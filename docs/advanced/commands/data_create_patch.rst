@@ -1,12 +1,12 @@
 Create Patch
 ===========
 
-Outputs the differences between two game datas as a file that can be used later to `DATA APPLYPATCH <data_apply_patch.rst>`_ to another game data.
+Outputs the differences between two game datas as a file that can be used later to :doc:`DATA APPLYPATCH <data_apply_patch>` to another game data.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command
@@ -50,7 +50,7 @@ Outputs the differences between two game datas as a file that can be used later 
    Path to a patch file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a :doc:`URL <remote_input_output>`.
   
    .. code-block:: bash
 
@@ -76,7 +76,7 @@ Outputs the differences between two game datas as a file that can be used later 
      # remote location (HTTP)
      --output "http://example.com/gamedata_patch.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --output "ftp://user:password@example.com/gamedata_patch.json"
      
 --outputFormat
@@ -102,6 +102,6 @@ Outputs the differences between two game datas as a file that can be used later 
 
 --credentials
    This parameter sets the API key used to access *BOTH* remote servers. 
-   If this is not suitable, consider `downloading <https://github.com/gamedevware/charon/blob/main/docs/advanced/commands/data_backup.rst>`_ the data locally and running this command on local files instead.
+   If this is not suitable, consider :doc:`downloading <https://github.com/gamedevware/charon/blob/main/docs/advanced/commands/data_backup>` the data locally and running this command on local files instead.
  
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.

@@ -6,7 +6,7 @@ Charon has `plugin <https://assetstore.unity.com/packages/tools/visual-scripting
 Step By Step
 =============
 
-1. Install the required software for your operating system (see `Requirements <requirements.rst>`_).
+1. Install the required software for your operating system (see :doc:`Requirements <requirements>`).
 2. Make sure your Unity version is 2020.1+.
 3. Open the `Charon plugin <https://assetstore.unity.com/packages/tools/visual-scripting/game-data-editor-charon-95117>`_ in Unity Asset Store .
 4. Click ``Add To My Assets``.
@@ -18,5 +18,5 @@ Step By Step
 See also
 ========
 
-- `Plugin Requirements <requirements.rst>`_
-- `Creating and Editing Game Data <creating_and_editing_game_data.rst>`_
+- :doc:`Plugin Requirements <requirements>`
+- :doc:`Creating and Editing Game Data <creating_and_editing_game_data>`

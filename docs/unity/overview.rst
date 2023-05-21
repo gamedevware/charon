@@ -6,7 +6,7 @@ The Unity plugin version is a `plugin <https://assetstore.unity.com/packages/too
 See also
 ========
 
-- `Requirements <requirements.rst>`_
-- `Plugin Installation <plugin_installation.rst>`_
-- `Creating and Editing Game Data <creating_and_editing_game_data.rst>`_
+- :doc:`Requirements <requirements>`
+- :doc:`Plugin Installation <plugin_installation>`
+- :doc:`Creating and Editing Game Data <creating_and_editing_game_data>`
 - `Charon plugin at Unity Asset Store <https://assetstore.unity.com/packages/tools/visual-scripting/game-data-editor-charon-95117>`_

@@ -6,6 +6,6 @@ The web version of the tool is a `web-based application <https://charon.live>`_ 
 See also
 ========
 
-- `Basics <basics.rst>`_
-- `CLI Access to Web Project <cli_access_to_your_project.rst>`_
+- :doc:`Basics <basics>`
+- :doc:`CLI Access to Web Project <cli_access_to_your_project>`
 - `Web-based Application <https://charon.live>`_

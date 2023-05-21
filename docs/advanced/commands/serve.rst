@@ -3,10 +3,10 @@ Start in Standalone Mode
 
 Starts Charon in standalone mode for specified game data. Path to game data could be local file system's file or remote server address.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command
@@ -41,4 +41,4 @@ Starts Charon in standalone mode for specified game data. Path to game data coul
 --resetPreferences
    Set this flag to reset UI preferences on successful start.
  
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.

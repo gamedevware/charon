@@ -3,10 +3,10 @@ Export Data
 
 Exports documents into a file.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command
@@ -80,7 +80,7 @@ Exports documents into a file.
 --languages
    List of languages to keep in exported data. Language's `english name <https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.englishname?view=netframework-4.8>`_ is used or `language tag (BCP 47) <https://msdn.microsoft.com/en-US/library/system.globalization.cultureinfo.name(v=vs.110).aspx>`_. 
    
-   Use `DATA I18N LANGUAGES <data_i18n_languages.rst>`_ to get list of used languages.
+   Use :doc:`DATA I18N LANGUAGES <data_i18n_languages>` to get list of used languages.
    
    - Use space to separate multiple languages
    - You can use wildcards (*) at the beginning and end of names.
@@ -123,7 +123,7 @@ Exports documents into a file.
       
    publication
       Same as *default*, but all non-essential data will be stripped. 
-      The result of the export can be safely loaded within the game with the `generated code <generate_csharp_code.rst>`_.
+      The result of the export can be safely loaded within the game with the :doc:`generated code <generate_csharp_code>`.
    
    extraction
       Export only selected schemas without any related data. 
@@ -136,7 +136,7 @@ Exports documents into a file.
    Path to a exported data file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a :doc:`URL <remote_input_output>`.
   
    .. code-block:: bash
 
@@ -162,7 +162,7 @@ Exports documents into a file.
      # remote location (HTTP)
      --output "http://example.com/document.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --output "ftp://user:password@example.com/document.json"
      
 --outputFormat
@@ -188,7 +188,7 @@ Exports documents into a file.
 --outputFormattingOptions
    Additional options for specified format.
 
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.
 
 ------------------
  Output Data Schema

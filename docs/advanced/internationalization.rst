@@ -30,7 +30,7 @@ Using CLI
 Exporting to XLSX spreadsheet
 -----------------------------
 
-To export translatable text data as *XLSX*, run the `DATA EXPORT <commands/data_export.rst>`_ command with the following parameters:
+To export translatable text data as *XLSX*, run the :doc:`DATA EXPORT <commands/data_export>` command with the following parameters:
 
 .. code-block:: bash
 
@@ -44,7 +44,7 @@ Extra columns may be present in the export files, which are required for the cor
 Importing from XLSX spreadsheet
 -------------------------------
 
-Once your data is processed (e.g., translated), you can import it using the `DATA IMPORT <commands/data_import.rst>`_ command with the ``safeUpdate`` mode:
+Once your data is processed (e.g., translated), you can import it using the :doc:`DATA IMPORT <commands/data_import>` command with the ``safeUpdate`` mode:
 
 .. code-block:: bash
 
@@ -53,7 +53,7 @@ Once your data is processed (e.g., translated), you can import it using the `DAT
 Exporting to XLIFF
 ------------------
 
-To export translatable text data as *XLIFF*, run the `DATA I18N EXPORT <commands/data_i18n_export.rst>`_ command with the following parameters:
+To export translatable text data as *XLIFF*, run the :doc:`DATA I18N EXPORT <commands/data_i18n_export>` command with the following parameters:
 
 .. code-block:: bash
 
@@ -61,12 +61,12 @@ To export translatable text data as *XLIFF*, run the `DATA I18N EXPORT <commands
 
 - Use the ``--outputFormat`` parameter to indicate the exact format of the exported data, which can be either *xliff*, *xiff1*, or *xliff2*.
 - Use ``--sourceLanguage`` to indicate the language text is being translated from as the *source*, and ``--targetLanguage`` to indicate the *target* language that the text is being translated to.
-- To get a list of configured translation languages for the game data, run the `DATA I18N LANGUAGES <commands/data_i18n_languages.rst>`_ command.
+- To get a list of configured translation languages for the game data, run the :doc:`DATA I18N LANGUAGES <commands/data_i18n_languages>` command.
 
 Importing from XLIFF
 --------------------
 
-Once the data has been processed, you can import it using the `DATA I18N IMPORT <commands/data_i18n_import.rst>`_ command.
+Once the data has been processed, you can import it using the :doc:`DATA I18N IMPORT <commands/data_i18n_import>` command.
 
 .. code-block:: bash
 

@@ -1,14 +1,14 @@
 Update Document
 ===============
 
-| Updates a document. For a bulk updates use `DATA IMPORT <data_import.rst>`_ command with ``--mode update``.
+| Updates a document. For a bulk updates use :doc:`DATA IMPORT <data_import>` command with ``--mode update``.
 | The update document in ``--input`` may be partial, with non-included fields being omitted.
 | Only the first document from the ``--input`` will be processed.
 
-- `Installation <../command_line.rst#installation>`_
-- `Commands Reference <../command_line.rst>`_
-- `Universal Parameters <universal_parameters.rst>`_
-- `URL-based Input/Output <remote_input_output.rst>`_
+- :doc:`Installation <../command_line#installation>`
+- :doc:`Commands Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`
+- :doc:`URL-based Input/Output <remote_input_output>`
 
 ---------------
  Command
@@ -63,7 +63,7 @@ Update Document
      --id 101
      
 --input
-   Path to a file with update data. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output.rst>`_.
+   Path to a file with update data. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or :doc:`URL <remote_input_output>`.
 
    .. code-block:: bash
 
@@ -83,7 +83,7 @@ Update Document
      # remote location (HTTP)
      --input "http://example.com/item.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --input "ftp://user:password@example.com/item.json"
      
 --inputFormat
@@ -113,7 +113,7 @@ Update Document
    Path to a updated document file. If the file exists, it will be overwritten. The directory must already exist. 
    Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
    `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
-   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a `URL <remote_input_output.rst>`_.
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a :doc:`URL <remote_input_output>`.
   
    .. code-block:: bash
 
@@ -139,7 +139,7 @@ Update Document
      # remote location (HTTP)
      --output "http://example.com/updated_item.json"
      
-     # remote location with authentification (FTP)
+     # remote location with authentication (FTP)
      --output "ftp://user:password@example.com/updated_item.json"
      
 --outputFormat
@@ -162,7 +162,7 @@ Update Document
 --outputFormattingOptions
    Additional options for specified format.
 
-This command supports `universal parameters <universal_parameters.rst>`_.
+This command supports :doc:`universal parameters <universal_parameters>`.
 
 ------------------
  Input Data Schema

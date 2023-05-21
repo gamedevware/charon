@@ -39,5 +39,5 @@ Example
 See also
 ========
 
-- `Command Line Interface (CLI) <../advanced/command_line.rst>`_
-- `DATA EXPORT Command <../advanced/commands/data_export.rst>`_
+- :doc:`Command Line Interface (CLI) <../advanced/command_line>`
+- :doc:`DATA EXPORT Command <../advanced/commands/data_export>`

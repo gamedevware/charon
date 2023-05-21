@@ -12,7 +12,7 @@ Uniqueness
 Example
 =======
 
-For example, in a **Dialog**, each node can be a ``Document`` with dialog `text  <localized_text.rst>`_, response options, and `actions  <formula.rst>`_ that occur after a response is chosen. Each response option can be a sub-document that is another **Dialog** node.
+For example, in a **Dialog**, each node can be a ``Document`` with dialog :doc:`text  <localized_text>`, response options, and :doc:`actions  <formula>` that occur after a response is chosen. Each response option can be a sub-document that is another **Dialog** node.
 
 .. code-block:: js
 
