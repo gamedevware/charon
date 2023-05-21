@@ -2,10 +2,10 @@
    :maxdepth: 2
    :caption: Unity Quick Start
 
-   Overview </unity/overview>
-   Requirements </unity/requirements>
-   Plugin Installation </unity/plugin_installation>
-   Creating and Editing Game Data </unity/creating_and_editing_game_data>
+   /unity/overview
+   /unity/requirements
+   /unity/plugin_installation
+   /unity/creating_and_editing_game_data
 
 .. toctree::
    :maxdepth: 2
@@ -20,9 +20,9 @@
    :maxdepth: 2
    :caption: Web Quick Start
 
-   Overview <web/overview>
-   Basics <web/basics>
-   CLI Access to Web Project <web/cli_access_to_web_project>
+   web/overview
+   web/basics
+   web/cli_access_to_web_project
 
 Overview
 ==================

@@ -1,4 +1,4 @@
-Overview
+Basics
 ========
 Charon provides a collaborative work environment where game designers can work together to create engaging gameplay experiences. The core concepts of collaborative work include workspaces and projects.
 
@@ -7,7 +7,7 @@ A workspace is a virtual location where projects are located. The subscription a
 A project is a virtual location for storing game data, localization settings, backups, branches, and members. When a project is created, the user becomes its owner and can invite other members to join.
 
 Step By Step
-=============
+------------
 
 1. Visit the `charon.live <https://charon.live/>`_ website and click on the *Register* button to create a new account.
 2. Fill out the registration form with your desired username and password, and click on the "Create" button to create your account.
@@ -17,7 +17,7 @@ Step By Step
 5. After creating the project, you'll be redirected to the project's dashboard page, which provides an overview of the project and allows you to start modelling game data.
 
 See also
-========
+--------
 
 - :doc:`Basic Navigation and User Interface Overview <../gamedata/basics>`
 - :doc:`Creating Document Type (Schema) <../gamedata/creating_schema>`
