@@ -49,7 +49,7 @@ Once your data is processed (e.g., translated), you can import it using the :doc
   Charon.exe DATA IMPORT --dataBase "c:\my app\gamedata.json" --input "c:\my app\text_all_languages.xlsx" --inputFormat xlsx --mode safeUpdate
   
 Exporting to XLIFF
-------------------
+^^^^^^^^^^^^^^^^^^
 
 To export translatable text data as *XLIFF*, run the :doc:`DATA I18N EXPORT <commands/data_i18n_export>` command with the following parameters:
 

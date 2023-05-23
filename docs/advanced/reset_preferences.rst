@@ -11,6 +11,8 @@ Web
   Use the ``Preferences`` profile tab ``<User Icon> → Profile → Preferences``.
 
 CLI Example:
+
 .. code-block:: bash
 
   Charon.exe SERVER START ./gamedata.json --port 8080 --launchDefaultBrowser --resetPreferences
+
