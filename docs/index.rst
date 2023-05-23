@@ -7,6 +7,7 @@ Charon is a powerful game development tool that streamlines the game development
    :titlesonly:
    :glob:
 
+   /unity/overview
    /unity/*
 
 .. toctree::
@@ -14,6 +15,7 @@ Charon is a powerful game development tool that streamlines the game development
    :titlesonly:
    :glob:
 
+   /standalone/overview
    /standalone/*
 
 .. toctree::
@@ -21,6 +23,7 @@ Charon is a powerful game development tool that streamlines the game development
    :titlesonly:
    :glob:
 
+   /web/overview
    /web/*
 
 .. toctree::
