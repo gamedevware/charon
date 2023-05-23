@@ -10,13 +10,20 @@ There are two ways to pass translatable text to a third party (e.g., for localiz
 - You can export all translatable data as an `XLSX <https://en.wikipedia.org/wiki/Office_Open_XML>`_ spreadsheet.
 - You can use the special localization format, `XLIFF <https://en.wikipedia.org/wiki/XLIFF>`_ (XML Localization Interchange File Format).
 
-Using UI
---------
+Translation flow via UI
+-----------------------
 
-The ``Internationalization Settings`` link is available under the *Tasks* tab in the project's dashboard, which leads to the ``Export`` and ``Import`` buttons for translation data in the *Project Settings*.
+To export and translate your project's data, follow these steps:
 
-Using CLI
----------
+1. Go to the dashboard of the project for which you want to generate source code.
+2. Click on the "Internationalization Settings" link.
+3. Click on the "Export" button to export the data.
+4. Download the exported file and provide it to your translation team for translation.
+5. Once the data has been translated, click on the "Import" button on the same page.
+6. Select the translated file and follow the steps provided in the import wizard.
+
+Translation flow via CLI
+------------------------
 
 Exporting to XLSX spreadsheet
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
