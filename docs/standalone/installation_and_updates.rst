@@ -7,7 +7,7 @@ Alternatively `Nuget Package <https://www.nuget.org/packages/GameDevWare.Charon>
 Step By Step
 ------------
 
-1. Download scripts from `/scripts <../../scripts/>`_ into a local folder ``/charon``.
+1. Download scripts from `/scripts <https://github.com/gamedevware/charon/tree/main/scripts/>`_ into a local folder ``/charon``.
 2. Navigate to local folder ``cd /charon``.
 3. Run ``update_and_launch.bat`` or ``update_and_launch.sh`` depending on your OS.
 4. Wait for the script to automatically download and upgrade ``Charon.exe``, and launch it for you.
