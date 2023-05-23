@@ -5,22 +5,18 @@ Charon supports storing text data in multiple languages by using the special ``L
 
 A list of possible translation languages is defined in the ``Project Settings``.
 
-
-Translation
------------
-
 There are two ways to pass translatable text to a third party (e.g., for localization or editing):
 
 - You can export all translatable data as an `XLSX <https://en.wikipedia.org/wiki/Office_Open_XML>`_ spreadsheet.
 - You can use the special localization format, `XLIFF <https://en.wikipedia.org/wiki/XLIFF>`_ (XML Localization Interchange File Format).
 
 Using UI
-^^^^^^^^
+--------
 
 The ``Internationalization Settings`` link is available under the *Tasks* tab in the project's dashboard, which leads to the ``Export`` and ``Import`` buttons for translation data in the *Project Settings*.
 
 Using CLI
-^^^^^^^^^
+---------
 
 Exporting to XLSX spreadsheet
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
