@@ -1,0 +1,5644 @@
+openapi: 3.0.1
+info:
+  title: Charon API
+  version: 1.0.0
+servers:
+  - url: /api/v1
+paths:
+  /token:
+    post:
+      tags:
+        - Authentication
+      description: Authenticate with oAuth protocol.
+      operationId: IssueToken
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              required:
+                - grant_type
+              properties:
+                refresh_token:
+                  type: string
+                  description: Refresh token. Required for 'refresh_token' grant type.
+                  nullable: true
+                code:
+                  type: string
+                  description: Authorization code. Required for 'authorization_code' grant type.
+                  nullable: true
+                grant_type:
+                  enum:
+                    - authorization_code
+                    - refresh_token
+                  type: string
+      responses:
+        '200':
+          description: Authorization granted result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthSuccessResponse'
+        '400':
+          description: Authorization failed result.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    enum:
+                      - invalid_request
+                      - invalid_client
+                      - invalid_grant
+                      - unauthorized_client
+                      - unsupported_grant_type
+                      - invalid_scope
+                    type: string
+                    description: Error type.
+                    readOnly: true
+                  error_description:
+                    type: string
+                    description: Error description.
+                    readOnly: true
+                  error_uri:
+                    type: string
+                    description: Error URI.
+                    readOnly: true
+                x-name: OAuthFailureResponse
+      x-custom-response: true
+      x-rate-limiting:
+        maxParallelRequests: 1
+        grouping: IpAddress
+      x-anonymous: true
+  /auth/one-time-code/:
+    post:
+      tags:
+        - Authentication
+      description: Request one-time code for current authentication credential. It could be used as 'x-authorization' query parameter instead of 'Authorization' header for WebSockets and download requests.
+      operationId: IssueOneTimeCode
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization header.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: One-time code. It has short expiration time.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueOneTimeCodeResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  /auth/flow/password/:
+    post:
+      tags:
+        - Authentication
+      description: Begin authentication flow with password request.
+      operationId: BeginPasswordAuthenticationFlow
+      requestBody:
+        description: Password-based authentication request.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  maxLength: 256
+                  minLength: 3
+                  pattern: \w+@\w+
+                  type: string
+                password:
+                  $ref: '#/components/schemas/PasswordString'
+              x-name: EmailPasswordAuthenticateRequest
+      responses:
+        '200':
+          description: Authentication flow stage.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeginPasswordAuthenticationFlowResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-anonymous: true
+  /auth/flow/email-code/:
+    post:
+      tags:
+        - Authentication
+      description: Continue authentication flow with TOTP code from email.
+      operationId: ContinueAuthenticationFlowWithEmailTotpCode
+      requestBody:
+        description: Email TOTP code-based authentication flow.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                flowId:
+                  type: string
+                  format: objectId
+                code:
+                  maxLength: 1024
+                  minLength: 1
+                  type: string
+              x-name: EmailTotpCodeAuthenticateRequest
+      responses:
+        '200':
+          description: Authentication flow stage.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContinueAuthenticationFlowWithEmailTotpCodeResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-anonymous: true
+  '/auth/flow/oauth2/{authenticationProvider}/prepare/':
+    post:
+      tags:
+        - Authentication
+      description: Prepare OAuth2 sign-in URL.
+      operationId: BeginOAuth2Authentication
+      parameters:
+        - $ref: '#/components/parameters/authenticationProvider'
+      responses:
+        '200':
+          description: Sign-in URL location.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeginOAuth2AuthenticationResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-anonymous: true
+  '/auth/flow/oauth2/{authenticationProvider}/complete/':
+    post:
+      tags:
+        - Authentication
+      description: Complete OAuth2 authentication.
+      operationId: CompleteOAuth2Authentication
+      parameters:
+        - $ref: '#/components/parameters/authenticationProvider'
+        - name: code
+          in: query
+          description: The authorization code received from the authorization server.
+          schema:
+            type: string
+            nullable: true
+        - name: state
+          in: query
+          description: An opaque value used by the client to maintain state between the request and callback.
+          required: true
+          schema:
+            type: string
+        - name: error
+          in: query
+          description: A single error code.
+          schema:
+            type: string
+            nullable: true
+        - name: error_description
+          in: query
+          description: Human-readable text providing additional information.
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: Authentication flow stage.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompleteOAuth2AuthenticationResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-anonymous: true
+  /app/log/:
+    put:
+      tags:
+        - Troubleshooting
+      summary: Log specified message on server. Used internally while standalone-hosted.
+      operationId: logMessage
+      requestBody:
+        description: A log message to save.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                source:
+                  type: string
+                clientId:
+                  type: string
+      responses:
+        '204':
+          description: URL has been opened (or ignored).
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/datasource/{dataSourceId}/transaction/':
+    put:
+      tags:
+        - DataSource
+      summary: Wait for data source availability and begin new transaction. Identifier specified in request later could be used with other request in `transaction` parameter.
+      operationId: beginTransaction
+      requestBody:
+        description: Begin transaction parameters.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  maxLength: 256
+                  minLength: 16
+                  type: string
+                  description: Unique identifier for a transaction.
+                executionTimeout:
+                  type: string
+                  description: Timeout for executing a transaction. Can't be negative or zero time.
+                  format: time
+                startTimeout:
+                  type: string
+                  description: The wait timeout for starting a transaction. Can't be negative or zero time.
+                  format: time
+      responses:
+        '204':
+          description: The transaction has started.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/transaction/{transactionId}':
+    post:
+      tags:
+        - DataSource
+      summary: Commit pending transaction.
+      operationId: commitTransaction
+      responses:
+        '204':
+          description: The transaction has been successfully completed.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    delete:
+      tags:
+        - DataSource
+      summary: Reject pending transaction.
+      operationId: rejectTransaction
+      responses:
+        '204':
+          description: The transaction has either been aborted or has already failed.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+      - $ref: '#/components/parameters/transactionId'
+  '/datasource/{dataSourceId}/collection/{schemaNameOrId}/':
+    get:
+      tags:
+        - DataSource
+      summary: Find document by it's id or unique property value.
+      operationId: findDocument
+      parameters:
+        - name: uniqueSchemaPropertyNameOrId
+          in: query
+          description: Document unique property's name. For example 'Id'.
+          required: true
+          schema:
+            type: string
+        - name: uniqueSchemaPropertyValue
+          in: query
+          description: Document's unique property value. For example it's 'Id' property.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Found document or null.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindDocumentResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    put:
+      tags:
+        - DataSource
+      summary: Create document.
+      operationId: createDocument
+      parameters:
+        - $ref: '#/components/parameters/validationOptions'
+      requestBody:
+        description: A document to create.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataDocument'
+      responses:
+        '200':
+          description: Created document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateDocumentResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    post:
+      tags:
+        - DataSource
+      summary: Update document.
+      operationId: updateDocument
+      parameters:
+        - $ref: '#/components/parameters/validationOptions'
+      requestBody:
+        description: A document to update.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataDocument'
+      responses:
+        '200':
+          description: Updated document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateDocumentResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    delete:
+      tags:
+        - DataSource
+      summary: Delete document by it's id.
+      operationId: deleteDocument
+      parameters:
+        - name: id
+          in: query
+          description: Document's id.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deleted document or null.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteDocumentResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/schemaNameOrId'
+      - $ref: '#/components/parameters/dataSourceId'
+      - $ref: '#/components/parameters/transaction'
+  '/datasource/{dataSourceId}/collection/{schemaNameOrId}/all/':
+    post:
+      tags:
+        - DataSource
+      summary: List documents.
+      operationId: listDocuments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                path:
+                  type: string
+                  description: Path to document within another document. Or '*' if any embedded documents are applicable. Or null if only root documents to return.
+                  nullable: true
+                skip:
+                  type: integer
+                  format: int32
+                  nullable: true
+                take:
+                  type: integer
+                  format: int32
+                  nullable: true
+                query:
+                  type: string
+                  description: Any value to search throughout the document.
+                  nullable: true
+                filters:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Filter'
+                  nullable: true
+                sorters:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Sorter'
+                  nullable: true
+      responses:
+        '200':
+          description: Found documents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDocumentsResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    put:
+      tags:
+        - DataSource
+      summary: Bulk change documents.
+      operationId: bulkChangeDocuments
+      parameters:
+        - $ref: '#/components/parameters/validationOptions'
+        - name: importMode
+          in: query
+          description: Import mode.
+          required: true
+          schema:
+            $ref: '#/components/schemas/ImportMode'
+      requestBody:
+        description: A documents to change.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/NullableDataDocument'
+      responses:
+        '200':
+          description: Created document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkChangeDocumentsResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/schemaNameOrId'
+      - $ref: '#/components/parameters/dataSourceId'
+      - $ref: '#/components/parameters/transaction'
+  '/datasource/{dataSourceId}/converter/raw/':
+    post:
+      tags:
+        - DataSource
+      summary: Convert specified game data documents from request body to JSON format and return it without response wrapper.
+      operationId: convertGameDataRaw
+      requestBody:
+        description: A documents to convert.
+        content:
+          application/json:
+            schema:
+              type: object
+          text/xml:
+            schema:
+              type: object
+          application/x-msgpack:
+            schema:
+              type: object
+          application/bson:
+            schema:
+              type: object
+          application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+            schema:
+              type: object
+          application/xliff+xml;version=1:
+            schema:
+              type: object
+          application/xliff+xml;version=2:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Converted game data document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameDataDocument'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+      x-custom-response: true
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/collections/raw/':
+    get:
+      tags:
+        - DataSource
+      summary: Export documents from multiple collections into downloadable format without response wrapper.
+      operationId: exportRaw
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+        - $ref: '#/components/parameters/transaction'
+        - $ref: '#/components/parameters/exportMode'
+        - $ref: '#/components/parameters/schemas'
+        - $ref: '#/components/parameters/properties'
+        - $ref: '#/components/parameters/languages'
+        - $ref: '#/components/parameters/download'
+      responses:
+        '200':
+          description: Exported documents.
+          content:
+            application/json:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+            application/x-msgpack:
+              schema:
+                type: object
+            application/bson:
+              schema:
+                type: object
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: object
+            application/xliff+xml;version=1:
+              schema:
+                type: object
+            application/xliff+xml;version=2:
+              schema:
+                type: object
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+      x-custom-response: true
+  '/datasource/{dataSourceId}/raw/':
+    get:
+      tags:
+        - DataSource
+      summary: Backup data source into downloadable format without response wrapper.
+      operationId: backupRaw
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+        - $ref: '#/components/parameters/download'
+      responses:
+        '200':
+          description: Exported documents.
+          content:
+            application/json:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+            application/x-msgpack:
+              schema:
+                type: object
+            application/bson:
+              schema:
+                type: object
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+      x-custom-response: true
+  '/datasource/{dataSourceId}/loading-progress/':
+    get:
+      tags:
+        - DataSource
+      summary: Get data source's loading progress.
+      operationId: getLoadingProgress
+      responses:
+        '200':
+          description: Data source's capabilities and loading progress.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLoadingProgressResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/capabilities/':
+    get:
+      tags:
+        - DataSourceCapabilities
+      summary: Get data source's capabilities.
+      operationId: getCapabilities
+      responses:
+        '200':
+          description: Data source's capabilities.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCapabilitiesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/stats/':
+    get:
+      tags:
+        - DataSource
+      summary: Get data source's statistics.
+      operationId: examine
+      parameters:
+        - $ref: '#/components/parameters/transaction'
+      responses:
+        '200':
+          description: Data source's statistics.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamineResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/collections/':
+    get:
+      tags:
+        - DataSource
+      summary: Export documents from multiple collections.
+      operationId: export
+      parameters:
+        - $ref: '#/components/parameters/exportMode'
+        - $ref: '#/components/parameters/schemas'
+        - $ref: '#/components/parameters/properties'
+        - $ref: '#/components/parameters/languages'
+      responses:
+        '200':
+          description: Exported documents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ExportResponse'
+            application/x-msgpack:
+              schema:
+                $ref: '#/components/schemas/ExportResponse'
+            application/bson:
+              schema:
+                $ref: '#/components/schemas/ExportResponse'
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                $ref: '#/components/schemas/ExportResponse'
+            application/xliff+xml;version=1:
+              schema:
+                $ref: '#/components/schemas/ExportResponse'
+            application/xliff+xml;version=2:
+              schema:
+                $ref: '#/components/schemas/ExportResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    put:
+      tags:
+        - DataSource
+      summary: Import documents into multiple collections.
+      operationId: import
+      parameters:
+        - name: importMode
+          in: query
+          description: Import mode.
+          required: true
+          schema:
+            $ref: '#/components/schemas/ImportMode'
+        - $ref: '#/components/parameters/schemas'
+        - $ref: '#/components/parameters/languages'
+        - $ref: '#/components/parameters/validationOptions'
+      requestBody:
+        description: A documents to import.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameDataDocument'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/GameDataDocument'
+          application/x-msgpack:
+            schema:
+              $ref: '#/components/schemas/GameDataDocument'
+          application/bson:
+            schema:
+              $ref: '#/components/schemas/GameDataDocument'
+          application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+            schema:
+              $ref: '#/components/schemas/GameDataDocument'
+          application/xliff+xml;version=1:
+            schema:
+              $ref: '#/components/schemas/GameDataDocument'
+          application/xliff+xml;version=2:
+            schema:
+              $ref: '#/components/schemas/GameDataDocument'
+      responses:
+        '200':
+          description: Import report.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+      - $ref: '#/components/parameters/transaction'
+  '/datasource/{dataSourceId}/':
+    post:
+      tags:
+        - DataSource
+      summary: Query multiple documents by their unique properties e.g. batched find request. Max documents per request is - 20.
+      operationId: queryDocuments
+      requestBody:
+        description: A documents to convert.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                required:
+                  - uniqueSchemaPropertyNameOrId
+                  - uniqueSchemaPropertyValue
+                  - schemaNameOrId
+                type: object
+                properties:
+                  schemaNameOrId:
+                    type: string
+                  uniqueSchemaPropertyNameOrId:
+                    type: string
+                  uniqueSchemaPropertyValue:
+                    type: string
+                x-name: FindRequest
+      responses:
+        '200':
+          description: Query results in same order as requested.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryDocumentsResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    get:
+      tags:
+        - DataSource
+      summary: Backup data source.
+      operationId: backup
+      responses:
+        '200':
+          description: Backed up data source.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/BackupResponse'
+            application/x-msgpack:
+              schema:
+                $ref: '#/components/schemas/BackupResponse'
+            application/bson:
+              schema:
+                $ref: '#/components/schemas/BackupResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    put:
+      tags:
+        - DataSource
+      summary: Restore data source from specified documents.
+      operationId: restore
+      requestBody:
+        description: A documents to restore.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameDataDocument'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/GameDataDocument'
+          application/x-msgpack:
+            schema:
+              $ref: '#/components/schemas/GameDataDocument'
+          application/bson:
+            schema:
+              $ref: '#/components/schemas/GameDataDocument'
+      responses:
+        '200':
+          description: Data source restoration result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestoreResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/validity/':
+    post:
+      tags:
+        - DataSource
+      summary: Validadate data source with specified requirements/parameters.
+      operationId: validate
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+        - $ref: '#/components/parameters/transaction'
+        - $ref: '#/components/parameters/validationOptions'
+      responses:
+        '200':
+          description: Data source's configuration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/datasource/{dataSourceId}/present-users/':
+    get:
+      tags:
+        - UserPresence
+      summary: Get list of users present in specificated data source.
+      operationId: getDataSourcePresentUsers
+      responses:
+        '200':
+          description: List of user presence in data source.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDataSourcePresentUsersResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/source-code/':
+    get:
+      tags:
+        - DataSource
+      summary: Get T4 templates for generating source code.
+      operationId: getSourceCodeGenerationTemplate
+      parameters:
+        - $ref: '#/components/parameters/download'
+      responses:
+        '200':
+          description: Source code generation templates packed into .zip archive.
+          content:
+            application/zip:
+              schema:
+                $ref: '#/components/schemas/Blob'
+      security:
+        - BearerAuth: [ ]
+      x-custom-response: true
+    post:
+      tags:
+        - DataSource
+      summary: Generate source code for data source.
+      operationId: generateSourceCode
+      parameters:
+        - $ref: '#/components/parameters/download'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                targetLanguage:
+                  enum:
+                    - cSharp
+                  type: string
+                  x-name: SourceCodeTargetLanguage
+                documentClassName:
+                  type: string
+                gameDataClassName:
+                  type: string
+                namespace:
+                  type: string
+                lineEndings:
+                  enum:
+                    - windows
+                    - unix
+                  type: string
+                  x-name: SourceCodeLineEndings
+                indentation:
+                  enum:
+                    - tabs
+                    - twoSpaces
+                    - fourSpaces
+                  type: string
+                  x-name: SourceCodeIndentation
+                splitFiles:
+                  type: boolean
+                optimizations:
+                  type: array
+                  items:
+                    enum:
+                      - eagerReferenceResolution
+                      - rawReferences
+                      - rawLocalizedStrings
+                      - disableStringOptimization
+                      - disableJsonSerialization
+                      - disableMessagePackSerialization
+                      - disablePatching
+                    type: string
+                    x-name: SourceCodeGenerationOptimizations
+      responses:
+        '200':
+          description: Source code packed into .zip archive.
+          content:
+            application/zip:
+              schema:
+                $ref: '#/components/schemas/Blob'
+      security:
+        - BearerAuth: [ ]
+      x-custom-response: true
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/process/':
+    get:
+      tags:
+        - Processes
+      summary: List processes.
+      operationId: listProcesses
+      parameters:
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/take'
+      responses:
+        '200':
+          description: Process state.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProcessesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/process/{processId}/':
+    get:
+      tags:
+        - Processes
+      summary: Get process's state.
+      operationId: getProcess
+      responses:
+        '200':
+          description: Process state.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProcessResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    post:
+      tags:
+        - Processes
+      summary: Stop process.
+      operationId: stopProcess
+      parameters:
+        - name: stopReason
+          in: query
+          description: Reason why process has been stopped.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stopped process state.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StopProcessResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/processId'
+      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/process/{processId}/result/raw/':
+    get:
+      tags:
+        - Processes
+      summary: Get process's execution result without response wrapper.
+      operationId: getProcessResultRaw
+      parameters:
+        - $ref: '#/components/parameters/download'
+      responses:
+        '200':
+          description: Process result.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+      x-custom-response: true
+    parameters:
+      - $ref: '#/components/parameters/processId'
+      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/formula/type/':
+    get:
+      tags:
+        - Formulas
+      summary: List formula types.
+      operationId: listFormulaTypes
+      parameters:
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/take'
+        - name: query
+          in: query
+          description: Any value to search in type name.
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: List of types.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFormulaTypesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/formula/type/{typeName}/':
+    get:
+      tags:
+        - Formulas
+      summary: Get formula type by name.
+      operationId: getFormulaTypes
+      parameters:
+        - name: typeName
+          in: path
+          description: Type name to find.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Type description.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetFormulaTypesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+  '/project/{projectId}/preferences/':
+    get:
+      tags:
+        - Preferences
+      summary: Get project team-shared preferences.
+      operationId: loadProjectSharedPreferences
+      responses:
+        '200':
+          description: Preferences object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadProjectSharedPreferencesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    put:
+      tags:
+        - Preferences
+      summary: Save project team-shared preferences.
+      operationId: saveProjectSharedPreferences
+      requestBody:
+        description: Preferences object.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NullableDataDocument'
+      responses:
+        '204':
+          description: Preferences has been saved.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    patch:
+      tags:
+        - Preferences
+      summary: Patch project team-shared preferences.
+      operationId: patchProjectSharedPreferences
+      requestBody:
+        description: Patch object.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonPatches'
+      responses:
+        '204':
+          description: Patch has been applyed.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+  '/project/{projectId}/preferences/user/':
+    get:
+      tags:
+        - Preferences
+      summary: Get project user's preferences.
+      operationId: loadProjectPersonalPreferences
+      responses:
+        '200':
+          description: Preferences object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadProjectPersonalPreferencesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    put:
+      tags:
+        - Preferences
+      summary: Save project user's preferences.
+      operationId: saveProjectPersonalPreferences
+      requestBody:
+        description: Preferences object.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NullableDataDocument'
+      responses:
+        '204':
+          description: Preferences has been saved.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    patch:
+      tags:
+        - Preferences
+      summary: Patch project user's preferences.
+      operationId: patchProjectPersonalPreferences
+      requestBody:
+        description: Patch object.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonPatches'
+      responses:
+        '204':
+          description: Patch has been applyed.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+  '/workspace/{workspaceId}/preferences/':
+    get:
+      tags:
+        - Preferences
+      summary: Get workspace team-shared preferences.
+      operationId: loadWorkspaceSharedPreferences
+      responses:
+        '200':
+          description: Preferences object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadWorkspaceSharedPreferencesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    put:
+      tags:
+        - Preferences
+      summary: Save workspace team-shared preferences.
+      operationId: saveWorkspaceSharedPreferences
+      requestBody:
+        description: Preferences object.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NullableDataDocument'
+      responses:
+        '204':
+          description: Preferences has been saved.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    patch:
+      tags:
+        - Preferences
+      summary: Patch workspace team-shared preferences.
+      operationId: patchWorkspaceSharedPreferences
+      requestBody:
+        description: Patch object.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonPatches'
+      responses:
+        '204':
+          description: Patch has been applyed.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/workspaceId'
+  '/workspace/{workspaceId}/preferences/user/':
+    get:
+      tags:
+        - Preferences
+      summary: Get user's workspace preferences.
+      operationId: loadWorkspacePersonalPreferences
+      responses:
+        '200':
+          description: Preferences object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadWorkspacePersonalPreferencesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    put:
+      tags:
+        - Preferences
+      summary: Save user's workspace preferences.
+      operationId: saveWorkspacePersonalPreferences
+      requestBody:
+        description: Preferences object.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NullableDataDocument'
+      responses:
+        '204':
+          description: Preferences has been saved.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    patch:
+      tags:
+        - Preferences
+      summary: Patch user's workspace preferences.
+      operationId: patchWorkspacePersonalPreferences
+      requestBody:
+        description: Patch object.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonPatches'
+      responses:
+        '204':
+          description: Patch has been applyed.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/workspaceId'
+  /preferences/user/:
+    delete:
+      tags:
+        - Preferences
+      summary: Reset all user's preferences.
+      operationId: resetUserPreferences
+      responses:
+        '204':
+          description: Preferences has been reset.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  /preferences:
+    get:
+      tags:
+        - Preferences
+      summary: Get default preferences.
+      operationId: loadDefaultPreferences
+      responses:
+        '200':
+          description: Preferences object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadDefaultPreferencesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    put:
+      tags:
+        - Preferences
+      summary: Save default preferences.
+      operationId: saveDefaultPreferences
+      requestBody:
+        description: Preferences object.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NullableDataDocument'
+      responses:
+        '204':
+          description: Preferences has been saved.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    patch:
+      tags:
+        - Preferences
+      summary: Patch default preferences.
+      operationId: patchDefaultPreferences
+      requestBody:
+        description: Patch object.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonPatches'
+      responses:
+        '204':
+          description: Patch has been applyed.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  /user:
+    get:
+      tags:
+        - User
+      summary: Get all available users.
+      operationId: getAllUsers
+      parameters:
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/take'
+        - name: query
+          in: query
+          description: Any value to search in user name or email.
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: List of users.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllUsersResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    put:
+      tags:
+        - User
+      summary: Create user with specified parameters.
+      operationId: createUser
+      requestBody:
+        description: User registration information.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  maxLength: 128
+                  minLength: 2
+                  type: string
+                pictureUrl:
+                  maxLength: 1024
+                  type: string
+                  nullable: true
+                email:
+                  maxLength: 256
+                  minLength: 3
+                  pattern: \w+@\w+
+                  type: string
+                passwordCredential:
+                  type: object
+                  properties:
+                    password:
+                      $ref: '#/components/schemas/PasswordString'
+                  nullable: true
+                  x-name: UserCreationPasswordCredential
+              x-name: UserCreationRequest
+      responses:
+        '201':
+          description: User has been created.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-anonymous: true
+  /user/public/:
+    post:
+      tags:
+        - User
+      summary: Get public profiles of users by their ids.
+      operationId: getPublicUserProfiles
+      requestBody:
+        description: User registration information.
+        content:
+          application/json:
+            schema:
+              minItems: 1
+              type: array
+              items:
+                type: string
+                format: objectId
+      responses:
+        '200':
+          description: List of user public profiles.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPublicUserProfilesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  /user/me/:
+    get:
+      tags:
+        - User
+      summary: Get current user.
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: Found user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCurrentUserResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  /user/password-reset/:
+    put:
+      tags:
+        - User
+      summary: Request password reset.
+      operationId: requestPasswordReset
+      requestBody:
+        description: User reset request information.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  pattern: \w+@\w+
+                  type: string
+              x-name: UserPasswordResetRequest
+      responses:
+        '204':
+          description: Password reset request has been accepted.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-anonymous: true
+    post:
+      tags:
+        - User
+      summary: Change user password by using code from email.
+      operationId: resetPassword
+      requestBody:
+        description: User password reset information.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  minLength: 24
+                  type: string
+                newPassword:
+                  $ref: '#/components/schemas/PasswordString'
+              x-name: UserResetPasswordRequest
+      responses:
+        '204':
+          description: Password has been reset.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-anonymous: true
+  '/user/{userId}/':
+    get:
+      tags:
+        - User
+      summary: Get user by id.
+      operationId: getUser
+      responses:
+        '200':
+          description: Found user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    post:
+      tags:
+        - User
+      summary: Update user with new parameters.
+      operationId: updateUser
+      requestBody:
+        description: User update information.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newName:
+                  maxLength: 64
+                  minLength: 2
+                  type: string
+                  nullable: true
+                newEmail:
+                  pattern: \w+@\w+
+                  type: string
+                  nullable: true
+                newPictureUrl:
+                  type: string
+                  nullable: true
+              x-name: UpdateUserRequest
+      responses:
+        '200':
+          description: Updated workspace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateUserResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    delete:
+      tags:
+        - User
+      summary: Strip personal information from user and block any access.
+      operationId: cleanUpUser
+      responses:
+        '204':
+          description: User has been cleaned.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/userId'
+  '/user/{userId}/public/':
+    get:
+      tags:
+        - User
+      summary: Get user public profile by id.
+      operationId: getPublicUserProfile
+      responses:
+        '200':
+          description: Found user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPublicUserProfileResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/userId'
+  '/user/{userId}/login/password/':
+    post:
+      tags:
+        - User
+      summary: Change user password by using temporary code or old password.
+      operationId: changePassword
+      requestBody:
+        description: User password change information.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currentPassword:
+                  $ref: '#/components/schemas/PasswordString'
+                newPassword:
+                  $ref: '#/components/schemas/PasswordString'
+              x-name: UserChangePasswordRequest
+      responses:
+        '204':
+          description: Password has been changed.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/userId'
+  '/user/{userId}/mfa/email-code/':
+    post:
+      tags:
+        - User
+      summary: Configure email-code multi-factor authentication.
+      operationId: configureMfaEmailTotpCode
+      requestBody:
+        description: User password change information.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isEnabled:
+                  type: boolean
+              x-name: ConfigureEmailCodeMfaRequest
+      responses:
+        '204':
+          description: Multi-factor authentication has been configured.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/userId'
+  '/user/{userId}/login/tokens/':
+    delete:
+      tags:
+        - User
+      summary: Revoke all issues tokens for specified user.
+      operationId: revokeAllTokens
+      responses:
+        '204':
+          description: All tokens have been revokes. It is required to re-authenticate after this call.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/userId'
+  '/user/{userId}/login/api-key/':
+    post:
+      tags:
+        - User
+      summary: Add API key login to user.
+      operationId: addApiKeyLogin
+      requestBody:
+        description: API key information.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  maxLength: 52
+                  type: string
+                  nullable: true
+                expirationTimeSeconds:
+                  minimum: 60
+                  type: integer
+                  description: Key expiration time in seconds. Null for non-expiring key.
+                  format: int32
+                  nullable: true
+              x-name: AddApiKeyRequest
+      responses:
+        '200':
+          description: List of workspaces.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddApiKeyLoginResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    delete:
+      tags:
+        - User
+      summary: Delete API key login from user.
+      operationId: deleteApiKeyLogin
+      parameters:
+        - name: id
+          in: query
+          description: Id of UserLogin with API key.
+          required: true
+          schema:
+            minLength: 24
+            type: string
+      responses:
+        '204':
+          description: API key has been deleted and no longer valid.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/userId'
+  '/user/{userId}/invitations/{invitationId}/':
+    post:
+      tags:
+        - User
+      summary: Accept invitation.
+      operationId: acceptInvitation
+      responses:
+        '204':
+          description: Invitation has been accepted.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    delete:
+      tags:
+        - User
+      summary: Decline invitation.
+      operationId: declineInvitation
+      responses:
+        '204':
+          description: Invitation has been dismissed.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/userId'
+      - $ref: '#/components/parameters/invitationId'
+  /workspace:
+    get:
+      tags:
+        - Workspace
+      summary: Get all available workspaces.
+      operationId: getAllWorkspaces
+      parameters:
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/take'
+        - name: query
+          in: query
+          description: Any value to search in workspace name.
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: List of workspaces.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllWorkspacesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  /workspace/my/:
+    get:
+      tags:
+        - Workspace
+      summary: Get current user's workspaces.
+      operationId: getCurrentWorkspaces
+      responses:
+        '200':
+          description: List of known workspaces.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCurrentWorkspacesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/workspace/{workspaceId}/':
+    get:
+      tags:
+        - Workspace
+      summary: Get workspace by id.
+      operationId: getWorkspace
+      responses:
+        '200':
+          description: Found Workspace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWorkspaceResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    post:
+      tags:
+        - Workspace
+      summary: Update workspace with new parameters.
+      operationId: updateWorkspace
+      requestBody:
+        description: Workspace update information.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newName:
+                  maxLength: 64
+                  minLength: 2
+                  type: string
+                  nullable: true
+                newPictureUrl:
+                  type: string
+                  nullable: true
+              x-name: UpdateWorkspaceRequest
+      responses:
+        '200':
+          description: Updated workspace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateWorkspaceResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/workspaceId'
+  '/workspace/{workspaceId}/quota-usage/':
+    post:
+      tags:
+        - WorkspaceQuota
+      summary: Get workspace quota usage.
+      operationId: getWorkspaceQuotaUsage
+      responses:
+        '200':
+          description: Found Workspace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWorkspaceQuotaUsageResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/workspaceId'
+  '/workspace/{workspaceId}/administrators/':
+    put:
+      tags:
+        - Workspace
+      summary: Promote member to workspace administrators.
+      operationId: promoteToWorkspaceAdministrator
+      parameters:
+        - name: memberUserId
+          in: query
+          description: Member user id.
+          required: true
+          schema:
+            type: string
+            format: objectId
+      responses:
+        '204':
+          description: Member has been promoted to administrator.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    delete:
+      tags:
+        - Workspace
+      summary: Demote member from workspace administrators.
+      operationId: demoteFromWorkspaceAdministrator
+      parameters:
+        - name: memberUserId
+          in: query
+          description: Member user id.
+          required: true
+          schema:
+            type: string
+            format: objectId
+      responses:
+        '204':
+          description: Member has been demoted from administrator.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/workspaceId'
+  '/workspace/{workspaceId}/members/':
+    get:
+      tags:
+        - Workspace
+      summary: Get workspace members.
+      operationId: getWorkspaceMembers
+      responses:
+        '200':
+          description: Workspace members.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWorkspaceMembersResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/workspaceId'
+  /project:
+    get:
+      tags:
+        - Project
+      summary: Get all available projects.
+      operationId: getAllProjects
+      parameters:
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/take'
+        - name: query
+          in: query
+          description: Any value to search in project name.
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: List of projects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllProjectsResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    put:
+      tags:
+        - Project
+      summary: Create new project.
+      operationId: createProject
+      requestBody:
+        description: Project creation parameters.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workspaceId:
+                  type: string
+                  format: objectId
+                name:
+                  maxLength: 64
+                  minLength: 3
+                  type: string
+                template:
+                  maxLength: 256
+                  type: string
+                  nullable: true
+              x-name: CreateProjectRequest
+      responses:
+        '200':
+          description: Created project.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateProjectResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  /project/my/:
+    get:
+      tags:
+        - Project
+      summary: Get current user's workspaces.
+      operationId: getCurrentProjects
+      responses:
+        '200':
+          description: List of projects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCurrentProjectsResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/project/{projectId}/':
+    get:
+      tags:
+        - Project
+      summary: Get project by id.
+      operationId: getProject
+      responses:
+        '200':
+          description: Found Project.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProjectResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    post:
+      tags:
+        - Project
+      summary: Update project with new parameters.
+      operationId: updateProject
+      requestBody:
+        description: Project update information.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newName:
+                  maxLength: 64
+                  minLength: 2
+                  type: string
+                  nullable: true
+                newPictureUrl:
+                  type: string
+                  nullable: true
+              x-name: UpdateProjectRequest
+      responses:
+        '200':
+          description: Updated project.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateProjectResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    delete:
+      tags:
+        - Project
+      summary: Delete project and all related data.
+      operationId: deleteProject
+      responses:
+        '204':
+          description: Project has been deleted.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+  '/project/{projectId}/branch':
+    put:
+      tags:
+        - Project
+      summary: Create branch in project.
+      operationId: createBranch
+      requestBody:
+        description: Branch creation parameters.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: '#/components/schemas/BranchName'
+              x-name: CreateBranchRequest
+      responses:
+        '204':
+          description: Branch has been created.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+  '/project/{projectId}/branch/{branchName}':
+    put:
+      tags:
+        - Project
+      summary: Push branch content into another branch in this project.
+      operationId: pushBranch
+      requestBody:
+        description: Branch push parameters.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                destinationBranchName:
+                  $ref: '#/components/schemas/BranchName'
+              x-name: PushBranchRequest
+      responses:
+        '204':
+          description: Branch has been updated.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    post:
+      tags:
+        - Project
+      summary: Updade branch in project.
+      operationId: updateBranch
+      requestBody:
+        description: Branch update parameters.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newName:
+                  $ref: '#/components/schemas/BranchName'
+                newOrdinal:
+                  type: integer
+                  format: int32
+                  nullable: true
+              x-name: UpdateBranchRequest
+      responses:
+        '204':
+          description: Branch has been updated.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    delete:
+      tags:
+        - Project
+      summary: Delete branch in project.
+      operationId: deleteBranch
+      responses:
+        '204':
+          description: Branch has been deleted.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/branchName'
+      - $ref: '#/components/parameters/projectId'
+  '/project/{projectId}/workspace/':
+    post:
+      tags:
+        - Project
+      summary: Transfer project form one workspace to another.
+      operationId: TransferProject
+      requestBody:
+        description: Project transfer parameters.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newWorkspaceId:
+                  type: string
+                  format: objectId
+              x-name: TransferProjectRequest
+      responses:
+        '204':
+          description: Project has been transfered.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+  '/project/{projectId}/members/':
+    put:
+      tags:
+        - Project
+      summary: Invite another user into project.
+      operationId: inviteIntoProject
+      requestBody:
+        description: Invitation parameters.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  maxLength: 128
+                  minLength: 2
+                  type: string
+                email:
+                  maxLength: 256
+                  minLength: 3
+                  pattern: \w+@\w+
+                  type: string
+              x-name: InviteIntoProjectRequest
+      responses:
+        '204':
+          description: Invite has been sent.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    delete:
+      tags:
+        - Project
+      summary: Expel another user from project.
+      operationId: expelFromProject
+      parameters:
+        - name: memberUserId
+          in: query
+          description: Member user id.
+          required: true
+          schema:
+            type: string
+            format: objectId
+      responses:
+        '204':
+          description: Invite has been sent.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+  '/project/{projectId}/permissions/':
+    post:
+      tags:
+        - Project
+      summary: Update project permissions.
+      operationId: updateProjectPermissions
+      requestBody:
+        description: Update parameters.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                permissions:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ProjectPermission'
+              x-name: UpdateProjectPermissionsRequest
+      responses:
+        '204':
+          description: Project permissions has been updated.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/projectId'
+  /membership/packages/:
+    get:
+      tags:
+        - Membership
+      summary: Get all membership packages.
+      operationId: getMembershipPackages
+      responses:
+        '200':
+          description: List of all membership packages.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMembershipPackagesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/billing/{userId}/account/':
+    get:
+      tags:
+        - Billing
+      summary: Get billing account by id.
+      operationId: getBillingAccount
+      responses:
+        '200':
+          description: Found billing account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBillingAccountResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    post:
+      tags:
+        - Billing
+      summary: Update billing information
+      operationId: updateBillingAccount
+      requestBody:
+        description: Billing information parameters.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  maxLength: 64
+                  minLength: 1
+                  type: string
+                lastName:
+                  maxLength: 64
+                  minLength: 1
+                  type: string
+                addressLine1:
+                  maxLength: 512
+                  minLength: 1
+                  type: string
+                addressLine2:
+                  maxLength: 512
+                  type: string
+                  nullable: true
+                city:
+                  maxLength: 128
+                  minLength: 1
+                  type: string
+                countryCode:
+                  maxLength: 16
+                  minLength: 2
+                  type: string
+                postalCode:
+                  maxLength: 16
+                  type: string
+                  nullable: true
+                state:
+                  maxLength: 128
+                  type: string
+                  nullable: true
+              x-name: UpdateBillingAccountRequest
+      responses:
+        '200':
+          description: Updated billing account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateBillingAccountResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/userId'
+  '/billing/{userId}/contact-request/':
+    post:
+      tags:
+        - Billing
+      summary: Request contact from sales representative.
+      operationId: requestContact
+      responses:
+        '204':
+          description: An contact request has been made.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/userId'
+  '/billing/{userId}/payment/status/':
+    get:
+      tags:
+        - Billing
+      summary: Get status of payment for subscription for workspace.
+      operationId: getPaymentStatus
+      parameters:
+        - name: sessionOrInvoiceId
+          in: query
+          description: Payment session Id or invoice Id.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Status of payment session or invoice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPaymentStatusResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    post:
+      tags:
+        - Billing
+      summary: Start subscription session for workspace.
+      operationId: startSubscriptionSession
+      requestBody:
+        description: Payment subject parameters.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workspaceId:
+                  type: string
+                  format: objectId
+                packageName:
+                  type: string
+                period:
+                  $ref: '#/components/schemas/BillingPeriod'
+                currencyCode:
+                  $ref: '#/components/schemas/CurrencyCode'
+                successRedirectUrl:
+                  maxLength: 256
+                  type: string
+                cancelRedirectUrl:
+                  maxLength: 256
+                  type: string
+              x-name: StartSubscriptionSessionRequest
+      responses:
+        '200':
+          description: Payment action response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartSubscriptionSessionResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/userId'
+  '/billing/{userId}/payment/':
+    post:
+      tags:
+        - Billing
+      summary: Make payment for selected invoice.
+      operationId: makePayment
+      requestBody:
+        description: Make payment parameters.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                invoiceId:
+                  type: string
+                  format: objectId
+              x-name: MakePaymentRequest
+      responses:
+        '200':
+          description: Payment action response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MakePaymentResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/userId'
+  '/billing/{userId}/payment/upcoming':
+    post:
+      tags:
+        - Billing
+      summary: Get prorated upcoming payment information.
+      operationId: getUpcomingPayment
+      requestBody:
+        description: Upcoming payment changes parameters.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workspaceId:
+                  type: string
+                  format: objectId
+                packageName:
+                  type: string
+                period:
+                  $ref: '#/components/schemas/BillingPeriod'
+                currencyCode:
+                  $ref: '#/components/schemas/CurrencyCode'
+              x-name: UpcomingPaymentParameters
+      responses:
+        '200':
+          description: Upcoming payment information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUpcomingPaymentResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/userId'
+  /billing/notification/:
+    post:
+      tags:
+        - Billing
+      summary: Accept notification from payment gate.
+      operationId: paymentNotification
+      responses:
+        '204':
+          description: Notification has been accepted.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-anonymous: true
+  /resourceStorage/:
+    put:
+      tags:
+        - ResourceStorage
+      summary: Create resource.
+      operationId: createResource
+      parameters:
+        - name: name
+          in: query
+          description: Filename or name of resource.
+          required: true
+          schema:
+            minLength: 2
+            type: string
+        - name: purpose
+          in: query
+          description: Use purpose of resource.
+          required: true
+          schema:
+            $ref: '#/components/schemas/StoredResourcePurpose'
+        - name: mediaType
+          in: query
+          description: Media type of resource.
+          schema:
+            minLength: 1
+            type: string
+            default: application/octet-stream
+            nullable: true
+      requestBody:
+        description: Binary data of resource.
+        content:
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/Blob'
+      responses:
+        '200':
+          description: Created resource id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateResourceResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/resourceStorage/{resourceId}/':
+    get:
+      tags:
+        - ResourceStorage
+      summary: Get resource metadata by id.
+      operationId: getResourceMetadata
+      responses:
+        '200':
+          description: Found resource.
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/GetResourceMetadataResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    delete:
+      tags:
+        - ResourceStorage
+      summary: Delete resource by id.
+      operationId: deleteResource
+      responses:
+        '204':
+          description: Resource has been deleted.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/resourceId'
+  '/resourceStorage/{resourceId}/data/':
+    get:
+      tags:
+        - ResourceStorage
+      summary: Get resource binary data by id.
+      operationId: getResource
+      responses:
+        '200':
+          description: Found resource.
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/Blob'
+      security:
+        - BearerAuth: [ ]
+      x-custom-response: true
+      x-custom-implementation: true
+    parameters:
+      - $ref: '#/components/parameters/resourceId'
+  /context/:
+    get:
+      tags:
+        - Context
+      summary: Get page context.
+      operationId: getContext
+      parameters:
+        - name: projectName
+          in: query
+          description: Project name of current page.
+          schema:
+            type: string
+            nullable: true
+        - name: branchName
+          in: query
+          description: Branch name of current page.
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: Page's context related properties.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetContextResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-anonymous: true
+  /notification/:
+    get:
+      tags:
+        - Notifications
+      summary: 'Subscribe on notifications from server. This is WebSocket endpoint, any non ''Upgrade'' requests will fail.'
+      operationId: subscribeOnNotifications
+      responses:
+        '101':
+          description: WebSocket upgrade were sucessful.
+      security:
+        - BearerAuth: [ ]
+      x-custom-response: true
+components:
+  schemas:
+    PasswordString:
+      maxLength: 256
+      minLength: 6
+      type: string
+      format: password
+    Filter:
+      type: object
+      properties:
+        property:
+          type: string
+          description: Name of property to filter.
+        operator:
+          enum:
+            - greaterThan
+            - greaterThanOrEqual
+            - lessThan
+            - lessThanOrEqual
+            - equal
+            - notEqual
+            - like
+            - in
+          type: string
+        value:
+          type: object
+          nullable: true
+        caseSensitive:
+          type: boolean
+      additionalProperties: false
+      description: Description of document filtering conditions.
+      nullable: true
+      readOnly: true
+    Sorter:
+      type: object
+      properties:
+        property:
+          type: string
+          description: Name of property to filter.
+        direction:
+          enum:
+            - ascending
+            - descending
+          type: string
+      additionalProperties: false
+      description: Description of document sorting option.
+      readOnly: true
+    GameDataDocument:
+      type: object
+      description: Collections of documents by schema name.
+      x-external-type: GameDataDocument
+    DataDocument:
+      type: object
+      x-external-type: DataDocument
+    NullableDataDocument:
+      type: object
+      nullable: true
+      x-external-type: DataDocument
+    BulkChangeResult:
+      type: object
+      properties:
+        changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkChangeRecord'
+        metadataHashCode:
+          type: integer
+          format: int32
+      additionalProperties: false
+      readOnly: true
+    StatisticsResult:
+      type: object
+      properties:
+        metadataHashCode:
+          type: integer
+          format: int32
+        collections:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentsStatisticsRecord'
+      additionalProperties: false
+      readOnly: true
+    DocumentsStatisticsRecord:
+      type: object
+      properties:
+        schemaName:
+          type: string
+          description: Name of relevant schema.
+          readOnly: true
+        schemaId:
+          type: string
+          description: Identitifer of relevant schema.
+          readOnly: true
+        documentCount:
+          type: integer
+          description: Number of all documents.
+          format: int32
+          readOnly: true
+        rootDocumentCount:
+          type: integer
+          description: Number of root documents.
+          format: int32
+          readOnly: true
+        validationErrorCount:
+          type: object
+          additionalProperties:
+            type: integer
+            description: Number of documents containing errors.
+            format: int32
+            readOnly: true
+          readOnly: true
+      additionalProperties: false
+      description: Statistics of documents for some schema.
+      readOnly: true
+    BulkChangeRecord:
+      type: object
+      properties:
+        id:
+          type: object
+        newId:
+          type: object
+          nullable: true
+        schemaName:
+          type: string
+        schemaId:
+          type: string
+        status:
+          enum:
+            - created
+            - updated
+            - deleted
+            - skipped
+            - unchanged
+            - error
+          type: string
+        comment:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      additionalProperties: false
+      readOnly: true
+    ValidationError:
+      type: object
+      properties:
+        path:
+          type: string
+        message:
+          type: string
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+      readOnly: true
+    ValidateResult:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationRecord'
+        metadataHashCode:
+          type: integer
+          format: int32
+      additionalProperties: false
+      readOnly: true
+    ValidationRecord:
+      type: object
+      properties:
+        id:
+          type: object
+        schemaName:
+          type: string
+        schemaId:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      additionalProperties: false
+      readOnly: true
+    DataDocumentMeta:
+      type: object
+      properties:
+        schemaId:
+          type: string
+        path:
+          type: string
+          nullable: true
+        containingDocumentSchemaId:
+          type: string
+          nullable: true
+        containingDocumentId:
+          type: string
+          nullable: true
+        errorCount:
+          type: integer
+          format: int32
+      additionalProperties: false
+      readOnly: true
+    ValidationOption:
+      enum:
+        - repair
+        - checkTranslation
+        - deduplicateIds
+        - repairRequiredWithDefaultValue
+        - eraseInvalidValue
+        - checkRequirements
+        - checkFormat
+        - checkUniqueness
+        - checkReferences
+        - checkSpecification
+        - checkConstraints
+      type: string
+    ImportMode:
+      enum:
+        - createAndUpdate
+        - create
+        - update
+        - safeUpdate
+        - replace
+        - delete
+      type: string
+    ExportMode:
+      enum:
+        - normal
+        - publication
+        - localization
+        - extraction
+      type: string
+    ExportResult:
+      type: object
+      properties:
+        document:
+          $ref: '#/components/schemas/GameDataDocument'
+        metadataHashCode:
+          type: integer
+          format: int32
+      additionalProperties: false
+      readOnly: true
+    BackupResult:
+      type: object
+      properties:
+        document:
+          $ref: '#/components/schemas/GameDataDocument'
+        metadataHashCode:
+          type: integer
+          format: int32
+      additionalProperties: false
+      readOnly: true
+    CreateResult:
+      type: object
+      properties:
+        document:
+          $ref: '#/components/schemas/DataDocument'
+        metadataHashCode:
+          type: integer
+          format: int32
+      additionalProperties: false
+      readOnly: true
+    UpdateResult:
+      type: object
+      properties:
+        document:
+          $ref: '#/components/schemas/DataDocument'
+        diff:
+          $ref: '#/components/schemas/DataDocument'
+        metadataHashCode:
+          type: integer
+          format: int32
+      additionalProperties: false
+      readOnly: true
+    DeleteResult:
+      type: object
+      properties:
+        document:
+          $ref: '#/components/schemas/DataDocument'
+        metadataHashCode:
+          type: integer
+          format: int32
+      additionalProperties: false
+      readOnly: true
+    FindResult:
+      type: object
+      properties:
+        document:
+          $ref: '#/components/schemas/NullableDataDocument'
+        meta:
+          $ref: '#/components/schemas/DataDocumentMeta'
+        metadataHashCode:
+          type: integer
+          format: int32
+      additionalProperties: false
+      readOnly: true
+    ListResult:
+      type: object
+      properties:
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataDocument'
+        metas:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataDocumentMeta'
+        total:
+          type: integer
+          format: int32
+        metadataHashCode:
+          type: integer
+          format: int32
+      additionalProperties: false
+      readOnly: true
+    RestoreResult:
+      type: object
+      properties:
+        metadataHashCode:
+          type: integer
+          format: int32
+      additionalProperties: false
+      readOnly: true
+    PageContext:
+      type: object
+      properties:
+        scope:
+          enum:
+            - server
+            - user
+            - dataSource
+          type: string
+        serverVersion:
+          type: string
+        serverCapabilities:
+          $ref: '#/components/schemas/ServerCapabilities'
+        userId:
+          type: string
+          format: objectId
+          nullable: true
+        workspaceId:
+          type: string
+          format: objectId
+          nullable: true
+        projectId:
+          type: string
+          format: objectId
+          nullable: true
+        dataSourceId:
+          type: string
+          format: objectId
+          nullable: true
+        dataSourceLocation:
+          type: string
+          nullable: true
+        preferences:
+          type: object
+          properties:
+            projectPersonal:
+              $ref: '#/components/schemas/NullableDataDocument'
+            projectShared:
+              $ref: '#/components/schemas/NullableDataDocument'
+            workspacePersonal:
+              $ref: '#/components/schemas/NullableDataDocument'
+            workspaceShared:
+              $ref: '#/components/schemas/NullableDataDocument'
+            serverDefault:
+              $ref: '#/components/schemas/NullableDataDocument'
+          x-name: PreferencesByLayer
+      additionalProperties: false
+      readOnly: true
+    DataSourceCapabilities:
+      type: object
+      properties:
+        location:
+          type: string
+        limits:
+          type: object
+          properties:
+            transactionMaxStartTime:
+              type: string
+              format: time
+            transactionMaxExecutionTime:
+              type: string
+              format: time
+            readOnly:
+              type: boolean
+            readOnlyReasons:
+              type: array
+              items:
+                $ref: '#/components/schemas/DataSourceReadOnlyReason'
+      additionalProperties: false
+      readOnly: true
+    DataSourceReadOnlyReason:
+      enum:
+        - protectedDocument
+        - fileIsReadOnly
+        - noEditPermission
+        - tooManyMembers
+        - tooManyProjects
+        - storageExhausted
+      type: string
+    BranchName:
+      maxLength: 64
+      minLength: 2
+      pattern: '^[a-zA-Z_][a-zA-Z0-9_]*$'
+      type: string
+    ServerCapabilities:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            enum:
+              - none
+              - authentication
+              - remoteLogging
+              - projectSelection
+              - projectDelete
+              - projectTransfer
+              - projectMembers
+              - projectBranches
+              - projectPermissions
+              - projectCustomization
+              - userDelete
+              - revokeTokens
+              - billing
+              - apiKeys
+              - googleAuthentication
+              - microsoftAuthentication
+              - githubAuthentication
+            type: string
+            x-name: ServerFeature
+      additionalProperties: false
+      readOnly: true
+    ProcessState:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        dataSourceId:
+          type: string
+          format: objectId
+        type:
+          $ref: '#/components/schemas/ProcessType'
+        initiatorName:
+          type: string
+        initiatorId:
+          type: string
+          format: objectId
+          nullable: true
+        status:
+          $ref: '#/components/schemas/ProcessWorkflowStatus'
+        progressMessage:
+          type: string
+        progress:
+          type: number
+          format: float
+        startTime:
+          type: string
+          format: date-time
+        elapsedMilliseconds:
+          type: number
+          format: float
+        canBeStopped:
+          type: boolean
+      additionalProperties: false
+      readOnly: true
+    ProcessType:
+      enum:
+        - load
+        - validate
+        - import
+        - export
+        - backup
+        - restore
+        - generateSourceCode
+      type: string
+    ProcessWorkflowStatus:
+      enum:
+        - unknown
+        - running
+        - stopped
+        - faulted
+        - finished
+        - finishedWithResult
+      type: string
+    FormulaType:
+      type: object
+      properties:
+        kind:
+          enum:
+            - class
+            - enum
+            - interface
+            - structure
+            - delegate
+          type: string
+        name:
+          type: string
+        namespace:
+          type: string
+        fullName:
+          type: string
+        baseTypeFullName:
+          type: string
+        declaringTypeFullName:
+          type: string
+        assemblyName:
+          type: string
+        assemblyFullName:
+          type: string
+      additionalProperties: false
+      readOnly: true
+    PublicUserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: objectid
+        name:
+          type: string
+        pictureUrl:
+          type: string
+          nullable: true
+      additionalProperties: false
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: objectid
+        type:
+          enum:
+            - personalAccount
+            - administratorAccount
+          type: string
+          x-name: UserAccountType
+        profile:
+          type: object
+          properties:
+            name:
+              type: string
+            pictureUrl:
+              type: string
+              nullable: true
+            email:
+              type: string
+            verifiedEmail:
+              type: string
+              nullable: true
+        logins:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserLogin'
+        invitations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectMembershipInvitation'
+        workspaces:
+          type: array
+          items:
+            type: string
+            format: objectid
+        workspaceAliases:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkspaceAlias'
+        projectAliases:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectAlias'
+        creationTime:
+          type: string
+          format: date-time
+    WorkspaceAlias:
+      properties:
+        workspaceId:
+          type: string
+          format: objectid
+        alias:
+          type: string
+        creationTime:
+          type: string
+          format: date-time
+    ProjectAlias:
+      properties:
+        projectId:
+          type: string
+          format: objectid
+        alias:
+          type: string
+        creationTime:
+          type: string
+          format: date-time
+    UserLogin:
+      properties:
+        id:
+          type: string
+        isEnabled:
+          type: boolean
+        tokenSeries:
+          type: string
+          format: objectid
+        provider:
+          $ref: '#/components/schemas/AuthenticationProvider'
+    CreatedApiKey:
+      properties:
+        userLogin:
+          $ref: '#/components/schemas/UserLogin'
+        apiKey:
+          type: string
+    PresenceInfo:
+      required:
+        - sessionId
+        - page
+      type: object
+      properties:
+        sessionId:
+          type: integer
+          format: int32
+        page:
+          enum:
+            - gone
+            - dashboard
+            - documentForm
+            - documentCollection
+          type: string
+          x-name: UserPresencePage
+        routeParameters:
+          type: object
+        focusedObject:
+          type: object
+          nullable: true
+    AuthenticationProvider:
+      enum:
+        - emailPassword
+        - emailTotpCode
+        - apiKey
+        - google
+        - microsoft
+        - github
+      type: string
+    ProjectMembershipInvitation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: objectid
+        invitedUserId:
+          type: string
+          format: objectid
+        initiatorUserId:
+          type: string
+          format: objectid
+        projectId:
+          type: string
+          format: objectid
+        response:
+          enum:
+            - sent
+            - emailSent
+            - declined
+          type: string
+        creationTime:
+          type: string
+          format: date-time
+    Workspace:
+      type: object
+      properties:
+        id:
+          type: string
+          format: objectid
+        name:
+          type: string
+        pictureUrl:
+          type: string
+          nullable: true
+        ownerUserId:
+          type: string
+          format: objectid
+        subscription:
+          $ref: '#/components/schemas/MembershipSubscription'
+        administratorUserIds:
+          type: array
+          items:
+            type: string
+            format: objectid
+        projects:
+          type: array
+          items:
+            type: string
+            format: objectid
+    WorkspaceQuotaUsage:
+      type: object
+      properties:
+        memberCount:
+          type: integer
+          format: int32
+        projectCount:
+          type: integer
+          format: int32
+        dataStorageSize:
+          type: integer
+          format: int32
+        backupStorageSize:
+          type: integer
+          format: int32
+        translationTokens:
+          type: integer
+          format: int32
+        aiSuggestionTokens:
+          type: integer
+          format: int32
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          format: objectid
+        name:
+          type: string
+        pictureUrl:
+          type: string
+          nullable: true
+        workspaceId:
+          type: string
+          format: objectid
+        branches:
+          type: array
+          items:
+            $ref: '#/components/schemas/Branch'
+        memberUserIds:
+          type: array
+          items:
+            type: string
+            format: objectid
+        invitations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectMembershipInvitation'
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectPermission'
+    Branch:
+      type: object
+      properties:
+        id:
+          type: string
+          format: objectid
+        name:
+          type: string
+        isPrimary:
+          type: boolean
+        databaseName:
+          type: string
+        location:
+          enum:
+            - fileSystem
+            - mongoGridFs
+            - mongoCollection
+            - mongoDataBase
+          type: string
+        dataSize:
+          type: integer
+          format: int32
+        backupSize:
+          type: integer
+          format: int32
+    ProjectPermission:
+      type: object
+      properties:
+        memberUserId:
+          type: string
+          format: objectid
+        grants:
+          type: array
+          items:
+            enum:
+              - view
+              - edit
+              - design
+              - administer
+            type: string
+            x-name: ProjectPermissionGrant
+    BillingAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          format: objectid
+        externalId:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+        lastName:
+          type: string
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+          nullable: true
+        city:
+          type: string
+        countryCode:
+          type: string
+        postalCode:
+          type: string
+          nullable: true
+        state:
+          type: string
+          nullable: true
+        balance:
+          type: array
+          items:
+            $ref: '#/components/schemas/CurrencyAmount'
+        invoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentInvoice'
+    PaymentInvoice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: objectid
+        externalId:
+          type: string
+          nullable: true
+        creationTime:
+          type: string
+          format: date-time
+        description:
+          type: string
+        hostedUrl:
+          type: string
+          nullable: true
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentInvoiceLineItem'
+        currencyCode:
+          $ref: '#/components/schemas/CurrencyCode'
+        totalAmount:
+          type: integer
+          format: int32
+        lastUpdateTime:
+          type: string
+          format: date-time
+        lastPaymentError:
+          type: string
+          nullable: true
+        status:
+          enum:
+            - draft
+            - open
+            - paid
+            - uncollectible
+            - void
+          type: string
+    PaymentInvoiceLineItem:
+      type: object
+      properties:
+        description:
+          type: string
+        currencyCode:
+          $ref: '#/components/schemas/CurrencyCode'
+        amount:
+          type: integer
+          format: int32
+    MembershipPackage:
+      type: object
+      properties:
+        name:
+          type: string
+        externalId:
+          type: string
+          nullable: true
+        title:
+          type: string
+        features:
+          type: object
+          properties:
+            backup:
+              type: object
+              properties:
+                allowSchedule:
+                  type: boolean
+            projects:
+              type: object
+              properties:
+                maxMembers:
+                  type: integer
+                  format: int32
+                  nullable: true
+                maxProjects:
+                  type: integer
+                  format: int32
+                  nullable: true
+            storage:
+              type: object
+              properties:
+                dataSource:
+                  type: integer
+                  format: int32
+                  nullable: true
+                backups:
+                  type: integer
+                  format: int32
+                  nullable: true
+            serviceTokens:
+              type: object
+              properties:
+                translation:
+                  type: integer
+                  format: int32
+                  nullable: true
+                aiSuggestion:
+                  type: integer
+                  format: int32
+                  nullable: true
+        prices:
+          type: array
+          items:
+            $ref: '#/components/schemas/MembershipPrice'
+    MembershipSubscription:
+      type: object
+      properties:
+        id:
+          type: string
+          format: objectid
+        externalId:
+          type: string
+          nullable: true
+        packageName:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+          nullable: true
+        cost:
+          $ref: '#/components/schemas/MembershipPrice'
+    MembershipPrice:
+      type: object
+      properties:
+        externalId:
+          type: string
+          nullable: true
+        period:
+          $ref: '#/components/schemas/BillingPeriod'
+        currencyCode:
+          $ref: '#/components/schemas/CurrencyCode'
+        amount:
+          type: integer
+          format: int32
+    CurrencyAmount:
+      type: object
+      properties:
+        currencyCode:
+          $ref: '#/components/schemas/CurrencyCode'
+        amount:
+          type: integer
+          format: int32
+    BillingPeriod:
+      enum:
+        - monthly
+        - yearly
+      type: string
+    CurrencyCode:
+      enum:
+        - usd
+      type: string
+    OAuthSuccessResponse:
+      type: object
+      properties:
+        token_type:
+          enum:
+            - bearer
+          type: string
+          description: The type of the token issued.  Value is case insensitive.
+          readOnly: true
+        access_token:
+          type: string
+          description: The access token issued by the authorization server.
+          readOnly: true
+        refresh_token:
+          type: string
+          description: 'The refresh token, which can be used to obtain new access tokens using the same authorization grant.'
+          readOnly: true
+        expires_in:
+          type: integer
+          description: The lifetime in seconds of the access token.
+          format: int32
+          readOnly: true
+        user_id:
+          type: string
+          description: Id of authenticated user.
+          format: objectId
+          readOnly: true
+      additionalProperties: false
+    AuthenticationFlowStage:
+      type: object
+      properties:
+        flowId:
+          type: string
+          format: objectId
+          readOnly: true
+        authorizationCode:
+          type: string
+          nullable: true
+          readOnly: true
+        nextStep:
+          enum:
+            - emailTotpCode
+          type: string
+          nullable: true
+          x-name: MultiFactorAuthenticationStep
+      additionalProperties: false
+    AuthenticationRedirect:
+      type: object
+      properties:
+        location:
+          type: string
+      additionalProperties: false
+    Blob:
+      type: string
+      format: binary
+    StoredResourceMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of resource.
+          format: objectId
+          readOnly: true
+        ownerId:
+          type: string
+          description: User id of the owner of resource.
+          format: objectId
+          nullable: true
+          readOnly: true
+        fileName:
+          type: string
+          description: Name of resource file.
+          readOnly: true
+        purponse:
+          $ref: '#/components/schemas/StoredResourcePurpose'
+        length:
+          type: integer
+          description: Length of resource file.
+          format: int32
+          readOnly: true
+        mediaType:
+          type: string
+          description: Media type of resource.
+          readOnly: true
+        md5Hash:
+          type: string
+          description: MD5 hash of resource.
+          readOnly: true
+    StoredResourcePurpose:
+      enum:
+        - unspecified
+        - userPicture
+        - projectPicture
+        - workspacePicture
+      type: string
+    ChangeWorkspaceSubscriptionRequest:
+      type: object
+      properties:
+        packageName:
+          maxLength: 64
+          minLength: 2
+          type: string
+        billingPeriod:
+          $ref: '#/components/schemas/BillingPeriod'
+        billingCurrencyCode:
+          $ref: '#/components/schemas/CurrencyCode'
+      additionalProperties: false
+    JsonPatches:
+      type: array
+      items:
+        $ref: '#/components/schemas/JsonPatch'
+    JsonPatch:
+      type: object
+      properties:
+        path:
+          $ref: '#/components/schemas/JsonPointer'
+        op:
+          $ref: '#/components/schemas/JsonPatchOperation'
+        value:
+          type: object
+          nullable: true
+        from:
+          $ref: '#/components/schemas/JsonPointer'
+    JsonPointer:
+      type: string
+      description: A path to a value.
+      nullable: true
+    JsonPatchOperation:
+      enum:
+        - add
+        - replace
+        - test
+        - remove
+        - move
+        - copy
+      type: string
+    ErrorResponse:
+      type: object
+      properties:
+        result:
+          type: object
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+      additionalProperties: false
+      readOnly: true
+      x-external-type: ErrorResponse
+    EmptyResponse:
+      type: object
+      properties:
+        result:
+          type: object
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+      additionalProperties: false
+      readOnly: true
+      x-external-type: EmptyResponse
+    ApiError:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+      x-external-type: ApiError
+    ErrorCode:
+      enum:
+        - error
+        - notFound
+        - serviceUnavailable
+        - tooManyRequests
+        - notSupported
+        - authenticationFailed
+        - authorizationFailed
+        - readOnly
+        - invalidRequestBodyFormat
+        - parameterValueIsInvalid
+        - parameterValueIsRequired
+        - parameterValuePatternDoesntMatch
+        - parameterMinValueOverflow
+        - parameterMinValueInclusiveOverflow
+        - parameterMaxValueOverflow
+        - parameterMaxValueInclusiveOverflow
+        - parameterValueMinLengthOverflow
+        - parameterValueMaxLengthOverflow
+        - parameterValueMinSizeOverflow
+        - parameterValueMaxSizeOverflow
+        - parameterValueItemsDuplicate
+        - jsonPatchInvalidParameter
+        - jsonPatchTestFailed
+        - jsonPatchForbiddenOperation
+        - deletingReferencedSchema
+        - documentIsProtected
+        - documentIsNotRoot
+        - transactionAborted
+        - transactionAlreadyCompleted
+        - transactionAlreadyExists
+        - transactionDoesNotExists
+        - invalidTimeFormat
+        - invalidDateFormat
+        - invalidLocalizedTextFormat
+        - invalidTextFormat
+        - invalidLogicalFormat
+        - invalidNumberFormat
+        - invalidIntegerFormat
+        - invalidPickListFormat
+        - invalidMultiPickListFormat
+        - invalidDocumentFormat
+        - invalidDocumentCollectionFormat
+        - invalidReferenceFormat
+        - invalidReferenceCollectionFormat
+        - invalidFormulaFormat
+        - valueIsNull
+        - valueIsEmpty
+        - valueOverflow
+        - valueLengthExceeded
+        - collectionSizeExceeded
+        - brokenReference
+        - missingTranslation
+        - uniqueValueDuplication
+        - invalidIdFormat
+        - invalidGeneratedIdFormat
+        - invalidNameFormat
+        - reservedName
+        - invalidSize
+        - invalidLanguage
+        - referenceTypeCauseRecursion
+        - invalidIdDataType
+        - invalidDataTypeChange
+        - invalidIdGeneratorChange
+        - invalidRequirementForDataType
+        - invalidIconFormat
+        - invalidDisplayTextTemplateFormat
+        - invalidPickName
+        - duplicatePickName
+        - invalidPickValue
+        - invalidParameterName
+        - duplicateParameterName
+        - invalidTypeName
+        - invalidTypeReference
+        - invalidPrecision
+        - invalidRowCount
+        - duplicateSpecificationKey
+        - emailIsAlreadyTaken
+      type: string
+    Preferences:
+      type: object
+      properties:
+        dataSource:
+          $ref: '#/components/schemas/DataSourcePreferences'
+        authentication:
+          $ref: '#/components/schemas/AuthenticationPreferences'
+      nullable: true
+      x-mutable: true
+    AuthenticationPreferences:
+      type: object
+      properties:
+        currentUserId:
+          type: string
+          nullable: true
+        refreshTokens:
+          type: object
+          additionalProperties:
+            type: string
+      x-mutable: true
+    DataSourcePreferences:
+      type: object
+      properties:
+        documentForm:
+          $ref: '#/components/schemas/DocumentFormPreferences'
+        documentList:
+          $ref: '#/components/schemas/DocumentListPreferences'
+        recentDocuments:
+          type: object
+          additionalProperties:
+            type: object
+        wizard:
+          type: object
+          additionalProperties:
+            type: object
+        mutedWarnings:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/MutedWarningPreference'
+      x-mutable: true
+    DocumentFormPreferences:
+      type: object
+      properties:
+        savingWithErrorsPolicy:
+          $ref: '#/components/schemas/DialogActionPreference'
+        deletingMultipleDocumentsPolicy:
+          $ref: '#/components/schemas/DialogActionPreference'
+        deletingSchemasPolicy:
+          $ref: '#/components/schemas/DialogActionPreference'
+        selectedLanguageId:
+          type: string
+          nullable: true
+        viewMode:
+          type: string
+          nullable: true
+        designMode:
+          enum:
+            - basic
+            - advanced
+          type: string
+          x-name: DesignModePreference
+        documentDrafts:
+          type: object
+          additionalProperties:
+            type: object
+      x-mutable: true
+    DocumentListPreferences:
+      type: object
+      properties:
+        views:
+          type: object
+          additionalProperties:
+            type: object
+        selectedViews:
+          type: object
+          additionalProperties:
+            type: string
+      x-mutable: true
+    DialogActionPreference:
+      enum:
+        - ask
+        - continue
+        - abort
+      type: string
+    MutedWarningPreference:
+      type: object
+      properties:
+        name:
+          type: string
+        muteDate:
+          type: string
+          format: date-time
+      x-mutable: true
+    PaymentRedirect:
+      type: object
+      properties:
+        noPaymentRequired:
+          type: boolean
+        paymentUrl:
+          type: string
+      x-mutable: true
+    ProcessStartedNotification:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+        processId:
+          type: integer
+          format: int32
+        type:
+          $ref: '#/components/schemas/ProcessType'
+        startTime:
+          type: string
+          format: date-time
+        canBeStopped:
+          type: boolean
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    ProcessProgressChangedNotification:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+        processId:
+          type: integer
+          format: int32
+        type:
+          $ref: '#/components/schemas/ProcessType'
+        progressMessage:
+          type: string
+        progress:
+          type: number
+          format: float
+        elapsedMilliseconds:
+          type: number
+          format: float
+        canBeStopped:
+          type: boolean
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    ProcessFinishedNotification:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+        processId:
+          type: integer
+          format: int32
+        type:
+          $ref: '#/components/schemas/ProcessType'
+        status:
+          $ref: '#/components/schemas/ProcessWorkflowStatus'
+        elapsedMilliseconds:
+          type: number
+          format: float
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    DocumentCollectionChangedNotification:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+        metadataHashCode:
+          type: integer
+          format: int32
+        schemaId:
+          type: string
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    DataSourceRestoredNotification:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+        metadataHashCode:
+          type: integer
+          format: int32
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    DataSourceLoadedNotification:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+        metadataHashCode:
+          type: integer
+          format: int32
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    UserCleanedUpNotification:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: objectId
+      additionalProperties: false
+      x-implements: INotificationContent
+    UserPasswordChangedNotification:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: objectId
+      additionalProperties: false
+      x-implements: IUserNotificationContent
+    ProjectCreatedNotification:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: objectId
+        workspaceId:
+          type: string
+          format: objectId
+        projectId:
+          type: string
+          format: objectId
+      additionalProperties: false
+      x-implements: IWorkspaceNotificationContent
+    ProjectDeletedNotification:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+          format: objectId
+        projectId:
+          type: string
+          format: objectId
+      additionalProperties: false
+      x-implements: IProjectNotificationContent
+    ProjectChangedNotification:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+          format: objectId
+        projectId:
+          type: string
+          format: objectId
+      additionalProperties: false
+      x-implements: IProjectNotificationContent
+    BranchCreatedNotification:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: objectId
+        workspaceId:
+          type: string
+          format: objectId
+        projectId:
+          type: string
+          format: objectId
+        dataSourceId:
+          type: string
+          format: objectId
+        branchName:
+          type: string
+      additionalProperties: false
+      x-implements: IProjectNotificationContent
+    UserCreatedNotification:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: objectId
+      additionalProperties: false
+      x-implements: IUserNotificationContent
+    UserChangedNotification:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: objectId
+      additionalProperties: false
+      x-implements: IUserNotificationContent
+    UserEmailConfirmedNotification:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: objectId
+      additionalProperties: false
+      x-implements: IUserNotificationContent
+    BillingAccountChangedNotification:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: objectId
+      additionalProperties: false
+      x-implements: IUserNotificationContent
+    BillingAccountBalanceChangedNotification:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: objectId
+        oldAmount:
+          $ref: '#/components/schemas/CurrencyAmount'
+        newAmount:
+          $ref: '#/components/schemas/CurrencyAmount'
+      additionalProperties: false
+      x-implements: IUserNotificationContent
+    WorkspaceCreatedNotification:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: objectId
+        workspaceId:
+          type: string
+          format: objectId
+      additionalProperties: false
+      x-implements: IWorkspaceNotificationContent
+    WorkspaceChangedNotification:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+          format: objectId
+      additionalProperties: false
+      x-implements: IWorkspaceNotificationContent
+    SubscribeToDataSourceEventsRequest:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+          nullable: true
+      additionalProperties: false
+      x-implements: INotificationContent
+    UserPresenceChangedNotification:
+      required:
+        - dataSourceId
+        - presence
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+        presence:
+          $ref: '#/components/schemas/PresenceInfo'
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    UpdateUserPresenceRequest:
+      required:
+        - presence
+      type: object
+      properties:
+        presence:
+          $ref: '#/components/schemas/PresenceInfo'
+      additionalProperties: false
+      x-implements: INotificationContent
+    DataSourceNotificationSubscriptionChanged:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+          nullable: true
+      additionalProperties: false
+      x-implements: INotificationContent
+    IssueOneTimeCodeResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            code:
+              type: string
+              description: One-time code.
+              readOnly: true
+            expires_in:
+              type: integer
+              description: The lifetime in seconds of the one-time code.
+              format: int32
+              readOnly: true
+          x-name: OneTimeCodeResponse
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    BeginPasswordAuthenticationFlowResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/AuthenticationFlowStage'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    ContinueAuthenticationFlowWithEmailTotpCodeResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/AuthenticationFlowStage'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    BeginOAuth2AuthenticationResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/AuthenticationRedirect'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    CompleteOAuth2AuthenticationResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/AuthenticationFlowStage'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    FindDocumentResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/FindResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    CreateDocumentResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CreateResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    UpdateDocumentResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/UpdateResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    DeleteDocumentResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/DeleteResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    ListDocumentsResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ListResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    BulkChangeDocumentsResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/BulkChangeResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetLoadingProgressResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ProcessState'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetCapabilitiesResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/DataSourceCapabilities'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    ExamineResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/StatisticsResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    ExportResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ExportResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    ImportResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/BulkChangeResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    QueryDocumentsResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/FindResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    BackupResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/BackupResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    RestoreResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/RestoreResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    ValidateResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ValidateResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetDataSourcePresentUsersResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            type: object
+            properties:
+              presence:
+                $ref: '#/components/schemas/PresenceInfo'
+              userId:
+                type: string
+                format: objectId
+            x-name: UserPresenceInfo
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    ListProcessesResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            processes:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProcessState'
+            total:
+              type: integer
+              format: int32
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetProcessResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ProcessState'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    StopProcessResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ProcessState'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    ListFormulaTypesResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            types:
+              type: array
+              items:
+                $ref: '#/components/schemas/FormulaType'
+            total:
+              type: integer
+              format: int32
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetFormulaTypesResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/FormulaType'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    LoadProjectSharedPreferencesResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/NullableDataDocument'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    LoadProjectPersonalPreferencesResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/NullableDataDocument'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    LoadWorkspaceSharedPreferencesResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/NullableDataDocument'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    LoadWorkspacePersonalPreferencesResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/NullableDataDocument'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    LoadDefaultPreferencesResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/NullableDataDocument'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetAllUsersResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            users:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+            total:
+              type: integer
+              format: int32
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetPublicUserProfilesResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicUserProfile'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetCurrentUserResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/User'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetUserResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/User'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    UpdateUserResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/User'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetPublicUserProfileResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/PublicUserProfile'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    AddApiKeyLoginResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CreatedApiKey'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetAllWorkspacesResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            processes:
+              type: array
+              items:
+                $ref: '#/components/schemas/Workspace'
+            total:
+              type: integer
+              format: int32
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetCurrentWorkspacesResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Workspace'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetWorkspaceResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Workspace'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    UpdateWorkspaceResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Workspace'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetWorkspaceQuotaUsageResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/WorkspaceQuotaUsage'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetWorkspaceMembersResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            type: string
+            format: objectId
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetAllProjectsResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            processes:
+              type: array
+              items:
+                $ref: '#/components/schemas/Project'
+            total:
+              type: integer
+              format: int32
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    CreateProjectResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Project'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetCurrentProjectsResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetProjectResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Project'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    UpdateProjectResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Project'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetMembershipPackagesResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/MembershipPackage'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetBillingAccountResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/BillingAccount'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    UpdateBillingAccountResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/BillingAccount'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetPaymentStatusResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/PaymentInvoice'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    StartSubscriptionSessionResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/PaymentRedirect'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    MakePaymentResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/PaymentRedirect'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetUpcomingPaymentResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/PaymentInvoice'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    CreateResourceResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/StoredResourceMetadata'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetResourceMetadataResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/StoredResourceMetadata'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetContextResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/PageContext'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+  parameters:
+    processId:
+      name: processId
+      in: path
+      description: Id of process.
+      required: true
+      schema:
+        type: integer
+        format: int32
+    schemaNameOrId:
+      name: schemaNameOrId
+      in: path
+      description: Id or name of schema.
+      required: true
+      schema:
+        type: string
+    dataSourceId:
+      name: dataSourceId
+      in: path
+      description: Id of data source.
+      required: true
+      schema:
+        type: string
+        format: objectId
+    projectId:
+      name: projectId
+      in: path
+      description: Id of project.
+      required: true
+      schema:
+        type: string
+        format: objectId
+    workspaceId:
+      name: workspaceId
+      in: path
+      description: Id of workspace.
+      required: true
+      schema:
+        type: string
+        format: objectId
+    userId:
+      name: userId
+      in: path
+      description: Id of user.
+      required: true
+      schema:
+        type: string
+        format: objectId
+    invitationId:
+      name: invitationId
+      in: path
+      description: Id of invitation.
+      required: true
+      schema:
+        type: string
+        format: objectId
+    resourceId:
+      name: resourceId
+      in: path
+      description: Id of resource.
+      required: true
+      schema:
+        type: string
+        format: objectId
+    transactionId:
+      name: transactionId
+      in: path
+      description: Id or name of transaction.
+      required: true
+      schema:
+        type: string
+    branchName:
+      name: branchName
+      in: path
+      description: Name of branch.
+      required: true
+      schema:
+        $ref: '#/components/schemas/BranchName'
+    authenticationProvider:
+      name: authenticationProvider
+      in: path
+      description: Type of OAuth2 provider.
+      required: true
+      schema:
+        $ref: '#/components/schemas/AuthenticationProvider'
+    skip:
+      name: skip
+      in: query
+      description: Number of elements to skip during paging. Aka offset or start.
+      schema:
+        type: integer
+        format: int32
+        nullable: true
+    take:
+      name: take
+      in: query
+      description: Number of elements to take during paging. Aka limit or count.
+      schema:
+        type: integer
+        format: int32
+        nullable: true
+    download:
+      name: download
+      in: query
+      description: Set "Content-Disposition" header in order to make the browser download the result.
+      schema:
+        type: boolean
+    languages:
+      name: languages
+      in: query
+      description: List of languages on schemas to export. Empty list mean all languages.
+      schema:
+        type: array
+        items:
+          type: string
+        nullable: true
+    properties:
+      name: properties
+      in: query
+      description: List of properties on schemas to export. Id property is always exported. Empty list mean all properties.
+      schema:
+        type: array
+        items:
+          type: string
+        nullable: true
+    schemas:
+      name: schemas
+      in: query
+      description: List of schemas to export/import. Empty list mean all schemas.
+      schema:
+        type: array
+        items:
+          type: string
+        nullable: true
+    exportMode:
+      name: exportMode
+      in: query
+      description: Export mode.
+      required: true
+      schema:
+        $ref: '#/components/schemas/ExportMode'
+    validationOptions:
+      name: validationOptions
+      in: query
+      description: Data source validation options.
+      required: true
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/ValidationOption'
+    transaction:
+      name: transactionId
+      in: query
+      description: Id or name of transaction.
+      schema:
+        type: string
+        nullable: true
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
