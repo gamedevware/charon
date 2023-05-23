@@ -31,17 +31,20 @@ Data Interoperability
 
 Interoperability and integration with external systems or tools are facilitated by a well-defined schema. By establishing a common language and structure, the schema enables seamless data exchange and collaboration with localization tools, analytics platforms, and asset pipelines.
 
-Designing Game Data
--------------------
-
 Analyzing Game Requirements
-   .. figure:: ./general_design.png
-   This step involves analyzing the game requirements to understand the design and functionality of the game. It includes studying the game design document and identifying key features, gameplay mechanics, and data elements that need to be captured and represented in the game.
+---------------------------
+
+.. figure:: ./general_design.png
+This step involves analyzing the game requirements to understand the design and functionality of the game. It includes studying the game design document and identifying key features, gameplay mechanics, and data elements that need to be captured and represented in the game.
 
 Identifying Entities and Relationships 
-   .. figure:: ./design_entities.png
-   In this step, entities and their relationships within the game are identified. Entities can be objects, characters, locations, items, quests, or any other significant element in the game. Relationships define how these entities are connected or interact with each other.
+--------------------------------------
+
+.. figure:: ./design_entities.png
+In this step, entities and their relationships within the game are identified. Entities can be objects, characters, locations, items, quests, or any other significant element in the game. Relationships define how these entities are connected or interact with each other.
 
 Defining Schemas and Properties
-   .. figure:: define_schema_property.png
-   This step involves defining schemas to represent the structure and properties of the game data. A schema serves as a blueprint or template for a specific type of data entity, specifying its properties, attributes, and relationships. Properties describe the characteristics and attributes of an entity, such as its name, description, stats, or any other relevant information.
+-------------------------------
+
+.. figure:: define_schema_property.png
+This step involves defining schemas to represent the structure and properties of the game data. A schema serves as a blueprint or template for a specific type of data entity, specifying its properties, attributes, and relationships. Properties describe the characteristics and attributes of an entity, such as its name, description, stats, or any other relevant information.
