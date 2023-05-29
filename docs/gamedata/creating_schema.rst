@@ -54,4 +54,4 @@ This step involves defining schemas to represent the structure and properties of
    :titlesonly:
    :glob:
 
-   data_types/*
+   datatypes/*
