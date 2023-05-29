@@ -2,12 +2,12 @@ All Data Types
 ==============
 
 .. toctree::
-   :caption: Data Types
+   :caption: All Data Types
    :titlesonly:
    :glob:
    :hidden:
 
-   datatypes/*
+   all/*
 
 Selecting the proper data type is important in order to ensure that data is correctly and efficiently stored and used in the game. Each data type has its own specific purpose and characteristics, which should be considered when choosing the appropriate type for a given property.
 
