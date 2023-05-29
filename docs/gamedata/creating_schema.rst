@@ -48,3 +48,11 @@ Defining Schemas and Properties
 
 .. figure:: define_schema_property.png
 This step involves defining schemas to represent the structure and properties of the game data. A schema serves as a blueprint or template for a specific type of data entity, specifying its properties, attributes, and relationships. Properties describe the characteristics and attributes of an entity, such as its name, description, stats, or any other relevant information.
+
+.. toctree::
+   :caption: Data Types
+   :titlesonly:
+   :glob:
+
+   /datatypes/data_types
+   /datatypes/*
