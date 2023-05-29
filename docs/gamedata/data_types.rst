@@ -1,5 +1,14 @@
 All Data Types
 ==============
+
+.. toctree::
+   :caption: Data Types
+   :titlesonly:
+   :glob:
+   :hidden:
+
+   datatypes/*
+
 Selecting the proper data type is important in order to ensure that data is correctly and efficiently stored and used in the game. Each data type has its own specific purpose and characteristics, which should be considered when choosing the appropriate type for a given property.
 
 For example, if a property needs to store a text value, the :doc:`Text <text>` data type would be appropriate. If the text needs to be translated into multiple languages, the :doc:`LocalizedText <localized_text>` data type would be the best choice.
