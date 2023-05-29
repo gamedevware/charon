@@ -53,5 +53,6 @@ This step involves defining schemas to represent the structure and properties of
    :caption: Data Types
    :titlesonly:
    :glob:
+   :hidden:
 
    data_types
