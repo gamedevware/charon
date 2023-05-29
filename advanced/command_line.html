@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command Line Interface (CLI) &mdash; Charon 0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Game Data Schema" href="game_data_schema.html" />
+    <link rel="prev" title="Working with Source Code (C#)" href="../gamedata/working_with_source_code.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+              <div class="version">
+                0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/creating_and_editing_game_data.html">Creating and Editing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/plugin_installation.html">Plugin Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/requirements.html">Requirements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/creating_and_editing_game_data.html">Creating and Editing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/installation_and_updates.html">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/requirements.html">Requirements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to Web Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Working with Game Data</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code (C#)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publication Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_source_code.html">Working with Source Code (C#)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_data_schema.html">Game Data Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Command Line Interface (CLI)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/advanced/command_line.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="command-line-interface-cli">
+<h1>Command Line Interface (CLI)<a class="headerlink" href="#command-line-interface-cli" title="Permalink to this heading"></a></h1>
+<p>Most of Charon functionality could be accessed via CLI commands. The application itself uses the <a class="reference external" href="https://en.wikipedia.org/wiki/Getopts">getops</a> syntax.
+You should be familiar with terminal on your OS to fully tap potential of CLI.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<section id="manual-download">
+<h3>Manual Download<a class="headerlink" href="#manual-download" title="Permalink to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Charon.exe</span></code> package can be <a class="reference external" href="https://www.nuget.org/packages/GameDevWare.Charon">downloaded from Nuget</a> and extracted as a <a class="reference external" href="https://www.7-zip.org/">ZIP</a> archive, containing the application located in the <code class="docutils literal notranslate"><span class="pre">tools/</span></code> directory.</p>
+</section>
+<section id="nuget-client">
+<h3>Nuget Client<a class="headerlink" href="#nuget-client" title="Permalink to this heading"></a></h3>
+<p>Or use <a class="reference external" href="https://learn.microsoft.com/en-us/nuget/install-nuget-client-tools">Nuget client</a> to download and unpack package:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nuget<span class="w"> </span>install<span class="w"> </span>GameDevWare.Charon<span class="w"> </span>-ExcludeVersion<span class="w"> </span>-PackageSaveMode<span class="w"> </span>nupkg<span class="w"> </span>-PreRelease<span class="w"> </span>-OutputDirectory<span class="w"> </span>./
+</pre></div>
+</div>
+</section>
+<section id="cake-script-dotnet-tool">
+<h3>Cake Script (dotnet tool)<a class="headerlink" href="#cake-script-dotnet-tool" title="Permalink to this heading"></a></h3>
+<p>Alternatively, you can follow the guide for <a class="reference internal" href="../standalone/installation_and_updates.html"><span class="doc">standalone launch</span></a>. To pass commands to the <code class="docutils literal notranslate"><span class="pre">update_and_launch.cake</span></code> script, use the <code class="docutils literal notranslate"><span class="pre">--</span></code> parameter and continue with the command and it’s parameters.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dotnet<span class="w"> </span>tool<span class="w"> </span>restore
+dotnet<span class="w"> </span>cake<span class="w"> </span><span class="s2">&quot;./update_and_launch.cake&quot;</span><span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span>--help
+<span class="w">                                        </span>^
+<span class="w">                          </span>your<span class="w"> </span><span class="nb">command</span><span class="w"> </span>goes<span class="w"> </span>after<span class="w"> </span>this
+</pre></div>
+</div>
+</section>
+</section>
+<section id="command-syntax">
+<h2>Command Syntax<a class="headerlink" href="#command-syntax" title="Permalink to this heading"></a></h2>
+<p>Commands have the following syntax:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Charon.exe<span class="w"> </span>COMMAND<span class="w"> </span>--parameterName<span class="w"> </span>&lt;parameter-value&gt;
+
+<span class="c1"># parameters can have more than one value.</span>
+<span class="c1"># Use space to separate values</span>
+Charon.exe<span class="w"> </span>EXPORT<span class="w"> </span>--schemas<span class="w"> </span>Item<span class="w"> </span>Armor<span class="w"> </span><span class="s2">&quot;Project Settings&quot;</span><span class="w"> </span>Quest
+
+<span class="c1"># if your value contains a space, put it inside the quotation marks.</span>
+<span class="c1"># Escape characters and other rules depend on the OS you are running.</span>
+Charon.exe<span class="w"> </span>SERVE<span class="w"> </span>--dataBase<span class="w"> </span><span class="s2">&quot;c:\my application\my path.txt&quot;</span>
+
+<span class="c1"># some parameters don&#39;t require a value (e.g. flag).</span>
+Charon.exe<span class="w"> </span>VERSION<span class="w"> </span>--verbose
+</pre></div>
+</div>
+</section>
+<section id="osx-and-linux">
+<h2>OSX and Linux<a class="headerlink" href="#osx-and-linux" title="Permalink to this heading"></a></h2>
+<p>To run <code class="docutils literal notranslate"><span class="pre">Charon.exe</span></code> on non-Windows systems, you need to have the <code class="docutils literal notranslate"><span class="pre">mono</span></code> runtime installed, which can be
+either a global one from <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> or a local installation.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># for globally installed mono</span>
+mono<span class="w"> </span>Charon.exe<span class="w"> </span>VERSION
+
+<span class="c1"># for non-brew installed mono on OSX</span>
+/Library/Frameworks/Mono.framework/Commands/mono<span class="w"> </span>Charon.exe<span class="w"> </span>VERSION
+
+<span class="c1"># for some linux installations</span>
+/usr/bin/mono<span class="w"> </span>Charon.exe<span class="w"> </span>VERSION
+</pre></div>
+</div>
+</section>
+<section id="getting-help-text">
+<h2>Getting Help Text<a class="headerlink" href="#getting-help-text" title="Permalink to this heading"></a></h2>
+<p>To display list of available commands add <cite>–help</cite> or <cite>/?</cite>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Charon.exe<span class="w"> </span>--help
+
+<span class="c1">#&gt; Usage: Charon.exe &lt;action&gt; [--&lt;param&gt; || (--&lt;param&gt; &lt;paramValue&gt; ...) ...]</span>
+<span class="c1">#&gt;</span>
+<span class="c1">#&gt; Verbs:</span>
+<span class="c1">#&gt;  DATA        Data manipulation actions.</span>
+<span class="c1">#&gt;  GENERATE    Code generation actions.</span>
+<span class="c1">#&gt;  VERSION     Print version.</span>
+
+Charon.exe<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span>--help
+
+<span class="c1">#&gt; Usage:</span>
+<span class="c1">#&gt;   DATA EXPORT --dataBase &lt;URI&gt; [--schemas [&lt;TEXT&gt;]] [--properties [&lt;TEXT&gt;]] [--languages [&lt;TEXT&gt;]] [--output &lt;TEXT&gt;</span>
+<span class="c1">#&gt;               ] [--outputFormat &lt;TEXT&gt;] [--outputFormattingOptions [&lt;TEXT&gt;]] [--mode &lt;EXPORTMODE&gt;] [--credentials [&lt;</span>
+<span class="c1">#&gt;               TEXT&gt;]]</span>
+</pre></div>
+</div>
+</section>
+<section id="list-of-commands">
+<h2>List of Commands<a class="headerlink" href="#list-of-commands" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="commands/serve.html"><span class="doc">SERVER START</span></a></p></li>
+<li><p><a class="reference internal" href="commands/version.html"><span class="doc">VERSION</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_export.html"><span class="doc">DATA EXPORT</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_import.html"><span class="doc">DATA IMPORT</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_backup.html"><span class="doc">DATA BACKUP</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_restore.html"><span class="doc">DATA RESTORE</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_validate.html"><span class="doc">DATA VALIDATE</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_create.html"><span class="doc">DATA CREATE</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_update.html"><span class="doc">DATA UPDATE</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_delete.html"><span class="doc">DATA DELETE</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_find.html"><span class="doc">DATA FIND</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_list.html"><span class="doc">DATA LIST</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_create_patch.html"><span class="doc">DATA CREATEPATCH</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_apply_patch.html"><span class="doc">DATA APPLYPATCH</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_i18n_export.html"><span class="doc">DATA I18N EXPORT</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_i18n_import.html"><span class="doc">DATA I18N IMPORT</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_i18n_languages.html"><span class="doc">DATA I18N LANGUAGES</span></a></p></li>
+<li><p><a class="reference internal" href="commands/generate_templates.html"><span class="doc">GENERATE TEMPLATES</span></a></p></li>
+<li><p><a class="reference internal" href="commands/generate_csharp_code.html"><span class="doc">GENERATE CSHARPCODE</span></a></p></li>
+<li><p><a class="reference internal" href="commands/generate_text.html"><span class="doc">GENERATE TEXT</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../gamedata/working_with_source_code.html" class="btn btn-neutral float-left" title="Working with Source Code (C#)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="game_data_schema.html" class="btn btn-neutral float-right" title="Game Data Schema" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

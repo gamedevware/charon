@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multi-Pick List &mdash; Charon 0.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Number" href="number.html" />
+    <link rel="prev" title="Logical" href="logical.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Charon
+          </a>
+              <div class="version">
+                0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../unity/creating_and_editing_game_data.html">Creating and Editing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../unity/plugin_installation.html">Plugin Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../unity/requirements.html">Requirements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../standalone/overview.html">Standalone Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../standalone/creating_and_editing_game_data.html">Creating and Editing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../standalone/installation_and_updates.html">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../standalone/requirements.html">Requirements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../web/basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../web/cli_access_to_web_project.html">CLI Access to Web Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Working with Game Data</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../creating_schema.html">Creating Document Type (Schema)</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../list.html">All Data Types</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="date.html">Date</a></li>
+<li class="toctree-l3"><a class="reference internal" href="document.html">Document</a></li>
+<li class="toctree-l3"><a class="reference internal" href="document_collection.html">Document Collection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="formula.html">Formula</a></li>
+<li class="toctree-l3"><a class="reference internal" href="integer.html">Integer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="localized_text.html">Localized Text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logical.html">Logical</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Multi-Pick List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="number.html">Number</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pick_list.html">Pick List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference.html">Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference_collection.html">Reference Collection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="text.html">Text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time.html">Time</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generating_source_code.html">Generating Source Code (C#)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publication.html">Publication Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../working_with_source_code.html">Working with Source Code (C#)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/game_data_schema.html">Game Data Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../creating_schema.html">Creating Document Type (Schema)</a></li>
+          <li class="breadcrumb-item"><a href="../list.html">All Data Types</a></li>
+      <li class="breadcrumb-item active">Multi-Pick List</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/gamedata/datatypes/all/multi_pick_list.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="multi-pick-list">
+<h1>Multi-Pick List<a class="headerlink" href="#multi-pick-list" title="Permalink to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">MultiPickList</span></code> data type is used when you want to allow the selection of multiple values from a predefined list of options. It is similar to the <a class="reference internal" href="pick_list.html"><span class="doc">PickList</span></a> data type, but it allows for multiple selections.</p>
+<p><code class="docutils literal notranslate"><span class="pre">MultiPickList</span></code> is particularly useful when you want to replace several <a class="reference internal" href="logical.html"><span class="doc">Logical</span></a> properties that have a related meaning with a single property. For example, instead of having three separate properties to indicate if a item can be broken, disassembled, or sold, you can use a MultiPickList with the options “CanBeBreaken,” “CanBeDisassembled,” and “CanBeSold.”</p>
+<dl class="simple">
+<dt>C# Type</dt><dd><p><code class="docutils literal notranslate"><span class="pre">enum</span></code> based on System.SByte, System.Int16, System.Int32, System.Int64</p>
+</dd>
+<dt>Uniqueness</dt><dd><p>May be checked for uniqueness.</p>
+</dd>
+<dt>Size</dt><dd><p>32 or 64bit</p>
+</dd>
+</dl>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading"></a></h2>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="mf">1</span><span class="w"> </span><span class="c1">// internaly stored as integers</span>
+<span class="s2">&quot;Apple&quot;</span><span class="w"> </span><span class="c1">// string values also valid</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="logical.html" class="btn btn-neutral float-left" title="Logical" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="number.html" class="btn btn-neutral float-right" title="Number" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
