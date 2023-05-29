@@ -1,5 +1,5 @@
-Overview
-==========
+Logical
+=======
 
 The ``Logical`` data type is used to represent boolean values, i.e., values that can be either true or false. It is commonly used in game development to represent various settings, options, or conditions.
 
@@ -13,7 +13,7 @@ Uniqueness
    May be checked for uniqueness.
 
 Example
-=======
+-------
 .. code-block:: js
 
   true

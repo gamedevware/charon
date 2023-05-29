@@ -1,5 +1,5 @@
-Overview
-==========
+Multi-Pick List
+===============
 
 The ``MultiPickList`` data type is used when you want to allow the selection of multiple values from a predefined list of options. It is similar to the :doc:`PickList <pick_list>` data type, but it allows for multiple selections.
 
@@ -13,7 +13,7 @@ Size
    32 or 64bit
 
 Example
-=======
+-------
 .. code-block:: js
 
   1 // internaly stored as integers

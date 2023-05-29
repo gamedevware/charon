@@ -1,5 +1,5 @@
-Overview
-==========
+Pick List
+=========
 
 ``PickList`` is a data type used to define a list of pre-defined options for a property. It allows the user to select only one option from the given list. The options can be defined as a string, and the list can contain any number of options.
 
@@ -15,7 +15,7 @@ Size
    32 or 64bit
 
 Example
-=======
+-------
 .. code-block:: js
 
   1 // internaly stored as integers

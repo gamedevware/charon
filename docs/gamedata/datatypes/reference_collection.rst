@@ -1,5 +1,5 @@
-Overview
-==========
+Reference Collection
+====================
 
 The ``ReferenceCollection`` data type is used to create non-embedded relationships between documents. It allows for referencing multiple documents of the same type from within another document. 
 
@@ -15,7 +15,7 @@ Size
    May be limited in number of items. 0 - no limit.
    
 Example
-=======
+-------
 
 .. code-block:: js
   

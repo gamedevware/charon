@@ -1,5 +1,5 @@
-Overview
-==========
+Reference
+=========
 
 The ``Reference`` data type allows the creation of non-embedding relationships between documents. A reference is essentially a pointer to another document, using that document's ``Id`` as a key. This allows for easier linking between related documents, without having to embed one document inside another.
 
@@ -13,7 +13,7 @@ Uniqueness
    May NOT be checked for uniqueness.
    
 Example
-=======
+-------
 
 .. code-block:: js
   

@@ -1,5 +1,5 @@
-Overview
-==========
+Integer
+=======
 
 The ``Integer`` data type is a whole number data type that is limited to 64 bits. It is used to represent integers without a fractional component. It can be used in cases where you need to store a large range of positive or negative whole numbers, such as in-game currency or player levels.
 
@@ -13,7 +13,7 @@ Size
    32 or 64bit
 
 Example
-=======
+-------
 .. code-block:: js
 
   0

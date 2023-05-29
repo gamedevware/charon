@@ -1,5 +1,5 @@
-Overview
-==========
+Formula
+=======
 
 Formula data type is a way to store and use C# expressions inside game data. It allows game developers to perform calculations based on certain inputs and parameters that are not known until runtime. A formula can be any valid C# expression that returns a value of any supported data type.
 
@@ -22,7 +22,7 @@ Uniqueness
    May NOT be checked for uniqueness.
    
 Example
-=======
+-------
 
 .. code-block:: js
   
