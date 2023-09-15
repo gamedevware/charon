@@ -10,7 +10,10 @@ Any empty file could be used as starting point for standalone application launch
     echo > gamedata.json
     
     # open newly created file
-    charon.exe SERVE ./gamedata.json --port 8080 --launchDefaultBrowser
+    charon.exe SERVER START --dataBase ./gamedata.json --launchDefaultBrowser --log out
+    
+	# or using bootstrap script
+    dotnet cake "./update_and_launch.cake" -- SERVER START --dataBase ./gamedata.json  --launchDefaultBrowser --log out
 
 See also
 --------

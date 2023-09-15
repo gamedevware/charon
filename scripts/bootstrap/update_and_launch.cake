@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 var allArguments = System.Environment.GetCommandLineArgs();
-var commandSplitterIndex = Array.IndexOf(allArguments, "--");
+var commandSplitterIndex = Array.LastIndexOf(allArguments, "--");
 var commands = commandSplitterIndex < 0 ? new string[0] : allArguments.Skip(commandSplitterIndex + 1).ToArray();
  
 var target = Argument("target", "Default");
@@ -71,7 +71,7 @@ Task("Locate-Charon-Executable")
 	}
 });
 
-Task("Run-Charon-Executable-Server-Start")
+Task("Run-Charon-Executable-Help")
 	.WithCriteria(commands.Length == 0)
 	.IsDependentOn("Locate-Charon-Executable")
 	.Does(context =>
@@ -110,7 +110,7 @@ Task("Run-Charon-Executable-With-Command")
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-	.IsDependentOn("Run-Charon-Executable-Server-Start")
+	.IsDependentOn("Run-Charon-Executable-Help")
 	.IsDependentOn("Run-Charon-Executable-With-Command");
 
 //////////////////////////////////////////////////////////////////////

@@ -7,14 +7,16 @@ Alternatively `Nuget Package <https://www.nuget.org/packages/GameDevWare.Charon>
 Step By Step
 ------------
 
-1. Download scripts from `/scripts <https://github.com/gamedevware/charon/tree/main/scripts/>`_ into a local folder ``/charon``.
+1. Download scripts from `/scripts <https://github.com/gamedevware/charon/tree/main/scripts/bootstrap/>`_ into a local folder ``/charon``.
 2. Navigate to local folder ``cd /charon``.
-3. Run ``update_and_launch.bat`` or ``update_and_launch.sh`` depending on your OS.
-4. Wait for the script to automatically download and upgrade ``Charon.exe``, and launch it for you.
+3. Run ``update_and_launch.ps1`` or ``update_and_launch.sh`` depending on your OS.
+4. Wait for the script to automatically download and upgrade ``Charon.exe``, and display help text.
+5. Create empty file named `./gamedata.json`
+5. Run ``Charon.exe`` in standalone mode ``./charon/update_and_launch.ps1 -- SERVER START --dataBase ./gamedata.json  --launchDefaultBrowser --log out``
 
 .NET Tool
 ---------
-Alternatively, you could execute ``update_and_launch.cake`` with ``dotnet``.
+Alternatively, you could execute ``update_and_launch.cake`` with ``dotnet`` tool.
 
 First, install the Cake tool:
 
@@ -31,7 +33,7 @@ Finally, execute the Cake script:
 .. code-block:: bash
 
     # launch update_and_launch.cake with normal log verbosity
-    dotnet cake "./update_and_launch.cake" -v normal
+    dotnet cake "./update_and_launch.cake" -v normal -- SERVER START --dataBase ./gamedata.json  --launchDefaultBrowser --log out
 
 See also
 --------
