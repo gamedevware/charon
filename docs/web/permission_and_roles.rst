@@ -31,6 +31,9 @@ Administrator Role:
  - Edit Documents: They can edit documents.
  - Import Data: Administrators can import data.
 
+Workspace Administrator and Workspace Owner Role:
+ - They have the same permissions as Administrators, and they also have the ability to delete and transfer projects.
+
 See also
 --------
 
