@@ -1,7 +1,7 @@
 CLI Access to Web Project
 ========
 
-Charon provides a :doc:`REST API <rest>` and :doc:`CLI <../advanced/command_line>` for accessing and modifying game data. To access the API, users need to generate an ``API Key`` in the *API Keys* section of their *User Profile*.
+The web version of the Charon provides a :doc:`REST API <rest>` and :doc:`CLI <../advanced/command_line>` for accessing and modifying game data. To access the API, users need to generate an ``API Key`` in the *API Keys* section of their *User Profile*.
 
 With the API Key, Charon can easily be integrated into existing game development workflows. For example, the API Key can be used to export game data from the web into a local GIT repository
 

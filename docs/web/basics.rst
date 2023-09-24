@@ -1,6 +1,7 @@
 Basics
 ========
-Charon provides a collaborative work environment where game designers can work together to create engaging gameplay experiences. The core concepts of collaborative work include workspaces and projects.
+
+The web version of the Charon provides a collaborative work environment where game designers can work together to create engaging gameplay experiences. The core concepts of collaborative work include workspaces and projects.
 
 A workspace is a virtual location where projects are located. The subscription and all limitations are bound to the workspace, meaning that all projects within the workspace are subject to the same subscription and limitations.
 

@@ -1,8 +1,7 @@
 REST API
 ========
 
-REST API is experimental feature and should not be used in production environment.
-
+The web version of the Charon provides a experimental REST API feature.
 
 Testing REST API
 ---------------------
