@@ -350,3 +350,9 @@ MigrationBackup/
 .ionide/
 
 scripts/bootstrap/GameDevWare.Charon/
+src/plugins/example/GameDevWare.Charon.Unity*/Assembly*
+src/plugins/example/GameDevWare.Charon.Unity*/Library/
+src/plugins/example/GameDevWare.Charon.Unity*/Temp/
+src/plugins/example/GameDevWare.Charon.Unity*/ProjectSettings/
+src/plugins/example/GameDevWare.Charon.Unity*/UserSettings/
+src/plugins/example//GameDevWare.Charon.Unity*/Assets/Plugins*
