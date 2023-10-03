@@ -11,3 +11,7 @@ Quickstart
 ==========
 - [Web](https://gamedevware.github.io/charon/web/basics.html) - Will be available in second half of October
 - [Unity Plugin](https://gamedevware.github.io/charon/unity/plugin_installation.html)
+
+Other Links
+=============
+[Documentation](https://gamedevware.github.io/charon/)
