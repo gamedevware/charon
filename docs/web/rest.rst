@@ -1,3 +1,6 @@
+.. note::
+   Web version of Charon will be available in second half of October
+
 REST API
 ========
 
