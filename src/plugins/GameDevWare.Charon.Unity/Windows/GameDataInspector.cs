@@ -33,8 +33,12 @@ using UnityObject = UnityEngine.Object;
 
 namespace GameDevWare.Charon.Unity.Windows
 {
+	[CustomEditor(typeof(GameDataAsset))]
 	internal class GameDataInspector : Editor
 	{
+		private static GameDataAsset GameDataAsset;
+		private static bool SelectionChanged;
+
 		private UnityObject lastAsset;
 		private GameDataSettings gameDataSettings;
 		private UnityObject newScriptingAssembly;
@@ -47,139 +51,48 @@ namespace GameDevWare.Charon.Unity.Windows
 		static GameDataInspector()
 		{
 			Selection.selectionChanged += OnSelectionChanged;
+			EditorApplication.update += OnUpdate;
 		}
 
 		public static void OnSelectionChanged()
 		{
+			SelectionChanged = true;
+		}
+
+		private static void OnUpdate()
+		{
+			if (!SelectionChanged) return;
+			SelectionChanged = false;
+
 			if (Selection.activeObject == null)
+			{
 				return;
+			}
+
 			var assetPath = FileHelper.MakeProjectRelative(AssetDatabase.GetAssetPath(Selection.activeObject));
 			if (GameDataTracker.IsGameDataFile(assetPath) == false)
+			{
 				return;
-
-			try
-			{
-				var selectedAssetType = Selection.activeObject.GetType();
-				var inspectorWindowType = typeof(PopupWindow).Assembly.GetType("UnityEditor.InspectorWindow");
-				var inspectorWindow = EditorWindow.GetWindow(inspectorWindowType);
-				var activeEditorTracker = inspectorWindow.HasProperty("tracker") ?
-					inspectorWindow.GetPropertyValue("tracker") : inspectorWindow.GetFieldValue("m_Tracker");
-				var customEditorAttributesType = typeof(PopupWindow).Assembly.GetType("UnityEditor.CustomEditorAttributes");
-				var customEditorsList = customEditorAttributesType.GetFieldValue("kSCustomEditors") as IList;
-				var customEditorsDictionary = customEditorAttributesType.GetFieldValue("kSCustomEditors") as IDictionary;
-				var monoEditorType = customEditorAttributesType.GetNestedType("MonoEditorType", BindingFlags.NonPublic);
-
-				// after unity 2018.*
-				if (customEditorsDictionary != null)
-				{
-					var activeEditors = default(IEnumerable);
-					foreach (IEnumerable customEditors in customEditorsDictionary.Values)
-					{
-						foreach (var customEditor in customEditors)
-						{
-							if (customEditor == null || (Type)customEditor.GetFieldValue("m_InspectedType") != selectedAssetType)
-								continue;
-
-							var originalInspectorType = (Type)customEditor.GetFieldValue("m_InspectorType");
-
-							// override inspector
-							customEditor.SetFieldValue("m_InspectorType", typeof(GameDataInspector));
-
-							// force rebuild editor list
-							activeEditorTracker.Invoke("ForceRebuild");
-
-							activeEditors = (IEnumerable)activeEditorTracker.GetPropertyValue("activeEditors") ?? Enumerable.Empty<object>();
-							foreach (Editor activeEditor in activeEditors)
-							{
-								activeEditor.SetPropertyValue("alwaysAllowExpansion", true);
-							}
-
-							// restore original inspector
-							customEditor.SetFieldValue("m_InspectorType", originalInspectorType);
-							return;
-						}
-					}
-
-					var newMonoEditorType = Activator.CreateInstance(monoEditorType);
-					newMonoEditorType.SetFieldValue("m_InspectedType", selectedAssetType);
-					newMonoEditorType.SetFieldValue("m_InspectorType", typeof(GameDataInspector));
-					newMonoEditorType.SetFieldValue("m_EditorForChildClasses", false);
-					if (monoEditorType.HasField("m_IsFallback"))
-						newMonoEditorType.SetFieldValue("m_IsFallback", false);
-					var newMonoEditorTypeList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(monoEditorType));
-					newMonoEditorTypeList.Add(newMonoEditorType);
-
-					// override inspector
-					customEditorsDictionary[selectedAssetType] = newMonoEditorTypeList;
-
-					// force rebuild editor list
-					activeEditorTracker.Invoke("ForceRebuild");
-
-					activeEditors = (IEnumerable)activeEditorTracker.GetPropertyValue("activeEditors") ?? Enumerable.Empty<object>();
-					foreach (Editor activeEditor in activeEditors)
-					{
-						activeEditor.SetPropertyValue("alwaysAllowExpansion", true);
-					}
-
-					// restore original inspector
-					customEditorsDictionary.Remove(selectedAssetType);
-				}
-				// prior to unity 2018.*
-				else if (customEditorsList != null)
-				{
-					var cachedCustomEditorsByType = customEditorAttributesType.HasField("kCachedEditorForType") ?
-						(IDictionary<Type, Type>)customEditorAttributesType.GetFieldValue("kCachedEditorForType") :
-						null;
-
-					foreach (var customEditor in customEditorsList)
-					{
-						if (customEditor == null || (Type)customEditor.GetFieldValue("m_InspectedType") != selectedAssetType)
-							continue;
-
-						var originalInspectorType = (Type)customEditor.GetFieldValue("m_InspectorType");
-
-						// override inspector
-						customEditor.SetFieldValue("m_InspectorType", typeof(GameDataInspector));
-						if (cachedCustomEditorsByType != null)
-							cachedCustomEditorsByType[selectedAssetType] = typeof(GameDataInspector);
-
-						// force rebuild editor list
-						activeEditorTracker.Invoke("ForceRebuild");
-						inspectorWindow.Repaint();
-
-						// restore original inspector
-						customEditor.SetFieldValue("m_InspectorType", originalInspectorType);
-						if (cachedCustomEditorsByType != null)
-							cachedCustomEditorsByType.Remove(selectedAssetType);
-						return;
-					}
-
-					var newMonoEditorType = Activator.CreateInstance(monoEditorType);
-					newMonoEditorType.SetFieldValue("m_InspectedType", selectedAssetType);
-					newMonoEditorType.SetFieldValue("m_InspectorType", typeof(GameDataInspector));
-					newMonoEditorType.SetFieldValue("m_EditorForChildClasses", false);
-					if (monoEditorType.HasField("m_IsFallback"))
-						newMonoEditorType.SetFieldValue("m_IsFallback", false);
-
-					// override inspector
-					customEditorsList.Insert(0, newMonoEditorType);
-					if (cachedCustomEditorsByType != null)
-						cachedCustomEditorsByType[selectedAssetType] = typeof(GameDataInspector);
-					// force rebuild editor list
-					activeEditorTracker.Invoke("ForceRebuild");
-					inspectorWindow.Repaint();
-
-					// restore original inspector
-					customEditorsList.Remove(newMonoEditorType);
-					if (cachedCustomEditorsByType != null)
-						cachedCustomEditorsByType.Remove(selectedAssetType);
-				}
 			}
-			catch (Exception updateEditorError)
+
+			if (Selection.activeObject == GameDataAsset)
 			{
-				if (Settings.Current.Verbose)
-					Debug.LogError(updateEditorError);
+				return;
 			}
+
+			if (GameDataAsset == null)
+			{
+				GameDataAsset = CreateInstance<GameDataAsset>();
+				GameDataAsset.hideFlags = HideFlags.DontSave;
+			}
+			GameDataAsset.FilePath = assetPath;
+
+			Selection.activeObject = GameDataAsset;
+			foreach (var editor in UnityEngine.Resources.FindObjectsOfTypeAll<GameDataInspector>())
+			{
+				editor.Repaint();
+			}
+
 		}
 
 		/// <inheritdoc />
@@ -189,10 +102,13 @@ namespace GameDevWare.Charon.Unity.Windows
 			this.DrawDefaultInspector();
 
 			var gameDataAsset = this.target;
-			var gameDataPath = FileHelper.MakeProjectRelative(AssetDatabase.GetAssetPath(gameDataAsset));
+			if (gameDataAsset is GameDataAsset)
+			{
+				gameDataAsset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(((GameDataAsset)gameDataAsset).FilePath);
+			}
 
-			var assetPath = FileHelper.MakeProjectRelative(AssetDatabase.GetAssetPath(Selection.activeObject));
-			if (GameDataTracker.IsGameDataFile(assetPath) == false)
+			var gameDataPath = FileHelper.MakeProjectRelative(AssetDatabase.GetAssetPath(gameDataAsset));
+			if (GameDataTracker.IsGameDataFile(gameDataPath) == false)
 			{
 				return;
 			}
@@ -264,7 +180,7 @@ namespace GameDevWare.Charon.Unity.Windows
 						Resources.UI_UNITYPLUGIN_INSPECTOR_CODE_INDENTATION, (SourceCodeIndentation)this.gameDataSettings.Indentation);
 					this.gameDataSettings.Optimizations = (int)(SourceCodeGenerationOptimizations)EditorGUILayout.EnumFlagsField(
 						Resources.UI_UNITYPLUGIN_INSPECTOR_CODE_OPTIMIZATIONS, (SourceCodeGenerationOptimizations)this.gameDataSettings.Optimizations);
-					
+
 					if (!CharonCli.IsToolsLegacy())
 					{
 						this.gameDataSettings.SplitSourceCodeFiles = EditorGUILayout.Toggle(Resources.UI_UNITYPLUGIN_INSPECTOR_SPLIT_FILES,
@@ -286,7 +202,7 @@ namespace GameDevWare.Charon.Unity.Windows
 				}
 			}
 
-	#if FALSE
+#if FALSE
 			this.connectionFold = EditorGUILayout.Foldout(this.connectionFold, this.lastServerAddress);
 			if (this.connectionFold)
 			{
@@ -419,5 +335,13 @@ namespace GameDevWare.Charon.Unity.Windows
 				this.gameDataSettings.Save(gameDataPath);
 			}
 		}
+	}
+
+	/// <summary>
+	/// Asset surrogate for game data files
+	/// </summary>
+	public class GameDataAsset : ScriptableObject
+	{
+		[System.NonSerialized] public string FilePath;
 	}
 }
