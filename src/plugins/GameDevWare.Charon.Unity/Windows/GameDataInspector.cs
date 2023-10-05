@@ -192,22 +192,25 @@ namespace GameDevWare.Charon.Unity.Windows
 						this.gameDataSettings.SplitSourceCodeFiles = EditorGUILayout.Toggle(Resources.UI_UNITYPLUGIN_INSPECTOR_SPLIT_FILES,
 							this.gameDataSettings.SplitSourceCodeFiles);
 					}
-
-					GUI.enabled = !CoroutineScheduler.IsRunning && !EditorApplication.isCompiling && string.IsNullOrEmpty(this.gameDataSettings.CodeGenerationPath) == false;
-					EditorGUILayout.Space();
-
-					if (GUILayout.Button(Resources.UI_UNITYPLUGIN_INSPECTOR_RUN_GENERATOR_BUTTON))
-					{
-						GenerateCodeAndAssetsRoutine.Schedule(
-							path: gameDataPath,
-							progressCallback: ProgressUtils.ReportToLog(Resources.UI_UNITYPLUGIN_INSPECTOR_GENERATION_PREFIX + " "),
-							coroutineId: "generation::" + gameDataPath
-						).ContinueWith(_ => this.Repaint());
-					}
 					GUI.enabled = true;
 				}
 			}
 
+			GUI.enabled = !CoroutineScheduler.IsRunning && !EditorApplication.isCompiling && 
+				string.IsNullOrEmpty(this.gameDataSettings.CodeGenerationPath) == false && 
+				this.gameDataSettings.Generator != (int)GameDataSettings.CodeGenerator.None;
+
+			EditorGUILayout.Space();
+
+			if (GUILayout.Button(Resources.UI_UNITYPLUGIN_INSPECTOR_RUN_GENERATOR_BUTTON))
+			{
+				GenerateCodeAndAssetsRoutine.Schedule(
+					path: gameDataPath,
+					progressCallback: ProgressUtils.ReportToLog(Resources.UI_UNITYPLUGIN_INSPECTOR_GENERATION_PREFIX + " "),
+					coroutineId: "generation::" + gameDataPath
+				).ContinueWith(_ => this.Repaint());
+			}
+			GUI.enabled = true;
 #if FALSE
 			this.connectionFold = EditorGUILayout.Foldout(this.connectionFold, this.lastServerAddress);
 			if (this.connectionFold)

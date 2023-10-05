@@ -24,6 +24,7 @@ using GameDevWare.Charon.Unity.Routines;
 using GameDevWare.Charon.Unity.Utils;
 using GameDevWare.Charon.Unity.Windows;
 using UnityEditor;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 // ReSharper disable UnusedMember.Local
@@ -277,6 +278,10 @@ namespace GameDevWare.Charon.Unity
 
 			File.WriteAllText(gameDataPath, "");
 			AssetDatabase.Refresh();
+
+			var gameDataAsset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(gameDataPath);
+
+			EditorGUIUtility.PingObject(gameDataAsset);
 		}
 
 		public static void FocusConsoleWindow()
