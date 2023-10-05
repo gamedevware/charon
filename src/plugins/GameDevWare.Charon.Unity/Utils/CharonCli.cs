@@ -705,6 +705,11 @@ namespace GameDevWare.Charon.Unity.Utils
 
 			gameDataLocation.ThrowIfFileNotExists();
 
+			if (true)
+			{
+				optimizations |= SourceCodeGenerationOptimizations.DisableFormulaCompilation;
+			}
+
 			var optimizationsList = new List<string>();
 			foreach (SourceCodeGenerationOptimizations optimization in Enum.GetValues(typeof(SourceCodeGenerationOptimizations)))
 			{
@@ -740,6 +745,10 @@ namespace GameDevWare.Charon.Unity.Utils
 				if ((optimizations & SourceCodeGenerationOptimizations.RawReferences) == 0)
 				{
 					options |= LegacySourceCodeGenerationOptimizations.HideReferences;
+				}
+				if ((optimizations & SourceCodeGenerationOptimizations.DisableFormulaCompilation) == 0)
+				{
+					options |= LegacySourceCodeGenerationOptimizations.DisableFormulas;
 				}
 
 				var runTask = RunInternal

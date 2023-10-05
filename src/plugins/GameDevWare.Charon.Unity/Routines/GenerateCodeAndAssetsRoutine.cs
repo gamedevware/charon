@@ -30,6 +30,7 @@ using GameDevWare.Charon.Unity.ServerApi.KeyStorage;
 using JetBrains.Annotations;
 using UnityEditor;
 using Debug = UnityEngine.Debug;
+using System.Xml.Serialization;
 
 namespace GameDevWare.Charon.Unity.Routines
 {
@@ -87,6 +88,11 @@ namespace GameDevWare.Charon.Unity.Routines
 				}
 
 				var optimizations = gameDataSettings.Optimizations;
+
+				if (Array.IndexOf(Settings.SupportedExtensions, Settings.EXTENSION_FORMULAS) == -1) // no expression library installed
+				{
+					optimizations |= (int)SourceCodeGenerationOptimizations.DisableFormulaCompilation;
+				}
 
 				// trying to touch gamedata file
 				var readGameDataTask = FileHelper.ReadFileAsync(gameDataPath, 5);

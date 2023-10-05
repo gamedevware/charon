@@ -142,27 +142,32 @@ namespace GameDevWare.Charon.Unity.Windows
 					this.gameDataSettings.AutoGeneration = EditorGUILayout.Toggle(Resources.UI_UNITYPLUGIN_INSPECTOR_AUTO_GENERATION,
 						this.gameDataSettings.AutoGeneration);
 
-					var codeAsset = !string.IsNullOrEmpty(this.gameDataSettings.CodeGenerationPath) && File.Exists(this.gameDataSettings.CodeGenerationPath) ?
-						AssetDatabase.LoadAssetAtPath<TextAsset>(this.gameDataSettings.CodeGenerationPath) : null;
+					var folderAsset = !string.IsNullOrEmpty(this.gameDataSettings.CodeGenerationPath) && Directory.Exists(this.gameDataSettings.CodeGenerationPath) ?
+						AssetDatabase.LoadAssetAtPath<DefaultAsset>(this.gameDataSettings.CodeGenerationPath) : null;
 					var assetAsset = !string.IsNullOrEmpty(this.gameDataSettings.AssetGenerationPath) && File.Exists(this.gameDataSettings.AssetGenerationPath) ?
 						AssetDatabase.LoadAssetAtPath<ScriptableObject>(this.gameDataSettings.AssetGenerationPath) : null;
 
-					if (codeAsset != null)
+					if (folderAsset != null)
+					{
 						this.gameDataSettings.CodeGenerationPath = AssetDatabase.GetAssetPath(
-							EditorGUILayout.ObjectField(Resources.UI_UNITYPLUGIN_INSPECTOR_CODE_GENERATION_PATH, codeAsset, typeof(TextAsset), false));
+							EditorGUILayout.ObjectField(Resources.UI_UNITYPLUGIN_INSPECTOR_CODE_GENERATION_PATH, folderAsset, typeof(DefaultAsset), false));
+					}
 					else
+					{
 						this.gameDataSettings.CodeGenerationPath = EditorGUILayout.TextField(Resources.UI_UNITYPLUGIN_INSPECTOR_CODE_GENERATION_PATH,
 							this.gameDataSettings.CodeGenerationPath);
+					}
 
 					if (this.gameDataSettings.Generator == (int)GameDataSettings.CodeGenerator.CSharpCodeAndAsset)
 					{
 						if (assetAsset != null)
-							this.gameDataSettings.AssetGenerationPath = AssetDatabase.GetAssetPath(
-								EditorGUILayout.ObjectField(Resources.UI_UNITYPLUGIN_INSPECTOR_ASSET_GENERATION_PATH, assetAsset, typeof(ScriptableObject),
-									false));
+						{
+							this.gameDataSettings.AssetGenerationPath = AssetDatabase.GetAssetPath(EditorGUILayout.ObjectField(Resources.UI_UNITYPLUGIN_INSPECTOR_ASSET_GENERATION_PATH, assetAsset, typeof(ScriptableObject), false));
+						}
 						else
-							this.gameDataSettings.AssetGenerationPath = EditorGUILayout.TextField(Resources.UI_UNITYPLUGIN_INSPECTOR_ASSET_GENERATION_PATH,
-								this.gameDataSettings.AssetGenerationPath);
+						{
+							this.gameDataSettings.AssetGenerationPath = EditorGUILayout.TextField(Resources.UI_UNITYPLUGIN_INSPECTOR_ASSET_GENERATION_PATH, this.gameDataSettings.AssetGenerationPath);
+						}
 					}
 
 					if (this.gameDataSettings.Generator == (int)GameDataSettings.CodeGenerator.CSharpCodeAndAsset &&
@@ -337,7 +342,7 @@ namespace GameDevWare.Charon.Unity.Windows
 				EditorGUIUtility.PingObject(gameDataAsset);
 			}
 			EditorGUILayout.EndHorizontal();
-			
+
 			GUI.enabled = true;
 
 			if (GUI.changed)

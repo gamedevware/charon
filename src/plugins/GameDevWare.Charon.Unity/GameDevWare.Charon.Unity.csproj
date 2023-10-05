@@ -20,7 +20,6 @@ https://gamedevware.github.io/charon/
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseUrl>https://github.com/gamedevware/charon/blob/master/LICENSE.md</PackageLicenseUrl>
 		<DocumentationFile>$(TargetDir)\$(AssemblyName).xml</DocumentationFile>
-		<AssemblyVersion>2021.1.2.0</AssemblyVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
 		<DefineConstants>RELEASE</DefineConstants>
