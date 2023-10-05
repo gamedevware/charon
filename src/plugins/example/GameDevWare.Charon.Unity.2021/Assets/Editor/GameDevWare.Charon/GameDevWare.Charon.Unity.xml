@@ -4161,5 +4161,10 @@
         <member name="M:GameDevWare.Charon.Unity.Windows.GameDataInspector.OnInspectorGUI">
             <inheritdoc />
         </member>
+        <member name="T:GameDevWare.Charon.Unity.Windows.GameDataAsset">
+            <summary>
+            Asset surrogate for game data files
+            </summary>
+        </member>
     </members>
 </doc>
