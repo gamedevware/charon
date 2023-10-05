@@ -231,9 +231,6 @@ namespace GameDevWare.Charon.Unity
 		[MenuItem(ASSETS_CREATE_PREFIX + Resources.UI_UNITYPLUGIN_MENU_CREATE_GAMEDATA + "/" + Resources.UI_UNITYPLUGIN_MENU_CREATE_GAMEDATA_JSON, true)]
 		private static bool CreateGameDataAssetJsonCheck()
 		{
-			if (Selection.activeObject == null)
-				return false;
-
 			return !CoroutineScheduler.IsRunning && !EditorApplication.isCompiling;
 		}
 
@@ -247,17 +244,20 @@ namespace GameDevWare.Charon.Unity
 		[MenuItem(ASSETS_CREATE_PREFIX + Resources.UI_UNITYPLUGIN_MENU_CREATE_GAMEDATA + "/" + Resources.UI_UNITYPLUGIN_MENU_CREATE_GAMEDATA_MESSAGEPACK, true)]
 		private static bool CreateGameDataAssetMsgPackCheck()
 		{
-			if (Selection.activeObject == null)
-				return false;
-
 			return !CoroutineScheduler.IsRunning && !EditorApplication.isCompiling;
 		}
 
 		private static void CreateGameData(GameDataStoreFormat format)
 		{
-			var location = Path.GetFullPath(AssetDatabase.GetAssetPath(Selection.activeObject));
-			if (File.Exists(location))
-				location = Path.GetDirectoryName(location);
+			var location = Path.GetFullPath("./Assets");
+			if (Selection.activeObject != null)
+			{
+				location = Path.GetFullPath(AssetDatabase.GetAssetPath(Selection.activeObject));
+				if (File.Exists(location))
+				{
+					location = Path.GetDirectoryName(location);
+				}
+			}
 
 			if (string.IsNullOrEmpty(location) || Directory.Exists(location) == false)
 			{
