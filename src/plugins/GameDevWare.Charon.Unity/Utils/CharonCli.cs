@@ -49,8 +49,12 @@ namespace GameDevWare.Charon.Unity.Utils
 
 		internal static Promise<RequirementsCheckResult> CheckRequirementsAsync()
 		{
-			if (string.IsNullOrEmpty(Settings.CharonExePath) || !File.Exists(Settings.CharonExePath))
+			if (string.IsNullOrEmpty(Settings.CharonExePath) ||
+				!File.Exists(Settings.CharonExePath) ||
+				string.IsNullOrEmpty(Settings.Current.EditorVersion))
+			{
 				return Promise.FromResult(RequirementsCheckResult.MissingExecutable);
+			}
 
 			var additionalChecks = new List<Promise<RequirementsCheckResult>>();
 			if (RuntimeInformation.IsWindows)
@@ -79,17 +83,14 @@ namespace GameDevWare.Charon.Unity.Utils
 				}));
 			}
 
-			if (!string.IsNullOrEmpty(Settings.Current.EditorVersion))
+			additionalChecks.Add(GetVersionAsync().ContinueWith(getCharonVersion =>
 			{
-				additionalChecks.Add(GetVersionAsync().ContinueWith(getCharonVersion =>
-				{
-					if (getCharonVersion.HasErrors || getCharonVersion.GetResult() == null ||
-						getCharonVersion.GetResult().ToString() != Settings.Current.EditorVersion)
-						return RequirementsCheckResult.WrongVersion;
-					else
-						return RequirementsCheckResult.Ok;
-				}));
-			}
+				if (getCharonVersion.HasErrors || getCharonVersion.GetResult() == null ||
+					getCharonVersion.GetResult().ToString() != Settings.Current.EditorVersion)
+					return RequirementsCheckResult.WrongVersion;
+				else
+					return RequirementsCheckResult.Ok;
+			}));
 
 			if (additionalChecks.Count == 0)
 				return Promise.FromResult(RequirementsCheckResult.Ok);
@@ -389,8 +390,11 @@ namespace GameDevWare.Charon.Unity.Utils
 				currentVersion = checkToolsVersion.HasErrors ? default(SemanticVersion) : checkToolsVersion.GetResult();
 			}
 
-			Settings.Current.EditorVersion = currentVersion != null ? currentVersion.ToString() : null;
-			Settings.Current.Save();
+			if (currentVersion != null)
+			{
+				Settings.Current.EditorVersion = currentVersion.ToString();
+				Settings.Current.Save();
+			}
 
 			Debug.Log(string.Format("{1} version is '{0}'. Update is completed.", currentVersion, Path.GetFileName(charonPath)));
 
@@ -707,7 +711,7 @@ namespace GameDevWare.Charon.Unity.Utils
 				if ((optimizations & optimization) != 0)
 				{
 					optimizationsList.Add(optimization.ToString());
-				} 
+				}
 			}
 
 			if (IsToolsLegacy())

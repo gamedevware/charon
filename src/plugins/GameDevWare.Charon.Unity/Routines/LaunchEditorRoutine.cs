@@ -56,6 +56,18 @@ namespace GameDevWare.Charon.Unity.Routines
 				throw new InvalidOperationException(string.Format("Unable to start editor for '{0}'. File is not a game data file.", gameDataPath));
 			}
 
+			var checkRequirements = CharonCli.CheckRequirementsAsync();
+			yield return checkRequirements;
+
+			switch (checkRequirements.GetResult())
+			{
+				case RequirementsCheckResult.MissingRuntime: yield return UpdateRuntimeWindow.ShowAsync(); break;
+				case RequirementsCheckResult.WrongVersion:
+				case RequirementsCheckResult.MissingExecutable: yield return CharonCli.DownloadCharon(progressCallback.Sub(0.00f, 0.50f)); break;
+				case RequirementsCheckResult.Ok: break;
+				default: throw new InvalidOperationException(string.Format("Unexpected Charon check error: {0}.", checkRequirements.GetResult()));
+			}
+
 			if (gameDataSettings.IsConnected)
 			{
 				foreach (var step in RemoteAuthenticateAndOpenWindow(gameDataPath, gameDataSettings, reference, progressCallback.Sub(0.50f, 1.00f), cancellation))
