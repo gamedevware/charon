@@ -71,6 +71,7 @@ namespace GameDevWare.Charon {
 		public const string UI_UNITYPLUGIN_INSPECTOR_CONNECTION_LABEL = "Connection";
 		public const string UI_UNITYPLUGIN_INSPECTOR_NOT_CONNECTED_LABEL = "<Not Connected>";
 		public const string UI_UNITYPLUGIN_INSPECTOR_VALIDATE_BUTTON = "Validate";
+		public const string UI_UNITYPLUGIN_INSPECTOR_SELECT_BUTTON = "Select In Project Window";
 		public const string UI_UNITYPLUGIN_INSPECTOR_VALIDATION_PREFIX = "Validation:";
 		public const string UI_UNITYPLUGIN_INSPECTOR_SYNCHONIZATION_PREFIX = "Synchronization:";
 		public const string UI_UNITYPLUGIN_INSPECTOR_LAUNCHING_EDITOR_PREFIX = "Launching Editor:";

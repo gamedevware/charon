@@ -36,7 +36,7 @@ namespace GameDevWare.Charon.Unity.Windows
 	[CustomEditor(typeof(GameDataAsset))]
 	internal class GameDataInspector : Editor
 	{
-		private static GameDataAsset GameDataAsset;
+		private static UnityObject ActiveObject;
 		private static bool SelectionChanged;
 
 		private UnityObject lastAsset;
@@ -66,6 +66,7 @@ namespace GameDevWare.Charon.Unity.Windows
 
 			if (Selection.activeObject == null)
 			{
+				ActiveObject = null;
 				return;
 			}
 
@@ -75,19 +76,19 @@ namespace GameDevWare.Charon.Unity.Windows
 				return;
 			}
 
-			if (Selection.activeObject == GameDataAsset)
+			if (Selection.activeObject == ActiveObject)
 			{
 				return;
 			}
 
-			if (GameDataAsset == null)
+			if (!(ActiveObject is GameDataAsset))
 			{
-				GameDataAsset = CreateInstance<GameDataAsset>();
-				GameDataAsset.hideFlags = HideFlags.DontSave;
+				ActiveObject = CreateInstance<GameDataAsset>();
+				ActiveObject.hideFlags = HideFlags.DontSave;
 			}
-			GameDataAsset.FilePath = assetPath;
+			((GameDataAsset)ActiveObject).FilePath = assetPath;
 
-			Selection.activeObject = GameDataAsset;
+			Selection.activeObject = ActiveObject;
 			foreach (var editor in UnityEngine.Resources.FindObjectsOfTypeAll<GameDataInspector>())
 			{
 				editor.Repaint();
@@ -328,6 +329,15 @@ namespace GameDevWare.Charon.Unity.Windows
 				).ContinueWith(_ => this.Repaint());
 			}
 			EditorGUILayout.EndHorizontal();
+			EditorGUILayout.BeginHorizontal();
+			if (GUILayout.Button(Resources.UI_UNITYPLUGIN_INSPECTOR_SELECT_BUTTON))
+			{
+				Selection.activeObject = gameDataAsset;
+				ActiveObject = gameDataAsset;
+				EditorGUIUtility.PingObject(gameDataAsset);
+			}
+			EditorGUILayout.EndHorizontal();
+			
 			GUI.enabled = true;
 
 			if (GUI.changed)
