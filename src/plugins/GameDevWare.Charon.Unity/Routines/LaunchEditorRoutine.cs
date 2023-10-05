@@ -29,6 +29,11 @@ namespace GameDevWare.Charon.Unity.Routines
 			if (GameDataTracker.IsGameDataFile(gameDataPath) == false)
 				return false;
 
+			if (loadEditorTask != null && !loadEditorTask.IsCompleted)
+			{
+				return false;
+			}
+
 			var reference = ValidationError.GetReference(exceptionId);
 			var cancellation = new Promise();
 			var progressCallback = ProgressUtils.ShowCancellableProgressBar(Resources.UI_UNITYPLUGIN_INSPECTOR_LAUNCHING_EDITOR_PREFIX + " ", cancellation: cancellation);
