@@ -83,7 +83,14 @@ This command does not delete previously generated files, and it is the responsib
    
      # name (default)
      --namespace GameParameters
-    
+     
+--defineConstants
+   Preprocessor constants to define. Use semicolon(;) to separate multiple values.
+   
+   .. code-block:: bash
+   
+     --defineConstants USE_DYNAMIC_EXPRESSIONS;SUPPRESS_BUILD_IN_FORMULAS
+     
 --indentation
    Indentation style for generated code.
    
