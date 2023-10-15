@@ -5,11 +5,9 @@ using System;
 using System.Collections;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.CompilerServices;
 using GameDevWare.Charon.Unity.ServerApi;
 using UnityEditor;
 using UnityEditor.Callbacks;
-using UnityEngine;
 using GameDevWare.Charon.Unity.ServerApi.KeyStorage;
 
 namespace GameDevWare.Charon.Unity.Routines
@@ -279,9 +277,6 @@ namespace GameDevWare.Charon.Unity.Routines
 			}
 			switch (browserType)
 			{
-				case BrowserType.UnityEmbedded:
-					GameDataEditorWindow.ShowWebView(gameDataPath, gameDataEditorUrl, navigateUrl);
-					break;
 				case BrowserType.Custom:
 					if (string.IsNullOrEmpty(Settings.Current.BrowserPath))
 						goto case BrowserType.SystemDefault;
@@ -291,6 +286,7 @@ namespace GameDevWare.Charon.Unity.Routines
 					}
 					Process.Start(Settings.Current.BrowserPath, navigateUrl.OriginalString);
 					break;
+				case BrowserType.UnityEmbedded:
 				case BrowserType.SystemDefault:
 					if (Settings.Current.Verbose)
 					{
