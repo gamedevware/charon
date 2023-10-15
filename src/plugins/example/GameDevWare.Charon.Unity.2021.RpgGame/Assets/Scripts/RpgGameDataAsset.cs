@@ -16,7 +16,7 @@ namespace Assets.Scripts
 	using UnityEngine;
 
 	[Serializable]
-    [global::System.CodeDom.Compiler.GeneratedCode("GameDevWare.Charon.Unity", "2019.3.6.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("GameDevWare.Charon.Unity", "2023.4.4.0")]
 	public partial class RpgGameDataAsset : ScriptableObject, ISerializationCallbackReceiver
 	{
 		[SerializeField, HideInInspector]
@@ -37,27 +37,24 @@ namespace Assets.Scripts
 		void ISerializationCallbackReceiver.OnAfterDeserialize()
 		{
 			var data = new MemoryStream(dataBytes, 0, dataBytes.Length, false);
-			var encoding = Encoding.UTF8;
-			var leaveOpen = false;
-
 			switch (this.extension.Trim('.'))
 			{
 				case "gdjs":
 				case "json":
-					this.GameData = new Assets.Scripts.RpgGameData(data, Assets.Scripts.RpgGameData.Format.Json, null, encoding, leaveOpen);
-					break;
-				case "gdbs":
-				case "bson":
-					this.GameData = new Assets.Scripts.RpgGameData(data, Assets.Scripts.RpgGameData.Format.Bson, null, encoding, leaveOpen);
+					var options = new Formatters.GameDataLoadOptions
+					{
+						Format = Formatters.Format.Json
+					};
+					this.GameData = new Assets.Scripts.RpgGameData(data, options);
 					break;
 				case "gdmp":
 				case "msgpack":
 				case "msgpck":
-					this.GameData = new Assets.Scripts.RpgGameData(data, Assets.Scripts.RpgGameData.Format.Xml, null, encoding, leaveOpen);
-					break;
-				case "gdml":
-				case "xml":
-					this.GameData = new Assets.Scripts.RpgGameData(data, Assets.Scripts.RpgGameData.Format.MessagePack, null, encoding, leaveOpen);
+					var options1 = new Formatters.GameDataLoadOptions
+					{
+						Format = Formatters.Format.MessagePack
+					};
+					this.GameData = new Assets.Scripts.RpgGameData(data, options1);
 					break;
 				default:
 					throw new InvalidOperationException(string.Format("Unknown file extension '{0}'. Unable to determine file format by extension.",

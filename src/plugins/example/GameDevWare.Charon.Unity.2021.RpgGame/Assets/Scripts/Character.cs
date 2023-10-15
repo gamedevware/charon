@@ -21,7 +21,7 @@ namespace Assets.Scripts
 
 			this.characterParams = characterParams;
 
-			this.HitPoints = characterParams.Armors.First().HitPoints;
+			this.HitPoints = characterParams.Armors.AsList.First().HitPoints;
 			this.MaxHitPoints = this.HitPoints;
 		}
 

@@ -41,7 +41,7 @@ namespace Assets.Scripts
 				var gameDataStream = new MemoryStream(loader.bytes, writable: false);
 
 				// reading game data from stream, format is set to JSON
-				this.GameData = new RpgGameData(gameDataStream, RpgGameData.Format.Json);
+				this.GameData = new RpgGameData(gameDataStream, new Formatters.GameDataLoadOptions { Format = Formatters.Format.Json });
 			}
 
 			// CASE #2: load from asset at /Assets/Resources
