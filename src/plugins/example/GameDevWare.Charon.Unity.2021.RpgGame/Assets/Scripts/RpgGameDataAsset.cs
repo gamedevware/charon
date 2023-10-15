@@ -41,20 +41,12 @@ namespace Assets.Scripts
 			{
 				case "gdjs":
 				case "json":
-					var options = new Formatters.GameDataLoadOptions
-					{
-						Format = Formatters.Format.Json
-					};
-					this.GameData = new Assets.Scripts.RpgGameData(data, options);
+					this.GameData = new Assets.Scripts.RpgGameData(data, new Formatters.GameDataLoadOptions { Format = Formatters.Format.Json });
 					break;
 				case "gdmp":
 				case "msgpack":
 				case "msgpck":
-					var options1 = new Formatters.GameDataLoadOptions
-					{
-						Format = Formatters.Format.MessagePack
-					};
-					this.GameData = new Assets.Scripts.RpgGameData(data, options1);
+					this.GameData = new Assets.Scripts.RpgGameData(data, new Formatters.GameDataLoadOptions { Format = Formatters.Format.MessagePack });
 					break;
 				default:
 					throw new InvalidOperationException(string.Format("Unknown file extension '{0}'. Unable to determine file format by extension.",

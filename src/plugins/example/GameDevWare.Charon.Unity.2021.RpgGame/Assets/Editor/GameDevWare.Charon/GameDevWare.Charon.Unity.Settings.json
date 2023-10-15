@@ -1,0 +1,11 @@
+﻿
+{
+
+	"Browser": 1, 
+	"BrowserPath": "", 
+	"EditorPort": 27531, 
+	"EditorVersion": "2023.4.1", 
+	"ServerAddress": "", 
+	"UseBetaFeed": false, 
+	"Verbose": true
+}

@@ -3638,8 +3638,8 @@ namespace Assets.Scripts
 #if USE_DYNAMIC_EXPRESSIONS
 		private static readonly GameDevWare.Dynamic.Expressions.Binder ExpressionBinder;
 
-		private readonly Expression<Func<Hero, bool>> expression;
-		private Func<Hero, bool> compiledExpression;
+		private readonly Expression<Func<Assets.Scripts.CheckContext, bool>> expression;
+		private Func<Assets.Scripts.CheckContext, bool> compiledExpression;
 
 		public ConditionsCheckFormulaScope Context { get; private set; }
 
@@ -3647,15 +3647,15 @@ namespace Assets.Scripts
 		{
 			var formulaTypes = new Type[]
 			{
-				typeof(Hero),
-				typeof(ItemWithCount),
+				typeof(Assets.Scripts.CheckContext),
+				typeof(Assets.Scripts.AttackType),
 				typeof(bool),
 				typeof(ConditionsCheckFormulaScope)
 			};
 
 			var parameters = new ParameterExpression[]
 			{
-				Expression.Parameter(typeof(Hero), "context"),
+				Expression.Parameter(typeof(Assets.Scripts.CheckContext), "context"),
 			};
 
 			var typeResolver = new GameDevWare.Dynamic.Expressions.KnownTypeResolver(formulaTypes, RpgGameData.TypeResolver);
@@ -3665,9 +3665,9 @@ namespace Assets.Scripts
 			if (typeof(object).Name == string.Empty)
 			{
 				new System.Runtime.CompilerServices.StrongBox<ConditionsCheckFormulaScope>(default(ConditionsCheckFormulaScope));
-				new System.Runtime.CompilerServices.StrongBox<ItemWithCount>(default(ItemWithCount));
+				new System.Runtime.CompilerServices.StrongBox<Assets.Scripts.AttackType>(default(Assets.Scripts.AttackType));
 			}
-			GameDevWare.Dynamic.Expressions.AotCompilation.RegisterFunc<Hero, bool>();
+			GameDevWare.Dynamic.Expressions.AotCompilation.RegisterFunc<Assets.Scripts.CheckContext, bool>();
 		}
 		public ConditionsCheckFormula(IReadOnlyDictionary<string, object> expressionTree)
 		{
@@ -3675,16 +3675,16 @@ namespace Assets.Scripts
 
 			var syntaxTreeNode = new GameDevWare.Dynamic.Expressions.SyntaxTreeNode((IDictionary<string, object>)expressionTree);
 			this.Context = new ConditionsCheckFormulaScope();
-			this.expression = (Expression<Func<Hero, bool>>)ConditionsCheckFormula.ExpressionBinder.Bind(syntaxTreeNode, Expression.Constant(this.Context));
+			this.expression = (Expression<Func<Assets.Scripts.CheckContext, bool>>)ConditionsCheckFormula.ExpressionBinder.Bind(syntaxTreeNode, Expression.Constant(this.Context));
 		}
 
-		public bool Invoke(Hero context)
+		public bool Invoke(Assets.Scripts.CheckContext context)
 		{
 			var __fn = this.CompileAot();
 			return __fn.Invoke(context);
 		}
 
-		public Func<Hero, bool> CompileAot()
+		public Func<Assets.Scripts.CheckContext, bool> CompileAot()
 		{
 			try
 			{
@@ -3699,7 +3699,7 @@ namespace Assets.Scripts
 				throw new InvalidOperationException(string.Format("Failed to compile expression '{0}' due errors: {1}{2}", this.ToString(), Environment.NewLine, compilationError.Message), compilationError);
 			}
 		}
-		public Func<Hero, bool> Compile()
+		public Func<Assets.Scripts.CheckContext, bool> Compile()
 		{
 			try
 			{
@@ -3725,15 +3725,15 @@ namespace Assets.Scripts
 		{
 			var formulaTypes = new Type[]
 			{
-				typeof(Hero),
-				typeof(ItemWithCount),
+				typeof(Assets.Scripts.CheckContext),
+				typeof(Assets.Scripts.AttackType),
 				typeof(bool),
 				typeof(ConditionsCheckFormulaScope)
 			};
 
 			TypeResolver = new Formulas.KnownFormulaTypeResolver(formulaTypes, Formulas.FormulaOptions.None, RpgGameData.TypeResolver);
 			// AOT
-			Formulas.FormulaExpression.RegisterFunc<Hero, bool>();
+			Formulas.FormulaExpression.RegisterFunc<Assets.Scripts.CheckContext, bool>();
 		}
 		public ConditionsCheckFormula(IReadOnlyDictionary<string, object> expressionTree)
 		{
@@ -3743,7 +3743,7 @@ namespace Assets.Scripts
 			this.expression = Formulas.FormulaExpression.Create(expressionTree, typeof(bool));
 		}
 
-		public bool Invoke(Hero context)
+		public bool Invoke(Assets.Scripts.CheckContext context)
 		{
 			var __lambdaArguments = new Dictionary<string, Formulas.VariableValue>();
 
@@ -3760,7 +3760,7 @@ namespace Assets.Scripts
 			if (expressionTree == null) throw new ArgumentNullException(nameof(expressionTree));
 		}
 
-		public bool Invoke(Hero context)
+		public bool Invoke(Assets.Scripts.CheckContext context)
 		{
 			throw new NotSupportedException();
 		}

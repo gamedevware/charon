@@ -4,107 +4,212 @@
         <name>GameDevWare.Charon.Unity</name>
     </assembly>
     <members>
-        <member name="T:GameDevWare.Charon.Unity.AssetLoaderGenerator">
+        <member name="T:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGenerator">
             <summary>
             Class to produce the template output
             </summary>
         </member>
-        <member name="M:GameDevWare.Charon.Unity.AssetLoaderGenerator.TransformText">
+        <member name="M:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGenerator.TransformText">
             <summary>
             Create the template output
             </summary>
         </member>
-        <member name="T:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase">
+        <member name="T:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase">
             <summary>
             Base class for this transformation
             </summary>
         </member>
-        <member name="P:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.GenerationEnvironment">
+        <member name="P:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.GenerationEnvironment">
             <summary>
             The string builder that generation-time code is using to assemble generated output
             </summary>
         </member>
-        <member name="P:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.Errors">
+        <member name="P:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.Errors">
             <summary>
             The error collection for the generation process
             </summary>
         </member>
-        <member name="P:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.indentLengths">
+        <member name="P:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.indentLengths">
             <summary>
             A list of the lengths of each indent that was added with PushIndent
             </summary>
         </member>
-        <member name="P:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.CurrentIndent">
+        <member name="P:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.CurrentIndent">
             <summary>
             Gets the current indent we use when adding lines to the output
             </summary>
         </member>
-        <member name="P:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.Session">
+        <member name="P:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.Session">
             <summary>
             Current transformation session
             </summary>
         </member>
-        <member name="M:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.Write(System.String)">
+        <member name="M:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.Write(System.String)">
             <summary>
             Write text directly into the generated output
             </summary>
         </member>
-        <member name="M:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.WriteLine(System.String)">
+        <member name="M:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.WriteLine(System.String)">
             <summary>
             Write text directly into the generated output
             </summary>
         </member>
-        <member name="M:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.Write(System.String,System.Object[])">
+        <member name="M:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.Write(System.String,System.Object[])">
             <summary>
             Write formatted text directly into the generated output
             </summary>
         </member>
-        <member name="M:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.WriteLine(System.String,System.Object[])">
+        <member name="M:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.WriteLine(System.String,System.Object[])">
             <summary>
             Write formatted text directly into the generated output
             </summary>
         </member>
-        <member name="M:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.Error(System.String)">
+        <member name="M:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.Error(System.String)">
             <summary>
             Raise an error
             </summary>
         </member>
-        <member name="M:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.Warning(System.String)">
+        <member name="M:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.Warning(System.String)">
             <summary>
             Raise a warning
             </summary>
         </member>
-        <member name="M:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.PushIndent(System.String)">
+        <member name="M:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.PushIndent(System.String)">
             <summary>
             Increase the indent
             </summary>
         </member>
-        <member name="M:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.PopIndent">
+        <member name="M:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.PopIndent">
             <summary>
             Remove the last indent that was added with PushIndent
             </summary>
         </member>
-        <member name="M:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.ClearIndent">
+        <member name="M:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.ClearIndent">
             <summary>
             Remove any indentation
             </summary>
         </member>
-        <member name="T:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.ToStringInstanceHelper">
+        <member name="T:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.ToStringInstanceHelper">
             <summary>
             Utility class to produce culture-oriented representation of an object as a string.
             </summary>
         </member>
-        <member name="P:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.ToStringInstanceHelper.FormatProvider">
+        <member name="P:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.ToStringInstanceHelper.FormatProvider">
             <summary>
             Gets or sets format provider to be used by ToStringWithCulture method.
             </summary>
         </member>
-        <member name="M:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.ToStringInstanceHelper.ToStringWithCulture(System.Object)">
+        <member name="M:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.ToStringInstanceHelper.ToStringWithCulture(System.Object)">
             <summary>
             This is called from the compile/run appdomain to convert objects within an expression block to a string
             </summary>
         </member>
-        <member name="P:GameDevWare.Charon.Unity.AssetLoaderGeneratorBase.ToStringHelper">
+        <member name="P:GameDevWare.Charon.Unity.CSharp40GameDataFromAssetGeneratorBase.ToStringHelper">
+            <summary>
+            Helper to produce culture-oriented representation of an object as a string
+            </summary>
+        </member>
+        <member name="T:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGenerator">
+            <summary>
+            Class to produce the template output
+            </summary>
+        </member>
+        <member name="M:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGenerator.TransformText">
+            <summary>
+            Create the template output
+            </summary>
+        </member>
+        <member name="T:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase">
+            <summary>
+            Base class for this transformation
+            </summary>
+        </member>
+        <member name="P:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.GenerationEnvironment">
+            <summary>
+            The string builder that generation-time code is using to assemble generated output
+            </summary>
+        </member>
+        <member name="P:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.Errors">
+            <summary>
+            The error collection for the generation process
+            </summary>
+        </member>
+        <member name="P:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.indentLengths">
+            <summary>
+            A list of the lengths of each indent that was added with PushIndent
+            </summary>
+        </member>
+        <member name="P:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.CurrentIndent">
+            <summary>
+            Gets the current indent we use when adding lines to the output
+            </summary>
+        </member>
+        <member name="P:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.Session">
+            <summary>
+            Current transformation session
+            </summary>
+        </member>
+        <member name="M:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.Write(System.String)">
+            <summary>
+            Write text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.WriteLine(System.String)">
+            <summary>
+            Write text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.Write(System.String,System.Object[])">
+            <summary>
+            Write formatted text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.WriteLine(System.String,System.Object[])">
+            <summary>
+            Write formatted text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.Error(System.String)">
+            <summary>
+            Raise an error
+            </summary>
+        </member>
+        <member name="M:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.Warning(System.String)">
+            <summary>
+            Raise a warning
+            </summary>
+        </member>
+        <member name="M:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.PushIndent(System.String)">
+            <summary>
+            Increase the indent
+            </summary>
+        </member>
+        <member name="M:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.PopIndent">
+            <summary>
+            Remove the last indent that was added with PushIndent
+            </summary>
+        </member>
+        <member name="M:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.ClearIndent">
+            <summary>
+            Remove any indentation
+            </summary>
+        </member>
+        <member name="T:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.ToStringInstanceHelper">
+            <summary>
+            Utility class to produce culture-oriented representation of an object as a string.
+            </summary>
+        </member>
+        <member name="P:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.ToStringInstanceHelper.FormatProvider">
+            <summary>
+            Gets or sets format provider to be used by ToStringWithCulture method.
+            </summary>
+        </member>
+        <member name="M:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.ToStringInstanceHelper.ToStringWithCulture(System.Object)">
+            <summary>
+            This is called from the compile/run appdomain to convert objects within an expression block to a string
+            </summary>
+        </member>
+        <member name="P:GameDevWare.Charon.Unity.CSharp73GameDataFromAssetGeneratorBase.ToStringHelper">
             <summary>
             Helper to produce culture-oriented representation of an object as a string
             </summary>
@@ -4141,6 +4246,11 @@
         <member name="F:GameDevWare.Charon.Unity.Utils.SourceCodeGenerationOptimizations.DisablePatching">
             <summary>
             Enumeration value - disablePatching.
+            </summary>
+        </member>
+        <member name="F:GameDevWare.Charon.Unity.Utils.SourceCodeGenerationOptimizations.DisableFormulaCompilation">
+            <summary>
+            Enumeration value - disableFormulas.
             </summary>
         </member>
         <member name="M:GameDevWare.Charon.Unity.Windows.ApiKeyPromptWindow.OnBeforeSerialize">
