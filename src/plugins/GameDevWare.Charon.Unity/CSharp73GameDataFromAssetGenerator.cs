@@ -79,25 +79,25 @@ namespace GameDevWare.Charon.Unity
             
             #line default
             #line hidden
-            this.Write("()\r\n\t\t{\r\n\r\n\t\t}\r\n\r\n\t\tvoid ISerializationCallbackReceiver.OnBeforeSerialize()\r\n\t\t{\r\n\t\t}\r\n\t\tvoid ISerializationCallbackReceiver.OnAfterDeserialize()\r\n\t\t{\r\n\t\t\tvar data = new MemoryStream(dataBytes, 0, dataBytes.Length, false);\r\n\t\t\tswitch (this.extension.Trim('.'))\r\n\t\t\t{\r\n\t\t\t\tcase \"gdjs\":\r\n\t\t\t\tcase \"json\":\r\n\t\t\t\t\tvar options = new Formatters.GameDataLoadOptions\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tFormat = Formatters.Format.Json\r\n\t\t\t\t\t};\r\n\t\t\t\t\tthis.GameData = new ");
+            this.Write("()\r\n\t\t{\r\n\r\n\t\t}\r\n\r\n\t\tvoid ISerializationCallbackReceiver.OnBeforeSerialize()\r\n\t\t{\r\n\t\t}\r\n\t\tvoid ISerializationCallbackReceiver.OnAfterDeserialize()\r\n\t\t{\r\n\t\t\tvar data = new MemoryStream(dataBytes, 0, dataBytes.Length, false);\r\n\t\t\tswitch (this.extension.Trim('.'))\r\n\t\t\t{\r\n\t\t\t\tcase \"gdjs\":\r\n\t\t\t\tcase \"json\":\r\n\t\t\t\t\tthis.GameData = new ");
             
-            #line 57 "D:\dev\projects\gamedevware.charon\src\plugins\GameDevWare.Charon.Unity\CSharp73GameDataFromAssetGenerator.tt"
+            #line 53 "D:\dev\projects\gamedevware.charon\src\plugins\GameDevWare.Charon.Unity\CSharp73GameDataFromAssetGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.GameDataClassName));
             
             #line default
             #line hidden
-            this.Write("(data, options);\r\n\t\t\t\t\tbreak;\r\n\t\t\t\tcase \"gdmp\":\r\n\t\t\t\tcase \"msgpack\":\r\n\t\t\t\tcase \"msgpck\":\r\n\t\t\t\t\tvar options = new Formatters.GameDataLoadOptions\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tFormat = Formatters.Format.MessagePack\r\n\t\t\t\t\t};\r\n\t\t\t\t\tthis.GameData = new ");
+            this.Write("(data, new Formatters.GameDataLoadOptions { Format = Formatters.Format.Json });\r\n\t\t\t\t\tbreak;\r\n\t\t\t\tcase \"gdmp\":\r\n\t\t\t\tcase \"msgpack\":\r\n\t\t\t\tcase \"msgpck\":\r\n\t\t\t\t\tthis.GameData = new ");
             
-            #line 66 "D:\dev\projects\gamedevware.charon\src\plugins\GameDevWare.Charon.Unity\CSharp73GameDataFromAssetGenerator.tt"
+            #line 58 "D:\dev\projects\gamedevware.charon\src\plugins\GameDevWare.Charon.Unity\CSharp73GameDataFromAssetGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.GameDataClassName));
             
             #line default
             #line hidden
-            this.Write("(data, options);\r\n\t\t\t\t\tbreak;\r\n\t\t\t\tdefault:\r\n\t\t\t\t\tthrow new InvalidOperationException(string.Format(\"Unknown file extension '{0}'. Unable to determine file format by extension.\",\r\n\t\t\t\t\t\tthis.extension));\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n\r\n");
+            this.Write("(data, new Formatters.GameDataLoadOptions { Format = Formatters.Format.MessagePack });\r\n\t\t\t\t\tbreak;\r\n\t\t\t\tdefault:\r\n\t\t\t\t\tthrow new InvalidOperationException(string.Format(\"Unknown file extension '{0}'. Unable to determine file format by extension.\",\r\n\t\t\t\t\t\tthis.extension));\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n\r\n");
             return this.GenerationEnvironment.ToString();
         }
         
-        #line 76 "D:\dev\projects\gamedevware.charon\src\plugins\GameDevWare.Charon.Unity\CSharp73GameDataFromAssetGenerator.tt"
+        #line 68 "D:\dev\projects\gamedevware.charon\src\plugins\GameDevWare.Charon.Unity\CSharp73GameDataFromAssetGenerator.tt"
  
 	
 	public string ToolsVersion { get; set; }

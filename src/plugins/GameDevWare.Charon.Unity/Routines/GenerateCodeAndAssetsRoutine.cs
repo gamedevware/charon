@@ -54,7 +54,6 @@ namespace GameDevWare.Charon.Unity.Routines
 			switch (checkRequirements.GetResult())
 			{
 				case RequirementsCheckResult.MissingRuntime: yield return UpdateRuntimeWindow.ShowAsync(); break;
-				case RequirementsCheckResult.WrongVersion:
 				case RequirementsCheckResult.MissingExecutable: yield return CharonCli.DownloadCharon(progressCallback); break;
 				case RequirementsCheckResult.Ok: break;
 				default: throw new InvalidOperationException("Unknown Tools check result.");
@@ -125,7 +124,7 @@ namespace GameDevWare.Charon.Unity.Routines
 
 							if ((CSharpLanguageVersion)gameDataSettings.LanguageVersion == CSharpLanguageVersion.CSharp73)
 							{
-								var assetCodeGenerator = new CSharp40GameDataFromAssetGenerator {
+								var assetCodeGenerator = new CSharp73GameDataFromAssetGenerator {
 									AssetClassName = gameDataSettings.GameDataClassName + "Asset",
 									GameDataClassName = gameDataSettings.Namespace + "." + gameDataSettings.GameDataClassName,
 									Namespace = gameDataSettings.Namespace
@@ -134,7 +133,7 @@ namespace GameDevWare.Charon.Unity.Routines
 							}
 							else
 							{
-								var assetCodeGenerator = new CSharp73GameDataFromAssetGenerator {
+								var assetCodeGenerator = new CSharp40GameDataFromAssetGenerator {
 									AssetClassName = gameDataSettings.GameDataClassName + "Asset",
 									GameDataClassName = gameDataSettings.Namespace + "." + gameDataSettings.GameDataClassName,
 									Namespace = gameDataSettings.Namespace

@@ -50,20 +50,12 @@ namespace <#= this.Namespace #>
 			{
 				case "gdjs":
 				case "json":
-					var options = new Formatters.GameDataLoadOptions
-					{
-						Format = Formatters.Format.Json
-					};
-					this.GameData = new <#= this.GameDataClassName #>(data, options);
+					this.GameData = new <#= this.GameDataClassName #>(data, new Formatters.GameDataLoadOptions { Format = Formatters.Format.Json });
 					break;
 				case "gdmp":
 				case "msgpack":
 				case "msgpck":
-					var options = new Formatters.GameDataLoadOptions
-					{
-						Format = Formatters.Format.MessagePack
-					};
-					this.GameData = new <#= this.GameDataClassName #>(data, options);
+					this.GameData = new <#= this.GameDataClassName #>(data, new Formatters.GameDataLoadOptions { Format = Formatters.Format.MessagePack });
 					break;
 				default:
 					throw new InvalidOperationException(string.Format("Unknown file extension '{0}'. Unable to determine file format by extension.",
