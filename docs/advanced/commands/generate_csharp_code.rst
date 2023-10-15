@@ -53,7 +53,15 @@ This command does not delete previously generated files, and it is the responsib
      
      # Relative path
      --outputDirectory "./my app/templates"
- 
+     
+--languageVersion
+   arget C# version. By default it is 4.0.
+   
+   .. code-block:: bash
+   
+     --languageVersion CSharp40
+     --languageVersion CSharp73
+     
 --documentClassName
    Name for base class for all documents.
 
