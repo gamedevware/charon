@@ -83,9 +83,6 @@ https://gamedevware.github.io/charon/
 	</Target>
 
 	<Target Name="CopyFiles" AfterTargets="CoreBuild">
-		<Copy SourceFiles="$(TargetPath)" DestinationFolder="../example/GameDevWare.Charon.Unity.2018/Assets/Editor/GameDevWare.Charon/" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
-		<Copy SourceFiles="$(TargetDir)\$(AssemblyName).xml" DestinationFolder="../example/GameDevWare.Charon.Unity.2018/Assets/Editor/GameDevWare.Charon/" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
-
 		<Copy SourceFiles="$(TargetPath)" DestinationFolder="../example/GameDevWare.Charon.Unity.2021/Assets/Editor/GameDevWare.Charon/" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
 		<Copy SourceFiles="$(TargetDir)\$(AssemblyName).xml" DestinationFolder="../example/GameDevWare.Charon.Unity.2021/Assets/Editor/GameDevWare.Charon/" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
 
