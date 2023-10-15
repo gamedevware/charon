@@ -136,6 +136,9 @@ namespace GameDevWare.Charon.Unity.Windows
 				this.gameDataSettings.Generator = (int)(GameDataSettings.CodeGenerator)EditorGUILayout.EnumPopup(Resources.UI_UNITYPLUGIN_INSPECTOR_CODE_GENERATOR,
 					(GameDataSettings.CodeGenerator)this.gameDataSettings.Generator);
 
+				this.gameDataSettings.LanguageVersion = (int)(CSharpLanguageVersion)EditorGUILayout.EnumPopup(
+					Resources.UI_UNITYPLUGIN_INSPECTOR_CODE_LANGUAGE_VERSION, (CSharpLanguageVersion)this.gameDataSettings.LanguageVersion);
+				
 				if (this.gameDataSettings.Generator != (int)GameDataSettings.CodeGenerator.None)
 				{
 
@@ -211,7 +214,7 @@ namespace GameDevWare.Charon.Unity.Windows
 				).ContinueWith(_ => this.Repaint());
 			}
 			GUI.enabled = true;
-#if FALSE
+
 			this.connectionFold = EditorGUILayout.Foldout(this.connectionFold, this.lastServerAddress);
 			if (this.connectionFold)
 			{
@@ -269,8 +272,7 @@ namespace GameDevWare.Charon.Unity.Windows
 					}
 				}
 			}
-#endif
-
+			
 			this.formulaAssembliesFold = EditorGUILayout.Foldout(this.formulaAssembliesFold, Resources.UI_UNITYPLUGIN_INSPECTOR_FORMULA_ASSEMBLIES_LABEL);
 			if (this.formulaAssembliesFold)
 			{

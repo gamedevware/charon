@@ -1,4 +1,2 @@
-﻿fix: fixed game data creation for MacOS Unity Editor
-fix: prevented multiple editor launches if file clicked multiple times
-fix: added Show in Project Window for game data inspector because select
-fix: added GameDevWare.Dynamic.Expressions detection for Code Generation
+﻿feature: Added option to generate C# 7.3 code
+feature: Unlocked online functionality in inspector window

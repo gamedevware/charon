@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net35</TargetFramework>
-		<Version>2023.4.1</Version>
+		<Version>2023.4.4</Version>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<Authors>Denis Zykov</Authors>
 		<Company>GameDevWare</Company>
@@ -42,16 +42,25 @@ https://gamedevware.github.io/charon/
 		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="AssetLoaderGenerator.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>AssetLoaderGenerator.tt</DependentUpon>
+		<Compile Update="CSharp40GameDataFromAssetGenerator.cs">
+		  <AutoGen>True</AutoGen>
+		  <DesignTime>True</DesignTime>
+		  <DependentUpon>CSharp40GameDataFromAssetGenerator.tt</DependentUpon>
+		</Compile>
+		<Compile Update="CSharp73GameDataFromAssetGenerator.cs">
+		  <AutoGen>True</AutoGen>
+		  <DesignTime>True</DesignTime>
+		  <DependentUpon>CSharp73GameDataFromAssetGenerator.tt</DependentUpon>
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-		<None Update="AssetLoaderGenerator.tt">
+		<None Update="CSharp40GameDataFromAssetGenerator.tt">
 			<Generator>TextTemplatingFilePreprocessor</Generator>
-			<LastGenOutput>AssetLoaderGenerator.cs</LastGenOutput>
+			<LastGenOutput>CSharp40GameDataFromAssetGenerator.cs</LastGenOutput>
+		</None>
+		<None Update="CSharp73GameDataFromAssetGenerator.tt">
+			<Generator>TextTemplatingFilePreprocessor</Generator>
+			<LastGenOutput>CSharp73GameDataFromAssetGenerator.cs</LastGenOutput>
 		</None>
 	</ItemGroup>
 	<ItemGroup>
@@ -80,7 +89,7 @@ https://gamedevware.github.io/charon/
 		<Copy SourceFiles="$(TargetPath)" DestinationFolder="../example/GameDevWare.Charon.Unity.2021/Assets/Editor/GameDevWare.Charon/" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
 		<Copy SourceFiles="$(TargetDir)\$(AssemblyName).xml" DestinationFolder="../example/GameDevWare.Charon.Unity.2021/Assets/Editor/GameDevWare.Charon/" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
 
-		<Copy SourceFiles="$(TargetPath)" DestinationFolder="../example/RpgGame/Assets/Editor/GameDevWare.Charon/" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
-		<Copy SourceFiles="$(TargetDir)\$(AssemblyName).xml" DestinationFolder="../example/RpgGame/Assets/Editor/GameDevWare.Charon/" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
+		<Copy SourceFiles="$(TargetPath)" DestinationFolder="../example/GameDevWare.Charon.Unity.2021.RpgGame/Assets/Editor/GameDevWare.Charon/" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
+		<Copy SourceFiles="$(TargetDir)\$(AssemblyName).xml" DestinationFolder="../example/GameDevWare.Charon.Unity.2021.RpgGame/Assets/Editor/GameDevWare.Charon/" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
 	</Target>
 </Project>

@@ -59,6 +59,7 @@ namespace GameDevWare.Charon {
 		public const string UI_UNITYPLUGIN_INSPECTOR_CODE_LINE_ENDINGS = "Line Endings";
 		public const string UI_UNITYPLUGIN_INSPECTOR_CODE_NAMESPACE = "Namespace";
 		public const string UI_UNITYPLUGIN_INSPECTOR_CODE_OPTIMIZATIONS = "Optimizations";
+		public const string UI_UNITYPLUGIN_INSPECTOR_CODE_LANGUAGE_VERSION = "Language Version";
 		public const string UI_UNITYPLUGIN_INSPECTOR_EDIT_BUTTON = "Edit";
 		public const string UI_UNITYPLUGIN_INSPECTOR_GENERATION_PREFIX = "Generation:";
 		public const string UI_UNITYPLUGIN_INSPECTOR_NAME_LABEL = "Name";

@@ -692,7 +692,7 @@ namespace GameDevWare.Charon.Unity.Utils
 		}
 
 		public static Promise<RunResult> GenerateCSharpCodeAsync(GameDataLocation gameDataLocation, string outputDirectory,
-			SourceCodeGenerationOptimizations optimizations = 0,
+			CSharpLanguageVersion languageVersion, SourceCodeGenerationOptimizations optimizations = 0,
 			string documentClassName = "Document", string gameDataClassName = "GameData",
 			string @namespace = "GameParameters", SourceCodeIndentation sourceCodeIndentation = SourceCodeIndentation.Tabs,
 			SourceCodeLineEndings sourceCodeLineEndings = SourceCodeLineEndings.Windows, bool splitFiles = false)
@@ -751,6 +751,8 @@ namespace GameDevWare.Charon.Unity.Utils
 					options |= LegacySourceCodeGenerationOptimizations.DisableFormulas;
 				}
 
+				var generatedCodeFileName = Path.ChangeExtension(Path.GetFileName(gameDataLocation.Location.LocalPath), ".cs");
+				
 				var runTask = RunInternal
 				(
 					gameDataLocation.ApiKey,
@@ -761,7 +763,7 @@ namespace GameDevWare.Charon.Unity.Utils
 						"--apiClassName", gameDataClassName,
 						"--namespace", @namespace,
 						"--options", ((int)options).ToString(),
-						"--output", Path.Combine(outputDirectory, Path.ChangeExtension(Path.GetFileName(gameDataLocation.Location.LocalPath), ".cs")),
+						"--output", Path.Combine(outputDirectory, generatedCodeFileName),
 						"--outputEncoding", "utf-8"
 					)
 				);
@@ -779,6 +781,7 @@ namespace GameDevWare.Charon.Unity.Utils
 						"--documentClassName", documentClassName,
 						"--gameDataClassName", gameDataClassName,
 						"--namespace", @namespace,
+						"--languageVersion", languageVersion.ToString(),
 						"--indentation", sourceCodeIndentation.ToString(),
 						"--lineEndings", sourceCodeLineEndings.ToString(),
 						"--optimizations", optimizationsList,

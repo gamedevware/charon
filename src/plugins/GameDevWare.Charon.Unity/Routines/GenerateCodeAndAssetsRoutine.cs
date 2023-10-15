@@ -119,13 +119,29 @@ namespace GameDevWare.Charon.Unity.Routines
 								SourceCodeGenerationOptimizations.DisableMessagePackSerialization
 							);
 
+							var assetCode = string.Empty;
 							var assetCodeGenerationPath = Path.Combine(gameDataSettings.CodeGenerationPath,
 								gameDataSettings.GameDataClassName + "Asset.cs");
-							var assetCodeGenerator = new AssetLoaderGenerator();
-							assetCodeGenerator.AssetClassName = gameDataSettings.GameDataClassName + "Asset";
-							assetCodeGenerator.GameDataClassName = gameDataSettings.Namespace + "." + gameDataSettings.GameDataClassName;
-							assetCodeGenerator.Namespace = gameDataSettings.Namespace;
-							var assetCode = assetCodeGenerator.TransformText();
+
+							if ((CSharpLanguageVersion)gameDataSettings.LanguageVersion == CSharpLanguageVersion.CSharp73)
+							{
+								var assetCodeGenerator = new CSharp40GameDataFromAssetGenerator {
+									AssetClassName = gameDataSettings.GameDataClassName + "Asset",
+									GameDataClassName = gameDataSettings.Namespace + "." + gameDataSettings.GameDataClassName,
+									Namespace = gameDataSettings.Namespace
+								};
+								assetCode = assetCodeGenerator.TransformText();
+							}
+							else
+							{
+								var assetCodeGenerator = new CSharp73GameDataFromAssetGenerator {
+									AssetClassName = gameDataSettings.GameDataClassName + "Asset",
+									GameDataClassName = gameDataSettings.Namespace + "." + gameDataSettings.GameDataClassName,
+									Namespace = gameDataSettings.Namespace
+								};
+								assetCode = assetCodeGenerator.TransformText();
+							}
+							
 							File.WriteAllText(assetCodeGenerationPath, assetCode);
 
 							forceReImportList.Add(assetCodeGenerationPath);
@@ -177,6 +193,7 @@ namespace GameDevWare.Charon.Unity.Routines
 						(
 							gameDataLocation,
 							Path.GetFullPath(codeGenerationPath),
+							(CSharpLanguageVersion)gameDataSettings.LanguageVersion,
 							(SourceCodeGenerationOptimizations)optimizations,
 							gameDataSettings.DocumentClassName,
 							gameDataSettings.GameDataClassName,
