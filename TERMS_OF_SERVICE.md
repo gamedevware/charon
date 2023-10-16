@@ -4,7 +4,7 @@
 
 **AGREEMENT TO OUR LEGAL TERMS**
 
-We are Denis Zykov ("**Company**," "**we**," "**us**," "**our**"), a sole proprietor registered in Czechia at Františka Kadlece 2547/42, Prague, Hlavne mesto Praha 18000, ICO 19662360. Our VAT number is CZ8709301755.
+We are Denis Zykov ("**Company**," "**we**," "**us**," "**our**"), a sole proprietor registered in Czechia at Františka Kadlece 2547/42, Prague, Hlavne mesto Praha 18000, IČO 19662360. Our VAT number is CZ8709301755.
 
 We operate the website [https://charon.live](https://charon.live) (the "**Site**"), as well as any other related products and services that refer or link to these legal terms (the "**Legal Terms**") (collectively, the "**Services**").
 
@@ -293,7 +293,7 @@ These Legal Terms and any policies or operating rules posted by us on the Servic
 
 In order to resolve a complaint regarding the Services or to receive further information regarding use of the Services, please contact us at:
 
-**Denis Zykov**, ICO 19662360
+**Denis Zykov**, IČO 19662360
 
 **Františka Kadlece 2547/42**
 
