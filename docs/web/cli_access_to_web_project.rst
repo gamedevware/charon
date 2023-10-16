@@ -1,6 +1,3 @@
-.. note::
-   Web version of Charon will be available in second half of October
-
 CLI Access to Web Project
 ========
 

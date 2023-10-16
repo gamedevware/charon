@@ -1,6 +1,3 @@
-.. note::
-   Web version of Charon will be available in second half of October
-
 Web Application Overview
 ========================
 

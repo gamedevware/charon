@@ -9,7 +9,7 @@ It is available in three deployment variants, including a [standalone](https://g
 
 Quickstart
 ==========
-- [Web](https://gamedevware.github.io/charon/web/basics.html) - Will be available in second half of October
+- [Web](https://gamedevware.github.io/charon/web/basics.html)
 - [Unity Plugin](https://gamedevware.github.io/charon/unity/plugin_installation.html)
 
 Other Links
