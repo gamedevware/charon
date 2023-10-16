@@ -66,7 +66,7 @@ The Content and Marks are provided in or through the Services "AS IS" for your i
 
 **Your use of our Services**
 
-Subject to your compliance with these Legal Terms, including the "[PROHIBITED ACTIVITIES](#prohibited)" section below, we grant you a non-exclusive, non-transferable, revocable license to:
+Subject to your compliance with these Legal Terms, including the "PROHIBITED ACTIVITIES" section below, we grant you a non-exclusive, non-transferable, revocable license to:
 
 *   access the Services; and
 *   download or print a copy of any portion of the Content to which you have properly gained access.
@@ -83,7 +83,7 @@ Any breach of these Intellectual Property Rights will constitute a material brea
 
 **Your submissions and contributions**
 
-Please review this section and the "[PROHIBITED ACTIVITIES](#prohibited)" section carefully prior to using our Services to understand the (a) rights you give us and (b) obligations you have when you post or upload any content through the Services.
+Please review this section and the "PROHIBITED ACTIVITIES" section carefully prior to using our Services to understand the (a) rights you give us and (b) obligations you have when you post or upload any content through the Services.
 
 **Submissions:** By directly sending us any question, comment, suggestion, idea, feedback, or other information about the Services ("Submissions"), you agree to assign to us all intellectual property rights in such Submission. You agree that we shall own this Submission and be entitled to its unrestricted use and dissemination for any lawful purpose, commercial or otherwise, without acknowledgment or compensation to you.
 
@@ -97,7 +97,7 @@ This license includes our use of your name, company name, and franchise name, as
 
 **You are responsible for what you post or upload:** By sending us Submissions and/or posting Contributions through any part of the Services or making Contributions accessible through the Services by linking your account through the Services to any of your social networking accounts, you:
 
-*   confirm that you have read and agree with our "[PROHIBITED ACTIVITIES](#prohibited)" and will not post, send, publish, upload, or transmit through the Services any Submission nor post any Contribution that is illegal, harassing, hateful, harmful, defamatory, obscene, bullying, abusive, discriminatory, threatening to any person or group, sexually explicit, false, inaccurate, deceitful, or misleading;
+*   confirm that you have read and agree with our "PROHIBITED ACTIVITIES" and will not post, send, publish, upload, or transmit through the Services any Submission nor post any Contribution that is illegal, harassing, hateful, harmful, defamatory, obscene, bullying, abusive, discriminatory, threatening to any person or group, sexually explicit, false, inaccurate, deceitful, or misleading;
 *   to the extent permissible by applicable law, waive any and all moral rights to any such Submission and/or Contribution;
 *   warrant that any such Submission and/or Contributions are original to you or that you have the necessary rights and licenses to submit such Submissions and/or Contributions and that you have full authority to grant us the above-mentioned rights in relation to your Submissions and/or Contributions; and
 *   warrant and represent that your Submissions and/or Contributions do not constitute confidential information.
@@ -108,7 +108,7 @@ You are solely responsible for your Submissions and/or Contributions and you exp
 
 **Copyright infringement**
 
-We respect the intellectual property rights of others. If you believe that any material available on or through the Services infringes upon any copyright you own or control, please immediately refer to the "[](#dmca)[COPYRIGHT INFRINGEMENTS](#copyrightyes)" section below.
+We respect the intellectual property rights of others. If you believe that any material available on or through the Services infringes upon any copyright you own or control, please immediately refer to the "COPYRIGHT INFRINGEMENTS" section below.
 
 ********3.****** USER REPRESENTATIONS**
 
