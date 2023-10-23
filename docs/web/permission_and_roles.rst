@@ -38,4 +38,4 @@ See also
 --------
 
 - :doc:`Basics <basics>`
-- `Web-based Application <https://charon.live>`_
+- `Web-based Application <https://gamedevware.com?ref=documentation>`_
