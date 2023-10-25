@@ -258,21 +258,20 @@ namespace GameDevWare.Charon.Unity.Windows
 					EditorGUILayout.EndHorizontal();
 					GUI.enabled = true;
 				}
-				else
-				{
-					EditorGUILayout.Space();
+			}
+			if (!this.gameDataSettings.IsConnected)
+			{
+				EditorGUILayout.Space();
 
-					if (GUILayout.Button(Resources.UI_UNITYPLUGIN_INSPECTOR_CONNECT_BUTTON))
-					{
-						ConnectGameDataWindow.ShowAsync(
-							folder: Path.GetDirectoryName(gameDataPath) ?? "./",
-							name: Path.GetFileName(gameDataPath),
-							autoClose: true
-						);
-					}
+				if (GUILayout.Button(Resources.UI_UNITYPLUGIN_INSPECTOR_CONNECT_BUTTON))
+				{
+					ConnectGameDataWindow.ShowAsync(
+						folder: Path.GetDirectoryName(gameDataPath) ?? "./",
+						name: Path.GetFileNameWithoutExtension(Path.GetFileName(gameDataPath)),
+						autoClose: true
+					);
 				}
 			}
-			
 			this.formulaAssembliesFold = EditorGUILayout.Foldout(this.formulaAssembliesFold, Resources.UI_UNITYPLUGIN_INSPECTOR_FORMULA_ASSEMBLIES_LABEL);
 			if (this.formulaAssembliesFold)
 			{

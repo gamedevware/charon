@@ -100,6 +100,7 @@ namespace GameDevWare.Charon {
 		public const string UI_UNITYPLUGIN_PROGRESS_AUTHENTICATING = "Authenticating";
 		public const string UI_UNITYPLUGIN_PROGRESS_DONE = "Done";
 		public const string UI_UNITYPLUGIN_PROGRESS_DOWNLOADING = "Downloading '{2}' ({0:F2}/{1:F2}MiB)...";
+		public const string UI_UNITYPLUGIN_PROGRESS_UPLOADING = "Uploading '{2}' ({0:F2}/{1:F2}MiB)...";
 		public const string UI_UNITYPLUGIN_PROGRESS_GETTING_AVAILABLE_BUILDS = "Getting list of public releases...";
 		public const string UI_UNITYPLUGIN_PROGRESS_UNPACKING = "Unpacking '{0}'...";
 		public const string UI_UNITYPLUGIN_SELECT_FILE_TO_ATTACH_TITLE = "Select file to attach";
@@ -169,6 +170,18 @@ namespace GameDevWare.Charon {
 		public const string UI_UNITYPLUGIN_WINDOW_UPDATE_REVIEW_UPDATES_BUTTON = "Update...";
 		public const string UI_UNITYPLUGIN_WINDOWCHECK_RESULT_MISSING_TOOLS = "Missing Tools!";
 		public const string UI_UNITYPLUGIN_SERVER_ERROR = "The request ended with the following errors:";
+		public const string UI_UNITYPLUGIN_GENERATE_API_KEY_TITLE = "API Key";
+		public const string UI_UNITYPLUGIN_GENERATE_PROJECT_LABEL = "Project";
+		public const string UI_UNITYPLUGIN_GENERATE_ADVANCED_OPTIONS_LABEL = "Advanced Options";
+		public const string UI_UNITYPLUGIN_GENERATE_BRANCH_LABEL = "Branch";
+		public const string UI_UNITYPLUGIN_GENERATE_FORMAT_LABEL = "Format";
+		public const string UI_UNITYPLUGIN_GENERATE_FOLDER_LABEL = "Folder";
+		public const string UI_UNITYPLUGIN_GENERATE_TARGET_PATH_LABEL = "Target Path";
+		public const string UI_UNITYPLUGIN_GENERATE_DOWNLOAD_BUTTON = "Download";
+		public const string UI_UNITYPLUGIN_GENERATE_UPLOAD_BUTTON = "Upload";
+		public const string UI_UNITYPLUGIN_GENERATE_UPLOAD_LOCAL_GAME_DATA = "Upload local game data ({0:F2} KiB) to the server.";
+		public const string UI_UNITYPLUGIN_GENERATE_LOCAL_ERASED_WARNING = "Local game data file '{0}' will be erased!";
+		public const string UI_UNITYPLUGIN_GENERATE_API_KEY_MESSAGE = "To generate new API Key go to your <a>Profile -> API Keys</a>.";
 	}
 }
 
