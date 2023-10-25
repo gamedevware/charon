@@ -1,2 +1,2 @@
-﻿feature: Added option to generate C# 7.3 code
-feature: Unlocked online functionality in inspector window
+﻿feature: added 'Upload' option to 'Connect' window
+fix: fixed layout issues of 'Connect' window with old versions of Unity
