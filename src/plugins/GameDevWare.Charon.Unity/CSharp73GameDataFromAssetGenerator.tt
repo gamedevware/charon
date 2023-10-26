@@ -46,6 +46,7 @@ namespace <#= this.Namespace #>
 		void ISerializationCallbackReceiver.OnAfterDeserialize()
 		{
 			var data = new MemoryStream(dataBytes, 0, dataBytes.Length, false);
+#pragma warning disable 0618
 			switch (this.extension.Trim('.'))
 			{
 				case "gdjs":
@@ -61,6 +62,7 @@ namespace <#= this.Namespace #>
 					throw new InvalidOperationException(string.Format("Unknown file extension '{0}'. Unable to determine file format by extension.",
 						this.extension));
 			}
+#pragma warning restore 0618
 		}
 	}
 }
