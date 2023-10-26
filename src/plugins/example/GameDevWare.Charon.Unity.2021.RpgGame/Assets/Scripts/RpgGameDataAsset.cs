@@ -16,7 +16,7 @@ namespace Assets.Scripts
 	using UnityEngine;
 
 	[Serializable]
-    [global::System.CodeDom.Compiler.GeneratedCode("GameDevWare.Charon.Unity", "2023.4.10.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("GameDevWare.Charon.Unity", "2023.4.14.0")]
 	public partial class RpgGameDataAsset : ScriptableObject, ISerializationCallbackReceiver
 	{
 		[SerializeField, HideInInspector]
@@ -37,6 +37,7 @@ namespace Assets.Scripts
 		void ISerializationCallbackReceiver.OnAfterDeserialize()
 		{
 			var data = new MemoryStream(dataBytes, 0, dataBytes.Length, false);
+#pragma warning disable 0618
 			switch (this.extension.Trim('.'))
 			{
 				case "gdjs":
@@ -52,6 +53,7 @@ namespace Assets.Scripts
 					throw new InvalidOperationException(string.Format("Unknown file extension '{0}'. Unable to determine file format by extension.",
 						this.extension));
 			}
+#pragma warning restore 0618
 		}
 	}
 }

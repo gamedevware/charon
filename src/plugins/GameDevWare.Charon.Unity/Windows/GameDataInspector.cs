@@ -44,6 +44,8 @@ namespace GameDevWare.Charon.Unity.Windows
 		private UnityObject newScriptingAssembly;
 		private string newScriptingAssemblyName;
 		private string lastServerAddress;
+		[NonSerialized] private Promise generateCodeTask;
+		[NonSerialized] private Promise syncTask;
 		[SerializeField] private bool formulaAssembliesFold;
 		[SerializeField] private bool codeGenerationFold;
 		[SerializeField] private bool connectionFold;
@@ -205,15 +207,18 @@ namespace GameDevWare.Charon.Unity.Windows
 
 			EditorGUILayout.Space();
 
-			if (GUILayout.Button(Resources.UI_UNITYPLUGIN_INSPECTOR_RUN_GENERATOR_BUTTON))
+			var hasDoneGeneration = this.generateCodeTask != null && this.generateCodeTask.IsCompleted;
+			var hasRunningGeneration = this.generateCodeTask != null && !this.generateCodeTask.IsCompleted;
+			var generationStatus = (hasDoneGeneration ? " " + Resources.UI_UNITYPLUGIN_INSPECTOR_OPERATION_DONE : 
+				hasRunningGeneration ? " " + Resources.UI_UNITYPLUGIN_INSPECTOR_OPERATION_RUNNING : "");
+			if (GUILayout.Button(Resources.UI_UNITYPLUGIN_INSPECTOR_RUN_GENERATOR_BUTTON + generationStatus))
 			{
-				GenerateCodeAndAssetsRoutine.Schedule(
+				this.generateCodeTask = GenerateCodeAndAssetsRoutine.Schedule(
 					path: gameDataPath,
 					progressCallback: ProgressUtils.ReportToLog(Resources.UI_UNITYPLUGIN_INSPECTOR_GENERATION_PREFIX + " "),
 					coroutineId: "generation::" + gameDataPath
 				).ContinueWith(_ => this.Repaint());
 			}
-			GUI.enabled = true;
 
 			this.connectionFold = EditorGUILayout.Foldout(this.connectionFold, this.lastServerAddress);
 			if (this.connectionFold)
@@ -225,14 +230,18 @@ namespace GameDevWare.Charon.Unity.Windows
 					EditorGUILayout.LabelField(Resources.UI_UNITYPLUGIN_INSPECTOR_PROJECT_LABEL, this.gameDataSettings.ProjectName ?? this.gameDataSettings.ProjectId);
 					EditorGUILayout.LabelField(Resources.UI_UNITYPLUGIN_INSPECTOR_BRANCH_LABEL, this.gameDataSettings.BranchName ?? this.gameDataSettings.BranchId);
 
-					GUI.enabled = !CoroutineScheduler.IsRunning && !EditorApplication.isCompiling && string.IsNullOrEmpty(this.gameDataSettings.CodeGenerationPath) == false;
 					EditorGUILayout.Space();
 
 					EditorGUILayout.BeginHorizontal();
-					if (GUILayout.Button(Resources.UI_UNITYPLUGIN_INSPECTOR_SYNCHRONIZE_BUTTON))
+					var hasDoneSync = this.syncTask != null && this.syncTask.IsCompleted;
+					var hasRunningSync = this.syncTask != null && !this.syncTask.IsCompleted;
+					var syncStatus = (hasDoneSync ? " " + Resources.UI_UNITYPLUGIN_INSPECTOR_OPERATION_DONE : 
+						hasRunningSync ? " " + Resources.UI_UNITYPLUGIN_INSPECTOR_OPERATION_RUNNING : "");
+					
+					if (GUILayout.Button(Resources.UI_UNITYPLUGIN_INSPECTOR_SYNCHRONIZE_BUTTON + syncStatus))
 					{
 						var cancellation = new Promise();
-						SynchronizeAssetsRoutine.Schedule(
+						this.syncTask = SynchronizeAssetsRoutine.Schedule(
 							force: true,
 							paths: new[] { gameDataPath },
 							progressCallback: ProgressUtils.ShowCancellableProgressBar(Resources.UI_UNITYPLUGIN_INSPECTOR_SYNCHONIZATION_PREFIX + " ", cancellation: cancellation),
@@ -256,7 +265,6 @@ namespace GameDevWare.Charon.Unity.Windows
 						GUI.changed = true;
 					}
 					EditorGUILayout.EndHorizontal();
-					GUI.enabled = true;
 				}
 			}
 			if (!this.gameDataSettings.IsConnected)
@@ -271,45 +279,46 @@ namespace GameDevWare.Charon.Unity.Windows
 						autoClose: true
 					);
 				}
-			}
-			this.formulaAssembliesFold = EditorGUILayout.Foldout(this.formulaAssembliesFold, Resources.UI_UNITYPLUGIN_INSPECTOR_FORMULA_ASSEMBLIES_LABEL);
-			if (this.formulaAssembliesFold)
-			{
-				for (var i = 0; i < this.gameDataSettings.ScriptingAssemblies.Length; i++)
+				
+				this.formulaAssembliesFold = EditorGUILayout.Foldout(this.formulaAssembliesFold, Resources.UI_UNITYPLUGIN_INSPECTOR_FORMULA_ASSEMBLIES_LABEL);
+				if (this.formulaAssembliesFold)
 				{
-					var watchedAssetPath = this.gameDataSettings.ScriptingAssemblies[i];
-					var assetExists = !string.IsNullOrEmpty(watchedAssetPath) && (File.Exists(watchedAssetPath) || Directory.Exists(watchedAssetPath));
-					var watchedAsset = assetExists ? AssetDatabase.LoadMainAssetAtPath(watchedAssetPath) : null;
-					if (watchedAsset != null)
-						this.gameDataSettings.ScriptingAssemblies[i] = AssetDatabase.GetAssetPath(EditorGUILayout.ObjectField(Resources.UI_UNITYPLUGIN_INSPECTOR_ASSET_LABEL, watchedAsset, typeof(UnityObject), false));
-					else
-						this.gameDataSettings.ScriptingAssemblies[i] = EditorGUILayout.TextField(Resources.UI_UNITYPLUGIN_INSPECTOR_NAME_LABEL, watchedAssetPath);
+					for (var i = 0; i < this.gameDataSettings.ScriptingAssemblies.Length; i++)
+					{
+						var watchedAssetPath = this.gameDataSettings.ScriptingAssemblies[i];
+						var assetExists = !string.IsNullOrEmpty(watchedAssetPath) && (File.Exists(watchedAssetPath) || Directory.Exists(watchedAssetPath));
+						var watchedAsset = assetExists ? AssetDatabase.LoadMainAssetAtPath(watchedAssetPath) : null;
+						if (watchedAsset != null)
+							this.gameDataSettings.ScriptingAssemblies[i] = AssetDatabase.GetAssetPath(EditorGUILayout.ObjectField(Resources.UI_UNITYPLUGIN_INSPECTOR_ASSET_LABEL, watchedAsset, typeof(UnityObject), false));
+						else
+							this.gameDataSettings.ScriptingAssemblies[i] = EditorGUILayout.TextField(Resources.UI_UNITYPLUGIN_INSPECTOR_NAME_LABEL, watchedAssetPath);
+					}
+					EditorGUILayout.Space();
+					this.newScriptingAssembly = EditorGUILayout.ObjectField("<" + Resources.UI_UNITYPLUGIN_INSPECTOR_ADD_ASSET_BUTTON + ">", this.newScriptingAssembly, typeof(UnityObject), false);
+					if (Event.current.type == EventType.Repaint && this.newScriptingAssembly != null)
+					{
+						var assemblies = new HashSet<string>(this.gameDataSettings.ScriptingAssemblies);
+						assemblies.Remove("");
+						assemblies.Add(AssetDatabase.GetAssetPath(this.newScriptingAssembly));
+						this.gameDataSettings.ScriptingAssemblies = assemblies.ToArray();
+						this.newScriptingAssembly = null;
+						GUI.changed = true;
+					}
+					EditorGUILayout.BeginHorizontal();
+					this.newScriptingAssemblyName = EditorGUILayout.TextField("<" + Resources.UI_UNITYPLUGIN_INSPECTOR_ADD_NAME_BUTTON + ">", this.newScriptingAssemblyName);
+					if (GUILayout.Button(Resources.UI_UNITYPLUGIN_INSPECTOR_ADD_BUTTON, EditorStyles.miniButton, GUILayout.Width(50), GUILayout.Height(18)))
+					{
+						var assemblies = new HashSet<string>(this.gameDataSettings.ScriptingAssemblies);
+						assemblies.Remove("");
+						assemblies.Add(this.newScriptingAssemblyName);
+						this.gameDataSettings.ScriptingAssemblies = assemblies.ToArray();
+						this.newScriptingAssemblyName = null;
+						GUI.changed = true;
+						this.Repaint();
+					}
+					GUILayout.Space(5);
+					EditorGUILayout.EndHorizontal();
 				}
-				EditorGUILayout.Space();
-				this.newScriptingAssembly = EditorGUILayout.ObjectField("<" + Resources.UI_UNITYPLUGIN_INSPECTOR_ADD_ASSET_BUTTON + ">", this.newScriptingAssembly, typeof(UnityObject), false);
-				if (Event.current.type == EventType.Repaint && this.newScriptingAssembly != null)
-				{
-					var assemblies = new HashSet<string>(this.gameDataSettings.ScriptingAssemblies);
-					assemblies.Remove("");
-					assemblies.Add(AssetDatabase.GetAssetPath(this.newScriptingAssembly));
-					this.gameDataSettings.ScriptingAssemblies = assemblies.ToArray();
-					this.newScriptingAssembly = null;
-					GUI.changed = true;
-				}
-				EditorGUILayout.BeginHorizontal();
-				this.newScriptingAssemblyName = EditorGUILayout.TextField("<" + Resources.UI_UNITYPLUGIN_INSPECTOR_ADD_NAME_BUTTON + ">", this.newScriptingAssemblyName);
-				if (GUILayout.Button(Resources.UI_UNITYPLUGIN_INSPECTOR_ADD_BUTTON, EditorStyles.miniButton, GUILayout.Width(50), GUILayout.Height(18)))
-				{
-					var assemblies = new HashSet<string>(this.gameDataSettings.ScriptingAssemblies);
-					assemblies.Remove("");
-					assemblies.Add(this.newScriptingAssemblyName);
-					this.gameDataSettings.ScriptingAssemblies = assemblies.ToArray();
-					this.newScriptingAssemblyName = null;
-					GUI.changed = true;
-					this.Repaint();
-				}
-				GUILayout.Space(5);
-				EditorGUILayout.EndHorizontal();
 			}
 
 			EditorGUILayout.Space();

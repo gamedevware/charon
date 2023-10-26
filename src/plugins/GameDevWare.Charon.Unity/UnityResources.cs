@@ -65,6 +65,8 @@ namespace GameDevWare.Charon {
 		public const string UI_UNITYPLUGIN_INSPECTOR_NAME_LABEL = "Name";
 		public const string UI_UNITYPLUGIN_INSPECTOR_RESTORE_BUTTON = "Restore";
 		public const string UI_UNITYPLUGIN_INSPECTOR_RUN_GENERATOR_BUTTON = "Generate Source Code";
+		public const string UI_UNITYPLUGIN_INSPECTOR_OPERATION_DONE = "(Done)";
+		public const string UI_UNITYPLUGIN_INSPECTOR_OPERATION_RUNNING = "(Running)";
 		public const string UI_UNITYPLUGIN_INSPECTOR_SYNCHRONIZE_BUTTON = "Synchronize";
 		public const string UI_UNITYPLUGIN_INSPECTOR_CONNECT_BUTTON = "Connect";
 		public const string UI_UNITYPLUGIN_INSPECTOR_DISCONNECT_BUTTON = "Disconnect";
