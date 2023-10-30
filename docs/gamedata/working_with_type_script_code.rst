@@ -46,7 +46,7 @@ Or you can access specific documents by their ``Id`` or ``Unique`` properties:
   var character = gameData.charactersAll.find(characterId); // -> Character | undefined
   var character = gameData.charactersAll.withOtherKey('Name').find(characterName); // -> Character | undefined
 
-``Settings`` entities are accessed by name:
+``Settings`` schemas are accessed by name:
 
 .. code-block:: js
 

@@ -37,11 +37,11 @@ Analyzing Game Requirements
 .. figure:: ./general_design.png
 This step involves analyzing the game requirements to understand the design and functionality of the game. It includes studying the game design document and identifying key features, gameplay mechanics, and data elements that need to be captured and represented in the game.
 
-Identifying Entities and Relationships 
+Identifying Schemas and Relationships 
 --------------------------------------
 
 .. figure:: ./design_entities.png
-In this step, entities and their relationships within the game are identified. Entities can be objects, characters, locations, items, quests, or any other significant element in the game. Relationships define how these entities are connected or interact with each other.
+In this step, schemas and their relationships within the game are identified. Schemas can be objects, characters, locations, items, quests, or any other significant element in the game. Relationships define how these entities are connected or interact with each other.
 
 Defining Schemas and Properties
 -------------------------------

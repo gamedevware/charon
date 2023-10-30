@@ -35,7 +35,7 @@ Or you can access specific documents by their ``Id`` or ``Unique`` properties:
   var character = gameData.GetCharacter(characterId); // -> Character
   var character = gameData.GetCharacterByName(characterName); // -> Character
 
-``Settings`` entities are accessed by name:
+``Settings`` schemas are accessed by name:
 
 .. code-block:: csharp
 
