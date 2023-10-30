@@ -1,4 +1,4 @@
-Generating Source Code (C#)
+Generating Source Code
 ===========================
 
 The process of generating source code allows game data to be used inside a game. This process involves specifying the language (e.g. C#) and various generation parameters/optimizations. It can be done from both the project's dashboard user interface and the command-line interface (CLI).
@@ -22,7 +22,7 @@ To generate source code from the CLI, follow these steps:
 
 1. Open the command-line interface.
 2. Navigate to the game data's directory.
-3. Use the ``GENERATE CSHARPCODE`` command to generate the source code, specifying the target language and any generation parameters require.
+3. Use the ``GENERATE &lt;SOURCECODE&gt;`` command to generate the source code, specifying the target language and any generation parameters require.
 
 Example
 --------
@@ -40,5 +40,9 @@ Once the process is complete, the generated source code will be available at ``-
 See also
 --------
 
+- :doc:`Working with Source Code (C#) <working_with_csharp_code>`
+- :doc:`Working with Source Code (TypeScript) <working_with_type_script_code>`
 - :doc:`Command Line Interface (CLI) <../advanced/command_line>`
 - :doc:`GENERATE CSHARPCODE Command <../advanced/commands/generate_csharp_code>`
+- :doc:`GENERATE TYPESCRIPTCODE Command <../advanced/commands/generate_typescript_code>`
+

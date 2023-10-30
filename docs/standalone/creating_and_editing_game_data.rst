@@ -24,7 +24,7 @@ See also
 - :doc:`Creating Document Type (Schema) <../gamedata/creating_schema>`
 - :doc:`Filling Documents <../gamedata/filling_documents>`
 - :doc:`Publication of Game Data <../gamedata/publication>`
-- :doc:`Generating Source Code (C#) <../gamedata/generating_source_code>`
-- :doc:`Working with Source Code (C#) <../gamedata/working_with_source_code>`
+- :doc:`Generating Source Code <../gamedata/generating_source_code>`
+- :doc:`Working with Source Code (C#) <../gamedata/working_with_csharp_code>`
 - :doc:`Frequently Asked Questions (FAQ) <../faq>`
 - :doc:`Glossary <../glossary>`
