@@ -28,7 +28,7 @@ The following Type Script code creates ``GameData`` class and loads your game da
     format: Formatters.GameDataFormat.Json
   });
   
-The content of ``gameDataFilePath`` could be `published <publication>` game data or original database file.  
+The content of ``gameDataStream`` could be `published <publication>` game data or original database file (.gdjs or .gdmp).  
   
 Accessing Documents
 -------------------
@@ -37,21 +37,21 @@ You can access your documents as a list:
 
 .. code-block:: js
 
-  var characters = gameData.charactersAll; // all characters from all documents -> readonly Character[]
-  var characters = gameData.charactersRoot; // characters only from root collection -> readonly Character[]
+  let heroes = gameData.heroesAll; // all heroes from all documents -> readonly Hero[]
+  let heroes = gameData.heroesRoot; // heroes only from root collection -> readonly Hero[]
 
 Or you can access specific documents by their ``Id`` or ``Unique`` properties:
 
 .. code-block:: js
 
-  var character = gameData.charactersAll.find(characterId); // -> Character | undefined
-  var character = gameData.charactersAll.withOtherKey('Name').find(characterName); // -> Character | undefined
+  let hero = gameData.heroesAll.find(heroId); // -> Hero | undefined
+  let hero = gameData.heroesAll.withOtherKey('Name').find(heroName); // -> Hero | undefined
 
 ``Settings`` schemas are accessed by name:
 
 .. code-block:: js
 
-  var resetTime = gameData.lootSettings.resetTime; // -> TimeSpan
+  let resetTime = gameData.lootSettings.resetTime; // -> TimeSpan
   
 Formulas
 --------

@@ -17,7 +17,7 @@ The following C# code creates ``GameData`` class and loads your game data into m
   var gameData = new GameData(fileStream, GameData.Format.Json);
   fileStream.Dispose();
   
-The file ``gamedata.json`` could be `published <publication>` game data or original database file.  
+The file ``gamedata.json`` could be `published <publication>` game data or original database file (.gdjs or .gdmp).  
   
 Accessing Documents
 -------------------
