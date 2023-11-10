@@ -10,4 +10,4 @@ See also
 - :doc:`Installation and Updates <installation_and_updates>`
 - :doc:`Creating and Editing Game Data <creating_and_editing_game_data>`
 - `Nuget Package <https://www.nuget.org/packages/GameDevWare.Charon>`_
-- `Bootstrap Scripts <../../scripts/>`_
+- `Bootstrap Scripts <https://github.com/gamedevware/charon/tree/main/scripts/bootstrap/>`_

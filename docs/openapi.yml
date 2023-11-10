@@ -305,7 +305,7 @@ paths:
         - BearerAuth: [ ]
     parameters:
       - $ref: '#/components/parameters/dataSourceId'
-  '/datasource/{dataSourceId}/transaction/{transactionId}':
+  '/datasource/{dataSourceId}/transaction/{transactionId}/':
     post:
       tags:
         - DataSource
@@ -462,7 +462,7 @@ paths:
       - $ref: '#/components/parameters/schemaNameOrId'
       - $ref: '#/components/parameters/dataSourceId'
       - $ref: '#/components/parameters/transaction'
-  '/datasource/{dataSourceId}/collection/{schemaNameOrId}/all/':
+  '/datasource/{dataSourceId}/collection/{schemaNameOrId}/documents/':
     post:
       tags:
         - DataSource
@@ -479,10 +479,12 @@ paths:
                   description: Path to document within another document. Or '*' if any embedded documents are applicable. Or null if only root documents to return.
                   nullable: true
                 skip:
+                  minimum: 0
                   type: integer
                   format: int32
                   nullable: true
                 take:
+                  minimum: 0
                   type: integer
                   format: int32
                   nullable: true
@@ -522,6 +524,7 @@ paths:
       operationId: bulkChangeDocuments
       parameters:
         - $ref: '#/components/parameters/validationOptions'
+        - $ref: '#/components/parameters/dryRun'
         - name: importMode
           in: query
           description: Import mode.
@@ -553,6 +556,81 @@ paths:
         - BearerAuth: [ ]
     parameters:
       - $ref: '#/components/parameters/schemaNameOrId'
+      - $ref: '#/components/parameters/dataSourceId'
+      - $ref: '#/components/parameters/transaction'
+  '/datasource/{dataSourceId}/documents/query/':
+    get:
+      tags:
+        - DataSource
+      summary: Query documents from all collections.
+      operationId: queryDocuments
+      parameters:
+        - name: query
+          in: query
+          description: Keyword to lookup in documents.
+          required: true
+          schema:
+            type: string
+            nullable: true
+        - name: limit
+          in: query
+          description: Maximum number of documents to return.
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+      responses:
+        '200':
+          description: Found document stream where each event is instance of 'ListResult'. Empty results are ommited.
+          content:
+            text/event-stream:
+              schema:
+                type: object
+      security:
+        - BearerAuth: [ ]
+      x-custom-response: true
+    post:
+      tags:
+        - DataSource
+      summary: Pick multiple documents by their unique properties e.g. batched find request. Max documents per request is - 20.
+      operationId: pickDocuments
+      requestBody:
+        description: A documents to convert.
+        content:
+          application/json:
+            schema:
+              maxItems: 20
+              type: array
+              items:
+                required:
+                  - uniqueSchemaPropertyNameOrId
+                  - uniqueSchemaPropertyValue
+                  - schemaNameOrId
+                type: object
+                properties:
+                  schemaNameOrId:
+                    type: string
+                  uniqueSchemaPropertyNameOrId:
+                    type: string
+                  uniqueSchemaPropertyValue:
+                    type: string
+                x-name: FindRequest
+      responses:
+        '200':
+          description: Pick results in same order as requested.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PickDocumentsResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
       - $ref: '#/components/parameters/dataSourceId'
       - $ref: '#/components/parameters/transaction'
   '/datasource/{dataSourceId}/converter/raw/':
@@ -815,6 +893,7 @@ paths:
         - $ref: '#/components/parameters/schemas'
         - $ref: '#/components/parameters/languages'
         - $ref: '#/components/parameters/validationOptions'
+        - $ref: '#/components/parameters/dryRun'
       requestBody:
         description: A documents to import.
         content:
@@ -858,46 +937,6 @@ paths:
       - $ref: '#/components/parameters/dataSourceId'
       - $ref: '#/components/parameters/transaction'
   '/datasource/{dataSourceId}/':
-    post:
-      tags:
-        - DataSource
-      summary: Query multiple documents by their unique properties e.g. batched find request. Max documents per request is - 20.
-      operationId: queryDocuments
-      requestBody:
-        description: A documents to convert.
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                required:
-                  - uniqueSchemaPropertyNameOrId
-                  - uniqueSchemaPropertyValue
-                  - schemaNameOrId
-                type: object
-                properties:
-                  schemaNameOrId:
-                    type: string
-                  uniqueSchemaPropertyNameOrId:
-                    type: string
-                  uniqueSchemaPropertyValue:
-                    type: string
-                x-name: FindRequest
-      responses:
-        '200':
-          description: Query results in same order as requested.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/QueryDocumentsResponse'
-        default:
-          description: Operation failure response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      security:
-        - BearerAuth: [ ]
     get:
       tags:
         - DataSource
@@ -1013,23 +1052,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/dataSourceId'
   '/datasource/{dataSourceId}/source-code/':
-    get:
-      tags:
-        - DataSource
-      summary: Get T4 templates for generating source code.
-      operationId: getSourceCodeGenerationTemplate
-      parameters:
-        - $ref: '#/components/parameters/download'
-      responses:
-        '200':
-          description: Source code generation templates packed into .zip archive.
-          content:
-            application/zip:
-              schema:
-                $ref: '#/components/schemas/Blob'
-      security:
-        - BearerAuth: [ ]
-      x-custom-response: true
     post:
       tags:
         - DataSource
@@ -1045,7 +1067,9 @@ paths:
               properties:
                 targetLanguage:
                   enum:
-                    - cSharp
+                    - cSharp40
+                    - cSharp73
+                    - typeScript
                   type: string
                   x-name: SourceCodeTargetLanguage
                 documentClassName:
@@ -1053,6 +1077,8 @@ paths:
                 gameDataClassName:
                   type: string
                 namespace:
+                  type: string
+                defineConstants:
                   type: string
                 lineEndings:
                   enum:
@@ -1080,11 +1106,32 @@ paths:
                       - disableJsonSerialization
                       - disableMessagePackSerialization
                       - disablePatching
+                      - disableFormulaCompilation
                     type: string
                     x-name: SourceCodeGenerationOptimizations
       responses:
         '200':
           description: Source code packed into .zip archive.
+          content:
+            application/zip:
+              schema:
+                $ref: '#/components/schemas/Blob'
+      security:
+        - BearerAuth: [ ]
+      x-custom-response: true
+    parameters:
+      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/source-code/templates/':
+    get:
+      tags:
+        - DataSource
+      summary: Get T4 templates for generating source code.
+      operationId: getSourceCodeGenerationTemplate
+      parameters:
+        - $ref: '#/components/parameters/download'
+      responses:
+        '200':
+          description: Source code generation templates packed into .zip archive.
           content:
             application/zip:
               schema:
@@ -1545,7 +1592,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
         - BearerAuth: [ ]
-  /preferences:
+  /preferences/:
     get:
       tags:
         - Preferences
@@ -1610,7 +1657,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
         - BearerAuth: [ ]
-  /user:
+  /user/:
     get:
       tags:
         - User
@@ -1854,11 +1901,11 @@ paths:
     delete:
       tags:
         - User
-      summary: Strip personal information from user and block any access.
-      operationId: cleanUpUser
+      summary: 'Strip personal information from user, quit all groups and block any access to this user.'
+      operationId: deleteUser
       responses:
         '204':
-          description: User has been cleaned.
+          description: User has been soft-deleted.
         default:
           description: Operation failure response.
           content:
@@ -1985,9 +2032,9 @@ paths:
               type: object
               properties:
                 title:
-                  maxLength: 52
+                  maxLength: 64
+                  minLength: 1
                   type: string
-                  nullable: true
                 expirationTimeSeconds:
                   minimum: 60
                   type: integer
@@ -2072,7 +2119,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/userId'
       - $ref: '#/components/parameters/invitationId'
-  /workspace:
+  /workspace/:
     get:
       tags:
         - Workspace
@@ -2279,7 +2326,7 @@ paths:
         - BearerAuth: [ ]
     parameters:
       - $ref: '#/components/parameters/workspaceId'
-  /project:
+  /project/:
     get:
       tags:
         - Project
@@ -2328,6 +2375,14 @@ paths:
                   maxLength: 64
                   minLength: 3
                   type: string
+                tags:
+                  maxItems: 20
+                  type: array
+                  items:
+                    type: string
+                  nullable: true
+                scriptingLanguage:
+                  $ref: '#/components/schemas/ScriptingLanguage'
                 template:
                   maxLength: 256
                   type: string
@@ -2444,7 +2499,7 @@ paths:
         - BearerAuth: [ ]
     parameters:
       - $ref: '#/components/parameters/projectId'
-  '/project/{projectId}/branch':
+  '/project/{projectId}/branch/':
     put:
       tags:
         - Project
@@ -2473,7 +2528,7 @@ paths:
         - BearerAuth: [ ]
     parameters:
       - $ref: '#/components/parameters/projectId'
-  '/project/{projectId}/branch/{branchName}':
+  '/project/{projectId}/branch/{branchName}/':
     put:
       tags:
         - Project
@@ -2724,6 +2779,8 @@ paths:
             schema:
               type: object
               properties:
+                taxationType:
+                  $ref: '#/components/schemas/TaxationType'
                 firstName:
                   maxLength: 64
                   minLength: 1
@@ -2732,6 +2789,10 @@ paths:
                   maxLength: 64
                   minLength: 1
                   type: string
+                taxId:
+                  maxLength: 128
+                  type: string
+                  nullable: true
                 addressLine1:
                   maxLength: 512
                   minLength: 1
@@ -2900,7 +2961,7 @@ paths:
         - BearerAuth: [ ]
     parameters:
       - $ref: '#/components/parameters/userId'
-  '/billing/{userId}/payment/upcoming':
+  '/billing/{userId}/payment/upcoming/':
     post:
       tags:
         - Billing
@@ -2940,6 +3001,40 @@ paths:
         - BearerAuth: [ ]
     parameters:
       - $ref: '#/components/parameters/userId'
+  '/billing/{userId}/customer-portal/':
+    post:
+      tags:
+        - Billing
+      summary: Get url of customer portal for user if available.
+      operationId: getCustomerPortalUrl
+      requestBody:
+        description: Get url of customer portal parameters.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                returnUrl:
+                  maxLength: 256
+                  type: string
+              x-name: GetCustomerPortalUrlRequest
+      responses:
+        '200':
+          description: Portal url or none.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCustomerPortalUrlResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    parameters:
+      - $ref: '#/components/parameters/userId'
   /billing/notification/:
     post:
       tags:
@@ -2956,6 +3051,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       x-anonymous: true
+  /search/:
+    post:
+      tags:
+        - Search
+      summary: 'Search for users, projects, workspaces by specified keyword.'
+      operationId: search
+      requestBody:
+        description: A search parameters.
+        content:
+          application/json:
+            schema:
+              required:
+                - keyword
+              type: object
+              properties:
+                keyword:
+                  maxLength: 128
+                  minLength: 2
+                  type: string
+                limit:
+                  type: integer
+                  format: int32
+                  nullable: true
+                typeFilter:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/SearchResultItemType'
+                  nullable: true
+              x-name: SearchRequest
+      responses:
+        '200':
+          description: Search result with found search items.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
   /resourceStorage/:
     put:
       tags:
@@ -3173,17 +3312,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BulkChangeRecord'
-        metadataHashCode:
-          type: integer
-          format: int32
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
       additionalProperties: false
       readOnly: true
     StatisticsResult:
       type: object
       properties:
-        metadataHashCode:
-          type: integer
-          format: int32
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
         collections:
           type: array
           items:
@@ -3268,9 +3409,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ValidationRecord'
-        metadataHashCode:
-          type: integer
-          format: int32
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
       additionalProperties: false
       readOnly: true
     ValidationRecord:
@@ -3342,9 +3484,10 @@ components:
       properties:
         document:
           $ref: '#/components/schemas/GameDataDocument'
-        metadataHashCode:
-          type: integer
-          format: int32
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
       additionalProperties: false
       readOnly: true
     BackupResult:
@@ -3352,9 +3495,10 @@ components:
       properties:
         document:
           $ref: '#/components/schemas/GameDataDocument'
-        metadataHashCode:
-          type: integer
-          format: int32
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
       additionalProperties: false
       readOnly: true
     CreateResult:
@@ -3362,9 +3506,10 @@ components:
       properties:
         document:
           $ref: '#/components/schemas/DataDocument'
-        metadataHashCode:
-          type: integer
-          format: int32
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
       additionalProperties: false
       readOnly: true
     UpdateResult:
@@ -3374,9 +3519,10 @@ components:
           $ref: '#/components/schemas/DataDocument'
         diff:
           $ref: '#/components/schemas/DataDocument'
-        metadataHashCode:
-          type: integer
-          format: int32
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
       additionalProperties: false
       readOnly: true
     DeleteResult:
@@ -3384,9 +3530,10 @@ components:
       properties:
         document:
           $ref: '#/components/schemas/DataDocument'
-        metadataHashCode:
-          type: integer
-          format: int32
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
       additionalProperties: false
       readOnly: true
     FindResult:
@@ -3396,9 +3543,10 @@ components:
           $ref: '#/components/schemas/NullableDataDocument'
         meta:
           $ref: '#/components/schemas/DataDocumentMeta'
-        metadataHashCode:
-          type: integer
-          format: int32
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
       additionalProperties: false
       readOnly: true
     ListResult:
@@ -3415,19 +3563,60 @@ components:
         total:
           type: integer
           format: int32
-        metadataHashCode:
-          type: integer
-          format: int32
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
       additionalProperties: false
       readOnly: true
     RestoreResult:
       type: object
       properties:
-        metadataHashCode:
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
+      additionalProperties: false
+      readOnly: true
+    SearchResult:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResultItem'
+        total:
           type: integer
           format: int32
       additionalProperties: false
       readOnly: true
+    SearchResultItem:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/SearchResultItemType'
+        id:
+          type: string
+        subId:
+          type: string
+          nullable: true
+        displayText:
+          type: string
+        subDisplayText:
+          type: string
+        pictureUrl:
+          type: string
+          nullable: true
+      additionalProperties: false
+      readOnly: true
+    SearchResultItemType:
+      enum:
+        - user
+        - project
+        - workspace
+        - schema
+        - document
+      type: string
     PageContext:
       type: object
       properties:
@@ -3641,6 +3830,7 @@ components:
         type:
           enum:
             - personalAccount
+            - businessAccount
             - administratorAccount
           type: string
           x-name: UserAccountType
@@ -3831,6 +4021,12 @@ components:
         pictureUrl:
           type: string
           nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        scriptingLanguage:
+          $ref: '#/components/schemas/ScriptingLanguage'
         workspaceId:
           type: string
           format: objectid
@@ -3851,6 +4047,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProjectPermission'
+    ScriptingLanguage:
+      enum:
+        - cSharp
+        - cSharpUnity
+        - cpp
+        - cppUnrealEngine
+        - haxe
+        - typeScript
+        - other
+      type: string
     Branch:
       type: object
       properties:
@@ -3901,10 +4107,15 @@ components:
         externalId:
           type: string
           nullable: true
+        taxationType:
+          $ref: '#/components/schemas/TaxationType'
         firstName:
           type: string
         lastName:
           type: string
+        taxId:
+          type: string
+          nullable: true
         addressLine1:
           type: string
         addressLine2:
@@ -3978,6 +4189,25 @@ components:
         amount:
           type: integer
           format: int32
+    TaxationType:
+      enum:
+        - private
+        - business
+      type: string
+    RedirectResult:
+      type: object
+      properties:
+        redirectAction:
+          enum:
+            - none
+            - get
+            - post
+          type: string
+          x-name: RedirectAction
+        redirectUrl:
+          type: string
+          nullable: true
+      x-mutable: true
     MembershipPackage:
       type: object
       properties:
@@ -4051,8 +4281,30 @@ components:
           type: string
           format: date
           nullable: true
+        usedResources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceUsage'
         cost:
           $ref: '#/components/schemas/MembershipPrice'
+    ResourceUsage:
+      type: object
+      properties:
+        type:
+          enum:
+            - aiSuggestionToken
+            - translationToken
+          type: string
+          x-name: ResourceAllowanceType
+        amount:
+          type: integer
+          format: int64
+        amountTotal:
+          type: integer
+          format: int64
+        startDate:
+          type: string
+          format: date
     MembershipPrice:
       type: object
       properties:
@@ -4156,7 +4408,7 @@ components:
           type: string
           description: Name of resource file.
           readOnly: true
-        purponse:
+        purpose:
           $ref: '#/components/schemas/StoredResourcePurpose'
         length:
           type: integer
@@ -4218,6 +4470,16 @@ components:
         - remove
         - move
         - copy
+      type: string
+    MetadataHash:
+      maxLength: 8
+      minLength: 8
+      pattern: '^[0-9a-fA-F]+$'
+      type: string
+    RevisionHash:
+      maxLength: 32
+      minLength: 24
+      pattern: '^[0-9a-fA-F]+$'
       type: string
     ErrorResponse:
       type: object
@@ -4358,6 +4620,8 @@ components:
           $ref: '#/components/schemas/DocumentFormPreferences'
         documentList:
           $ref: '#/components/schemas/DocumentListPreferences'
+        dashboard:
+          $ref: '#/components/schemas/DashboardPreferences'
         recentDocuments:
           type: object
           additionalProperties:
@@ -4377,8 +4641,6 @@ components:
         savingWithErrorsPolicy:
           $ref: '#/components/schemas/DialogActionPreference'
         deletingMultipleDocumentsPolicy:
-          $ref: '#/components/schemas/DialogActionPreference'
-        deletingSchemasPolicy:
           $ref: '#/components/schemas/DialogActionPreference'
         selectedLanguageId:
           type: string
@@ -4409,6 +4671,12 @@ components:
           additionalProperties:
             type: string
       x-mutable: true
+    DashboardPreferences:
+      type: object
+      properties:
+        sidePanelWidth:
+          type: number
+      x-mutable: true
     DialogActionPreference:
       enum:
         - ask
@@ -4423,14 +4691,10 @@ components:
         muteDate:
           type: string
           format: date-time
-      x-mutable: true
-    PaymentRedirect:
-      type: object
-      properties:
-        noPaymentRequired:
-          type: boolean
-        paymentUrl:
+        expirationDate:
           type: string
+          format: date-time
+          nullable: true
       x-mutable: true
     ProcessStartedNotification:
       type: object
@@ -4497,9 +4761,10 @@ components:
         dataSourceId:
           type: string
           format: objectId
-        metadataHashCode:
-          type: integer
-          format: int32
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
         schemaId:
           type: string
       additionalProperties: false
@@ -4510,9 +4775,10 @@ components:
         dataSourceId:
           type: string
           format: objectId
-        metadataHashCode:
-          type: integer
-          format: int32
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     DataSourceLoadedNotification:
@@ -4521,12 +4787,96 @@ components:
         dataSourceId:
           type: string
           format: objectId
-        metadataHashCode:
-          type: integer
-          format: int32
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
-    UserCleanedUpNotification:
+    DataSourceReloadStartedNotification:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    DataSourceReloadedNotification:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    DataSourceReloadFailedNotification:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    DataSourceSavingNotification:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    DataSourceSavedNotification:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    DataSourceSaveFailedNotification:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+        metadataHash:
+          $ref: '#/components/schemas/MetadataHash'
+        revisionHash:
+          $ref: '#/components/schemas/RevisionHash'
+        failTime:
+          type: string
+          format: date-time
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    DataSourceUnloadedNotification:
+      type: object
+      properties:
+        dataSourceId:
+          type: string
+          format: objectId
+      additionalProperties: false
+      x-implements: IDataSourceNotificationContent
+    UserDeletedNotification:
       type: object
       properties:
         userId:
@@ -4843,6 +5193,20 @@ components:
           nullable: true
           readOnly: true
       x-response: true
+    PickDocumentsResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/FindResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
     GetLoadingProgressResponse:
       type: object
       properties:
@@ -4896,20 +5260,6 @@ components:
       properties:
         result:
           $ref: '#/components/schemas/BulkChangeResult'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ApiError'
-          nullable: true
-          readOnly: true
-      x-response: true
-    QueryDocumentsResponse:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/FindResult'
         errors:
           type: array
           items:
@@ -5413,7 +5763,7 @@ components:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/PaymentRedirect'
+          $ref: '#/components/schemas/RedirectResult'
         errors:
           type: array
           items:
@@ -5425,7 +5775,7 @@ components:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/PaymentRedirect'
+          $ref: '#/components/schemas/RedirectResult'
         errors:
           type: array
           items:
@@ -5438,6 +5788,30 @@ components:
       properties:
         result:
           $ref: '#/components/schemas/PaymentInvoice'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetCustomerPortalUrlResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/RedirectResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    SearchResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/SearchResult'
         errors:
           type: array
           items:
@@ -5571,6 +5945,7 @@ components:
       in: query
       description: Number of elements to skip during paging. Aka offset or start.
       schema:
+        minimum: 0
         type: integer
         format: int32
         nullable: true
@@ -5579,6 +5954,7 @@ components:
       in: query
       description: Number of elements to take during paging. Aka limit or count.
       schema:
+        minimum: 0
         type: integer
         format: int32
         nullable: true
@@ -5631,6 +6007,13 @@ components:
         type: array
         items:
           $ref: '#/components/schemas/ValidationOption'
+    dryRun:
+      name: dryRun
+      in: query
+      description: Perform dry run of operation and don't persist changes'.
+      required: true
+      schema:
+        type: boolean
     transaction:
       name: transactionId
       in: query

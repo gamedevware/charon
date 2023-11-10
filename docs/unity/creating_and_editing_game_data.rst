@@ -20,6 +20,8 @@ See also
 - :doc:`Filling Documents <../gamedata/filling_documents>`
 - :doc:`Publication of Game Data <../gamedata/publication>`
 - :doc:`Generating Source Code <../gamedata/generating_source_code>`
-- :doc:`Working with Source Code (C#) <../gamedata/working_with_csharp_code>`
+- :doc:`Working with Source Code (C# 4.0) <../gamedata/working_with_csharp_code_4_0>`
+- :doc:`Working with Source Code (C# 7.3) <../gamedata/working_with_csharp_code_7_3>`
+- :doc:`Working with Source Code (TypeScript) <../gamedata/working_with_type_script_code>`
 - :doc:`Frequently Asked Questions (FAQ) <../faq>`
 - :doc:`Glossary <../glossary>`

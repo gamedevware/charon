@@ -8,4 +8,5 @@ See also
 
 - :doc:`Basics <basics>`
 - :doc:`CLI Access to Web Project <cli_access_to_web_project>`
+- :doc:`Migrating to Web Application <migrating_to_web>`
 - `Web-based Application <https://gamedevware.com?ref=documentation>`_

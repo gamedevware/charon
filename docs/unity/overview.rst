@@ -8,5 +8,6 @@ See also
 
 - :doc:`Requirements <requirements>`
 - :doc:`Plugin Installation <plugin_installation>`
+- :doc:`Migrating to Web Application <migrating_to_web>`
 - :doc:`Creating and Editing Game Data <creating_and_editing_game_data>`
 - `Charon plugin at Unity Asset Store <https://assetstore.unity.com/packages/tools/visual-scripting/game-data-editor-charon-95117>`_

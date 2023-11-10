@@ -18,6 +18,7 @@ See also
 --------
 
 - :doc:`Command Line Interface (CLI) <../advanced/command_line>`
+- :doc:`Migrating to Web <migrating_to_web>`
 - :doc:`REST API <rest>`
 - :doc:`DATA EXPORT Command <../advanced/commands/data_export>`
 - :doc:`DATA IMPORT Command <../advanced/commands/data_import>`
