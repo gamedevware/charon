@@ -11,6 +11,7 @@ Loading Game Data
 The following Type Script code creates ``GameData`` class and loads your game data into memory.
 
 .. code-block:: js
+
   import { GameData } from './game.data';
   import { Formatters } from './formatters';
 
@@ -25,7 +26,7 @@ The following Type Script code creates ``GameData`` class and loads your game da
   
   const gameData = new GameData(gameDataStream, {
     format: Formatters.GameDataFormat.Json
-});
+  });
   
 The content of ``gameDataFilePath`` could be `published <publication>` game data or original database file.  
   
