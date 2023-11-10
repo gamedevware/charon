@@ -16,3 +16,11 @@ The document collection page is place where user can view a list of all the docu
 Document Form
 -------------
 The document form page provides a specific edit form for a selected document. Here, users can view, edit, and save their game data documents in a structured and organized manner. The form allows users to input data into fields that correspond to the schema's properties. The document form page provides a user-friendly interface for updating and modifying game data.  
+
+See also
+--------
+
+- :doc:`Creating Document Type (Schema) <creating_schema>`
+- :doc:`Filling Documents <filling_documents>`
+- :doc:`Publishing Game Data <publication>`
+- :doc:`Generating Source Code <generating_source_code>`

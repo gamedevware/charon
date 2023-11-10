@@ -36,5 +36,5 @@ To create a new document using the user interface, follow these steps:
 See also
 --------
 
-- :doc:`Publication Game Data <publication>`
+- :doc:`Publishing Game Data <publication>`
 - :doc:`Generating Source Code <generating_source_code>`

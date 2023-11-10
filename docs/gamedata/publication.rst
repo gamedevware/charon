@@ -1,5 +1,5 @@
-Publication Game Data
-=====================
+Publishing Game Data
+====================
 
 The publication process is a crucial step in preparing game data for usage inside the game. This process involves removing unused data, unused localization, and exporting data in a supported format - ``JSON`` or ``MessagePack``. This documentation will provide an overview of how to perform the publication process from both the project's dashboard user interface and the command-line interface (CLI).
 
@@ -38,5 +38,8 @@ See also
 --------
 
 - :doc:`Generating Source Code <generating_source_code>`
+- :doc:`Working with Source Code (C# 4.0) <working_with_csharp_code_4_0>`
+- :doc:`Working with Source Code (C# 7.3) <working_with_csharp_code_7_3>`
+- :doc:`Working with Source Code (TypeScript) <working_with_type_script_code>`
 - :doc:`Command Line Interface (CLI) <../advanced/command_line>`
 - :doc:`DATA EXPORT Command <../advanced/commands/data_export>`

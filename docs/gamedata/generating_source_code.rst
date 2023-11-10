@@ -40,6 +40,7 @@ Once the process is complete, the generated source code will be available at ``-
 See also
 --------
 
+- :doc:`Publishing Game Data <publication>`
 - :doc:`Working with Source Code (C# 4.0) <working_with_csharp_code_4_0>`
 - :doc:`Working with Source Code (C# 7.3) <working_with_csharp_code_7_3>`
 - :doc:`Working with Source Code (TypeScript) <working_with_type_script_code>`

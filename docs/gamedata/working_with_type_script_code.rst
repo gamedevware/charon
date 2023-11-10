@@ -18,8 +18,10 @@ The following Type Script code creates ``GameData`` class and loads your game da
   // Node.js
   import { readFileSync } from 'fs';
   const gameDataStream = readFileSync(gameDataFilePath);
+  
   // Blob or File
   const gameDataStream = gameDataFileBlob.arrayBuffer();
+  
   // XMLHttpRequest (XHR)
   // gameDataRequest.responseType -> "arraybuffer"
   const gameDataStream = gameDataRequest.response;

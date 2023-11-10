@@ -11,12 +11,13 @@ Loading Game Data
 The following C# code creates ``GameData`` class and loads your game data into memory.
 
 .. code-block:: csharp
+  
   using System.IO;
   
   var fileStream = File.OpenRead("gamedata.json");
   var gameData = new GameData(fileStream, GameData.Format.Json);
   fileStream.Dispose();
-  
+
 The file ``gamedata.json`` could be :doc:`published <publication>` game data or original database file (.gdjs or .gdmp).  
   
 Accessing Documents
