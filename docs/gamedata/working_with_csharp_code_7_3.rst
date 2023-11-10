@@ -11,13 +11,14 @@ Loading Game Data
 The following C# code creates ``GameData`` class and loads your game data into memory.
 
 .. code-block:: csharp
+  
   using System.IO;
-
+  
   var fileStream = File.OpenRead("RpgGameData.gdjs"); // or .json
   var gameData = new GameData(fileStream, new Formatters.GameDataLoadOptions { Format = Formatters.Format.Json });
   fileStream.Dispose();
-  
-The file ``RpgGameData.gdjs`` could be `published <publication>` game data or original database file (.gdjs or .gdmp).  
+
+The file ``RpgGameData.gdjs`` could be :doc:`published <publication>` game data or original database file (.gdjs or .gdmp).  
   
 Accessing Documents
 -------------------
@@ -29,7 +30,7 @@ You can access your documents as a list:
   var allHeroes = gameData.AllHeroes.AsList // -> IReadOnlyList<Hero>
   var rootHeroes = gameData.RootHeroes.AsList // -> IReadOnlyList<Hero>
 
-Or you can access specific documents by their ``Id`` or ``Unique`` properties:
+Or you can access specific documents by their ``Id`` or *Unique* properties:
 
 .. code-block:: csharp
 

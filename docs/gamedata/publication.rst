@@ -37,5 +37,6 @@ Example
 See also
 --------
 
+- :doc:`Generating Source Code <generating_source_code>`
 - :doc:`Command Line Interface (CLI) <../advanced/command_line>`
 - :doc:`DATA EXPORT Command <../advanced/commands/data_export>`

@@ -28,7 +28,7 @@ The following Type Script code creates ``GameData`` class and loads your game da
     format: Formatters.GameDataFormat.Json
   });
   
-The content of ``gameDataStream`` could be `published <publication>` game data or original database file (.gdjs or .gdmp).  
+The content of ``gameDataStream`` could be :doc:`published <publication>` game data or original database file (.gdjs or .gdmp).  
   
 Accessing Documents
 -------------------
@@ -40,7 +40,7 @@ You can access your documents as a list:
   let heroes = gameData.heroesAll; // all heroes from all documents -> readonly Hero[]
   let heroes = gameData.heroesRoot; // heroes only from root collection -> readonly Hero[]
 
-Or you can access specific documents by their ``Id`` or ``Unique`` properties:
+Or you can access specific documents by their ``Id`` or *Unique* properties:
 
 .. code-block:: js
 

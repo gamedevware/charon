@@ -17,7 +17,7 @@ The following C# code creates ``GameData`` class and loads your game data into m
   var gameData = new GameData(fileStream, GameData.Format.Json);
   fileStream.Dispose();
   
-The file ``gamedata.json`` could be `published <publication>` game data or original database file (.gdjs or .gdmp).  
+The file ``gamedata.json`` could be :doc:`published <publication>` game data or original database file (.gdjs or .gdmp).  
   
 Accessing Documents
 -------------------
@@ -29,7 +29,7 @@ You can access your documents as a list:
   var characters = gameData.GetCharacters() // -> ReadOnlyList<Character>
   var characters = gameData.GetCharacters(onlyRoot: true) // -> ReadOnlyList<Character>
 
-Or you can access specific documents by their ``Id`` or ``Unique`` properties:
+Or you can access specific documents by their ``Id`` or *Unique* properties:
 
 .. code-block:: csharp
 

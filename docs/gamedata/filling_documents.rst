@@ -32,3 +32,9 @@ To create a new document using the user interface, follow these steps:
 2. Click on the ``Create`` button.
 3. Fill in the required fields in the form provided.
 4. Click ``Save`` to save the new document.
+
+See also
+--------
+
+- :doc:`Publication Game Data <publication>`
+- :doc:`Generating Source Code <generating_source_code>`

@@ -22,7 +22,7 @@ To generate source code from the CLI, follow these steps:
 
 1. Open the command-line interface.
 2. Navigate to the game data's directory.
-3. Use the ``GENERATE &lt;SOURCECODE&gt;`` command to generate the source code, specifying the target language and any generation parameters require.
+3. Use the ``GENERATE <SOURCECODE>`` command to generate the source code, specifying the target language and any generation parameters require.
 
 Example
 --------
@@ -46,4 +46,3 @@ See also
 - :doc:`Command Line Interface (CLI) <../advanced/command_line>`
 - :doc:`GENERATE CSHARPCODE Command <../advanced/commands/generate_csharp_code>`
 - :doc:`GENERATE TYPESCRIPTCODE Command <../advanced/commands/generate_typescript_code>`
-
