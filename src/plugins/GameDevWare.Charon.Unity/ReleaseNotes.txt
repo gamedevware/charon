@@ -1,3 +1,1 @@
-﻿feature: added 'Upload' option to 'Connect' window
-fix: fixed layout issues of 'Connect' window with old versions of Unity
-fix: fixed Obsolete warning due Format -> GameDataFormat renaming
+﻿fix: fixed crash in Connect window due strange issue in Unity 2023.1 related to rich text.

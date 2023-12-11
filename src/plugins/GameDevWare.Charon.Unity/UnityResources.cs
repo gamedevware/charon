@@ -183,7 +183,7 @@ namespace GameDevWare.Charon {
 		public const string UI_UNITYPLUGIN_GENERATE_UPLOAD_BUTTON = "Upload";
 		public const string UI_UNITYPLUGIN_GENERATE_UPLOAD_LOCAL_GAME_DATA = "Upload local game data ({0:F2} KiB) to the server.";
 		public const string UI_UNITYPLUGIN_GENERATE_LOCAL_ERASED_WARNING = "Local game data file '{0}' will be erased!";
-		public const string UI_UNITYPLUGIN_GENERATE_API_KEY_MESSAGE = "To generate new API Key go to your <a>Profile -> API Keys</a>.";
+		public const string UI_UNITYPLUGIN_GENERATE_API_KEY_MESSAGE = "To generate new API Key click *here* to open browser...";
 	}
 }
 

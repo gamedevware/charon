@@ -165,7 +165,7 @@ namespace GameDevWare.Charon.Unity.Windows
 				GUILayout.Label(Resources.UI_UNITYPLUGIN_GENERATE_API_KEY_TITLE, new GUIStyle(EditorStyles.boldLabel));
 				var newApiKey = (EditorGUILayout.TextArea(this.apiKey, new GUIStyle(EditorStyles.textArea) { fixedHeight = 38 }) ?? string.Empty).Trim();
 				if (GUILayout.Button(Resources.UI_UNITYPLUGIN_GENERATE_API_KEY_MESSAGE,
-						new GUIStyle(EditorStyles.label) { richText = true }))
+						new GUIStyle(EditorStyles.label)))
 				{
 					EditorUtility.OpenWithDefaultApp(this.ServerApiClient.GetApiKeysUrl().OriginalString);
 				}
