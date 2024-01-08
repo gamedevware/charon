@@ -118,19 +118,20 @@ Exports documents into a file.
      --mode localization
 
    normal
-      Export all related data without any modification.
-      This mode always export valid graph of documents without broken references.
-      
+      Export all specified documents defined in `--schemas`. 
+      This mode ensures that the exported graph of documents remains valid by including any necessary additional documents to avoid any broken references.
+
    publication
-      Same as *default*, but all non-essential data will be stripped. 
-      The result of the export can be safely loaded within the game with the :doc:`generated code <generate_csharp_code>`.
+      Same as `--mode normal`, but all non-essential data will be stripped. 
+      The result of the export can be safely loaded within the game with the :doc:`generated code <../../gamedata/generating_source_code>`.
    
    extraction
-      Export only selected schemas without any related data. 
-      This mode may export a broken graph of documents, so it is recommended to use the ``safeupdate`` import mode.
-   
+      Export only the specified `--schemas` without exporting any referenced documents. 
+      In this mode, the exported graph of documents may contain broken references. 
+      It is recommended to use the import `--mode safeupdate` when importing this data back.
+
    localization
-       Same as *extraction* but only ``LocalizedText`` properties are exported.
+       Same as `--mode extraction` but only ``LocalizedText`` properties are exported.
     
 --output
    Path to a exported data file. If the file exists, it will be overwritten. The directory must already exist. 
