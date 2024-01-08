@@ -1070,6 +1070,7 @@ paths:
                     - cSharp40
                     - cSharp73
                     - typeScript
+                    - ueCpp
                   type: string
                   x-name: SourceCodeTargetLanguage
                 documentClassName:
@@ -3711,6 +3712,8 @@ components:
               - none
               - authentication
               - remoteLogging
+              - termsOfService
+              - privacyPolicy
               - projectSelection
               - projectDelete
               - projectTransfer
@@ -4546,6 +4549,7 @@ components:
         - transactionAlreadyCompleted
         - transactionAlreadyExists
         - transactionDoesNotExists
+        - metadataLoadError
         - invalidTimeFormat
         - invalidDateFormat
         - invalidLocalizedTextFormat
@@ -5964,6 +5968,7 @@ components:
       description: Set "Content-Disposition" header in order to make the browser download the result.
       schema:
         type: boolean
+        nullable: true
     languages:
       name: languages
       in: query
