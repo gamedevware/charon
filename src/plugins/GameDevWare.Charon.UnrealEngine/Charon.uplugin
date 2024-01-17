@@ -1,0 +1,30 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Charon",
+	"Description": "Charon Game Data Editor Support for Unreal Engine Editor",
+	"Category": "Other",
+	"CreatedBy": "Denis Zykov",
+	"CreatedByURL": "https://www.gamedevware.com/",
+	"DocsURL": "https://gamedevware.github.io/charon/",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4",
+	"SupportURL": "https://www.gamedevware.com/",
+	"CanContainContent": true,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "Charon",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "CharonEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": ["Win64", "Mac", "Linux"]
+		}
+	]
+}

@@ -461,17 +461,12 @@ namespace GameDevWare.Charon.Unity.Utils
 			input.StickWith(runTask);
 			return output.Capture(runTask);
 		}
-
-		public static Promise<RunResult> DeleteDocumentAsync(GameDataLocation gameDataLocation, string schema, CommandInput input, CommandOutput output)
-		{
-			return DeleteDocumentAsync(gameDataLocation, schema, string.Empty, input, output);
-		}
-		public static Promise<RunResult> DeleteDocumentAsync(GameDataLocation gameDataLocation, string schema, string id, CommandInput input, CommandOutput output)
+		
+		public static Promise<RunResult> DeleteDocumentAsync(GameDataLocation gameDataLocation, string schema, string id, CommandOutput output)
 		{
 			if (gameDataLocation.Location == null) throw new ArgumentNullException("gameDataLocation");
 			if (schema == null) throw new ArgumentNullException("schema");
 			if (id == null) throw new ArgumentNullException("id");
-			if (input == null) throw new ArgumentNullException("input");
 			if (output == null) throw new ArgumentNullException("output");
 
 			gameDataLocation.ThrowIfFileNotExists();
@@ -483,19 +478,15 @@ namespace GameDevWare.Charon.Unity.Utils
 					"DATA", "DELETE", gameDataLocation,
 					IsToolsLegacy() ? "--entity" : "--schema", schema,
 					"--id", id,
-					"--input", input.Source,
-					"--inputFormat", input.Format,
-					"--inputFormattingOptions", input.FormattingOptions,
 					"--output", output.Target,
 					"--outputFormat", output.Format,
 					"--outputFormattingOptions", output.FormattingOptions
 				)
 			);
-			input.StickWith(runTask);
 			return output.Capture(runTask);
 		}
 
-		public static Promise<RunResult> GetDocumentAsync(GameDataLocation gameDataLocation, string schema, string id, CommandOutput output)
+		public static Promise<RunResult> FindDocumentAsync(GameDataLocation gameDataLocation, string schema, string id, CommandOutput output)
 		{
 			if (gameDataLocation.Location == null) throw new ArgumentNullException("gameDataLocation");
 			if (schema == null) throw new ArgumentNullException("schema");
@@ -694,7 +685,7 @@ namespace GameDevWare.Charon.Unity.Utils
 		public static Promise<RunResult> GenerateCSharpCodeAsync(GameDataLocation gameDataLocation, string outputDirectory,
 			CSharpLanguageVersion languageVersion, SourceCodeGenerationOptimizations optimizations = 0,
 			string documentClassName = "Document", string gameDataClassName = "GameData",
-			string @namespace = "GameParameters", SourceCodeIndentation sourceCodeIndentation = SourceCodeIndentation.Tabs,
+			string @namespace = "GameParameters", string defineConstants = "", SourceCodeIndentation sourceCodeIndentation = SourceCodeIndentation.Tabs,
 			SourceCodeLineEndings sourceCodeLineEndings = SourceCodeLineEndings.Windows, bool splitFiles = false)
 		{
 			if (gameDataLocation.Location == null) throw new ArgumentNullException("gameDataLocation");
@@ -781,6 +772,7 @@ namespace GameDevWare.Charon.Unity.Utils
 						"--documentClassName", documentClassName,
 						"--gameDataClassName", gameDataClassName,
 						"--namespace", @namespace,
+						"--defineConstants", defineConstants,
 						"--languageVersion", languageVersion.ToString(),
 						"--indentation", sourceCodeIndentation.ToString(),
 						"--lineEndings", sourceCodeLineEndings.ToString(),
