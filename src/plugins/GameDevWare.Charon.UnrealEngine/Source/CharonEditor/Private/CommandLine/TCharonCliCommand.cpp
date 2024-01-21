@@ -1,4 +1,6 @@
-#include "TCharonCliCommand.h"
+#pragma once
+
+#include "GameData/CommandLine/TCharonCliCommand.h"
 
 #include "JsonObjectConverter.h"
 #include "Async/Async.h"
@@ -9,60 +11,59 @@ DEFINE_LOG_CATEGORY(LogTCharonCliCommand);
 
 template <typename InResultType>
 TCharonCliCommand<InResultType>::TCharonCliCommand(const TSharedRef<FMonitoredProcess>& Process)
-	:Process(Process), DispatchThread(ENamedThreads::AnyThread)
+	: Process(Process), DispatchThread(ENamedThreads::AnyThread)
 {
-	CommandSucceed.AddLambda([this](InResultType _) { this->TaskSucceed.Broadcast(); });
-	CommandFailed.AddLambda([this](int32 _, FString __) { this->TaskFailed.Broadcast(); });
+	CommandSucceed.AddLambda([this](InResultType _) { TaskSucceed.Broadcast(); });
+	CommandFailed.AddLambda([this](int32 _, FString __) { TaskFailed.Broadcast(); });
 }
 
 template <typename InResultType>
 void TCharonCliCommand<InResultType>::Run(ENamedThreads::Type EventDispatchThread)
 {
 	const auto WeakThisPtr = this->AsWeak();
-	Process->OnCompleted().BindLambda([WeakThisPtr](int32 ExitCode)
+	Process->OnCompleted().BindLambda([WeakThisPtr, this](int32 ExitCode)
 	{
 		const auto ThisPtr = WeakThisPtr.Pin();
 		if (!ThisPtr.IsValid()) { return; }
-		if (ThisPtr->DispatchThread != ENamedThreads::AnyThread)
+		
+		if (DispatchThread != ENamedThreads::AnyThread)
 		{
-			AsyncTask(ThisPtr->DispatchThread, [WeakThisPtr, ExitCode]
+			AsyncTask(DispatchThread, [WeakThisPtr, this, ExitCode]
 			{
 				const auto ThisPtr = WeakThisPtr.Pin();
 				if (!ThisPtr.IsValid()) { return; }
-				ThisPtr->OnProcessCompleted(ExitCode);				
+
+				OnProcessCompleted(ExitCode);				
 			});
 		}
 		else
 		{
-			ThisPtr->OnProcessCompleted(ExitCode);
+			OnProcessCompleted(ExitCode);
 		}
 	});
 	
-	Process->OnCanceled().BindLambda([WeakThisPtr]
+	Process->OnCanceled().BindLambda([WeakThisPtr, this]
 	{
 		const auto ThisPtr = WeakThisPtr.Pin();
 		if (!ThisPtr.IsValid()) { return; }
-		if (ThisPtr->DispatchThread != ENamedThreads::AnyThread)
+		
+		if (DispatchThread != ENamedThreads::AnyThread)
 		{
-			AsyncTask(ThisPtr->DispatchThread, [WeakThisPtr]
+			AsyncTask(DispatchThread, [WeakThisPtr, this]
 			{
 				const auto ThisPtr = WeakThisPtr.Pin();
 				if (!ThisPtr.IsValid()) { return; }
-				ThisPtr->OnProcessCancelled();				
+				
+				OnProcessCancelled();				
 			});
 		}
 		else
 		{
-			ThisPtr->OnProcessCancelled();
+			OnProcessCancelled();
 		}
 	});
 	
-	Process->OnOutput().BindLambda([WeakThisPtr](const FString& OutputChunk)
-	{
-		const auto ThisPtr = WeakThisPtr.Pin();
-		if (!ThisPtr.IsValid()) { return; }
-		ThisPtr->OnProcessOutput(OutputChunk);
-	});
+	Process->OnOutput().BindSP(this, &TCharonCliCommand::OnProcessOutput);
 
 	this->DispatchThread = EventDispatchThread;
 	
@@ -96,7 +97,7 @@ void TCharonCliCommand<InResultType>::OnProcessCancelled() const
 }
 
 template <typename InResultType>
-void TCharonCliCommand<InResultType>::OnProcessOutput(const FString& OutputChunk)
+void TCharonCliCommand<InResultType>::OnProcessOutput(FString OutputChunk)
 {
 	this->Output += OutputChunk;
 }
@@ -109,12 +110,10 @@ bool TCharonCliCommand<InResultType>::TryReadResult(const FString& Output, int32
 		return false;
 	}
 	
-	const TUniquePtr<FBufferReader> OutputReader = MakeUnique<FBufferReader>((void*)*Output, Output.Len() * sizeof(TCHAR), false);
-	check(OutputReader.IsValid());
+	const auto JsonReader = TJsonReaderFactory<>::Create(Output);
 	TSharedPtr<FJsonValue> OutValue;
-	const auto JsonReader = TJsonReaderFactory<UTF8CHAR>::Create(OutputReader.Get());
 	
-	if (!FJsonSerializer::Deserialize(JsonReader, OutValue))
+	if (!FJsonSerializer::Deserialize(JsonReader, OutValue) || !OutValue.IsValid())
 	{
 		UE_LOG(LogTCharonCliCommand, Warning, TEXT("Failed to read command's output as JSON. Output is not a valid JSON. Output: "));
 		UE_LOG(LogTCharonCliCommand, Warning, TEXT("%s"), *Output);
@@ -122,13 +121,14 @@ bool TCharonCliCommand<InResultType>::TryReadResult(const FString& Output, int32
 	}
 	
 	TSharedPtr<FJsonObject>* OutObject;
-	if (OutValue->TryGetObject(OutObject) && OutObject != nullptr && OutObject->IsValid())
+	if (!OutValue->TryGetObject(OutObject) || !OutObject->IsValid())
 	{
 		UE_LOG(LogTCharonCliCommand, Warning, TEXT("Failed to read command's output as JSON. Result value is not a JSON object."));
-
-		OutResult = OutObject->ToSharedRef();
-		return true;
+		return false;
 	}
+
+	check(OutObject);
+	OutResult = OutObject->ToSharedRef();
 	return false;
 }
 
@@ -172,6 +172,7 @@ bool TCharonCliCommand<InResultType>::TryReadResult(const FString& Output, int32
 		UE_LOG(LogTCharonCliCommand, Warning, TEXT("Failed to read command's output as JSON. Result value is not valid 'FValidationReport' object. Reason: %s."), *FailReason.ToString());
 		return false;
 	}
+
 	return true;
 }
 

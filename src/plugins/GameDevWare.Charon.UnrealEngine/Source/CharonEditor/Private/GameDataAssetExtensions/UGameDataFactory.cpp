@@ -1,13 +1,11 @@
+#pragma once
 
-
-#include "UGameDataFactory.h"
+#include "GameData/UGameDataFactory.h"
 #include "UObject/Class.h"
 #include "JsonObjectConverter.h"
 #include "GameData/UGameDataBase.h"
 #include "Serialization/MemoryReader.h"
-#include "JsonObjectConverter.h"
 #include "ClassViewerModule.h"
-#include "ClassViewerFilter.h"
 #include "FAssetClassParentFilter.h"
 #include "Kismet2/SClassPickerDialog.h"
 #include "Misc/DateTime.h"

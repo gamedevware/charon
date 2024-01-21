@@ -120,6 +120,7 @@ namespace GameDevWare.Charon.Unity.ServerApi
 				cancellation: cancellation);
 			return uploadDataSourceAsync;
 		}
+		
 		public Promise<string> GetLoginLink()
 		{
 			return Promise<string>.DefaultFulfilled;

@@ -1,13 +1,13 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "FCharonEditorModule.h"
+#include "GameData/FCharonEditorModule.h"
 
-#include "FGameDataAssetTypeActions.h"
+#include "GameDataAssetExtensions/FGameDataAssetTypeActions.h"
 #include "GameData/FGameDataDocumentReference.h"
-#include "FGameDataDocumentReferenceCustomization.h"
-#include "FGameDataEditorCommands.h"
+#include "DocumentReferenceExtensions/FGameDataDocumentReferenceCustomization.h"
+#include "GameDataEditor/FGameDataEditorCommands.h"
 #include "PropertyEditorModule.h"
-#include "FGameDataReimportHandler.h"
+#include "GameDataAssetExtensions/FGameDataReimportHandler.h"
 #include "Modules/ModuleInterface.h"
 #include "Modules/ModuleManager.h"
 

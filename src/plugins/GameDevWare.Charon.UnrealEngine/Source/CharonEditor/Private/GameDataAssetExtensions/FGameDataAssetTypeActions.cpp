@@ -1,6 +1,8 @@
-﻿#include "FGameDataAssetTypeActions.h"
+﻿#pragma once
 
-#include "FGameDataEditorToolkit.h"
+#include "FGameDataAssetTypeActions.h"
+
+#include "GameDataEditor/FGameDataEditorToolkit.h"
 #include "GameData/UGameDataBase.h"
 
 UClass* FGameDataAssetTypeActions::GetSupportedClass() const

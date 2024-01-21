@@ -36,7 +36,7 @@ public class CharonEditor: ModuleRules
 			new string[]
 			{
 				"CoreUObject", "Engine", "Slate", "SlateCore",
-				"InputCore",
+				"InputCore", "ToolWidgets", "AppFramework",
 				"UnrealEd",
 				"AssetTools",
 				"PropertyEditor",
@@ -45,7 +45,7 @@ public class CharonEditor: ModuleRules
 				"ClassViewer",
 				"EditorStyle",
 				"WebBrowser",
-				"HTTP",
+				"HTTP", 
 				// ... add private dependencies that you statically link with here ...	
 			}
 		);

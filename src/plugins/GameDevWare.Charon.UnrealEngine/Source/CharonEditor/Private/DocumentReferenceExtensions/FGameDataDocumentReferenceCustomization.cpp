@@ -1,4 +1,5 @@
-﻿
+﻿#pragma once
+
 #include "FGameDataDocumentReferenceCustomization.h"
 #include "AssetRegistry/AssetData.h"
 #include "Containers/Map.h"

@@ -1,11 +1,11 @@
 ﻿#pragma once
+
 #include "EExportMode.h"
 #include "EImportMode.h"
 #include "ESourceCodeGenerationOptimizations.h"
 #include "ESourceCodeIndentation.h"
 #include "ESourceCodeLineEndings.h"
 #include "EValidationOptions.h"
-#include "FImportReport.h"
 #include "FValidationReport.h"
 #include "TCharonCliCommand.h"
 
@@ -58,6 +58,15 @@ public:
 		EImportMode ImportMode
 	);
 
+	static TSharedRef<TCharonCliCommand<>> ImportFromFile(
+		const FString& GameDataUrl,
+		const FString& ApiKey,
+		const TArray<FString>& SchemaNamesOrIds,
+		EImportMode ImportMode,
+		const FString& DocumentsBySchemaNameOrIdFilePath,
+		const FString& Format = "json"
+	);
+
 	static TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> Export(
 		const FString& GameDataUrl,
 		const FString& ApiKey,
@@ -67,6 +76,17 @@ public:
 		EExportMode ExportMode
 	);
 
+	static TSharedRef<TCharonCliCommand<>> ExportToFile(
+		const FString& GameDataUrl,
+		const FString& ApiKey,
+		const TArray<FString>& SchemaNamesOrIds,
+		const TArray<FString>& Properties,
+		const TArray<FString>& Languages,
+		EExportMode ExportMode,
+		const FString& ExportedDocumentsFilePath,
+		const FString& Format = "json"
+	);
+	
 	static TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> CreatePatch(
 		const FString& GameDataUrl1,
 		const FString& GameDataUrl2,
@@ -83,6 +103,13 @@ public:
 		const FString& GameDataUrl,
 		const FString& ApiKey
 	);
+
+	static TSharedRef<TCharonCliCommand<>> BackupToFile(
+		const FString& GameDataUrl,
+		const FString& ApiKey,
+		const FString& GameDataFilePath,
+		const FString& Format = "json"
+	);
 	
 	static TSharedRef<TCharonCliCommand<>> Restore(
 		const FString& GameDataUrl,
@@ -90,6 +117,13 @@ public:
 		const TSharedRef<FJsonObject>& GameData
 	);
 
+	static TSharedRef<TCharonCliCommand<>> RestoreFromFile(
+		const FString& GameDataUrl,
+		const FString& ApiKey,
+		const FString& GameDataFilePath,
+		const FString& Format = "json"
+	);
+	
 	static TSharedRef<TCharonCliCommand<FValidationReport>> Validate(
 		const FString& GameDataUrl,
 		const FString& ApiKey,

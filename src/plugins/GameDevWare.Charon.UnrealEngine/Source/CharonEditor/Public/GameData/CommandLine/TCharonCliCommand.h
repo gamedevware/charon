@@ -1,7 +1,8 @@
 ﻿#pragma once
+
 #include "FImportReport.h"
 #include "FValidationReport.h"
-#include "IGameDataEditorTask.h"
+#include "../IGameDataEditorTask.h"
 #include "Misc/MonitoredProcess.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTCharonCliCommand, Log, All);
@@ -23,7 +24,7 @@ private:
 	
 	void OnProcessCompleted(int32 ExitCode) const;
 	void OnProcessCancelled() const;
-	void OnProcessOutput(const FString& OutputChunk);
+	void OnProcessOutput(FString OutputChunk);
 
 	static bool TryReadResult(const FString& Output, int32 ExitCode, TSharedPtr<FJsonObject>& OutResult);
 	static bool TryReadResult(const FString& Output, int32 ExitCode, int32& OutResult);

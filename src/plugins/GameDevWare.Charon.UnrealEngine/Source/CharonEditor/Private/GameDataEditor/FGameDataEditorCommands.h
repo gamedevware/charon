@@ -21,9 +21,12 @@ public:
 	TSharedPtr<FUICommandInfo> BrowserForward;
 	TSharedPtr<FUICommandInfo> BrowserReload;
 	
-	TSharedPtr<FUICommandInfo> Reimport;
 	TSharedPtr<FUICommandInfo> GenerateSourceCode;
+	TSharedPtr<FUICommandInfo> Reimport;
 	
+
+	TSharedPtr<FUICommandInfo> Synchronize;
 	TSharedPtr<FUICommandInfo> Connect;
 	TSharedPtr<FUICommandInfo> Disconnect;
+	TSharedPtr<FUICommandInfo> SetApiKey;
 };

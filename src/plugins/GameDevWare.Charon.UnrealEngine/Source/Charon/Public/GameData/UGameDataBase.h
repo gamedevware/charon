@@ -4,10 +4,7 @@
 #include "EGameDataFormat.h"
 #include "UGameDataDocument.h"
 #include "UObject/Class.h"
-
-#if WITH_EDITORONLY_DATA
-#include "EditorFramework/AssetImportData.h"
-#endif
+#include "GameData/UGameDataImportData.h"
 
 #include "UGameDataBase.generated.h"
 
@@ -23,11 +20,8 @@ public:
 	/*
 	 * Import-related information including original path to game data file.
 	 */
-	/**
-	 * 
-	 */
 	UPROPERTY(VisibleAnywhere, Instanced, Category = ImportSettings)
-	TObjectPtr<UAssetImportData> AssetImportData;
+	TObjectPtr<UGameDataImportData> AssetImportData;
 
 	/*
 	 * Try to load game data from specified game data file/stream using specified file format.

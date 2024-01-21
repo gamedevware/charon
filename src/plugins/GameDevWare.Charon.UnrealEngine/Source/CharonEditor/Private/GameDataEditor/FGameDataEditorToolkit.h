@@ -1,9 +1,12 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "FConnectGameDataParameters.h"
 #include "SWebBrowser.h"
-#include "FGameDataEditorProcessRunner.h"
-#include "TCharonCliCommand.h"
+#include "GameData/CommandLine/FGameDataEditorProcessRunner.h"
+#include "SConnectGameDataDialog.h"
+#include "GameData/CommandLine/TCharonCliCommand.h"
+#include "GameData/IGameDataEditorTask.h"
 #include "GameData/UGameDataBase.h"
 #include "Toolkits/AssetEditorToolkit.h"
 
@@ -14,25 +17,35 @@ class FGameDataEditorToolkit : public FAssetEditorToolkit
 private:
 	UGameDataBase* GameData = nullptr;
 	TSharedPtr<SWebBrowser> Browser;
-	TSharedPtr<TCharonCliCommand<>> CurrentRunningCommand;
+	TSharedPtr<IGameDataEditorTask> CurrentRunningCommand;
 	TSharedPtr<FGameDataEditorProcessRunner> EditorProcess;
+	TSharedPtr<SWindow> PendingDialog;
 
 	void LaunchCharonProcess();
+	void OpenCharonWebsite() const;
 	void BindCommands();
 	void ExtendToolbar();
 	void ExtendMenu();
 
 protected:
 	void GenerateSourceCode_Execute();
-	bool CanConnect();
+	bool CanConnect() const;
 	bool CanGenerateSourceCode() const;
 	void Connect_Execute();
-	void Disconnect_Execute();
-	bool CanDisconnect();
-	
-	void BroadcastCommandRunning(const TSharedRef<IGameDataEditorTask>& Command, FName IconName,
-	                             FText CommandPendingText, FText CommandSucceedText, FText CommandFailedText,
-	                             bool bCanCancel);
+	void Sync_Execute();
+	void Disconnect_Execute() const;
+	bool CanDisconnect() const;
+	void SetApiKey_Execute();
+	bool CanSetApiKey() const;
+	void OnSetApiKeyFinished(FString String) const;
+	void OnConnectFinished(FConnectGameDataParameters Parameters);
+	void OnGameDataDownloadSucceed(FString String, FString String1);
+
+	static void BroadcastCommandRunning(const TSharedRef<IGameDataEditorTask>& Command, FName IconName,
+	                                    FText CommandPendingText, FText CommandSucceedText, FText CommandFailedText,
+	                                    bool bCanCancel);
+
+	static void BroadcastMissingApiKey(FText ProjectName);
 
 public:
 	void InitEditor(const TArray<UObject*>& InObjects);

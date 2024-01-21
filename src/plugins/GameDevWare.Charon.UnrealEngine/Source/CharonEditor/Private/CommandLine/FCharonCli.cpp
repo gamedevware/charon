@@ -1,6 +1,8 @@
-﻿#include "FCharonCli.h"
+﻿#pragma once
 
-#include "FGameDataToolCommandRunner.h"
+#include "GameData/CommandLine/FCharonCli.h"
+
+#include "GameData/CommandLine/FGameDataToolCommandRunner.h"
 #include "Serialization/JsonSerializer.h"
 
 DEFINE_LOG_CATEGORY(LogFCharonCli);
@@ -142,6 +144,46 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::Import(
 	return MakeShared<TCharonCliCommand<>>(CommandRunner);
 }
 
+TSharedRef<TCharonCliCommand<>> FCharonCli::ImportFromFile(const FString& GameDataUrl, const FString& ApiKey,
+	const TArray<FString>& SchemaNamesOrIds, EImportMode ImportMode, const FString& DocumentsBySchemaNameOrIdFilePath,
+	const FString& Format)
+{
+	FString ImportModeName;
+	switch (ImportMode)
+	{
+	default:
+	case EImportMode::CreateAndUpdate:
+		ImportModeName = TEXT("CreateAndUpdate");
+		break;
+	case EImportMode::Create:
+		ImportModeName = TEXT("Create");
+		break;
+	case EImportMode::Update:
+		ImportModeName = TEXT("Update");
+		break;
+	case EImportMode::SafeUpdate:
+		ImportModeName = TEXT("SafeUpdate");
+		break;
+	case EImportMode::Replace:
+		ImportModeName = TEXT("Replace");
+		break;
+	case EImportMode::Delete:
+		ImportModeName = TEXT("Delete");
+		break;
+	}
+	const FString Params = FString::Format(TEXT("DATA IMPORT \"{0}\" --input \"{1}\" --inputFormat {4} --schemas {2} --mode {3}"), {
+		GameDataUrl,
+		DocumentsBySchemaNameOrIdFilePath,
+		SchemaNamesOrIds.IsEmpty() ? "*" : FString::Join(SchemaNamesOrIds, TEXT(" ")),
+		ImportModeName,
+		Format
+	});
+	
+	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	CommandRunner->SetApiKey(ApiKey);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner);
+}
+
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::Export(
 	const FString& GameDataUrl,
 	const FString& ApiKey,
@@ -179,6 +221,43 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::Export(
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner);
+}
+
+TSharedRef<TCharonCliCommand<>> FCharonCli::ExportToFile(const FString& GameDataUrl, const FString& ApiKey,
+	const TArray<FString>& SchemaNamesOrIds, const TArray<FString>& Properties, const TArray<FString>& Languages,
+	EExportMode ExportMode, const FString& ExportedDocumentsFilePath, const FString& Format)
+{
+	FString ExportModeName;
+	switch (ExportMode)
+	{
+	default:
+	case EExportMode::Default:
+		ExportModeName = TEXT("Default");
+		break;
+	case EExportMode::Publication:
+		ExportModeName = TEXT("Publication");
+		break;
+	case EExportMode::Localization:
+		ExportModeName = TEXT("Localization");
+		break;
+	case EExportMode::Extraction:
+		ExportModeName = TEXT("Extraction");
+		break;
+	}
+	
+	const FString Params = FString::Format(TEXT("DATA EXPORT \"{0}\" --output \"{5}\" --outputFormat {6} --schemas {1} --properties {2} --languages {3} --mode {4}"), {
+		GameDataUrl,
+		SchemaNamesOrIds.IsEmpty() ? "*" : FString::Join(SchemaNamesOrIds, TEXT(" ")),
+		Properties.IsEmpty() ? "*" : FString::Join(Properties, TEXT(" ")),
+		Languages.IsEmpty() ? "*" : FString::Join(Languages, TEXT(" ")),
+		ExportModeName,
+		ExportedDocumentsFilePath,
+		Format
+	});
+	
+	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	CommandRunner->SetApiKey(ApiKey);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner);
 }
 
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::CreatePatch(
@@ -227,6 +306,20 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::Backup(
 	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner);
 }
 
+TSharedRef<TCharonCliCommand<>> FCharonCli::BackupToFile(const FString& GameDataUrl, const FString& ApiKey,
+	const FString& GameDataFilePath, const FString& Format)
+{
+	const FString Params = FString::Format(TEXT("DATA BACKUP \"{0}\" --output \"{1}\" --outputFormat {2}"), {
+		GameDataUrl,
+		GameDataFilePath,
+		Format
+	});
+	
+	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	CommandRunner->SetApiKey(ApiKey);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner);
+}
+
 TSharedRef<TCharonCliCommand<>> FCharonCli::Restore(
 	const FString& GameDataUrl,
 	const FString& ApiKey,
@@ -241,6 +334,23 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::Restore(
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempInputFile);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner);
+}
+
+TSharedRef<TCharonCliCommand<>> FCharonCli::RestoreFromFile(
+	const FString& GameDataUrl,
+	const FString& ApiKey,
+	const FString& GameDataFilePath,
+		const FString& Format)
+{
+	const FString Params = FString::Format(TEXT("DATA RESTORE \"{0}\" --input \"{1}\" --inputFormat {2}"), {
+		GameDataUrl,
+		GameDataFilePath,
+		Format
+	});
+	
+	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	CommandRunner->SetApiKey(ApiKey);
 	return MakeShared<TCharonCliCommand<>>(CommandRunner);
 }
 

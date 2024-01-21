@@ -1,4 +1,6 @@
-﻿#include "FGameDataToolCommandRunner.h"
+﻿#pragma once
+
+#include "GameData/CommandLine/FGameDataToolCommandRunner.h"
 
 DEFINE_LOG_CATEGORY(LogFGameDataToolCommandRunner);
 
@@ -68,17 +70,17 @@ void FGameDataToolCommandRunner::AttachTemporaryFile(const FString& InFilePath)
 FString FGameDataToolCommandRunner::GetOrCreateCharonIntermediateDirectory()
 {
 	IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
-	const FString PluginContentDirectory = FPaths::ConvertRelativePathToFull(
-		FPaths::ProjectDir() / TEXT("Plugins/Charon/Source/CharonEditor/Content"));
-	const FString EditorIntermediateFolder = FPaths::ConvertRelativePathToFull(
+	const FString PluginScriptsDirectory = FPaths::ConvertRelativePathToFull(
+		FPaths::ProjectDir() / TEXT("Plugins/Charon/Resources/Scripts"));
+	const FString CharonIntermediateDirectory = FPaths::ConvertRelativePathToFull(
 		FPaths::ProjectIntermediateDir() / "Charon");
-	if (!PlatformFile.DirectoryExists(*EditorIntermediateFolder))
+	if (!PlatformFile.DirectoryExists(*CharonIntermediateDirectory))
 	{
-		if (!PlatformFile.CreateDirectory(*EditorIntermediateFolder))
+		if (!PlatformFile.CreateDirectory(*CharonIntermediateDirectory))
 		{
 			UE_LOG(LogFGameDataToolCommandRunner, Warning,
-			       TEXT("Create directory '%s' in Project's intermediate directory."), *EditorIntermediateFolder);
-			return EditorIntermediateFolder;
+			       TEXT("Create directory '%s' in Project's intermediate directory."), *CharonIntermediateDirectory);
+			return CharonIntermediateDirectory;
 		}
 		bContentCopied = false;
 	}
@@ -87,10 +89,10 @@ FString FGameDataToolCommandRunner::GetOrCreateCharonIntermediateDirectory()
 	{
 		bContentCopied = true;
 		TArray<FString> FoundFiles;
-		PlatformFile.FindFiles(FoundFiles, *PluginContentDirectory, nullptr);
+		PlatformFile.FindFiles(FoundFiles, *PluginScriptsDirectory, nullptr);
 		for (FString SourceFilePath : FoundFiles)
 		{
-			FString TargetFileName = EditorIntermediateFolder / FPaths::GetCleanFilename(SourceFilePath);
+			FString TargetFileName = CharonIntermediateDirectory / FPaths::GetCleanFilename(SourceFilePath);
 			/*if (PlatformFile.FileExists(*TargetFileName))
 			{
 				continue;
@@ -103,5 +105,5 @@ FString FGameDataToolCommandRunner::GetOrCreateCharonIntermediateDirectory()
 		}
 	}
 
-	return EditorIntermediateFolder;
+	return CharonIntermediateDirectory;
 }

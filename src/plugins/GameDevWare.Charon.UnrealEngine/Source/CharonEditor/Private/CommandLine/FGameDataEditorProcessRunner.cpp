@@ -1,13 +1,14 @@
-﻿#include "FGameDataEditorProcessRunner.h"
+﻿#pragma once
 
-#include "EGameDataEditorLaunchStatus.h"
-#include "FGameDataToolCommandRunner.h"
+#include "GameData/CommandLine/FGameDataEditorProcessRunner.h"
+
+#include "GameData/CommandLine/EGameDataEditorLaunchStatus.h"
+#include "GameData/CommandLine/FGameDataToolCommandRunner.h"
 #include "HttpModule.h"
 #include "Async/Async.h"
 #include "Interfaces/IHttpRequest.h"
 #include "Interfaces/IHttpResponse.h"
 #include "GenericPlatform/GenericPlatformProcess.h"
-
 
 DEFINE_LOG_CATEGORY(LogFGameDataEditorProcessRunner);
 
@@ -20,7 +21,7 @@ FGameDataEditorProcessRunner::FGameDataEditorProcessRunner(const FString& InData
 	
 	const uint32 EditorPid = FPlatformProcess::GetCurrentProcessId();
 	const FString ProjectDirectory = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir());
-	const FString RunParameters = FString::Format(TEXT("SERVER START --dataBase \"{0}\" --port \"{1}\" --watchPid {2}"), { InDataBaseUrl, InPort, EditorPid });
+	const FString RunParameters = FString::Format(TEXT("SERVER START --dataBase \"{0}\" --port \"{1}\" --watchPid {2} --log con"), { InDataBaseUrl, InPort, EditorPid });
 	const FString CharonIntermediateDirectory = FGameDataToolCommandRunner::GetOrCreateCharonIntermediateDirectory();
 	
 #if PLATFORM_WINDOWS
@@ -98,7 +99,7 @@ bool FGameDataEditorProcessRunner::Launch()
 	UE_LOG(LogFGameDataEditorProcessRunner, Log, TEXT("Successfully launched script '%s'. Starting polling HTTP Server for response."), *this->RunScriptPath);
 	
 	FTimerDelegate OnCheckTimerDelegate;
-	OnCheckTimerDelegate.BindLambda([this]() { this->OnCheckTimer(); });
+	OnCheckTimerDelegate.BindSP(this, &FGameDataEditorProcessRunner::OnCheckTimer);
 	GEditor->GetTimerManager()->SetTimer(this->LaunchCheckTimer, OnCheckTimerDelegate, CheckTimerPeriod, true);
 	
 	return true;
