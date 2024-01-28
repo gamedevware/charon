@@ -15,7 +15,7 @@ public:
 	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnCommandFailed, int32, FString)
 private:
 	TSharedRef<FMonitoredProcess> Process;
-	FString Output;
+	FString OutputFilePath;
 	ENamedThreads::Type DispatchThread;
 	FSimpleMulticastDelegate TaskSucceed;
 	FSimpleMulticastDelegate TaskFailed;
@@ -38,7 +38,7 @@ public:
 	FOnCommandSucceed& OnCommandSucceed() { return CommandSucceed; }
 	FOnCommandFailed& OnCommandFailed() { return CommandFailed; }
 	
-	TCharonCliCommand(const TSharedRef<FMonitoredProcess>& Process);
+	TCharonCliCommand(const TSharedRef<FMonitoredProcess>& Process, const FString& OutputFilePath = FString());
 	
 	virtual void Run(ENamedThreads::Type EventDispatchThread = ENamedThreads::AnyThread) override;
 	virtual void Stop() const override;

@@ -9,7 +9,7 @@
 #include "SConnectGameDataDialog.h"
 #include "SourceCodeNavigation.h"
 #include "SWebBrowser.h"
-#include "GameData/UGameDataFactory.h"
+#include "GameData\UImportGameDataFactory.h"
 #include "Dialogs/Dialogs.h"
 #include "Framework/Notifications/NotificationManager.h"
 #include "Math/UnrealMathUtility.h"
@@ -282,8 +282,7 @@ void FGameDataEditorToolkit::LaunchCharonProcess()
 			break;
 		case EGameDataEditorLaunchStatus::Cancelled: Browser->LoadString(CancelledHtml, EditorProcess->StartUrl);
 			break;
-		case EGameDataEditorLaunchStatus::MissingExecutable:
-		case EGameDataEditorLaunchStatus::MissingRuntime:
+		case EGameDataEditorLaunchStatus::MissingRunScript:
 		case EGameDataEditorLaunchStatus::Timeout:
 		case EGameDataEditorLaunchStatus::Failed: Browser->LoadString(ProcessFailedHtml, EditorProcess->StartUrl);
 			break;
@@ -529,7 +528,7 @@ void FGameDataEditorToolkit::Disconnect_Execute() const
 
 void FGameDataEditorToolkit::Sync_Execute()
 {
-	if (!CanDisconnect()) { return; }
+	if (!CanReimport()) { return; }
 
 	const FString GameDataPath = GameData->AssetImportData->GetFirstFilename();
 	const FString GameDataDownloadPath = GameDataPath + ".tmp";

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "GameData/UGameDataFactory.h"
+#include "GameData/UImportGameDataFactory.h"
 #include "UObject/Class.h"
+#include "Misc/FeedbackContext.h"
 #include "JsonObjectConverter.h"
 #include "GameData/UGameDataBase.h"
 #include "Serialization/MemoryReader.h"
@@ -11,25 +12,9 @@
 #include "Misc/DateTime.h"
 #include "HAL/FileManager.h"
 
-DEFINE_LOG_CATEGORY(LogUGameDataFactory);
+DEFINE_LOG_CATEGORY(LogUImportGameDataFactory);
 
-UGameDataFactory::UGameDataFactory(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-{
-	SupportedClass = UGameDataBase::StaticClass();
-
-	Formats.Add( TEXT( "gdjs;JSON Game Data" ) );
-	Formats.Add( TEXT( "gdmp;MessagePack Game Data" ) );
-	bCreateNew = false;
-	bEditorImport = true;
-}
-
-bool UGameDataFactory::DoesSupportClass(UClass* Class)
-{
-	return UGameDataBase::StaticClass() == Class || Class->IsChildOf(UGameDataBase::StaticClass());
-}
-
-bool UGameDataFactory::ConfigureProperties()
+bool UImportGameDataFactory::PickClass()
 {
 	// nullptr the GameDataClass so we can check for selection
 	GameDataClass = nullptr;
@@ -40,6 +25,8 @@ bool UGameDataFactory::ConfigureProperties()
 	// Fill in options
 	FClassViewerInitializationOptions Options;
 	Options.Mode = EClassViewerMode::ClassPicker;
+	Options.NameTypeToDisplay = EClassViewerNameTypeToDisplay::DisplayName;
+	
 
 	TSharedPtr<FAssetClassParentFilter> Filter = MakeShareable(new FAssetClassParentFilter);
 	Options.ClassFilters.Add(Filter.ToSharedRef());
@@ -47,7 +34,7 @@ bool UGameDataFactory::ConfigureProperties()
 	Filter->DisallowedClassFlags = CLASS_Abstract | CLASS_Deprecated | CLASS_NewerVersionExists | CLASS_HideDropDown;
 	Filter->AllowedChildrenOfClasses.Add(UGameDataBase::StaticClass());
 
-	const FText TitleText = FText::FromString(TEXT("Pick Class For Game Data Instance"));
+	const FText TitleText = FText::FromString(TEXT("Game Data Class"));
 	UClass* ChosenClass = nullptr;
 	const bool bPressedOk = SClassPickerDialog::PickClass(TitleText, Options, ChosenClass, UGameDataBase::StaticClass());
 
@@ -59,7 +46,29 @@ bool UGameDataFactory::ConfigureProperties()
 	return bPressedOk;
 }
 
-void UGameDataFactory::CleanUp()
+UImportGameDataFactory::UImportGameDataFactory(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	SupportedClass = UGameDataBase::StaticClass();
+
+	Formats.Add( TEXT( "gdjs;JSON Game Data" ) );
+	Formats.Add( TEXT( "gdmp;MessagePack Game Data" ) );
+	
+	bCreateNew = false;
+	bEditorImport = true;
+}
+
+bool UImportGameDataFactory::DoesSupportClass(UClass* Class)
+{
+	return UGameDataBase::StaticClass() == Class || Class->IsChildOf(UGameDataBase::StaticClass());
+}
+
+bool UImportGameDataFactory::ConfigureProperties()
+{
+	return true;
+}
+
+void UImportGameDataFactory::CleanUp()
 {
 	Super::CleanUp();
 
@@ -67,26 +76,26 @@ void UGameDataFactory::CleanUp()
 	GameDataClass = nullptr;
 }
 
-UObject* UGameDataFactory::FactoryCreateFile
+UObject* UImportGameDataFactory::FactoryCreateFile
 (
 	UClass* InClass,
 	UObject* InParent,
 	FName InName,
 	EObjectFlags Flags,
 	const FString& Filename,
-	const TCHAR* Parms,
+	const TCHAR* Params,
 	FFeedbackContext* Warn,
 	bool& bOutOperationCanceled
 )
 {
-	auto GameData = Cast<UGameDataBase>(Super::FactoryCreateFile(InClass, InParent, InName, Flags, Filename, Parms, Warn, bOutOperationCanceled));
+	const auto GameData = Cast<UGameDataBase>(Super::FactoryCreateFile(InClass, InParent, InName, Flags, Filename, Params, Warn, bOutOperationCanceled));
 	if(GameData != nullptr)
 	{
 		GameData->AssetImportData->UpdateFilenameOnly(Filename);
 	}
 	return GameData;
 }
-UObject* UGameDataFactory::FactoryCreateBinary
+UObject* UImportGameDataFactory::FactoryCreateBinary
 (
 	UClass*				InClass,
 	UObject*			InParent,
@@ -103,24 +112,31 @@ UObject* UGameDataFactory::FactoryCreateBinary
 	EGameDataFormat Format;
 	
 	const double StartTime = FPlatformTime::Seconds();
-	UE_LOG(LogUGameDataFactory, Log, TEXT("Importing game data by name '%s' from file type '%s'."), *InName.ToString(), InType);
+	UE_LOG(LogUImportGameDataFactory, Log, TEXT("Importing game data with name '%s' from file type '%s'."), *InName.ToString(), InType);
 	
 	const FString FileName = InName.ToString();
 	const FString Extension = FPaths::GetExtension(FileName);
-	if (FCString::Stricmp(InType, TEXT("GDJS")) == 0)
+	if (FCString::Stricmp(InType, TEXT("GDJS")) == 0 || FCString::Stricmp(InType, TEXT("JSON")) == 0)
 	{
 		Format = EGameDataFormat::Json;
 	}
-	else if (FCString::Stricmp(InType, TEXT("GDMP")) == 0)
+	else if (FCString::Stricmp(InType, TEXT("GDMP")) == 0 || FCString::Stricmp(InType, TEXT("MSGPACK")) == 0  ||
+		FCString::Stricmp(InType, TEXT("MSGPCK")) == 0)
 	{
 		Format = EGameDataFormat::MessagePack;
 	}
 	else
 	{
-		Warn->Logf(ELogVerbosity::Error, TEXT("Invalid Game Data asset extension '%s'. Expected are '.gdjs, .gdmp'."), *FileName);
+		Warn->Logf(ELogVerbosity::Error, TEXT("Import failed due to an unknown extension '%s' of the game data file. Expected extensions are '.gdjs, .json, .gdmp, .msgpack, .msgpck'."), *FileName);
 		return nullptr;
 	}
-
+	
+	if (GameDataClass == nullptr && !PickClass())
+	{
+		Warn->Logf(ELogVerbosity::Error, TEXT("Import failed because class picking was cancelled by the user."));
+		return nullptr;
+	}
+	
 	ImportSubsystem->BroadcastAssetPreImport(this, InClass, InParent, InName, InType);
 	
 	UGameDataBase* GameData;
@@ -143,18 +159,18 @@ UObject* UGameDataFactory::FactoryCreateBinary
 	FBufferReader Stream((void*)Buffer, BufferEnd-Buffer, false);
 	if (!GameData->TryLoad(&Stream, Format))
 	{
-		Warn->Logf(ELogVerbosity::Error, TEXT("Failed to import Game Data from file '%s'. Read logs for details."), *FileName);
+		Warn->Logf(ELogVerbosity::Error, TEXT("Failed to import the game data file '%s'. Detailed information is provided in the Output Log."), *FileName);
 		return nullptr;
 	}
 
-	UE_LOG(LogUGameDataFactory, Log, TEXT("Successfully imported game data with name '%s' from file type '%s' in %f seconds."), *InName.ToString(), InType, FPlatformTime::Seconds() - StartTime);
+	UE_LOG(LogUImportGameDataFactory, Log, TEXT("Successfully imported the game data file '%s' with the extension '%s' in %f seconds."), *InName.ToString(), InType, FPlatformTime::Seconds() - StartTime);
 
 	ImportSubsystem->BroadcastAssetPostImport(this, GameData);
 	
 	return GameData;
 }
 
-bool UGameDataFactory::FactoryCanImport(const FString& Filename)
+bool UImportGameDataFactory::FactoryCanImport(const FString& Filename)
 
 {
 	FString Extension = FPaths::GetExtension(Filename);
@@ -166,12 +182,12 @@ bool UGameDataFactory::FactoryCanImport(const FString& Filename)
 		}));
 }
 
-IImportSettingsParser* UGameDataFactory::GetImportSettingsParser()
+IImportSettingsParser* UImportGameDataFactory::GetImportSettingsParser()
 {
 	return this;
 }
 
-void UGameDataFactory::ParseFromJson(TSharedRef<FJsonObject> ImportSettingsJson)
+void UImportGameDataFactory::ParseFromJson(TSharedRef<FJsonObject> ImportSettingsJson)
 {
 	// Store these settings to be applied to the texture later
 	AutomatedImportSettings = ImportSettingsJson;

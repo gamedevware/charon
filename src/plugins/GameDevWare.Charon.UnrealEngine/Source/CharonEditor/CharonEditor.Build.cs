@@ -46,6 +46,10 @@ public class CharonEditor: ModuleRules
 				"EditorStyle",
 				"WebBrowser",
 				"HTTP", 
+				"HotReload", 
+				"EditorScriptingUtilities", 
+				"GameProjectGeneration", 
+				"Projects", 
 				// ... add private dependencies that you statically link with here ...	
 			}
 		);

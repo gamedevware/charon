@@ -5,16 +5,18 @@
 #include "JsonObjectConverter.h"
 #include "Async/Async.h"
 #include "GameData/Formatters/FJsonGameDataReader.h"
+#include "Misc/FileHelper.h"
 #include "Serialization/JsonSerializer.h"
 
 DEFINE_LOG_CATEGORY(LogTCharonCliCommand);
 
 template <typename InResultType>
-TCharonCliCommand<InResultType>::TCharonCliCommand(const TSharedRef<FMonitoredProcess>& Process)
+TCharonCliCommand<InResultType>::TCharonCliCommand(const TSharedRef<FMonitoredProcess>& Process, const FString& OutputFilePath)
 	: Process(Process), DispatchThread(ENamedThreads::AnyThread)
 {
 	CommandSucceed.AddLambda([this](InResultType _) { TaskSucceed.Broadcast(); });
 	CommandFailed.AddLambda([this](int32 _, FString __) { TaskFailed.Broadcast(); });
+	this->OutputFilePath = OutputFilePath;
 }
 
 template <typename InResultType>
@@ -63,7 +65,15 @@ void TCharonCliCommand<InResultType>::Run(ENamedThreads::Type EventDispatchThrea
 		}
 	});
 	
-	Process->OnOutput().BindSP(this, &TCharonCliCommand::OnProcessOutput);
+	this->Process->OnOutput().BindLambda([WeakThisPtr](FString Output)
+	{
+		auto SharedOutputRef = MakeShared<FString>(Output);
+		AsyncTask(ENamedThreads::GameThread, [WeakThisPtr, SharedOutputRef]()
+		{
+			if (!WeakThisPtr.IsValid()) return;
+			UE_LOG(LogTCharonCliCommand, Log, TEXT("%s"), *SharedOutputRef.Get());
+		});
+	});
 
 	this->DispatchThread = EventDispatchThread;
 	
@@ -78,6 +88,12 @@ template <typename InResultType>
 void TCharonCliCommand<InResultType>::OnProcessCompleted(int32 ExitCode) const
 {
 	UE_LOG(LogTCharonCliCommand, Log, TEXT("Command process has been finished with %d exit code."), ExitCode);
+
+	FString Output;
+	if (!OutputFilePath.IsEmpty() && FPaths::FileExists(OutputFilePath))
+	{
+		FFileHelper::LoadFileToString(Output, *OutputFilePath);
+	}
 	
 	InResultType Result;
 	if (!TryReadResult(Output, ExitCode, Result))
@@ -129,7 +145,7 @@ bool TCharonCliCommand<InResultType>::TryReadResult(const FString& Output, int32
 
 	check(OutObject);
 	OutResult = OutObject->ToSharedRef();
-	return false;
+	return true;
 }
 
 template <typename InResultType>

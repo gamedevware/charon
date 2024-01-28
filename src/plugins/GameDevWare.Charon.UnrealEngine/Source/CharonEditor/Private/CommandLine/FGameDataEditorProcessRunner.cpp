@@ -9,6 +9,7 @@
 #include "Interfaces/IHttpRequest.h"
 #include "Interfaces/IHttpResponse.h"
 #include "GenericPlatform/GenericPlatformProcess.h"
+#include "Misc/FileHelper.h"
 
 DEFINE_LOG_CATEGORY(LogFGameDataEditorProcessRunner);
 
@@ -55,6 +56,13 @@ bool FGameDataEditorProcessRunner::Launch()
 		return false;
 	}
 
+	if (!FPaths::FileExists(this->RunScriptPath))
+	{
+		UE_LOG(LogFGameDataEditorProcessRunner, Warning, TEXT("Missing launch script file at '%s'."), *this->RunScriptPath);
+		this->RaiseLaunched(EGameDataEditorLaunchStatus::MissingRunScript);
+		return false;
+	}
+	
 	auto WeakThisPtr = this->AsWeak();
 	this->Process->OnOutput().BindLambda([WeakThisPtr](FString Output)
 	{

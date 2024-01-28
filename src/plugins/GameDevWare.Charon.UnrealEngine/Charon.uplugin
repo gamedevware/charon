@@ -26,5 +26,17 @@
 			"LoadingPhase": "Default",
 			"WhitelistPlatforms": ["Win64", "Mac", "Linux"]
 		}
+	],
+	"Plugins": [
+		{
+			"Name": "EditorScriptingUtilities",
+			"Enabled": true,
+			"Optional": false
+		},
+		{
+			"Name": "WebBrowserWidget",
+			"Enabled": true,
+			"Optional": false
+		}
 	]
 }

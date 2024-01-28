@@ -11,19 +11,24 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::CreateDocumen
 	const FString& GameDataUrl,
 	const FString& ApiKey,
 	const FString& SchemaNameOrId,
-	const TSharedRef<FJsonObject>& Document)
+	const TSharedRef<FJsonObject>& Document,
+	ECharonLogLevel LogsVerbosity)
 {
+	const FString TempOutputFile = PrepareTempOutputFile();
 	const FString TempInputFile = WriteJsonToTempFile(Document);
-		const FString Params = FString::Format(TEXT("DATA CREATE \"{0}\" --input \"{1}\" --inputFormat json --schema \"{2}\" --output out --outputFormat json"), {
+		const FString Params = FString::Format(TEXT("DATA CREATE \"{0}\" --input \"{1}\" --inputFormat json --schema \"{2}\" --output {3} --outputFormat json {4}"), {
 		GameDataUrl,
 		TempInputFile,
-		SchemaNameOrId
+		SchemaNameOrId,
+		TempOutputFile,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempInputFile);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner);
+	CommandRunner->AttachTemporaryFile(TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::UpdateDocument(
@@ -31,73 +36,93 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::UpdateDocumen
 	const FString& ApiKey,
 	const FString& SchemaNameOrId,
 	const TSharedRef<FJsonObject>& Document, 
-	const FString& Id)
+	const FString& Id,
+	ECharonLogLevel LogsVerbosity)
 {
+	const FString TempOutputFile = PrepareTempOutputFile();
 	const FString TempInputFile = WriteJsonToTempFile(Document);
-	const FString Params = FString::Format(TEXT("DATA UPDATE \"{0}\" --input \"{1}\" --inputFormat json --schema \"{2}\" --id \"{3}\" --output out --outputFormat json"), {
+	const FString Params = FString::Format(TEXT("DATA UPDATE \"{0}\" --input \"{1}\" --inputFormat json --schema \"{2}\" --id \"{3}\" --output {4} --outputFormat json {5}"), {
 		GameDataUrl,
 		TempInputFile,
 		SchemaNameOrId,
-		Id
+		Id,
+		TempOutputFile,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempInputFile);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner);
+	CommandRunner->AttachTemporaryFile(TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::DeleteDocument(
 	const FString& GameDataUrl,
 	const FString& ApiKey,
 	const FString& SchemaNameOrId,
-	const TSharedRef<FJsonObject>& Document)
+	const TSharedRef<FJsonObject>& Document,
+	ECharonLogLevel LogsVerbosity)
 {
+	const FString TempOutputFile = PrepareTempOutputFile();
 	const FString TempInputFile = WriteJsonToTempFile(Document);
-	const FString Params = FString::Format(TEXT("DATA DELETE \"{0}\" --input \"{1}\" --inputFormat json --schema \"{2}\" --output out --outputFormat json"), {
+	const FString Params = FString::Format(TEXT("DATA DELETE \"{0}\" --input \"{1}\" --inputFormat json --schema \"{2}\" --output {3} --outputFormat json {4}"), {
 		GameDataUrl,
 		TempInputFile,
-		SchemaNameOrId
+		SchemaNameOrId,
+		TempOutputFile,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempInputFile);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner);
+	CommandRunner->AttachTemporaryFile(TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::DeleteDocument(
 	const FString& GameDataUrl,
 	const FString& ApiKey,
 	const FString& SchemaNameOrId,
-	const FString& Id)
+	const FString& Id,
+	ECharonLogLevel LogsVerbosity)
 {
-	const FString Params = FString::Format(TEXT("DATA DELETE \"{0}\" --schema \"{1}\" --id \"{2}\" --output out --outputFormat json"), {
+	const FString TempOutputFile = PrepareTempOutputFile();
+	const FString Params = FString::Format(TEXT("DATA DELETE \"{0}\" --schema \"{1}\" --id \"{2}\" --output {3} --outputFormat json {4}"), {
 		GameDataUrl,
 		SchemaNameOrId,
-		Id
+		Id,
+		TempOutputFile,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner);
+	CommandRunner->AttachTemporaryFile(TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::FindDocument(
 	const FString& GameDataUrl,
 	const FString& ApiKey,
 	const FString& SchemaNameOrId,
-	const FString& Id)
+	const FString& Id,
+	ECharonLogLevel LogsVerbosity)
 {
-	const FString Params = FString::Format(TEXT("DATA FIND \"{0}\" --schema \"{1}\" --id \"{2}\" --output out --outputFormat json"), {
+	const FString TempOutputFile = PrepareTempOutputFile();
+	const FString Params = FString::Format(TEXT("DATA FIND \"{0}\" --schema \"{1}\" --id \"{2}\" --output {3} --outputFormat json {4}"), {
 		GameDataUrl,
 		SchemaNameOrId,
-		Id
+		Id,
+		TempOutputFile,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner);
+	CommandRunner->AttachTemporaryFile(TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<>> FCharonCli::Import(
@@ -105,7 +130,8 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::Import(
 	const FString& ApiKey,
 	const TArray<FString>& SchemaNamesOrIds,
 	const TSharedRef<FJsonObject>& DocumentsBySchemaNameOrId,
-	EImportMode ImportMode)
+	EImportMode ImportMode,
+	ECharonLogLevel LogsVerbosity)
 {
 	FString ImportModeName;
 	switch (ImportMode)
@@ -131,11 +157,12 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::Import(
 		break;
 	}
 	const FString TempInputFile = WriteJsonToTempFile(DocumentsBySchemaNameOrId);
-	const FString Params = FString::Format(TEXT("DATA IMPORT \"{0}\" --input \"{1}\" --inputFormat json --schemas {2} --mode {3}"), {
+	const FString Params = FString::Format(TEXT("DATA IMPORT \"{0}\" --input \"{1}\" --inputFormat json --schemas {2} --mode {3} {4}"), {
 		GameDataUrl,
 		TempInputFile,
 		SchemaNamesOrIds.IsEmpty() ? "*" : FString::Join(SchemaNamesOrIds, TEXT(" ")),
-		ImportModeName
+		ImportModeName,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
@@ -144,9 +171,14 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::Import(
 	return MakeShared<TCharonCliCommand<>>(CommandRunner);
 }
 
-TSharedRef<TCharonCliCommand<>> FCharonCli::ImportFromFile(const FString& GameDataUrl, const FString& ApiKey,
-	const TArray<FString>& SchemaNamesOrIds, EImportMode ImportMode, const FString& DocumentsBySchemaNameOrIdFilePath,
-	const FString& Format)
+TSharedRef<TCharonCliCommand<>> FCharonCli::ImportFromFile(
+	const FString& GameDataUrl,
+	const FString& ApiKey,
+	const TArray<FString>& SchemaNamesOrIds,
+	EImportMode ImportMode,
+	const FString& DocumentsBySchemaNameOrIdFilePath,
+	const FString& Format,
+	ECharonLogLevel LogsVerbosity)
 {
 	FString ImportModeName;
 	switch (ImportMode)
@@ -171,12 +203,13 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::ImportFromFile(const FString& GameDa
 		ImportModeName = TEXT("Delete");
 		break;
 	}
-	const FString Params = FString::Format(TEXT("DATA IMPORT \"{0}\" --input \"{1}\" --inputFormat {4} --schemas {2} --mode {3}"), {
+	const FString Params = FString::Format(TEXT("DATA IMPORT \"{0}\" --input \"{1}\" --inputFormat {4} --schemas {2} --mode {3} {5}"), {
 		GameDataUrl,
 		DocumentsBySchemaNameOrIdFilePath,
 		SchemaNamesOrIds.IsEmpty() ? "*" : FString::Join(SchemaNamesOrIds, TEXT(" ")),
 		ImportModeName,
-		Format
+		Format,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
@@ -190,7 +223,8 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::Export(
 	const TArray<FString>& SchemaNamesOrIds,
 	const TArray<FString>& Properties,
 	const TArray<FString>& Languages,
-	EExportMode ExportMode)
+	EExportMode ExportMode,
+	ECharonLogLevel LogsVerbosity)
 {
 	FString ExportModeName;
 	switch (ExportMode)
@@ -209,23 +243,34 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::Export(
 		ExportModeName = TEXT("Extraction");
 		break;
 	}
-	
-	const FString Params = FString::Format(TEXT("DATA EXPORT \"{0}\" --output out --outputFormat json --schemas {1} --properties {2} --languages {3} --mode {4}"), {
+
+	const FString TempOutputFile = PrepareTempOutputFile();
+	const FString Params = FString::Format(TEXT("DATA EXPORT \"{0}\" --output {5} --outputFormat json --schemas {1} --properties {2} --languages {3} --mode {4} {6}"), {
 		GameDataUrl,
 		SchemaNamesOrIds.IsEmpty() ? "*" : FString::Join(SchemaNamesOrIds, TEXT(" ")),
 		Properties.IsEmpty() ? "*" : FString::Join(Properties, TEXT(" ")),
 		Languages.IsEmpty() ? "*" : FString::Join(Languages, TEXT(" ")),
-		ExportModeName
+		ExportModeName,
+		TempOutputFile,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner);
+	CommandRunner->AttachTemporaryFile(TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
 }
 
-TSharedRef<TCharonCliCommand<>> FCharonCli::ExportToFile(const FString& GameDataUrl, const FString& ApiKey,
-	const TArray<FString>& SchemaNamesOrIds, const TArray<FString>& Properties, const TArray<FString>& Languages,
-	EExportMode ExportMode, const FString& ExportedDocumentsFilePath, const FString& Format)
+TSharedRef<TCharonCliCommand<>> FCharonCli::ExportToFile(
+	const FString& GameDataUrl,
+	const FString& ApiKey,
+	const TArray<FString>& SchemaNamesOrIds,
+	const TArray<FString>& Properties,
+	const TArray<FString>& Languages,
+	EExportMode ExportMode,
+	const FString& ExportedDocumentsFilePath,
+	const FString& Format,
+	ECharonLogLevel LogsVerbosity)
 {
 	FString ExportModeName;
 	switch (ExportMode)
@@ -245,14 +290,15 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::ExportToFile(const FString& GameData
 		break;
 	}
 	
-	const FString Params = FString::Format(TEXT("DATA EXPORT \"{0}\" --output \"{5}\" --outputFormat {6} --schemas {1} --properties {2} --languages {3} --mode {4}"), {
+	const FString Params = FString::Format(TEXT("DATA EXPORT \"{0}\" --output \"{5}\" --outputFormat {6} --schemas {1} --properties {2} --languages {3} --mode {4} {7}"), {
 		GameDataUrl,
 		SchemaNamesOrIds.IsEmpty() ? "*" : FString::Join(SchemaNamesOrIds, TEXT(" ")),
 		Properties.IsEmpty() ? "*" : FString::Join(Properties, TEXT(" ")),
 		Languages.IsEmpty() ? "*" : FString::Join(Languages, TEXT(" ")),
 		ExportModeName,
 		ExportedDocumentsFilePath,
-		Format
+		Format,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
@@ -263,28 +309,35 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::ExportToFile(const FString& GameData
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::CreatePatch(
 	const FString& GameDataUrl1,
 	const FString& GameDataUrl2,
-	const FString& ApiKey
+	const FString& ApiKey,
+	ECharonLogLevel LogsVerbosity
 )
 {
-	const FString Params = FString::Format(TEXT("DATA CREATEPATCH \"{0}\" \"{1}\" --output out --outputFormat json"), {
+	const FString TempOutputFile = PrepareTempOutputFile();
+	const FString Params = FString::Format(TEXT("DATA CREATEPATCH \"{0}\" \"{1}\" --output {2} --outputFormat json {3}"), {
 		GameDataUrl1,
-		GameDataUrl2
+		GameDataUrl2,
+		TempOutputFile,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner);
+	CommandRunner->AttachTemporaryFile(TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<>> FCharonCli::ApplyPatch(
 	const FString& GameDataUrl,
 	const FString& ApiKey,
-	const TSharedRef<FJsonObject>& GameDataPatch)
+	const TSharedRef<FJsonObject>& GameDataPatch,
+	ECharonLogLevel LogsVerbosity)
 {
 	const FString TempInputFile = WriteJsonToTempFile(GameDataPatch);
-	const FString Params = FString::Format(TEXT("DATA APPLYPATCH \"{0}\" --input \"{1}\" --inputFormat json"), {
+	const FString Params = FString::Format(TEXT("DATA APPLYPATCH \"{0}\" --input \"{1}\" --inputFormat json {2}"), {
 		GameDataUrl,
-		TempInputFile
+		TempInputFile,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
@@ -295,40 +348,54 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::ApplyPatch(
 
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::Backup(
 	const FString& GameDataUrl,
-	const FString& ApiKey)
+	const FString& ApiKey,
+	ECharonLogLevel LogsVerbosity)
 {
-	const FString Params = FString::Format(TEXT("DATA BACKUP \"{0}\" --output out --outputFormat json"), {
-		GameDataUrl
+	const FString TempOutputFile = PrepareTempOutputFile();
+	const FString Params = FString::Format(TEXT("DATA BACKUP \"{0}\" --output {1} --outputFormat json {2}"), {
+		GameDataUrl,
+		TempOutputFile,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner);
+	CommandRunner->AttachTemporaryFile(TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
 }
 
-TSharedRef<TCharonCliCommand<>> FCharonCli::BackupToFile(const FString& GameDataUrl, const FString& ApiKey,
-	const FString& GameDataFilePath, const FString& Format)
+TSharedRef<TCharonCliCommand<>> FCharonCli::BackupToFile(
+	const FString& GameDataUrl,
+	const FString& ApiKey,
+	const FString& GameDataFilePath,
+	const FString& Format,
+	ECharonLogLevel LogsVerbosity)
 {
-	const FString Params = FString::Format(TEXT("DATA BACKUP \"{0}\" --output \"{1}\" --outputFormat {2}"), {
+	const FString TempOutputFile = PrepareTempOutputFile();
+	const FString Params = FString::Format(TEXT("DATA BACKUP \"{0}\" --output \"{1}\" --outputFormat {2} {3}"), {
 		GameDataUrl,
 		GameDataFilePath,
-		Format
+		Format,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
-	return MakeShared<TCharonCliCommand<>>(CommandRunner);
+	CommandRunner->AttachTemporaryFile(TempOutputFile);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner, TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<>> FCharonCli::Restore(
 	const FString& GameDataUrl,
 	const FString& ApiKey,
-	const TSharedRef<FJsonObject>& GameData)
+	const TSharedRef<FJsonObject>& GameData,
+	ECharonLogLevel LogsVerbosity)
 {
 	const FString TempInputFile = WriteJsonToTempFile(GameData);
-	const FString Params = FString::Format(TEXT("DATA RESTORE \"{0}\" --input \"{1}\" --inputFormat json"), {
+	const FString Params = FString::Format(TEXT("DATA RESTORE \"{0}\" --input \"{1}\" --inputFormat json {2}"), {
 		GameDataUrl,
-		TempInputFile
+		TempInputFile,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
@@ -341,12 +408,14 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::RestoreFromFile(
 	const FString& GameDataUrl,
 	const FString& ApiKey,
 	const FString& GameDataFilePath,
-		const FString& Format)
+	const FString& Format,
+	ECharonLogLevel LogsVerbosity)
 {
-	const FString Params = FString::Format(TEXT("DATA RESTORE \"{0}\" --input \"{1}\" --inputFormat {2}"), {
+	const FString Params = FString::Format(TEXT("DATA RESTORE \"{0}\" --input \"{1}\" --inputFormat {2} {3}"), {
 		GameDataUrl,
 		GameDataFilePath,
-		Format
+		Format,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
@@ -357,7 +426,8 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::RestoreFromFile(
 TSharedRef<TCharonCliCommand<FValidationReport>> FCharonCli::Validate(
 	const FString& GameDataUrl,
 	const FString& ApiKey,
-	TArray<EValidationOptions> ValidationOptions)
+	TArray<EValidationOptions> ValidationOptions,
+	ECharonLogLevel LogsVerbosity)
 {
 	TArray<FString> ValidationOptionNames;
 	for (const auto Option : ValidationOptions)
@@ -379,15 +449,19 @@ TSharedRef<TCharonCliCommand<FValidationReport>> FCharonCli::Validate(
 			case EValidationOptions::CheckConstraints: ValidationOptionNames.Add(TEXT("CheckConstraints")); break;
 		}
 	}
-	
-	const FString Params = FString::Format(TEXT("DATA VALIDATE \"{0}\" --validationOptions {1} --output out --outputFormat json"), {
+
+	const FString TempOutputFile = PrepareTempOutputFile();
+	const FString Params = FString::Format(TEXT("DATA VALIDATE \"{0}\" --validationOptions {1} --output {2} --outputFormat json {3}"), {
 		GameDataUrl,
 		ValidationOptionNames.IsEmpty() ? "None" : FString::Join(ValidationOptionNames, TEXT(" ")),
+		TempOutputFile,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
-	return MakeShared<TCharonCliCommand<FValidationReport>>(CommandRunner);
+	CommandRunner->AttachTemporaryFile(TempOutputFile);
+	return MakeShared<TCharonCliCommand<FValidationReport>>(CommandRunner, TempOutputFile);
 }
 
 
@@ -400,7 +474,8 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::GenerateUnrealEngineSourceCode(
 	FString DefineConstants,
 	TArray<ESourceCodeGenerationOptimizations> SourceCodeGenerationOptimizations,
 	ESourceCodeIndentation SourceCodeIndentation,
-	ESourceCodeLineEndings SourceCodeLineEndings)
+	ESourceCodeLineEndings SourceCodeLineEndings,
+	ECharonLogLevel LogsVerbosity)
 {
 	FString SourceCodeIndentationName;
 	switch (SourceCodeIndentation)
@@ -436,7 +511,7 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::GenerateUnrealEngineSourceCode(
 		}
 	}
 	
-	const FString Params = FString::Format(TEXT("GENERATE UECPPCODE \"{0}\" --outputDirectory \"{1}\" --documentClassName \"{2}\" --gameDataClassName \"{3}\" --defineConstants \"{4}\" --indentation \"{5}\" --lineEndings \"{6}\" --splitFiles --optimizations {7}"), {
+	const FString Params = FString::Format(TEXT("GENERATE UECPPCODE \"{0}\" --outputDirectory \"{1}\" --documentClassName \"{2}\" --gameDataClassName \"{3}\" --defineConstants \"{4}\" --indentation \"{5}\" --lineEndings \"{6}\" --splitFiles --optimizations {7} {8}"), {
 		GameDataUrl,
 		OutputDirectory,
 		DocumentClassName,
@@ -445,6 +520,7 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::GenerateUnrealEngineSourceCode(
 		SourceCodeIndentationName,
 		SourceCodeLineEndingsName,
 		SourceCodeGenerationOptimizationNames.IsEmpty() ? "" : FString::Join(SourceCodeGenerationOptimizationNames, TEXT(" ")),
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
@@ -470,10 +546,11 @@ TSharedRef<TCharonCliCommand<FString>> FCharonCli::GetVersion()
 	return MakeShared<TCharonCliCommand<FString>>(CommandRunner);
 }
 
-TSharedRef<TCharonCliCommand<FString>> FCharonCli::GetGameDataVersion(const FString& GameDataUrl, const FString& ApiKey)
+TSharedRef<TCharonCliCommand<FString>> FCharonCli::GetGameDataVersion(const FString& GameDataUrl, const FString& ApiKey, ECharonLogLevel LogsVerbosity)
 {
-	const FString Params = FString::Format(TEXT("DATA VERSION \"{0}\""), {
-		GameDataUrl
+	const FString Params = FString::Format(TEXT("DATA VERSION \"{0}\" {1}"), {
+		GameDataUrl,
+		GetLogOptions(LogsVerbosity)
 	});
 	
 	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
@@ -481,13 +558,31 @@ TSharedRef<TCharonCliCommand<FString>> FCharonCli::GetGameDataVersion(const FStr
 	return MakeShared<TCharonCliCommand<FString>>(CommandRunner);
 }
 
+FString FCharonCli::GetLogOptions(ECharonLogLevel LogsVerbosity)
+{
+	switch (LogsVerbosity)
+	{
+	default:
+	case ECharonLogLevel::None: return FString();
+	case ECharonLogLevel::Normal: return FString("--log out");
+	case ECharonLogLevel::Verbose: return FString("--log out --verbose");
+	}
+}
+
 FString FCharonCli::WriteJsonToTempFile(const TSharedRef<FJsonObject>& JsonObject)
 {
 	IFileManager& FileManager = IFileManager::Get();
 	const FString TempFilePath = FPaths::CreateTempFilename(FPlatformProcess::UserTempDir(), TEXT(""), TEXT(".json"));
-	FArchive* TempFileStream = FileManager.CreateFileWriter(*TempFilePath, EFileWrite::FILEWRITE_None);
-	const auto JsonWriter = TJsonWriterFactory<UTF8CHAR>::Create(TempFileStream);
+	const TUniquePtr<FArchive> TempFileStream = TUniquePtr<FArchive>(FileManager.CreateFileWriter(*TempFilePath, EFileWrite::FILEWRITE_None));
+	const auto JsonWriter = TJsonWriterFactory<UTF8CHAR>::Create(TempFileStream.Get());
 	FJsonSerializer::Serialize(JsonObject, JsonWriter, true);
 
+	TempFileStream->Close();
+	
 	return TempFilePath;
+}
+
+FString FCharonCli::PrepareTempOutputFile(const FString& Extension)
+{
+	return  FPaths::CreateTempFilename(FPlatformProcess::UserTempDir(), TEXT(""), *Extension);
 }

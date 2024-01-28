@@ -2,12 +2,12 @@
 
 #include "GameData/FCharonEditorModule.h"
 
-#include "GameDataAssetExtensions/FGameDataAssetTypeActions.h"
+#include "GameDataAssetActions/FGameDataAssetTypeActions.h"
 #include "GameData/FGameDataDocumentReference.h"
 #include "DocumentReferenceExtensions/FGameDataDocumentReferenceCustomization.h"
 #include "GameDataEditor/FGameDataEditorCommands.h"
 #include "PropertyEditorModule.h"
-#include "GameDataAssetExtensions/FGameDataReimportHandler.h"
+#include "GameDataAssetActions/FGameDataReimportHandler.h"
 #include "Modules/ModuleInterface.h"
 #include "Modules/ModuleManager.h"
 

@@ -3,8 +3,7 @@
 enum class EGameDataEditorLaunchStatus
 {
 	Failed,
-	MissingExecutable,
-	MissingRuntime,
+	MissingRunScript,
 	Timeout,
 	Cancelled,
 	Succeed,
