@@ -4,7 +4,7 @@
 #include "Factories/Factory.h"
 #include "UObject/ObjectMacros.h"
 #include "UObject/UObjectGlobals.h"
-#include "IGameDataEditorTask.h"
+#include "ICharonTask.h"
 
 #include "UNewGameDataFactory.generated.h"
 
@@ -19,7 +19,7 @@ class CHARONEDITOR_API UNewGameDataFactory: public UFactory
 	GENERATED_BODY()
 
 private:
-	TSharedPtr<IGameDataEditorTask> CreateNewGameDataClassTask;
+	TSharedPtr<ICharonTask> CreateNewGameDataClassTask;
 
 	void OnGameDataFileUpdated(const FString PackageFilePath, const FString ModuleDirectory,
 	                                  const TObjectPtr<UObject> GameData);
@@ -30,7 +30,7 @@ private:
 	static void UpdateCodeProjectFiles();
 
 public:
-	UNewGameDataFactory(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	explicit UNewGameDataFactory(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	//~ Begin UFactory Interface
 	virtual bool ConfigureProperties() override;

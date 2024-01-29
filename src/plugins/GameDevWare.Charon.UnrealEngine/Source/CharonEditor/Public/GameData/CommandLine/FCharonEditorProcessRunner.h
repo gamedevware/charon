@@ -4,11 +4,11 @@
 #include "Misc/MonitoredProcess.h"
 #include "Interfaces/IHttpRequest.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogFGameDataEditorProcessRunner, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogFCharonEditorProcessRunner, Log, All);
 
 DECLARE_DELEGATE_OneParam(FGameDataEditorProcessRunnerLaunchResult, EGameDataEditorLaunchStatus)
 
-class CHARONEDITOR_API FGameDataEditorProcessRunner : public TSharedFromThis<FGameDataEditorProcessRunner>
+class CHARONEDITOR_API FCharonEditorProcessRunner final : public TSharedFromThis<FCharonEditorProcessRunner>
 {
 private:
 	TSharedPtr<FMonitoredProcess> Process;
@@ -26,8 +26,8 @@ private:
 public:
 	FString StartUrl;
 
-	FGameDataEditorProcessRunner(const FString& InDataBaseUrl, const uint16 InPort, const FTimespan InLaunchTimeout);
-	~FGameDataEditorProcessRunner();
+	FCharonEditorProcessRunner(const FString& InDataBaseUrl, const uint16 InPort, const FTimespan InLaunchTimeout);
+	~FCharonEditorProcessRunner();
 	
 	/**
 	 * Launches the Charon.exe process with 'SERVER START' command and specified parameters.

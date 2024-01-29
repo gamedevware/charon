@@ -1,9 +1,9 @@
 ﻿#pragma once
 
-#include "GameData/CommandLine/FGameDataEditorProcessRunner.h"
+#include "GameData/CommandLine/FCharonEditorProcessRunner.h"
 
 #include "GameData/CommandLine/EGameDataEditorLaunchStatus.h"
-#include "GameData/CommandLine/FGameDataToolCommandRunner.h"
+#include "GameData/CommandLine/FCharonCliCommandRunner.h"
 #include "HttpModule.h"
 #include "Async/Async.h"
 #include "Interfaces/IHttpRequest.h"
@@ -11,11 +11,11 @@
 #include "GenericPlatform/GenericPlatformProcess.h"
 #include "Misc/FileHelper.h"
 
-DEFINE_LOG_CATEGORY(LogFGameDataEditorProcessRunner);
+DEFINE_LOG_CATEGORY(LogFCharonEditorProcessRunner);
 
 constexpr float CheckTimerPeriod = 2.0; // 2 seconds
 
-FGameDataEditorProcessRunner::FGameDataEditorProcessRunner(const FString& InDataBaseUrl, const uint16 InPort, const FTimespan InLaunchTimeout)
+FCharonEditorProcessRunner::FCharonEditorProcessRunner(const FString& InDataBaseUrl, const uint16 InPort, const FTimespan InLaunchTimeout)
 {
 	this->LaunchTimeout = InLaunchTimeout;
 	this->StartUrl = FString::Format(TEXT("http://localhost:{0}/"), { InPort });
@@ -23,7 +23,7 @@ FGameDataEditorProcessRunner::FGameDataEditorProcessRunner(const FString& InData
 	const uint32 EditorPid = FPlatformProcess::GetCurrentProcessId();
 	const FString ProjectDirectory = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir());
 	const FString RunParameters = FString::Format(TEXT("SERVER START --dataBase \"{0}\" --port \"{1}\" --watchPid {2} --log con"), { InDataBaseUrl, InPort, EditorPid });
-	const FString CharonIntermediateDirectory = FGameDataToolCommandRunner::GetOrCreateCharonIntermediateDirectory();
+	const FString CharonIntermediateDirectory = FCharonCliCommandRunner::GetOrCreateCharonIntermediateDirectory();
 	
 #if PLATFORM_WINDOWS
 	this->RunScriptPath = CharonIntermediateDirectory / TEXT("RunCharon.bat");
@@ -39,26 +39,26 @@ FGameDataEditorProcessRunner::FGameDataEditorProcessRunner(const FString& InData
 	bool bInCreatePipes = true;
 	this->Process = MakeShared<FMonitoredProcess>(URL, Params, ProjectDirectory, bInHidden, bInCreatePipes);
 
-	UE_LOG(LogFGameDataEditorProcessRunner, Log, TEXT("Preparing to launching '%s' executable with '%s' parameters at '%s' working directory."), *ExecutableName, *RunParameters, *ProjectDirectory);
+	UE_LOG(LogFCharonEditorProcessRunner, Log, TEXT("Preparing to launching '%s' executable with '%s' parameters at '%s' working directory."), *ExecutableName, *RunParameters, *ProjectDirectory);
 }
 
-FGameDataEditorProcessRunner::~FGameDataEditorProcessRunner()
+FCharonEditorProcessRunner::~FCharonEditorProcessRunner()
 {
 	GEditor->GetTimerManager()->ClearTimer(this->LaunchCheckTimer);
 	this->LaunchCheckRequest = nullptr;
 }
 
-bool FGameDataEditorProcessRunner::Launch()
+bool FCharonEditorProcessRunner::Launch()
 {
 	if (this->LaunchCheckTimer.IsValid())
 	{
-		UE_LOG(LogFGameDataEditorProcessRunner, Warning, TEXT("Unable to FGameDataEditorProcessRunner::Launch() again because it is already been launched."));
+		UE_LOG(LogFCharonEditorProcessRunner, Warning, TEXT("Unable to FGameDataEditorProcessRunner::Launch() again because it is already been launched."));
 		return false;
 	}
 
 	if (!FPaths::FileExists(this->RunScriptPath))
 	{
-		UE_LOG(LogFGameDataEditorProcessRunner, Warning, TEXT("Missing launch script file at '%s'."), *this->RunScriptPath);
+		UE_LOG(LogFCharonEditorProcessRunner, Warning, TEXT("Missing launch script file at '%s'."), *this->RunScriptPath);
 		this->RaiseLaunched(EGameDataEditorLaunchStatus::MissingRunScript);
 		return false;
 	}
@@ -70,7 +70,7 @@ bool FGameDataEditorProcessRunner::Launch()
 		AsyncTask(ENamedThreads::GameThread, [WeakThisPtr, SharedOutputRef]()
 		{
 			if (!WeakThisPtr.IsValid()) return;
-			UE_LOG(LogFGameDataEditorProcessRunner, Log, TEXT("%s"), *SharedOutputRef.Get());
+			UE_LOG(LogFCharonEditorProcessRunner, Log, TEXT("%s"), *SharedOutputRef.Get());
 		});
 	});
 	
@@ -80,7 +80,7 @@ bool FGameDataEditorProcessRunner::Launch()
 		{
 			const auto ThisPtr = WeakThisPtr.Pin();
 			if (!ThisPtr.IsValid()) return;
-			UE_LOG(LogFGameDataEditorProcessRunner, Log, TEXT("Script at '%s' has been interrupted."), *ThisPtr->ExecutableName);
+			UE_LOG(LogFCharonEditorProcessRunner, Log, TEXT("Script at '%s' has been interrupted."), *ThisPtr->ExecutableName);
 		});
 	});
 	
@@ -90,7 +90,7 @@ bool FGameDataEditorProcessRunner::Launch()
 		{
 			const auto ThisPtr = WeakThisPtr.Pin();
 			if (!ThisPtr.IsValid()) return;
-			UE_LOG(LogFGameDataEditorProcessRunner, Log, TEXT("Executable at '%s' has exited with code %d."), *ThisPtr->ExecutableName, ExitCode);
+			UE_LOG(LogFCharonEditorProcessRunner, Log, TEXT("Executable at '%s' has exited with code %d."), *ThisPtr->ExecutableName, ExitCode);
 		});
 	});
 	
@@ -99,32 +99,32 @@ bool FGameDataEditorProcessRunner::Launch()
 	const bool bLaunched = this->Process->Launch();
 	if (!bLaunched)
 	{
-		UE_LOG(LogFGameDataEditorProcessRunner, Warning, TEXT("Failed to launch script file at '%s'."), *this->RunScriptPath);
+		UE_LOG(LogFCharonEditorProcessRunner, Warning, TEXT("Failed to launch script file at '%s'."), *this->RunScriptPath);
 		this->RaiseLaunched(EGameDataEditorLaunchStatus::Failed);
 		return false;
 	}
 
-	UE_LOG(LogFGameDataEditorProcessRunner, Log, TEXT("Successfully launched script '%s'. Starting polling HTTP Server for response."), *this->RunScriptPath);
+	UE_LOG(LogFCharonEditorProcessRunner, Log, TEXT("Successfully launched script '%s'. Starting polling HTTP Server for response."), *this->RunScriptPath);
 	
 	FTimerDelegate OnCheckTimerDelegate;
-	OnCheckTimerDelegate.BindSP(this, &FGameDataEditorProcessRunner::OnCheckTimer);
+	OnCheckTimerDelegate.BindSP(this, &FCharonEditorProcessRunner::OnCheckTimer);
 	GEditor->GetTimerManager()->SetTimer(this->LaunchCheckTimer, OnCheckTimerDelegate, CheckTimerPeriod, true);
 	
 	return true;
 }
 
-void FGameDataEditorProcessRunner::OnCheckTimer()
+void FCharonEditorProcessRunner::OnCheckTimer()
 {
 	if (this->LaunchTimeoutTime < FDateTime::Now())
 	{
-		UE_LOG(LogFGameDataEditorProcessRunner, Log, TEXT("Polling HTTP server process for response at [GET] '%s' has timed out."), *StartUrl);
+		UE_LOG(LogFCharonEditorProcessRunner, Log, TEXT("Polling HTTP server process for response at [GET] '%s' has timed out."), *StartUrl);
 		this->RaiseLaunched(EGameDataEditorLaunchStatus::Timeout);
 		return;
 	}
 	
 	if (!this->Process->Update())
 	{
-		UE_LOG(LogFGameDataEditorProcessRunner, Log, TEXT("HTTP server process has exited with code %d during polling."), this->Process->GetReturnCode());
+		UE_LOG(LogFCharonEditorProcessRunner, Log, TEXT("HTTP server process has exited with code %d during polling."), this->Process->GetReturnCode());
 		this->RaiseLaunched(EGameDataEditorLaunchStatus::Failed);
 		return;
 	}
@@ -136,13 +136,13 @@ void FGameDataEditorProcessRunner::OnCheckTimer()
 			case EHttpRequestStatus::Type::Succeeded:
 				if (const auto ResponsePtr = this->LaunchCheckRequest->GetResponse(); ResponsePtr != nullptr)
 				{
-					UE_LOG(LogFGameDataEditorProcessRunner, Log, TEXT("Polling HTTP server process for response at [GET] '%s' has succeed. Status code: '%d'."), *StartUrl, ResponsePtr->GetResponseCode());
+					UE_LOG(LogFCharonEditorProcessRunner, Log, TEXT("Polling HTTP server process for response at [GET] '%s' has succeed. Status code: '%d'."), *StartUrl, ResponsePtr->GetResponseCode());
 				}
 				this->RaiseLaunched(EGameDataEditorLaunchStatus::Succeed);
 				return;
 			case EHttpRequestStatus::Type::Failed_ConnectionError:
 			case EHttpRequestStatus::Type::Failed:
-				UE_LOG(LogFGameDataEditorProcessRunner, Log, TEXT("Polling HTTP server process for response at [GET] '%s' has failed."), *StartUrl);
+				UE_LOG(LogFCharonEditorProcessRunner, Log, TEXT("Polling HTTP server process for response at [GET] '%s' has failed."), *StartUrl);
 				this->LaunchCheckRequest = nullptr;
 				break;
 			case EHttpRequestStatus::Type::NotStarted:
@@ -161,11 +161,11 @@ void FGameDataEditorProcessRunner::OnCheckTimer()
 		this->LaunchCheckRequest->SetTimeout(CheckTimerPeriod);
 		this->LaunchCheckRequest->ProcessRequest();
 		
-		UE_LOG(LogFGameDataEditorProcessRunner, Log, TEXT("Polling HTTP server process for response at [GET] '%s'."), *StartUrl);
+		UE_LOG(LogFCharonEditorProcessRunner, Log, TEXT("Polling HTTP server process for response at [GET] '%s'."), *StartUrl);
 	}
 }
 
-void FGameDataEditorProcessRunner::RaiseLaunched(const EGameDataEditorLaunchStatus Status)
+void FCharonEditorProcessRunner::RaiseLaunched(const EGameDataEditorLaunchStatus Status)
 {
 	GEditor->GetTimerManager()->ClearTimer(this->LaunchCheckTimer);
 	this->LaunchCheckRequest = nullptr;
@@ -173,7 +173,7 @@ void FGameDataEditorProcessRunner::RaiseLaunched(const EGameDataEditorLaunchStat
 	auto _ = this->Launched.ExecuteIfBound(Status);
 }
 
-void FGameDataEditorProcessRunner::Stop()
+void FCharonEditorProcessRunner::Stop()
 {
 	this->Process->Stop();
 	this->RaiseLaunched(EGameDataEditorLaunchStatus::Cancelled);

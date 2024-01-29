@@ -11,8 +11,11 @@
 DEFINE_LOG_CATEGORY(LogTCharonCliCommand);
 
 template <typename InResultType>
-TCharonCliCommand<InResultType>::TCharonCliCommand(const TSharedRef<FMonitoredProcess>& Process, const FString& OutputFilePath)
-	: Process(Process), DispatchThread(ENamedThreads::AnyThread)
+TCharonCliCommand<InResultType>::TCharonCliCommand(
+	const TSharedRef<FMonitoredProcess>& Process,
+	const FText& DisplayName,
+	const FString& OutputFilePath)
+	: DisplayName(DisplayName), Process(Process), DispatchThread(ENamedThreads::AnyThread), RunStatus(ERunStatus::ReadyToRun)
 {
 	CommandSucceed.AddLambda([this](InResultType _) { TaskSucceed.Broadcast(); });
 	CommandFailed.AddLambda([this](int32 _, FString __) { TaskFailed.Broadcast(); });
@@ -20,74 +23,67 @@ TCharonCliCommand<InResultType>::TCharonCliCommand(const TSharedRef<FMonitoredPr
 }
 
 template <typename InResultType>
-void TCharonCliCommand<InResultType>::Run(ENamedThreads::Type EventDispatchThread)
+bool TCharonCliCommand<InResultType>::Run(ENamedThreads::Type EventDispatchThread)
 {
+	ERunStatus ExpectedReadyToRun = ERunStatus::ReadyToRun;
+	if (!RunStatus.compare_exchange_strong(ExpectedReadyToRun, ERunStatus::Running))
+	{
+		UE_LOG(LogTCharonCliCommand, Warning, TEXT("Unable to run command because it is already running or finished."));
+		return false;
+	}
+
 	const auto WeakThisPtr = this->AsWeak();
-	Process->OnCompleted().BindLambda([WeakThisPtr, this](int32 ExitCode)
-	{
-		const auto ThisPtr = WeakThisPtr.Pin();
-		if (!ThisPtr.IsValid()) { return; }
-		
-		if (DispatchThread != ENamedThreads::AnyThread)
-		{
-			AsyncTask(DispatchThread, [WeakThisPtr, this, ExitCode]
-			{
-				const auto ThisPtr = WeakThisPtr.Pin();
-				if (!ThisPtr.IsValid()) { return; }
-
-				OnProcessCompleted(ExitCode);				
-			});
-		}
-		else
-		{
-			OnProcessCompleted(ExitCode);
-		}
-	});
+	DispatchThread = EventDispatchThread;
+	BroadcastEvent(WeakThisPtr, TaskStart, DispatchThread);
 	
-	Process->OnCanceled().BindLambda([WeakThisPtr, this]
+	if (DispatchThread != ENamedThreads::AnyThread)
 	{
-		const auto ThisPtr = WeakThisPtr.Pin();
-		if (!ThisPtr.IsValid()) { return; }
-		
-		if (DispatchThread != ENamedThreads::AnyThread)
+		Process->OnCompleted().BindSP(this, &TCharonCliCommand::OnProcessCompleted);
+		Process->OnCanceled().BindSP(this, &TCharonCliCommand::OnProcessCancelled);
+	}
+	else
+	{
+		Process->OnCompleted().BindLambda([WeakThisPtr, EventDispatchThread](int32 ExitCode)
 		{
-			AsyncTask(DispatchThread, [WeakThisPtr, this]
+			AsyncTask(EventDispatchThread, [WeakThisPtr, ExitCode]
 			{
-				const auto ThisPtr = WeakThisPtr.Pin();
-				if (!ThisPtr.IsValid()) { return; }
-				
-				OnProcessCancelled();				
+				if (const auto ThisPtr = WeakThisPtr.Pin())
+				{
+					ThisPtr->OnProcessCompleted(ExitCode);
+				}
 			});
-		}
-		else
-		{
-			OnProcessCancelled();
-		}
-	});
-	
-	this->Process->OnOutput().BindLambda([WeakThisPtr](FString Output)
-	{
-		auto SharedOutputRef = MakeShared<FString>(Output);
-		AsyncTask(ENamedThreads::GameThread, [WeakThisPtr, SharedOutputRef]()
-		{
-			if (!WeakThisPtr.IsValid()) return;
-			UE_LOG(LogTCharonCliCommand, Log, TEXT("%s"), *SharedOutputRef.Get());
 		});
-	});
-
-	this->DispatchThread = EventDispatchThread;
+		Process->OnCanceled().BindLambda([WeakThisPtr, EventDispatchThread]
+		{
+			AsyncTask(EventDispatchThread, [WeakThisPtr]
+			{
+				if (const auto ThisPtr = WeakThisPtr.Pin())
+				{
+					ThisPtr->OnProcessCancelled();
+				}
+			});
+		});
+	}
+	Process->OnOutput().BindSP(this, &TCharonCliCommand::OnProcessOutput);
 	
 	const bool bRunSuccess = Process->Launch();
 	if(!bRunSuccess)
 	{
 		auto _ = Process->OnCanceled().ExecuteIfBound();
 	}
+	return bRunSuccess;
 }
 
 template <typename InResultType>
-void TCharonCliCommand<InResultType>::OnProcessCompleted(int32 ExitCode) const
+void TCharonCliCommand<InResultType>::OnProcessCompleted(int32 ExitCode)
 {
-	UE_LOG(LogTCharonCliCommand, Log, TEXT("Command process has been finished with %d exit code."), ExitCode);
+	ERunStatus ExpectedRunning = RunStatus.load();
+	if (ExpectedRunning != ERunStatus::Running)
+	{
+		return; // already finished
+	}
+	
+	UE_LOG(LogTCharonCliCommand, Log, TEXT("Command's '%s' process has been finished with exit code %d."), *DisplayName.ToString(), ExitCode);
 
 	FString Output;
 	if (!OutputFilePath.IsEmpty() && FPaths::FileExists(OutputFilePath))
@@ -98,24 +94,48 @@ void TCharonCliCommand<InResultType>::OnProcessCompleted(int32 ExitCode) const
 	InResultType Result;
 	if (!TryReadResult(Output, ExitCode, Result))
 	{
-		this->CommandFailed.Broadcast(ExitCode, Output);
-		return;
+		if (!RunStatus.compare_exchange_strong(ExpectedRunning, ERunStatus::Failed))
+		{
+			return; // already finished
+		}
+		
+		CommandFailed.Broadcast(ExitCode, Output);
 	}
-	CommandSucceed.Broadcast(Result);
+	else
+	{
+		if (!RunStatus.compare_exchange_strong(ExpectedRunning, ERunStatus::Succeed))
+		{
+			return; // already finished
+		}
+		
+		CommandSucceed.Broadcast(Result);
+	}
 }
 
 template <typename InResultType>
-void TCharonCliCommand<InResultType>::OnProcessCancelled() const
+void TCharonCliCommand<InResultType>::OnProcessCancelled()
 {
-	UE_LOG(LogTCharonCliCommand, Log, TEXT("Command process has been stopped or cancelled by other means."));
+	ERunStatus ExpectedRunning = ERunStatus::Running;
+	if (!RunStatus.compare_exchange_strong(ExpectedRunning, ERunStatus::Stopped))
+	{
+		return; // already finished
+	}
+	
+	UE_LOG(LogTCharonCliCommand, Log, TEXT("Command's '%s' process has been stopped or canceled by other means."), *DisplayName.ToString());
 
-	this->CommandFailed.Broadcast(INT32_MIN, TEXT("Process launch failed or has been cancelled."));
+	CommandFailed.Broadcast(INT32_MIN, TEXT("Process launch failed or has been cancelled."));
 }
 
 template <typename InResultType>
-void TCharonCliCommand<InResultType>::OnProcessOutput(FString OutputChunk)
+void TCharonCliCommand<InResultType>::OnProcessOutput(FString Output)
 {
-	this->Output += OutputChunk;
+	auto SharedOutputRef = MakeShared<FString>(Output);
+	const auto WeakThisPtr = this->AsWeak();
+	AsyncTask(ENamedThreads::GameThread, [WeakThisPtr, SharedOutputRef]()
+	{
+		if (!WeakThisPtr.IsValid()) return;
+		UE_LOG(LogTCharonCliCommand, Log, TEXT("%s"), *SharedOutputRef.Get());
+	});
 }
 
 template <typename InResultType>
@@ -211,7 +231,7 @@ bool TCharonCliCommand<InResultType>::TryReadResult(const FString& Output, int32
 }
 
 template <typename InResultType>
-void TCharonCliCommand<InResultType>::Stop() const
+void TCharonCliCommand<InResultType>::Stop()
 {
 	Process->Stop();
 }

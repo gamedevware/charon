@@ -27,8 +27,8 @@ private:
 public:
 	UPROPERTY(EditAnywhere, Category=DataAsset)
 	TSubclassOf<UGameDataBase> GameDataClass;
-	
-	UImportGameDataFactory(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+	explicit UImportGameDataFactory(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	//~ Begin UFactory Interface
 	virtual bool ConfigureProperties() override;

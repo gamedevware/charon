@@ -1,20 +1,20 @@
 ﻿#pragma once
 #include "Misc/MonitoredProcess.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogFGameDataToolCommandRunner, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogFCharonCliCommandRunner, Log, All);
 
-class CHARONEDITOR_API FGameDataToolCommandRunner : public TSharedFromThis<FGameDataToolCommandRunner>, public FMonitoredProcess
+class CHARONEDITOR_API FCharonCliCommandRunner final : public TSharedFromThis<FCharonCliCommandRunner>, public FMonitoredProcess
 {
 private:
-	inline static bool bContentCopied = false;
+	inline static bool bScriptsCopied = false;
 	
 	TArray<FString> FileCleanupList;
 	FString RunScriptPath;
 public:
 	TMap<FString, FString> EnvironmentVariables;
-	
-	FGameDataToolCommandRunner(FString InParameters);
-	virtual ~FGameDataToolCommandRunner() override;
+
+	explicit FCharonCliCommandRunner(FString InParameters);
+	virtual ~FCharonCliCommandRunner() override;
 	
 	virtual bool Launch() override;
 	

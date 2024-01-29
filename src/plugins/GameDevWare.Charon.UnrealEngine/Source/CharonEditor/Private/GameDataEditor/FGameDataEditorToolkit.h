@@ -3,10 +3,10 @@
 #include "CoreMinimal.h"
 #include "FConnectGameDataParameters.h"
 #include "SWebBrowser.h"
-#include "GameData/CommandLine/FGameDataEditorProcessRunner.h"
+#include "GameData/CommandLine/FCharonEditorProcessRunner.h"
 #include "SConnectGameDataDialog.h"
 #include "GameData/CommandLine/TCharonCliCommand.h"
-#include "GameData/IGameDataEditorTask.h"
+#include "..\..\Public\GameData\ICharonTask.h"
 #include "GameData/UGameDataBase.h"
 #include "Toolkits/AssetEditorToolkit.h"
 
@@ -17,8 +17,8 @@ class FGameDataEditorToolkit : public FAssetEditorToolkit
 private:
 	UGameDataBase* GameData = nullptr;
 	TSharedPtr<SWebBrowser> Browser;
-	TSharedPtr<IGameDataEditorTask> CurrentRunningCommand;
-	TSharedPtr<FGameDataEditorProcessRunner> EditorProcess;
+	TSharedPtr<ICharonTask> CurrentRunningCommand;
+	TSharedPtr<FCharonEditorProcessRunner> EditorProcess;
 	TSharedPtr<SWindow> PendingDialog;
 
 	void LaunchCharonProcess();
@@ -41,7 +41,7 @@ protected:
 	void OnConnectFinished(FConnectGameDataParameters Parameters);
 	void OnGameDataDownloadSucceed(FString String, FString String1);
 
-	static void BroadcastCommandRunning(const TSharedRef<IGameDataEditorTask>& Command, FName IconName,
+	static void BroadcastCommandRunning(const TSharedRef<ICharonTask>& Command, FName IconName,
 	                                    FText CommandPendingText, FText CommandSucceedText, FText CommandFailedText,
 	                                    bool bCanCancel);
 

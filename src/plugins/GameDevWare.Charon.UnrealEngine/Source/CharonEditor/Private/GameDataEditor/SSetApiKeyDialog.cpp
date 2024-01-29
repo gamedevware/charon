@@ -21,7 +21,6 @@ void SSetApiKeyDialog::Construct(const FArguments& InArgs)
 	ProjectId = InArgs._ProjectId;
 	ProjectName = InArgs._ProjectName;
 	ServerApiClient = MakeShared<FServerApiClient>(ServerAddress);
-
 	
 	SWindow::Construct(SWindow::FArguments()
 		.Title(InArgs._Title)

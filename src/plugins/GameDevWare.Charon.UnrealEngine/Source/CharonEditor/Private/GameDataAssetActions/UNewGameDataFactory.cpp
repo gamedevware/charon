@@ -19,6 +19,7 @@
 #include "Misc/FileHelper.h"
 #include "GameData/UGameDataBase.h"
 #include "ProjectDescriptor.h"
+#include "GameDataEditor/SCreateGameDataDialog.h"
 #include "Serialization/JsonSerializer.h"
 
 DEFINE_LOG_CATEGORY(LogUNewGameDataFactory);
@@ -55,9 +56,7 @@ UObject* UNewGameDataFactory::FactoryCreateNew(UClass* InClass, UObject* InParen
 
 	if (InParent == nullptr)
 	{
-		Warn->Logf(ELogVerbosity::Error,
-		           TEXT(
-			           "Unable to create a game data file. The parent package is not set in the FactoryCreateNew() parameters."));
+		Warn->Logf(ELogVerbosity::Error, TEXT("Unable to create a game data file. The parent package is not set in the FactoryCreateNew() parameters."));
 		return nullptr;
 	}
 
@@ -66,18 +65,20 @@ UObject* UNewGameDataFactory::FactoryCreateNew(UClass* InClass, UObject* InParen
 
 	if (PackageFilePath.IsEmpty())
 	{
-		Warn->Logf(ELogVerbosity::Error,
-		           TEXT("Unable to create a game data file. Failed to determine asset path in file system."));
+		Warn->Logf(ELogVerbosity::Error, TEXT("Unable to create a game data file. Failed to determine asset path in file system."));
 		return nullptr;
 	}
+
+	const auto CreateGameDataDialog = SNew(SCreateGameDataDialog)
+		.AssetPath(PackageFilePath);
+	CreateGameDataDialog->Show();
+
+	return nullptr;
 
 	const FString FileName = FPaths::GetCleanFilename(PackageFilePath);
 	if (FModuleManager::Get().GetModule(FName(FileName)) != nullptr)
 	{
-		Warn->Logf(ELogVerbosity::Error,
-		           TEXT(
-			           "Invalid name '%s' for a game data file. A module with the same name already exists. Choose another name."),
-		           *FileName);
+		Warn->Logf(ELogVerbosity::Error, TEXT("Invalid name '%s' for a game data file. A module with the same name already exists. Choose another name."), *FileName);
 		return nullptr;
 	}
 
@@ -86,20 +87,14 @@ UObject* UNewGameDataFactory::FactoryCreateNew(UClass* InClass, UObject* InParen
 	const FString ModuleDirectory = FPaths::ProjectDir() / TEXT("Source") / FileName;
 	if (PlatformFile.DirectoryExists(*ModuleDirectory))
 	{
-		Warn->Logf(ELogVerbosity::Error,
-		           TEXT(
-			           "Invalid name '%s' for a game data file. A module directory with the same name '%s' already exists. Use the 'Import to' option if the game data code is already generated."),
-		           *GameDataFilePath, *ModuleDirectory);
+		Warn->Logf(ELogVerbosity::Error, TEXT("Invalid name '%s' for a game data file. A module directory with the same name '%s' already exists. Use the 'Import to' option if the game data code is already generated."), *GameDataFilePath, *ModuleDirectory);
 		return nullptr;
 	}
 
 	const FString EmptyGameData;
 	if (!PlatformFile.FileExists(*GameDataFilePath) && !FFileHelper::SaveStringToFile(EmptyGameData, *GameDataFilePath))
 	{
-		Warn->Logf(ELogVerbosity::Error,
-		           TEXT(
-			           "Failed to create the game data file '%s' due to a file system-related error. Make sure you have permission to write to the specified directory."),
-		           *GameDataFilePath);
+		Warn->Logf(ELogVerbosity::Error, TEXT("Failed to create the game data file '%s' due to a file system-related error. Make sure you have permission to write to the specified directory."), *GameDataFilePath);
 		return nullptr;
 	}
 
@@ -117,31 +112,27 @@ UObject* UNewGameDataFactory::FactoryCreateNew(UClass* InClass, UObject* InParen
 			ProjectSettingsDocument,
 			TEXT("049bc0604c363a980b000088")
 		);
-		CreateNewGameDataClassTask.Get()->OnSucceed().AddUObject(this, &UNewGameDataFactory::OnGameDataFileUpdated, PackageFilePath, ModuleDirectory, GameData);
+		CreateNewGameDataClassTask.Get()->OnSucceed().AddUObject(this, &UNewGameDataFactory::OnGameDataFileUpdated,
+		                                                         PackageFilePath, ModuleDirectory, GameData);
 		CreateNewGameDataClassTask.Get()->OnFailed().AddLambda([]()
 		{
-			UE_LOG(LogUNewGameDataFactory, Error,
-				   TEXT(
-					   "Failed to update game data file. Check the Output Log and 'Intermediate\\Charon\\logs' for errors."
-				   ));
+			UE_LOG(LogUNewGameDataFactory, Error, TEXT("Failed to update game data file. Check the Output Log and 'Intermediate\\Charon\\logs' for errors."));
 		});
 		CreateNewGameDataClassTask->Run(ENamedThreads::GameThread);
 	}
 	else
 	{
-		OnGameDataFileUpdated(PackageFilePath, ModuleDirectory, GameData);		
+		OnGameDataFileUpdated(PackageFilePath, ModuleDirectory, GameData);
 	}
 
 	UE_LOG(LogUNewGameDataFactory, Log,
-	       TEXT(
-		       "The game data file has been created at '%s', and the source code is generated into the '%s' directory. For a detailed guide, refer to the plugin's documentation."
-	       ), *GameDataFilePath, *ModuleDirectory);
+	       TEXT("The game data file has been created at '%s', and the source code is generated into the '%s' directory. For a detailed guide, refer to the plugin's documentation."), *GameDataFilePath, *ModuleDirectory);
 
 	return GameData;
 }
 
 void UNewGameDataFactory::OnGameDataFileUpdated(const FString PackageFilePath, const FString ModuleDirectory,
-	const TObjectPtr<UObject> GameData)
+                                                const TObjectPtr<UObject> GameData)
 {
 	const FName ModuleName = FName(FPaths::GetCleanFilename(PackageFilePath));
 	const FString GameDataFilePath = PackageFilePath + TEXT(".gdjs");
@@ -156,13 +147,10 @@ void UNewGameDataFactory::OnGameDataFileUpdated(const FString PackageFilePath, c
 		GameDataClassName
 	);
 	CreateNewGameDataClassTask.Get()->OnSucceed().AddUObject(this, &UNewGameDataFactory::OnSourceCodeGenerated,
-															 PackageFilePath, ModuleDirectory, GameData);
+	                                                         PackageFilePath, ModuleDirectory, GameData);
 	CreateNewGameDataClassTask.Get()->OnFailed().AddLambda([]()
 	{
-		UE_LOG(LogUNewGameDataFactory, Error,
-			   TEXT(
-				   "Failed to generate the C++ code. Check the Output Log and 'Intermediate\\Charon\\logs' for errors."
-			   ));
+		UE_LOG(LogUNewGameDataFactory, Error, TEXT("Failed to generate the C++ code. Check the Output Log and 'Intermediate\\Charon\\logs' for errors."));
 	});
 	CreateNewGameDataClassTask->Run(ENamedThreads::GameThread);
 }
@@ -178,19 +166,15 @@ void UNewGameDataFactory::OnSourceCodeGenerated(
 
 	AddModuleToProjectFile(ModuleName);
 	UpdateCodeProjectFiles();
-	
-	UE_LOG(LogUNewGameDataFactory, Log,
-	       TEXT("Starting the C++ code compilation, after which the new '%s' module will be included in your project."),
-	       *ModuleName.ToString());
+
+	UE_LOG(LogUNewGameDataFactory, Log, TEXT("Starting the C++ code compilation, after which the new '%s' module will be included in your project."), *ModuleName.ToString());
 
 	IHotReloadModule& HotReloadModule = IHotReloadModule::Get();
-	const bool bRecompileSucceeded = HotReloadModule.RecompileModule(ModuleName, *GLog, ERecompileModuleFlags::ReloadAfterRecompile);
+	const bool bRecompileSucceeded = HotReloadModule.RecompileModule(ModuleName, *GLog,
+	                                                                 ERecompileModuleFlags::ReloadAfterRecompile);
 	if (!bRecompileSucceeded)
 	{
-		UE_LOG(LogUNewGameDataFactory, Error,
-		       TEXT(
-			       "Failed to recompile the C++ code due error. Check Output Log, fix errors and try 'Import to' option on '%s' file."
-		       ), *GameDataFilePath);
+		UE_LOG(LogUNewGameDataFactory, Error, TEXT("Failed to recompile the C++ code due error. Check Output Log, fix errors and try 'Import to' option on '%s' file."), *GameDataFilePath);
 		RemoveAsset(GameData);
 		return;
 	}
@@ -198,11 +182,8 @@ void UNewGameDataFactory::OnSourceCodeGenerated(
 	const IModuleInterface* GameDataModule = FModuleManager::Get().GetModule(ModuleName);
 	if (GameDataModule == nullptr)
 	{
-		UE_LOG(LogUNewGameDataFactory, Error,
-		   TEXT(
-			   "Failed to load '%s' module. Check Output Log, fix errors and try 'Import to' option on '%s' file."
-		   ), *ModuleName.ToString(), *GameDataFilePath);
-		
+		UE_LOG(LogUNewGameDataFactory, Error, TEXT("Failed to load '%s' module. Check Output Log, fix errors and try 'Import to' option on '%s' file."), *ModuleName.ToString(), *GameDataFilePath);
+
 		RemoveAsset(GameData);
 		return;
 	}
@@ -212,10 +193,7 @@ void UNewGameDataFactory::OnSourceCodeGenerated(
 	const auto GameDataClass = FindObject<UClass>(GameDataClassPackage, *GameDataClassName, /*exact class*/ false);
 	if (GameDataClass == nullptr)
 	{
-		UE_LOG(LogUNewGameDataFactory, Error,
-		       TEXT(
-			       "Failed to locate the new game data class '%s' using the FindObject() method. Please check the Output Log, fix any errors, and try using the 'Import to' option on the '%s' file."
-		       ), *GameDataClassName, *GameDataFilePath);
+		UE_LOG(LogUNewGameDataFactory, Error, TEXT("Failed to locate the new game data class '%s' using the FindObject() method. Please check the Output Log, fix any errors, and try using the 'Import to' option on the '%s' file."), *GameDataClassName, *GameDataFilePath);
 		RemoveAsset(GameData);
 		return;
 	}
@@ -226,17 +204,12 @@ void UNewGameDataFactory::OnSourceCodeGenerated(
 	GameData->MarkAsGarbage();
 	auto _ = GameDataPackage->MarkPackageDirty();
 
-	UE_LOG(LogUNewGameDataFactory, Log,
-	       TEXT("Starting the import of game data file '%s' into the newly created asset '%s'."), *GameDataFilePath,
-	       *GameDataPackage->GetName());
+	UE_LOG(LogUNewGameDataFactory, Log, TEXT("Starting the import of game data file '%s' into the newly created asset '%s'."), *GameDataFilePath, *GameDataPackage->GetName());
 
 	auto ReimportHandler = FGameDataReimportHandler();
 	if (ReimportHandler.Reimport(NewGameData) != EReimportResult::Succeeded)
 	{
-		UE_LOG(LogUNewGameDataFactory, Error,
-		       TEXT(
-			       "Failed to import of game data file '%s' into the newly created asset '%s'. Please check the Output Log, fix any errors, and try using the 'Import to' option on the '%s' file."
-		       ), *GameDataFilePath, *GameDataPackage->GetName(), *GameDataFilePath);
+		UE_LOG(LogUNewGameDataFactory, Error, TEXT("Failed to import of game data file '%s' into the newly created asset '%s'. Please check the Output Log, fix any errors, and try using the 'Import to' option on the '%s' file."), *GameDataFilePath, *GameDataPackage->GetName(), *GameDataFilePath);
 		RemoveAsset(GameData);
 		return;
 	}
@@ -256,7 +229,7 @@ void UNewGameDataFactory::RemoveAsset(const TObjectPtr<UObject> AssetObject)
 	FPackageName::TryConvertLongPackageNameToFilename(AssetObject->GetPackage()->GetName(), PackageFilePath);
 	PackageFilePath.Append(TEXT(".uasset"));
 	FPaths::MakePathRelativeTo(PackageFilePath, *FPaths::ProjectDir());
-	
+
 	const bool bAssetExists = UEditorAssetLibrary::DoesAssetExist(PackageFilePath);
 	if (bAssetExists)
 	{
@@ -267,7 +240,7 @@ void UNewGameDataFactory::RemoveAsset(const TObjectPtr<UObject> AssetObject)
 
 void UNewGameDataFactory::AddModuleToProjectFile(const FName ModuleName)
 {
-	IProjectManager &ProjectManager = IProjectManager::Get();
+	IProjectManager& ProjectManager = IProjectManager::Get();
 	auto CurrentProject = FProjectDescriptor(*ProjectManager.Get().GetCurrentProject());
 
 	if (!CurrentProject.HasModule(ModuleName))
@@ -278,13 +251,9 @@ void UNewGameDataFactory::AddModuleToProjectFile(const FName ModuleName)
 	}
 
 	FText FailReason;
-	if(!CurrentProject.Save(FPaths::GetProjectFilePath(), FailReason))
+	if (!CurrentProject.Save(FPaths::GetProjectFilePath(), FailReason))
 	{
-		UE_LOG(LogUNewGameDataFactory, Error,
-			   TEXT(
-				   "Failed to add the module '%s' to the .uproject file due to an error - %s. Please check the Output Log, fix any errors, and try adding module and compiling code manually."
-			   ), *ModuleName.ToString(), *FailReason.ToString());
-
+		UE_LOG(LogUNewGameDataFactory, Error, TEXT("Failed to add the module '%s' to the .uproject file due to an error - %s. Please check the Output Log, fix any errors, and try adding module and compiling code manually."), *ModuleName.ToString(), *FailReason.ToString());
 		SOutputLogDialog::Open(INVTEXT("Add Module"), INVTEXT("Failed to add module"), FailReason, FText::GetEmpty());
 	}
 
@@ -299,24 +268,27 @@ void UNewGameDataFactory::AddModuleToProjectFile(const FName ModuleName)
 		{
 			continue;
 		}
-		
+
 		TArray<FString> FileLines;
 		if (!FFileHelper::LoadFileToStringArray(FileLines, *TargetFilePath))
 		{
-			UE_LOG(LogUNewGameDataFactory, Warning,
-				   TEXT(
-					   "Failed to add the module '%s' to the '%s'. Please check the Output Log, fix any errors, and try adding module and compiling code manually."
-				   ), *ModuleName.ToString(), *TargetFilePath);
+			UE_LOG(LogUNewGameDataFactory, Warning, TEXT("Failed to add the module '%s' to the '%s'. Please check the Output Log, fix any errors, and try adding module and compiling code manually."), *ModuleName.ToString(), *TargetFilePath);
 			continue;
 		}
 
 		UE_LOG(LogUNewGameDataFactory, Log, TEXT("Inserting module '%s' into the '%s' file."), *ModuleName.ToString(), *TargetFilePath);
-		
-		const FString QuotedModuleName = FString::Format(TEXT("\"{0}\""), { ModuleName.ToString() });
-		if (!FileLines.ContainsByPredicate([QuotedModuleName](const FString& Content) { return Content.Contains(QuotedModuleName); }))
+
+		const FString QuotedModuleName = FString::Format(TEXT("\"{0}\""), {ModuleName.ToString()});
+		if (!FileLines.ContainsByPredicate([QuotedModuleName](const FString& Content)
+		{
+			return Content.Contains(QuotedModuleName);
+		}))
 		{
 			FString SearchPattern = TEXT("ExtraModuleNames.");
-			const int32 InsertPosition = FileLines.IndexOfByPredicate([SearchPattern](const FString& Content) { return Content.Contains(SearchPattern); });
+			const int32 InsertPosition = FileLines.IndexOfByPredicate([SearchPattern](const FString& Content)
+			{
+				return Content.Contains(SearchPattern);
+			});
 			if (InsertPosition != INDEX_NONE)
 			{
 				FString InsertString = FileLines[InsertPosition];
@@ -329,19 +301,16 @@ void UNewGameDataFactory::AddModuleToProjectFile(const FName ModuleName)
 
 		if (!FFileHelper::SaveStringArrayToFile(FileLines, *TargetFilePath))
 		{
-			UE_LOG(LogUNewGameDataFactory, Warning,
-				   TEXT(
-					   "Failed to add the module '%s' to the '%s'. Please check the Output Log, fix any errors, and try adding module and compiling code manually."
-				   ), *ModuleName.ToString(), *TargetFilePath);
+			UE_LOG(LogUNewGameDataFactory, Warning, TEXT("Failed to add the module '%s' to the '%s'. Please check the Output Log, fix any errors, and try adding module and compiling code manually."), *ModuleName.ToString(), *TargetFilePath);
 			continue;
-		}		
+		}
 	}
 }
 
 void UNewGameDataFactory::UpdateCodeProjectFiles()
 {
 	FText FailReason, FailLog;
-	if(!FGameProjectGenerationModule::Get().UpdateCodeProject(FailReason, FailLog))
+	if (!FGameProjectGenerationModule::Get().UpdateCodeProject(FailReason, FailLog))
 	{
 		SOutputLogDialog::Open(INVTEXT("Refresh Project"), FailReason, FailLog, FText::GetEmpty());
 	}

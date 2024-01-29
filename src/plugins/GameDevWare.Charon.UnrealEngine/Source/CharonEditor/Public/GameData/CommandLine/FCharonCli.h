@@ -6,13 +6,13 @@
 #include "ESourceCodeGenerationOptimizations.h"
 #include "ESourceCodeIndentation.h"
 #include "ESourceCodeLineEndings.h"
-#include "EValidationOptions.h"
+#include "EValidationOption.h"
 #include "FValidationReport.h"
 #include "TCharonCliCommand.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogFCharonCli, Log, All);
 
-class CHARONEDITOR_API FCharonCli
+class CHARONEDITOR_API FCharonCli final
 {
 public:
 	static TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> CreateDocument(
@@ -143,7 +143,7 @@ public:
 	static TSharedRef<TCharonCliCommand<FValidationReport>> Validate(
 		const FString& GameDataUrl,
 		const FString& ApiKey,
-		TArray<EValidationOptions> ValidationOptions,
+		TArray<EValidationOption> ValidationOptions,
 		ECharonLogLevel LogsVerbosity = ECharonLogLevel::Normal
 	);
 

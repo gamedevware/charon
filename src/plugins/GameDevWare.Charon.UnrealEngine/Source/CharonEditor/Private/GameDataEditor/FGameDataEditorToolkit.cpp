@@ -273,7 +273,7 @@ void FGameDataEditorToolkit::LaunchCharonProcess()
 	}
 
 	const int32 Port = FMath::RandRange(10001, 65500);
-	EditorProcess = MakeShared<FGameDataEditorProcessRunner>(GameDataFilePath, Port, FTimespan::FromSeconds(30));
+	EditorProcess = MakeShared<FCharonEditorProcessRunner>(GameDataFilePath, Port, FTimespan::FromSeconds(30));
 	EditorProcess->OnLaunched().BindLambda([this](EGameDataEditorLaunchStatus Status)
 	{
 		switch (Status)
@@ -580,7 +580,7 @@ void FGameDataEditorToolkit::Sync_Execute()
 }
 
 void FGameDataEditorToolkit::BroadcastCommandRunning(
-	const TSharedRef<IGameDataEditorTask>& Command,
+	const TSharedRef<ICharonTask>& Command,
 	FName IconName,
 	FText CommandPendingText,
 	FText CommandSucceedText,
@@ -592,7 +592,7 @@ void FGameDataEditorToolkit::BroadcastCommandRunning(
 	if (bCanCancel)
 	{
 		FSimpleDelegate CancelCommandAction;
-		const auto WeakCommand = TWeakPtr<IGameDataEditorTask>(Command);
+		const auto WeakCommand = TWeakPtr<ICharonTask>(Command);
 		CancelCommandAction.BindLambda([WeakCommand]
 		{
 			const auto CommandPtr = WeakCommand.Pin();

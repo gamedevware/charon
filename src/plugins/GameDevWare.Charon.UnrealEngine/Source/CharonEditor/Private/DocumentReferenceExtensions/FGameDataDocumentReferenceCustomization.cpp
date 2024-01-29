@@ -60,27 +60,27 @@ void FGameDataDocumentReferenceCustomization::CustomizeChildren(
 	{
 		FString SchemaName = OnGetCurrentSchemaNameString();
 		FString DocumentId = OnGetCurrentDocumentIdString();
-		
+
 		ChildBuilder.AddCustomRow(PropertyName)
-				.NameContent()
-				[
-					SNew(STextBlock)
+		            .NameContent()
+			[
+				SNew(STextBlock)
 					.Text(PropertyName)
 					.Font(CustomizationUtils.GetRegularFont())
-				]
-				.ValueContent()
-				.MaxDesiredWidth(0.0f) // don't constrain the combo button width
-				[
-					SNew(STextBlock)
+			]
+			.ValueContent()
+			.MaxDesiredWidth(0.0f) // don't constrain the combo button width
+			[
+				SNew(STextBlock)
 						.Text(FText::FromString(TEXT("[") + SchemaName + TEXT("] ") + DocumentId))
 						.Font(CustomizationUtils.GetRegularFont())
-				];
+			];
 	}
 	else if (IsValidHandles)
 	{
 		/** Construct a asset picker widget with a custom filter */
 		ChildBuilder.AddCustomRow(FText::FromString(TEXT("Game Data")))
-			.NameContent()
+		            .NameContent()
 			[
 				SNew(STextBlock)
 				.Text(FText::FromString(TEXT("Game Data")))
@@ -94,13 +94,13 @@ void FGameDataDocumentReferenceCustomization::CustomizeChildren(
 				.AllowedClass(UGameDataBase::StaticClass())
 			];
 
-		FPropertyComboBoxArgs SchemaComboBox(SchemaPropertyHandle, 
-					FOnGetPropertyComboBoxStrings::CreateSP(this, &FGameDataDocumentReferenceCustomization::OnGetSchemaNames), 
-					FOnGetPropertyComboBoxValue::CreateSP(this, &FGameDataDocumentReferenceCustomization::OnGetCurrentSchemaNameString));
+		FPropertyComboBoxArgs SchemaComboBox(SchemaPropertyHandle,
+		                                     FOnGetPropertyComboBoxStrings::CreateSP(this, &FGameDataDocumentReferenceCustomization::OnGetSchemaNames),
+		                                     FOnGetPropertyComboBoxValue::CreateSP(this, &FGameDataDocumentReferenceCustomization::OnGetCurrentSchemaNameString));
 		SchemaComboBox.ShowSearchForItemCount = 1;
-		
+
 		ChildBuilder.AddCustomRow(FText::FromString(TEXT("Schema")))
-			.NameContent()
+		            .NameContent()
 			[
 				SNew(STextBlock)
 				.Text(FText::FromString(TEXT("Schema")))
@@ -111,14 +111,14 @@ void FGameDataDocumentReferenceCustomization::CustomizeChildren(
 			[
 				PropertyCustomizationHelpers::MakePropertyComboBox(SchemaComboBox)
 			];
-		
-		FPropertyComboBoxArgs IdComboBox(IdPropertyHandle, 
-			FOnGetPropertyComboBoxStrings::CreateSP(this, &FGameDataDocumentReferenceCustomization::OnGetDocumentIds), 
-			FOnGetPropertyComboBoxValue::CreateSP(this, &FGameDataDocumentReferenceCustomization::OnGetCurrentDocumentIdString));
+
+		FPropertyComboBoxArgs IdComboBox(IdPropertyHandle,
+		                                 FOnGetPropertyComboBoxStrings::CreateSP(this, &FGameDataDocumentReferenceCustomization::OnGetDocumentIds),
+		                                 FOnGetPropertyComboBoxValue::CreateSP(this, &FGameDataDocumentReferenceCustomization::OnGetCurrentDocumentIdString));
 		IdComboBox.ShowSearchForItemCount = 1;
-		
+
 		ChildBuilder.AddCustomRow(FText::FromString(TEXT("Document Id")))
-			.NameContent()
+		            .NameContent()
 			[
 				SNew(STextBlock)
 				.Text(FText::FromString(TEXT("Document Id")))
@@ -129,7 +129,6 @@ void FGameDataDocumentReferenceCustomization::CustomizeChildren(
 			[
 				PropertyCustomizationHelpers::MakePropertyComboBox(IdComboBox)
 			];
-		
 	}
 	else if (GameDataPropertyHandle.IsValid() || SchemaPropertyHandle.IsValid() || IdPropertyHandle.IsValid())
 	{
@@ -140,8 +139,7 @@ void FGameDataDocumentReferenceCustomization::CustomizeChildren(
 UGameDataBase* FGameDataDocumentReferenceCustomization::GetGameData() const
 {
 	UObject* GameDataObj = nullptr;
-	const FPropertyAccess::Result GameDataResult = GameDataPropertyHandle->IsValidHandle() && GameDataPropertyHandle.IsValid() ?
-	GameDataPropertyHandle->GetValue(GameDataObj) : FPropertyAccess::Fail;
+	const FPropertyAccess::Result GameDataResult = GameDataPropertyHandle->IsValidHandle() && GameDataPropertyHandle.IsValid() ? GameDataPropertyHandle->GetValue(GameDataObj) : FPropertyAccess::Fail;
 	if (GameDataResult == FPropertyAccess::Success && GameDataObj != nullptr)
 	{
 		const auto GameData = Cast<UGameDataBase>(GameDataObj);
@@ -158,13 +156,13 @@ void FGameDataDocumentReferenceCustomization::OnGetDocumentIds(
 	const auto GameData = GetGameData();
 	const auto IgnoredDocumentId = OnGetCurrentDocumentIdString();
 	const auto SchemaNameOrId = OnGetCurrentSchemaNameString();
-	
+
 	TArray<FString> AllIds;
 	if (GameData != nullptr)
 	{
 		GameData->GetDocumentIds(SchemaNameOrId, AllIds);
 		AllIds.Remove(IgnoredDocumentId);
-		
+
 		// Sort the names alphabetically.
 		AllIds.Sort();
 	}
@@ -247,7 +245,7 @@ FString FGameDataDocumentReferenceCustomization::OnGetCurrentSchemaNameString() 
 		if (GameData != nullptr)
 		{
 			const auto DocumentClass = GameData->FindDocumentSchemaClass(SchemaNameOrId);
-			if(DocumentClass)
+			if (DocumentClass)
 			{
 				return DocumentClass->GetName();
 			}

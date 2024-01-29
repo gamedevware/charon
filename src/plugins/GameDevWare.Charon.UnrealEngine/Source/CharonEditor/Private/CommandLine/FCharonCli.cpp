@@ -2,7 +2,7 @@
 
 #include "GameData/CommandLine/FCharonCli.h"
 
-#include "GameData/CommandLine/FGameDataToolCommandRunner.h"
+#include "GameData/CommandLine/FCharonCliCommandRunner.h"
 #include "Serialization/JsonSerializer.h"
 
 DEFINE_LOG_CATEGORY(LogFCharonCli);
@@ -24,11 +24,11 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::CreateDocumen
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempInputFile);
 	CommandRunner->AttachTemporaryFile(TempOutputFile);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, INVTEXT("DATA CREATE"), TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::UpdateDocument(
@@ -50,11 +50,11 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::UpdateDocumen
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempInputFile);
 	CommandRunner->AttachTemporaryFile(TempOutputFile);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, INVTEXT("DATA UPDATE"), TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::DeleteDocument(
@@ -74,11 +74,11 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::DeleteDocumen
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempInputFile);
 	CommandRunner->AttachTemporaryFile(TempOutputFile);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, INVTEXT("DATA DELETE"), TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::DeleteDocument(
@@ -97,10 +97,10 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::DeleteDocumen
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempOutputFile);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, INVTEXT("DATA DELETE"), TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::FindDocument(
@@ -119,10 +119,10 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::FindDocument(
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempOutputFile);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, INVTEXT("DATA FIND"), TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<>> FCharonCli::Import(
@@ -165,10 +165,10 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::Import(
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempInputFile);
-	return MakeShared<TCharonCliCommand<>>(CommandRunner);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner, INVTEXT("DATA IMPORT"));
 }
 
 TSharedRef<TCharonCliCommand<>> FCharonCli::ImportFromFile(
@@ -212,9 +212,9 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::ImportFromFile(
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
-	return MakeShared<TCharonCliCommand<>>(CommandRunner);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner, INVTEXT("DATA IMPORT"));
 }
 
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::Export(
@@ -255,10 +255,10 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::Export(
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempOutputFile);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, INVTEXT("DATA EXPORT"), TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<>> FCharonCli::ExportToFile(
@@ -301,9 +301,9 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::ExportToFile(
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
-	return MakeShared<TCharonCliCommand<>>(CommandRunner);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner, INVTEXT("DATA EXPORT"));
 }
 
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::CreatePatch(
@@ -321,10 +321,10 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::CreatePatch(
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempOutputFile);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, INVTEXT("DATA CREATEPATCH"), TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<>> FCharonCli::ApplyPatch(
@@ -340,10 +340,10 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::ApplyPatch(
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempInputFile);
-	return MakeShared<TCharonCliCommand<>>(CommandRunner);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner, INVTEXT("DATA APPLYPATCH"));
 }
 
 TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::Backup(
@@ -358,10 +358,10 @@ TSharedRef<TCharonCliCommand<TSharedPtr<FJsonObject>>> FCharonCli::Backup(
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempOutputFile);
-	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, TempOutputFile);
+	return MakeShared<TCharonCliCommand<TSharedPtr<FJsonObject>>>(CommandRunner, INVTEXT("DATA BACKUP"), TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<>> FCharonCli::BackupToFile(
@@ -379,10 +379,10 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::BackupToFile(
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempOutputFile);
-	return MakeShared<TCharonCliCommand<>>(CommandRunner, TempOutputFile);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner, INVTEXT("DATA BACKUP"), TempOutputFile);
 }
 
 TSharedRef<TCharonCliCommand<>> FCharonCli::Restore(
@@ -398,10 +398,10 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::Restore(
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempInputFile);
-	return MakeShared<TCharonCliCommand<>>(CommandRunner);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner, INVTEXT("DATA RESTORE"));
 }
 
 TSharedRef<TCharonCliCommand<>> FCharonCli::RestoreFromFile(
@@ -418,15 +418,15 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::RestoreFromFile(
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
-	return MakeShared<TCharonCliCommand<>>(CommandRunner);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner, INVTEXT("DATA RESTORE"));
 }
 
 TSharedRef<TCharonCliCommand<FValidationReport>> FCharonCli::Validate(
 	const FString& GameDataUrl,
 	const FString& ApiKey,
-	TArray<EValidationOptions> ValidationOptions,
+	TArray<EValidationOption> ValidationOptions,
 	ECharonLogLevel LogsVerbosity)
 {
 	TArray<FString> ValidationOptionNames;
@@ -435,18 +435,17 @@ TSharedRef<TCharonCliCommand<FValidationReport>> FCharonCli::Validate(
 		switch (Option)
 		{
 			default:
-			case EValidationOptions::None: break;
-			case EValidationOptions::Repair: ValidationOptionNames.Add(TEXT("Repair")); break;
-			case EValidationOptions::CheckTranslation: ValidationOptionNames.Add(TEXT("CheckTranslation")); break;
-			case EValidationOptions::DeduplicateIds: ValidationOptionNames.Add(TEXT("DeduplicateIds")); break;
-			case EValidationOptions::RepairRequiredWithDefaultValue: ValidationOptionNames.Add(TEXT("RepairRequiredWithDefaultValue")); break;
-			case EValidationOptions::EraseInvalidValue: ValidationOptionNames.Add(TEXT("EraseInvalidValue")); break;
-			case EValidationOptions::CheckRequirements: ValidationOptionNames.Add(TEXT("CheckRequirements")); break;
-			case EValidationOptions::CheckFormat: ValidationOptionNames.Add(TEXT("CheckFormat")); break;
-			case EValidationOptions::CheckUniqueness: ValidationOptionNames.Add(TEXT("CheckUniqueness")); break;
-			case EValidationOptions::CheckReferences: ValidationOptionNames.Add(TEXT("CheckReferences")); break;
-			case EValidationOptions::CheckSpecification: ValidationOptionNames.Add(TEXT("CheckSpecification")); break;
-			case EValidationOptions::CheckConstraints: ValidationOptionNames.Add(TEXT("CheckConstraints")); break;
+			case EValidationOption::Repair: ValidationOptionNames.Add(TEXT("Repair")); break;
+			case EValidationOption::CheckTranslation: ValidationOptionNames.Add(TEXT("CheckTranslation")); break;
+			case EValidationOption::DeduplicateIds: ValidationOptionNames.Add(TEXT("DeduplicateIds")); break;
+			case EValidationOption::RepairRequiredWithDefaultValue: ValidationOptionNames.Add(TEXT("RepairRequiredWithDefaultValue")); break;
+			case EValidationOption::EraseInvalidValue: ValidationOptionNames.Add(TEXT("EraseInvalidValue")); break;
+			case EValidationOption::CheckRequirements: ValidationOptionNames.Add(TEXT("CheckRequirements")); break;
+			case EValidationOption::CheckFormat: ValidationOptionNames.Add(TEXT("CheckFormat")); break;
+			case EValidationOption::CheckUniqueness: ValidationOptionNames.Add(TEXT("CheckUniqueness")); break;
+			case EValidationOption::CheckReferences: ValidationOptionNames.Add(TEXT("CheckReferences")); break;
+			case EValidationOption::CheckSpecification: ValidationOptionNames.Add(TEXT("CheckSpecification")); break;
+			case EValidationOption::CheckConstraints: ValidationOptionNames.Add(TEXT("CheckConstraints")); break;
 		}
 	}
 
@@ -458,10 +457,10 @@ TSharedRef<TCharonCliCommand<FValidationReport>> FCharonCli::Validate(
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
 	CommandRunner->AttachTemporaryFile(TempOutputFile);
-	return MakeShared<TCharonCliCommand<FValidationReport>>(CommandRunner, TempOutputFile);
+	return MakeShared<TCharonCliCommand<FValidationReport>>(CommandRunner, INVTEXT("DATA VALIDATE"), TempOutputFile);
 }
 
 
@@ -523,9 +522,9 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::GenerateUnrealEngineSourceCode(
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
-	return MakeShared<TCharonCliCommand<>>(CommandRunner);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner, INVTEXT("GENERATE UECPPCODE"));
 }
 
 TSharedRef<TCharonCliCommand<>> FCharonCli::DumpTemplates(FString OutputDirectory)
@@ -534,16 +533,16 @@ TSharedRef<TCharonCliCommand<>> FCharonCli::DumpTemplates(FString OutputDirector
 		OutputDirectory
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
-	return MakeShared<TCharonCliCommand<>>(CommandRunner);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
+	return MakeShared<TCharonCliCommand<>>(CommandRunner, INVTEXT("GENERATE TEMPLATES"));
 }
 
 TSharedRef<TCharonCliCommand<FString>> FCharonCli::GetVersion()
 {
 	const FString Params = TEXT("VERSION");
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
-	return MakeShared<TCharonCliCommand<FString>>(CommandRunner);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
+	return MakeShared<TCharonCliCommand<FString>>(CommandRunner, INVTEXT("VERSION"));
 }
 
 TSharedRef<TCharonCliCommand<FString>> FCharonCli::GetGameDataVersion(const FString& GameDataUrl, const FString& ApiKey, ECharonLogLevel LogsVerbosity)
@@ -553,9 +552,9 @@ TSharedRef<TCharonCliCommand<FString>> FCharonCli::GetGameDataVersion(const FStr
 		GetLogOptions(LogsVerbosity)
 	});
 	
-	const TSharedRef<FGameDataToolCommandRunner> CommandRunner = MakeShared<FGameDataToolCommandRunner>(Params);
+	const TSharedRef<FCharonCliCommandRunner> CommandRunner = MakeShared<FCharonCliCommandRunner>(Params);
 	CommandRunner->SetApiKey(ApiKey);
-	return MakeShared<TCharonCliCommand<FString>>(CommandRunner);
+	return MakeShared<TCharonCliCommand<FString>>(CommandRunner, INVTEXT("DATA VERSION"));
 }
 
 FString FCharonCli::GetLogOptions(ECharonLogLevel LogsVerbosity)

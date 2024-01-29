@@ -24,7 +24,6 @@ public:
 	};
 	
 	SLATE_BEGIN_ARGS(SSetApiKeyDialog) {}
-		/** Provides title for SCustomDialog. */
 		SLATE_ARGUMENT(FText, Title)
 		SLATE_ARGUMENT(FString, ProjectName)
 		SLATE_ARGUMENT(FString, ProjectId)

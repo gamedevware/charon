@@ -3,7 +3,7 @@
 	"Version": 1,
 	"VersionName": "1.0",
 	"FriendlyName": "Charon",
-	"Description": "Charon Game Data Editor Support for Unreal Engine Editor",
+	"Description": "Charon game data editor support for Unreal Engine editor",
 	"Category": "Other",
 	"CreatedBy": "Denis Zykov",
 	"CreatedByURL": "https://www.gamedevware.com/",

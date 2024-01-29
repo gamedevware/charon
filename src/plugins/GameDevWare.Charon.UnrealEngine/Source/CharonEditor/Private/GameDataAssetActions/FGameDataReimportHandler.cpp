@@ -51,13 +51,13 @@ EReimportResult::Type FGameDataReimportHandler::Reimport(UObject* Obj)
 	{
 		return EReimportResult::Failed;
 	}
-	
+
 	const auto GameDataFilePath = Filename;
 	EGameDataFormat Format;
-	
+
 	const double StartTime = FPlatformTime::Seconds();
 	UE_LOG(LogFGameDataReimportHandler, Log, TEXT("Re-importing game data from file '%s'."), *GameDataFilePath);
-	
+
 	const FString Extension = FPaths::GetExtension(GameDataFilePath);
 	if (FCString::Stricmp(*Extension, TEXT("GDJS")) == 0)
 	{
@@ -74,7 +74,7 @@ EReimportResult::Type FGameDataReimportHandler::Reimport(UObject* Obj)
 	}
 
 	const TUniquePtr<FArchive> Stream(IFileManager::Get().CreateFileReader(*GameDataFilePath, 0));
-	if(Stream == nullptr)
+	if (Stream == nullptr)
 	{
 		UE_LOG(LogFGameDataReimportHandler, Error, TEXT("Failed open file '%s' for import."), *GameDataFilePath);
 		return EReimportResult::Failed;
@@ -86,7 +86,7 @@ EReimportResult::Type FGameDataReimportHandler::Reimport(UObject* Obj)
 	}
 
 	UE_LOG(LogFGameDataReimportHandler, Log, TEXT("Successfully imported game data from file '%s' in %f seconds."), *GameDataFilePath, FPlatformTime::Seconds() - StartTime);
-	
+
 	return EReimportResult::Succeeded;
 #else
 	return EReimportResult::Failed;

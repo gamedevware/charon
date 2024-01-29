@@ -11,7 +11,7 @@
 /*
  * Charon-related UE editor extensions. 
  */
-class CHARONEDITOR_API FCharonEditorModule : public ICharonEditorModule
+class CHARONEDITOR_API FCharonEditorModule final : public ICharonEditorModule
 {
 public:
 

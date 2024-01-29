@@ -26,13 +26,13 @@ uint32 FGameDataAssetTypeActions::GetCategories()
 }
 
 void FGameDataAssetTypeActions::OpenAssetEditor(const TArray<UObject*>& InObjects,
-	TSharedPtr<IToolkitHost> EditWithinLevelEditor)
+                                                TSharedPtr<IToolkitHost> EditWithinLevelEditor)
 {
 	MakeShared<FGameDataEditorToolkit>()->InitEditor(InObjects);
 }
 
 void FGameDataAssetTypeActions::GetResolvedSourceFilePaths(const TArray<UObject*>& TypeAssets,
-	TArray<FString>& OutSourceFilePaths) const
+                                                           TArray<FString>& OutSourceFilePaths) const
 {
 	for (auto& Asset : TypeAssets)
 	{
