@@ -14,6 +14,7 @@
 #include "Framework/Notifications/NotificationManager.h"
 #include "Math/UnrealMathUtility.h"
 #include "SSetApiKeyDialog.h"
+#include "UGameDataEditorWebBrowserBridge.h"
 #include "Widgets/Notifications/SNotificationList.h"
 
 DEFINE_LOG_CATEGORY(LogFGameDataEditorToolkit);
@@ -28,6 +29,9 @@ void FGameDataEditorToolkit::InitEditor(const TArray<UObject*>& InObjects)
 {
 	GameData = Cast<UGameDataBase>(InObjects[0]);
 
+	WebBrowserBridge = NewObject<UGameDataEditorWebBrowserBridge>();
+	WebBrowserBridge->EditorToolkit = StaticCastSharedRef<FGameDataEditorToolkit>(this->AsShared());
+	
 	BindCommands();
 
 	const TSharedRef<FTabManager::FLayout> Layout = FTabManager::NewLayout("GameDataEditorLayout")->AddArea
@@ -56,6 +60,8 @@ void FGameDataEditorToolkit::InitEditor(const TArray<UObject*>& InObjects)
 
 	InitAssetEditor(EToolkitMode::Standalone, {}, TEXT("GameDataEditor"), Layout, true, true, InObjects);
 
+	Browser->BindUObject("deployment", WebBrowserBridge, /* permanent */ true);
+	
 	ExtendToolbar();
 	ExtendMenu();
 
@@ -156,8 +162,7 @@ void FGameDataEditorToolkit::ExtendToolbar()
 
 				ToolbarBuilder.AddToolBarButton(FGameDataEditorCommands::Get().GenerateSourceCode,
 				                                NAME_None, FText(), TAttribute<FText>(),
-				                                FSlateIcon(FAppStyle::GetAppStyleSetName(),
-				                                           "MainFrame.AddCodeToProject"));
+				                                FSlateIcon(FAppStyle::GetAppStyleSetName(), "MainFrame.AddCodeToProject"));
 			}
 			ToolbarBuilder.EndSection();
 		})
@@ -217,6 +222,7 @@ void FGameDataEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& 
 			            SAssignNew(Browser, SWebBrowser)
 						.ShowErrorMessage(false)
 						.ShowControls(false)
+						.BrowserFrameRate(60)
 						.SupportsTransparency(false)
 						.BackgroundColor(FColor::White)
 						.InitialURL(TEXT("about:blank"))
@@ -329,21 +335,13 @@ void FGameDataEditorToolkit::GenerateSourceCode_Execute()
 {
 	if (!CanReimport(GameData))
 	{
-		UE_LOG(LogFGameDataEditorToolkit, Warning,
-		       TEXT(
-			       "Unable to generate C++ Source code for game data file '%s' because it doesn't contains path to a source file."
-		       ),
-		       *GameData->GetName());
+		UE_LOG(LogFGameDataEditorToolkit, Warning, TEXT("Unable to generate C++ Source code for game data file '%s' because it doesn't contains path to a source file."), *GameData->GetName());
 		return;
 	}
 	FString GameDataClassPath;
 	if (!FSourceCodeNavigation::FindClassHeaderPath(GameData->GetClass(), GameDataClassPath))
 	{
-		UE_LOG(LogFGameDataEditorToolkit, Warning,
-		       TEXT(
-			       "Unable to generate C++ Source code for game data file '%s' because 'FSourceCodeNavigation' can't find source code location."
-		       ),
-		       *GameData->GetName());
+		UE_LOG(LogFGameDataEditorToolkit, Warning, TEXT("Unable to generate C++ Source code for game data file '%s' because 'FSourceCodeNavigation' can't find source code location."), *GameData->GetName());
 		return;
 	}
 
@@ -369,21 +367,30 @@ void FGameDataEditorToolkit::GenerateSourceCode_Execute()
 
 	const FString GameDataClassName = GameData->GetClass()->GetPrefixCPP() + GameData->GetClass()->GetName();
 	const FString DefineConstants;
-	const auto Command = FCharonCli::GenerateUnrealEngineSourceCode(
+	const auto GenerateSourceCodeCommand = FCharonCli::GenerateUnrealEngineSourceCode(
 		GameDataUrl, ApiKey, SourceCodePath, "UDocument", GameDataClassName, DefineConstants);
 
 	BroadcastCommandRunning(
-		Command,
-		TEXT("MainFrame.AddCodeToProject"),
+		GenerateSourceCodeCommand,
+		 FSlateIcon(GetPluginStyleSet()->GetStyleSetName(), "Cpp128"),
 		INVTEXT("Generating C++ source code..."),
 		INVTEXT("C++ source code has been generated."),
 		INVTEXT("C++ source code generation failed."),
 		/* can cancel */ true
 	);
 
-	Command->Run(/* event dispatch thread */ ENamedThreads::GameThread);
 
-	CurrentRunningCommand = Command; // prevent destruction of this command
+	ICharonEditorModule& CharonEditorModule = ICharonEditorModule::Get(); 
+	TArray<TSharedRef<ICharonTask>> PreTasks, PostTasks, AllTasks;
+	CharonEditorModule.OnGameDataPreSourceCodeGeneration().Broadcast(GameData, PreTasks);
+	CharonEditorModule.OnGameDataPostSourceCodeGeneration().Broadcast(GameData, PreTasks);
+
+	AllTasks.Append(PreTasks);
+	AllTasks.Add(GenerateSourceCodeCommand);
+	AllTasks.Append(PostTasks);
+
+	CurrentRunningCommand = ICharonTask::AsSequentialRunner(AllTasks);
+	CurrentRunningCommand->Start(/* event dispatch thread */ ENamedThreads::GameThread);
 }
 
 bool FGameDataEditorToolkit::CanConnect() const
@@ -434,7 +441,7 @@ void FGameDataEditorToolkit::OnConnectFinished(FConnectGameDataParameters Parame
 
 		BroadcastCommandRunning(
 			Command,
-			TEXT("Icons.Import"),
+			FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.Import"),
 			INVTEXT("Uploading game data ..."),
 			INVTEXT("Game data has been uploaded."),
 			INVTEXT("Game data upload failed."),
@@ -443,7 +450,7 @@ void FGameDataEditorToolkit::OnConnectFinished(FConnectGameDataParameters Parame
 
 		Command->OnSucceed().AddSP(this, &FGameDataEditorToolkit::Sync_Execute);
 
-		Command->Run(/* event dispatch thread */ ENamedThreads::GameThread);
+		Command->Start(/* event dispatch thread */ ENamedThreads::GameThread);
 
 		CurrentRunningCommand = Command; // prevent destruction of this command
 	}
@@ -453,21 +460,24 @@ void FGameDataEditorToolkit::OnConnectFinished(FConnectGameDataParameters Parame
 	}
 }
 
-void FGameDataEditorToolkit::OnGameDataDownloadSucceed(FString GameDataPath, FString GameDataDownloadPath)
+void FGameDataEditorToolkit::ReplaceGameDataFile(FString GameDataPath, FString ReplacementGameDataPath) const
 {
-	UE_LOG(LogFGameDataEditorToolkit, Log, TEXT(
-		       "Replacing game data file '%s' with downloaded game data at '%s'."
-	       ),
+	IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+
+	if (!PlatformFile.FileExists(*GameDataPath) ||
+		!PlatformFile.FileExists(*ReplacementGameDataPath))
+	{
+		return;
+	}
+	
+	UE_LOG(LogFGameDataEditorToolkit, Log, TEXT("Replacing game data file '%s' with new game data file at '%s'."),
 	       *GameDataPath,
-	       *FPaths::GetCleanFilename(GameDataDownloadPath)
+	       *FPaths::GetCleanFilename(ReplacementGameDataPath)
 	);
 
-	IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
 	PlatformFile.DeleteFile(*GameDataPath);
-	PlatformFile.MoveFile(*GameDataPath, *GameDataDownloadPath);
+	PlatformFile.MoveFile(*GameDataPath, *ReplacementGameDataPath);
 	PlatformFile.SetTimeStamp(*GameDataPath, FDateTime::Now());
-
-	Reimport_Execute();
 }
 
 bool FGameDataEditorToolkit::CanDisconnect() const
@@ -532,63 +542,73 @@ void FGameDataEditorToolkit::Sync_Execute()
 
 	const FString GameDataPath = GameData->AssetImportData->GetFirstFilename();
 	const FString GameDataDownloadPath = GameDataPath + ".tmp";
-	if (!GameData->AssetImportData->IsConnected())
+	TSharedPtr<ICharonTask> PublishCommand;
+	
+	if (GameData->AssetImportData->IsConnected())
 	{
-		Reimport_Execute();
-		return;
+		const auto ProjectId = GameData->AssetImportData->ProjectId;
+		const auto ProjectName = GameData->AssetImportData->ProjectName;
+		const auto ServerAddress = GameData->AssetImportData->ServerAddress;
+
+		FString ApiKey;
+		if (!FApiKeyStorage::LoadApiKey(ServerAddress, ProjectId, ApiKey))
+		{
+			BroadcastMissingApiKey(FText::FromString(ProjectName));
+			return;
+		}
+
+		const auto ServerApiClient = FServerApiClient(ServerAddress);
+		const FString GameDataUrl = ServerApiClient.GetGameDataUrl(ProjectId, GameData->AssetImportData->BranchId);
+
+		const TArray<FString> All{TEXT("*")};
+		PublishCommand = FCharonCli::ExportToFile(GameDataUrl, ApiKey, All, All, All, EExportMode::Publication,
+													  GameDataDownloadPath, FPaths::GetExtension(GameDataPath));
+
+		BroadcastCommandRunning(
+			PublishCommand.ToSharedRef(),
+			FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.Import"),
+			INVTEXT("Downloading game data..."),
+			INVTEXT("Game data has been downloaded."),
+			INVTEXT("Game data download failed."),
+			/* can cancel */ true
+		);
+
+		PublishCommand->OnFailed().AddLambda([GameDataDownloadPath]()
+		{
+			// Clear temp file
+			IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+			PlatformFile.DeleteFile(*GameDataDownloadPath);
+		});
 	}
 
-	const auto ProjectId = GameData->AssetImportData->ProjectId;
-	const auto ProjectName = GameData->AssetImportData->ProjectName;
-	const auto ServerAddress = GameData->AssetImportData->ServerAddress;
+	ICharonEditorModule& CharonEditorModule = ICharonEditorModule::Get(); 
+	TArray<TSharedRef<ICharonTask>> PreTasks, PostTasks, AllTasks;
+	CharonEditorModule.OnGameDataPreSynchronization().Broadcast(GameData, PreTasks);
+	CharonEditorModule.OnGameDataPostSynchronization().Broadcast(GameData, PreTasks);
 
-	FString ApiKey;
-	if (!FApiKeyStorage::LoadApiKey(ServerAddress, ProjectId, ApiKey))
+	AllTasks.Append(PreTasks);
+	if (PublishCommand != nullptr)
 	{
-		BroadcastMissingApiKey(FText::FromString(ProjectName));
-		return;
+		AllTasks.Add(PublishCommand.ToSharedRef());
+		AllTasks.Add(ICharonTask::FromSimpleDelegate(FSimpleDelegate::CreateSP(this, &FGameDataEditorToolkit::ReplaceGameDataFile, GameDataPath, GameDataDownloadPath), INVTEXT("Replace Files")));
 	}
+	AllTasks.Add(ICharonTask::FromSimpleDelegate(FSimpleDelegate::CreateSP(this, &FGameDataEditorToolkit::Reimport_Execute), INVTEXT("Reimport")));
+	AllTasks.Append(PostTasks);
 
-	const auto ServerApiClient = FServerApiClient(ServerAddress);
-	const FString GameDataUrl = ServerApiClient.GetGameDataUrl(ProjectId, GameData->AssetImportData->BranchId);
-
-	const TArray<FString> All{TEXT("*")};
-	const auto Command = FCharonCli::ExportToFile(GameDataUrl, ApiKey, All, All, All, EExportMode::Publication,
-	                                              GameDataDownloadPath, FPaths::GetExtension(GameDataPath));
-
-	BroadcastCommandRunning(
-		Command,
-		TEXT("Icons.Import"),
-		INVTEXT("Downloading game data..."),
-		INVTEXT("Game data has been downloaded."),
-		INVTEXT("Game data download failed."),
-		/* can cancel */ true
-	);
-
-	// Replace/move temp file
-	Command->OnSucceed().AddSP(this, &FGameDataEditorToolkit::OnGameDataDownloadSucceed, GameDataPath,
-	                           GameDataDownloadPath);
-	Command->OnFailed().AddLambda([GameDataDownloadPath]()
-	{
-		IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
-		PlatformFile.DeleteFile(*GameDataDownloadPath);
-	});
-
-	Command->Run(/* event dispatch thread */ ENamedThreads::GameThread);
-
-	CurrentRunningCommand = Command; // prevent destruction of this command
+	CurrentRunningCommand = ICharonTask::AsSequentialRunner(AllTasks);
+	CurrentRunningCommand->Start(/* event dispatch thread */ ENamedThreads::GameThread);
 }
 
 void FGameDataEditorToolkit::BroadcastCommandRunning(
 	const TSharedRef<ICharonTask>& Command,
-	FName IconName,
+	FSlateIcon Icon,
 	FText CommandPendingText,
 	FText CommandSucceedText,
 	FText CommandFailedText,
 	bool bCanCancel)
 {
 	FNotificationInfo Info(CommandPendingText);
-	Info.Image = FSlateIcon(FAppStyle::GetAppStyleSetName(), IconName).GetIcon();
+	Info.Image = Icon.GetIcon();
 	if (bCanCancel)
 	{
 		FSimpleDelegate CancelCommandAction;
@@ -604,10 +624,11 @@ void FGameDataEditorToolkit::BroadcastCommandRunning(
 				CancelCommandAction)
 		);
 	}
+	Info.FadeOutDuration = 3;
 	Info.bFireAndForget = false;
 	Info.bUseLargeFont = false;
 	Info.bUseThrobber = false;
-	Info.bUseSuccessFailIcons = false;
+	Info.bUseSuccessFailIcons = true;
 
 	const auto NotificationItem = FSlateNotificationManager::Get().AddNotification(Info);
 	if (!NotificationItem.IsValid()) { return; }

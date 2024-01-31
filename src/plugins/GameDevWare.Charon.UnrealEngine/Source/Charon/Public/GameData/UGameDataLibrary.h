@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "FGameDataDocumentReference.h"
+#include "EDocumentReferenceGetResult.h"
 #include "FLocalizedString.h"
 #include "UGameDataDocument.h"
 
@@ -14,10 +15,19 @@ class UGameDataDocumentReferenceLibrary : public UBlueprintFunctionLibrary
 	/*
 	 * Get UGameDataDocument referenced in specified DocumentReference.
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static UGameDataDocument* GetDocument(FGameDataDocumentReference DocumentReference)
+	UFUNCTION(BlueprintCallable, Meta = (ExpandEnumAsExecs = "Branches"))
+	static UGameDataDocument* GetDocument(FGameDataDocumentReference DocumentReference, EDocumentReferenceGetResult& Branches)
 	{
-		return DocumentReference.GetReferencedDocument();
+		UGameDataDocument* Document = DocumentReference.GetReferencedDocument();
+		if (Document == nullptr)
+		{
+			Branches = EDocumentReferenceGetResult::NotFound;
+		}
+		else
+		{
+			Branches = EDocumentReferenceGetResult::Found;
+		}
+		return Document;
 	}
 
 	/*

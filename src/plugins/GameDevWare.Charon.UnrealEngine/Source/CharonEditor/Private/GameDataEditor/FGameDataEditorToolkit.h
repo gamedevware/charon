@@ -3,24 +3,28 @@
 #include "CoreMinimal.h"
 #include "FConnectGameDataParameters.h"
 #include "SWebBrowser.h"
+#include "GameData/ICharonEditorModule.h"
 #include "GameData/CommandLine/FCharonEditorProcessRunner.h"
-#include "SConnectGameDataDialog.h"
-#include "GameData/CommandLine/TCharonCliCommand.h"
-#include "..\..\Public\GameData\ICharonTask.h"
+#include "GameData/ICharonTask.h"
 #include "GameData/UGameDataBase.h"
 #include "Toolkits/AssetEditorToolkit.h"
+#include "Styling/SlateStyle.h"
 
+class UGameDataEditorWebBrowserBridge;
 DECLARE_LOG_CATEGORY_EXTERN(LogFGameDataEditorToolkit, Log, All);
 
 class FGameDataEditorToolkit : public FAssetEditorToolkit
 {
+	friend UGameDataEditorWebBrowserBridge;
 private:
-	UGameDataBase* GameData = nullptr;
+	TObjectPtr<UGameDataBase> GameData;
+	TObjectPtr<UGameDataEditorWebBrowserBridge> WebBrowserBridge;
+	
 	TSharedPtr<SWebBrowser> Browser;
 	TSharedPtr<ICharonTask> CurrentRunningCommand;
 	TSharedPtr<FCharonEditorProcessRunner> EditorProcess;
 	TSharedPtr<SWindow> PendingDialog;
-
+	
 	void LaunchCharonProcess();
 	void OpenCharonWebsite() const;
 	void BindCommands();
@@ -39,13 +43,14 @@ protected:
 	bool CanSetApiKey() const;
 	void OnSetApiKeyFinished(FString String) const;
 	void OnConnectFinished(FConnectGameDataParameters Parameters);
-	void OnGameDataDownloadSucceed(FString String, FString String1);
+	void ReplaceGameDataFile(FString String, FString String1) const;
 
-	static void BroadcastCommandRunning(const TSharedRef<ICharonTask>& Command, FName IconName,
+	static void BroadcastCommandRunning(const TSharedRef<ICharonTask>& Command, FSlateIcon Icon,
 	                                    FText CommandPendingText, FText CommandSucceedText, FText CommandFailedText,
 	                                    bool bCanCancel);
 
 	static void BroadcastMissingApiKey(FText ProjectName);
+	static TSharedRef<FSlateStyleSet> GetPluginStyleSet() { return ICharonEditorModule::Get().GetStyleSet().ToSharedRef(); }
 
 public:
 	void InitEditor(const TArray<UObject*>& InObjects);

@@ -6,12 +6,12 @@ DEFINE_LOG_CATEGORY(LogFSequentialCharonTaskRunner);
 
 
 FSequentialCharonTaskRunner::FSequentialCharonTaskRunner(const TArray<TSharedRef<ICharonTask>>& Tasks)
-	: DispatchThread(ENamedThreads::AnyThread), TaskList(Tasks), CurrentTaskIndex(-1) 
+	: EventThread(ENamedThreads::AnyThread), TaskList(Tasks), CurrentTaskIndex(-1) 
 {
 	DisplayName = FText::Format(INVTEXT("Tasks [{0}]"), TaskList.Num());
 }
 
-bool FSequentialCharonTaskRunner::Run(ENamedThreads::Type EventDispatchThread)
+bool FSequentialCharonTaskRunner::Start(ENamedThreads::Type EventDispatchThread)
 {
 	int32 Expected = -1;
 	if (!CurrentTaskIndex.compare_exchange_strong(Expected, 0))
@@ -20,8 +20,8 @@ bool FSequentialCharonTaskRunner::Run(ENamedThreads::Type EventDispatchThread)
 		return false;
 	}
 
-	DispatchThread = EventDispatchThread;
-	BroadcastEvent(AsWeak(), TaskStart, DispatchThread);
+	EventThread = EventDispatchThread;
+	BroadcastEvent(AsWeak(), TaskStart, EventThread);
 	
 	RunTask(0);
 	return true;
@@ -31,7 +31,7 @@ void FSequentialCharonTaskRunner::RunTask(int32 TasksIndex)
 {
 	if (TasksIndex >= TaskList.Num()) // it was last task
 	{
-		BroadcastEvent(AsWeak(), TaskSucceed, DispatchThread);
+		BroadcastEvent(AsWeak(), TaskSucceed, EventThread);
 		return;
 	}
 	
@@ -53,7 +53,7 @@ void FSequentialCharonTaskRunner::RunTask(int32 TasksIndex)
 	Task->OnSucceed().AddLambda(NextTaskFn);
 	Task->OnFailed().AddLambda(NextTaskFn);
 
-	if (!Task->Run(DispatchThread))
+	if (!Task->Start(EventThread))
 	{
 		UE_LOG(LogFSequentialCharonTaskRunner, Warning, TEXT("Batched task #%d '%s' has failed to start."), TasksIndex, *Task->GetDisplayName().ToString());
 		NextTaskFn();
@@ -74,7 +74,7 @@ void FSequentialCharonTaskRunner::Stop()
 	}
 	
 	TaskList[CurrentIndex]->Stop();
-	BroadcastEvent(AsWeak(), TaskFailed, DispatchThread);
+	BroadcastEvent(AsWeak(), TaskFailed, EventThread);
 }
 
 TSharedRef<ICharonTask> ICharonTask::AsSequentialRunner(const TArray<TSharedRef<ICharonTask>>& Tasks)

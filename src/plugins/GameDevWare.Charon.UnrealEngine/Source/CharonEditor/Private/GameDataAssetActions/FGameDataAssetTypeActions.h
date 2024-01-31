@@ -12,6 +12,7 @@ public:
 	virtual uint32 GetCategories() override;
 	virtual void OpenAssetEditor(const TArray<UObject*>& InObjects, TSharedPtr<IToolkitHost> EditWithinLevelEditor) override;
 	virtual void GetResolvedSourceFilePaths(const TArray<UObject*>& TypeAssets, TArray<FString>& OutSourceFilePaths) const override;
+	virtual const FSlateBrush* GetIconBrush(const FAssetData& InAssetData, const FName InClassName) const override;
 	
 	virtual bool CanLocalize() const override { return false; }
 	virtual bool IsImportedAsset() const override { return true; }

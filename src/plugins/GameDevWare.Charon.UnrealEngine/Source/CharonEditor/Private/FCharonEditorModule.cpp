@@ -10,13 +10,15 @@
 #include "GameDataAssetActions/FGameDataReimportHandler.h"
 #include "Modules/ModuleInterface.h"
 #include "Modules/ModuleManager.h"
+#include "Styling/SlateStyle.h"
+#include "Styling/SlateStyleRegistry.h"
 
 #define LOCTEXT_NAMESPACE "FCharonEditorModule"
 
 void FCharonEditorModule::StartupModule()
 {
-	GameDataEditorMenuExtensibilityManager = MakeShared<FExtensibilityManager>();
-	GameDataEditorToolBarExtensibilityManager = MakeShared<FExtensibilityManager>();
+	EditorMenuExtensibilityManager = MakeShared<FExtensibilityManager>();
+	EditorToolBarExtensibilityManager = MakeShared<FExtensibilityManager>();
 	
 	// Register game data asset editor commands
 	FGameDataEditorCommands::Register();
@@ -34,6 +36,13 @@ void FCharonEditorModule::StartupModule()
 	const FAssetToolsModule& AssetToolsModule = FAssetToolsModule::GetModule();
 	GameDataAssetTypeActions = MakeShared<FGameDataAssetTypeActions>();
 	AssetToolsModule.Get().RegisterAssetTypeActions(GameDataAssetTypeActions.ToSharedRef());
+
+	StyleSet = MakeShared<FSlateStyleSet>("CharonEditor");
+	StyleSet->SetContentRoot(FPaths::ProjectPluginsDir() / TEXT("Charon/Resources"));
+	const FVector2D Icon128(128.0f, 128.0f);
+	StyleSet->Set("Cpp128", new FSlateImageBrush(StyleSet->RootToContentDir(TEXT("Cpp128"), TEXT(".png")), Icon128));
+	StyleSet->Set("Icon128", new FSlateImageBrush(StyleSet->RootToContentDir(TEXT("Icon128"), TEXT(".png")), Icon128));
+	FSlateStyleRegistry::RegisterSlateStyle(*StyleSet.Get());
 }
 
 void FCharonEditorModule::ShutdownModule()

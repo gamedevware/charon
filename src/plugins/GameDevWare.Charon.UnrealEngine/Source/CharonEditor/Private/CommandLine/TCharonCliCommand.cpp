@@ -15,7 +15,7 @@ TCharonCliCommand<InResultType>::TCharonCliCommand(
 	const TSharedRef<FMonitoredProcess>& Process,
 	const FText& DisplayName,
 	const FString& OutputFilePath)
-	: DisplayName(DisplayName), Process(Process), DispatchThread(ENamedThreads::AnyThread), RunStatus(ERunStatus::ReadyToRun)
+	: DisplayName(DisplayName), Process(Process), EventThread(ENamedThreads::AnyThread), RunStatus(ERunStatus::ReadyToRun)
 {
 	CommandSucceed.AddLambda([this](InResultType _) { TaskSucceed.Broadcast(); });
 	CommandFailed.AddLambda([this](int32 _, FString __) { TaskFailed.Broadcast(); });
@@ -23,7 +23,7 @@ TCharonCliCommand<InResultType>::TCharonCliCommand(
 }
 
 template <typename InResultType>
-bool TCharonCliCommand<InResultType>::Run(ENamedThreads::Type EventDispatchThread)
+bool TCharonCliCommand<InResultType>::Start(ENamedThreads::Type EventDispatchThread)
 {
 	ERunStatus ExpectedReadyToRun = ERunStatus::ReadyToRun;
 	if (!RunStatus.compare_exchange_strong(ExpectedReadyToRun, ERunStatus::Running))
@@ -33,10 +33,10 @@ bool TCharonCliCommand<InResultType>::Run(ENamedThreads::Type EventDispatchThrea
 	}
 
 	const auto WeakThisPtr = this->AsWeak();
-	DispatchThread = EventDispatchThread;
-	BroadcastEvent(WeakThisPtr, TaskStart, DispatchThread);
+	EventThread = EventDispatchThread;
+	BroadcastEvent(WeakThisPtr, TaskStart, EventThread);
 	
-	if (DispatchThread != ENamedThreads::AnyThread)
+	if (EventThread == ENamedThreads::AnyThread)
 	{
 		Process->OnCompleted().BindSP(this, &TCharonCliCommand::OnProcessCompleted);
 		Process->OnCanceled().BindSP(this, &TCharonCliCommand::OnProcessCancelled);
@@ -134,7 +134,19 @@ void TCharonCliCommand<InResultType>::OnProcessOutput(FString Output)
 	AsyncTask(ENamedThreads::GameThread, [WeakThisPtr, SharedOutputRef]()
 	{
 		if (!WeakThisPtr.IsValid()) return;
-		UE_LOG(LogTCharonCliCommand, Log, TEXT("%s"), *SharedOutputRef.Get());
+
+		if (SharedOutputRef->Contains(TEXT("Error]")))
+		{
+			UE_LOG(LogTCharonCliCommand, Error, TEXT("%s"), *SharedOutputRef.Get());
+		}
+		else if(SharedOutputRef->Contains(TEXT("Warning]")))
+		{
+			UE_LOG(LogTCharonCliCommand, Warning, TEXT("%s"), *SharedOutputRef.Get());
+		}
+		else
+		{
+			UE_LOG(LogTCharonCliCommand, Log, TEXT("%s"), *SharedOutputRef.Get());
+		}
 	});
 }
 

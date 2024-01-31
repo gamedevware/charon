@@ -13,18 +13,30 @@
  */
 class CHARONEDITOR_API FCharonEditorModule final : public ICharonEditorModule
 {
+private:
+	TSharedPtr<FExtensibilityManager> EditorMenuExtensibilityManager;
+	TSharedPtr<FExtensibilityManager> EditorToolBarExtensibilityManager;
+	TSharedPtr<FGameDataAssetTypeActions> GameDataAssetTypeActions;
+	FOnCharonGameDataAction PreSourceCodeGeneration;
+	FOnCharonGameDataAction PostSourceCodeGeneration;
+	FOnCharonGameDataAction PreSynchronization;
+	FOnCharonGameDataAction PostSynchronization;
+	TSharedPtr<FSlateStyleSet> StyleSet;
+	FGameDataReimportHandler GameDataReimportHandler;
+	
 public:
-
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 
-	virtual TSharedPtr<FExtensibilityManager> GetGameDataEditorMenuExtensibilityManager() override { return GameDataEditorMenuExtensibilityManager; }
-	virtual TSharedPtr<FExtensibilityManager> GetGameDataEditorToolBarExtensibilityManager() override { return GameDataEditorToolBarExtensibilityManager; }
+	virtual TSharedPtr<FExtensibilityManager> GetGameDataEditorMenuExtensibilityManager() override { return EditorMenuExtensibilityManager; }
+	virtual TSharedPtr<FExtensibilityManager> GetGameDataEditorToolBarExtensibilityManager() override { return EditorToolBarExtensibilityManager; }
+
+	virtual FOnCharonGameDataAction& OnGameDataPreSourceCodeGeneration() override { return PreSourceCodeGeneration; }
+	virtual FOnCharonGameDataAction& OnGameDataPostSourceCodeGeneration() override { return PostSourceCodeGeneration; }
+
+	virtual FOnCharonGameDataAction& OnGameDataPreSynchronization() override { return PreSynchronization; }
+	virtual FOnCharonGameDataAction& OnGameDataPostSynchronization() override { return PostSynchronization; }
 	
-private:
-	TSharedPtr<FExtensibilityManager> GameDataEditorMenuExtensibilityManager;
-	TSharedPtr<FExtensibilityManager> GameDataEditorToolBarExtensibilityManager;
-	TSharedPtr<FGameDataAssetTypeActions> GameDataAssetTypeActions;
-	FGameDataReimportHandler GameDataReimportHandler;
+	virtual TSharedPtr<FSlateStyleSet> GetStyleSet() override { return StyleSet; }
 };

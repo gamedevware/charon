@@ -7,14 +7,15 @@ public:
 
 	virtual const FText& GetDisplayName() = 0;
 	
-	virtual bool Run(ENamedThreads::Type EventDispatchThread = ENamedThreads::AnyThread) = 0;
+	virtual bool Start(ENamedThreads::Type EventDispatchThread = ENamedThreads::AnyThread) = 0;
 	virtual void Stop() = 0;
 
 	virtual FSimpleMulticastDelegate& OnStart() = 0;
 	virtual FSimpleMulticastDelegate& OnSucceed() = 0;
 	virtual FSimpleMulticastDelegate& OnFailed() = 0;
 
-	static TSharedRef<ICharonTask> FromSimpleDelegate(const FSimpleDelegate& Delegate, const FText& DisplayName);
+	static TSharedRef<ICharonTask> FromSimpleDelegate(const FSimpleDelegate& Delegate, const FText& DisplayName, ENamedThreads::Type RunThread = ENamedThreads::AnyThread);
+	static TSharedRef<ICharonTask> FromRunnable(const TSharedRef<FRunnable>& Runnable, const FText& DisplayName, ENamedThreads::Type RunThread = ENamedThreads::AnyThread);
 	static TSharedRef<ICharonTask> AsSequentialRunner(const TArray<TSharedRef<ICharonTask>>& Tasks);
 
 protected:

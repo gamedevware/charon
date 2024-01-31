@@ -4,12 +4,12 @@
 
 DEFINE_LOG_CATEGORY(LogFDelegateTaskRunner);
 
-FDelegateTaskRunner::FDelegateTaskRunner(const FSimpleDelegate& Delegate, const FText& DisplayName)
-	: DisplayName(DisplayName), DispatchThread(ENamedThreads::AnyThread), Delegate(Delegate)
+FDelegateTaskRunner::FDelegateTaskRunner(const FSimpleDelegate& Delegate, const FText& DisplayName, ENamedThreads::Type RunThread)
+	: DisplayName(DisplayName), EventThread(ENamedThreads::AnyThread), RunThread(RunThread), Delegate(Delegate)
 {
 }
 
-bool FDelegateTaskRunner::Run(ENamedThreads::Type EventDispatchThread)
+bool FDelegateTaskRunner::Start(ENamedThreads::Type EventDispatchThread)
 {
 	ERunStatus ExpectedReady = ERunStatus::Ready;
 	if (!RunStatus.compare_exchange_strong(ExpectedReady, ERunStatus::Running))
@@ -18,8 +18,8 @@ bool FDelegateTaskRunner::Run(ENamedThreads::Type EventDispatchThread)
 		return false;
 	}
 
-	DispatchThread = EventDispatchThread;
-	BroadcastEvent(AsWeak(), TaskStart, DispatchThread);
+	EventThread = EventDispatchThread;
+	BroadcastEvent(AsWeak(), TaskStart, EventThread);
 	
 	ERunStatus ExpectedRunning = ERunStatus::Running;
 	if (!Delegate.IsBound())
@@ -28,23 +28,24 @@ bool FDelegateTaskRunner::Run(ENamedThreads::Type EventDispatchThread)
 
 		if (RunStatus.compare_exchange_strong(ExpectedRunning, ERunStatus::Failed))
 		{
-			BroadcastEvent(AsWeak(), TaskFailed, DispatchThread);
+			BroadcastEvent(AsWeak(), TaskFailed, EventThread);
 		}
 		return false;
 	}
 	
-	if (DispatchThread == ENamedThreads::AnyThread)
+	if (RunThread == ENamedThreads::AnyThread)
 	{
 		Delegate.Execute();
 		
 		if (RunStatus.compare_exchange_strong(ExpectedRunning, ERunStatus::Succeed))
 		{
-			BroadcastEvent(AsWeak(), TaskSucceed, DispatchThread);
+			BroadcastEvent(AsWeak(), TaskSucceed, EventThread);
 		}
-	} else
+	}
+	else
 	{
 		const auto WeakThisPtr = this->AsWeak();
-		AsyncTask(DispatchThread, [WeakThisPtr, this]
+		AsyncTask(EventThread, [WeakThisPtr, this]
 		{
 			const auto ThisPtr = WeakThisPtr.Pin();
 			if (!ThisPtr.IsValid()) { return; }
@@ -54,7 +55,7 @@ bool FDelegateTaskRunner::Run(ENamedThreads::Type EventDispatchThread)
 			ERunStatus ExpectedRunning = ERunStatus::Running;
 			if (RunStatus.compare_exchange_strong(ExpectedRunning, ERunStatus::Succeed))
 			{
-				BroadcastEvent(AsWeak(), TaskSucceed, DispatchThread);
+				BroadcastEvent(AsWeak(), TaskSucceed, EventThread);
 			}
 		});
 	}
@@ -68,7 +69,7 @@ void FDelegateTaskRunner::Stop()
 	RunStatus.compare_exchange_strong(ExpectedRunning, ERunStatus::Stopped);
 }
 
-TSharedRef<ICharonTask> ICharonTask::FromSimpleDelegate(const FSimpleDelegate& Delegate, const FText& DisplayName)
+TSharedRef<ICharonTask> ICharonTask::FromSimpleDelegate(const FSimpleDelegate& Delegate, const FText& DisplayName, ENamedThreads::Type RunThread)
 {
-	return MakeShared<FDelegateTaskRunner>(Delegate, DisplayName);
+	return MakeShared<FDelegateTaskRunner>(Delegate, DisplayName, RunThread);
 }

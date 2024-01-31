@@ -2,6 +2,7 @@
 
 #include "FGameDataAssetTypeActions.h"
 
+#include "GameData/ICharonEditorModule.h"
 #include "GameDataEditor/FGameDataEditorToolkit.h"
 #include "GameData/UGameDataBase.h"
 
@@ -39,4 +40,11 @@ void FGameDataAssetTypeActions::GetResolvedSourceFilePaths(const TArray<UObject*
 		const auto GameData = CastChecked<UGameDataBase>(Asset);
 		GameData->AssetImportData->ExtractFilenames(OutSourceFilePaths);
 	}
+}
+
+const FSlateBrush* FGameDataAssetTypeActions::GetIconBrush(const FAssetData& InAssetData, const FName InClassName) const
+{
+	const auto StyleSet = ICharonEditorModule::Get().GetStyleSet();
+	const auto PluginIcon = FSlateIcon(StyleSet->GetStyleSetName(), "Icon128");
+	return PluginIcon.GetIcon();
 }

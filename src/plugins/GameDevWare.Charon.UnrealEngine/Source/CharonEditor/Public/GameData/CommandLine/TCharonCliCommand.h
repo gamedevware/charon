@@ -26,7 +26,7 @@ private:
 	FText DisplayName;
 	TSharedRef<FMonitoredProcess> Process;
 	FString OutputFilePath;
-	ENamedThreads::Type DispatchThread;
+	ENamedThreads::Type EventThread;
 	std::atomic<ERunStatus> RunStatus;
 
 	FSimpleMulticastDelegate TaskStart;
@@ -45,7 +45,7 @@ public:
 	
 	TCharonCliCommand(const TSharedRef<FMonitoredProcess>& Process, const FText& DisplayName, const FString& OutputFilePath = FString());
 	
-	virtual bool Run(ENamedThreads::Type EventDispatchThread = ENamedThreads::AnyThread) override;
+	virtual bool Start(ENamedThreads::Type EventDispatchThread = ENamedThreads::AnyThread) override;
 	virtual void Stop() override;
 
 private:

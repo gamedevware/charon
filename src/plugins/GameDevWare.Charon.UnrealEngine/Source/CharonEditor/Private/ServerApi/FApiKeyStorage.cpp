@@ -31,7 +31,7 @@ FString FApiKeyStorage::GetOrCreateKeyDirectory()
 {
 	IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
 	const FString KeysDirectory = FPaths::ConvertRelativePathToFull(
-		FPaths::ProjectIntermediateDir() / "Charon" / "keys");
+		FPaths::GameUserDeveloperDir() / "Charon" / "keys");
 
 	if (PlatformFile.DirectoryExists(*KeysDirectory))
 	{

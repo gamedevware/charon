@@ -70,7 +70,18 @@ bool FCharonEditorProcessRunner::Launch()
 		AsyncTask(ENamedThreads::GameThread, [WeakThisPtr, SharedOutputRef]()
 		{
 			if (!WeakThisPtr.IsValid()) return;
-			UE_LOG(LogFCharonEditorProcessRunner, Log, TEXT("%s"), *SharedOutputRef.Get());
+			if (SharedOutputRef->Contains(TEXT("Error]")))
+			{
+				UE_LOG(LogFCharonEditorProcessRunner, Error, TEXT("%s"), *SharedOutputRef.Get());
+			}
+			else if(SharedOutputRef->Contains(TEXT("Warning]")))
+			{
+				UE_LOG(LogFCharonEditorProcessRunner, Warning, TEXT("%s"), *SharedOutputRef.Get());
+			}
+			else
+			{
+				UE_LOG(LogFCharonEditorProcessRunner, Log, TEXT("%s"), *SharedOutputRef.Get());
+			}
 		});
 	});
 	

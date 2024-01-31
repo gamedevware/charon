@@ -19,7 +19,8 @@ private:
 	FSimpleMulticastDelegate TaskStart;
 	FSimpleMulticastDelegate TaskSucceed;
 	FSimpleMulticastDelegate TaskFailed;
-	ENamedThreads::Type DispatchThread;
+	ENamedThreads::Type EventThread;
+	ENamedThreads::Type RunThread;
 	const FSimpleDelegate Delegate;
 	std::atomic<ERunStatus> RunStatus;
 
@@ -27,9 +28,9 @@ private:
 public:
 	virtual const FText& GetDisplayName() override { return DisplayName; }
 	
-	explicit FDelegateTaskRunner(const FSimpleDelegate& Delegate, const FText& DisplayName);
+	explicit FDelegateTaskRunner(const FSimpleDelegate& Delegate, const FText& DisplayName, ENamedThreads::Type RunThread);
 
-	virtual bool Run(ENamedThreads::Type EventDispatchThread = ENamedThreads::AnyThread) override;
+	virtual bool Start(ENamedThreads::Type EventDispatchThread = ENamedThreads::AnyThread) override;
 	virtual void Stop() override;
 
 	virtual FSimpleMulticastDelegate& OnStart() override { return TaskStart; }

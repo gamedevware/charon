@@ -346,7 +346,7 @@ void SCreateGameDataDialog::OnGenerateCodeAndAssets()
 	
 	GenerateTask->OnSucceed().AddSP(this, &SCreateGameDataDialog::AllTasksCompleted);
 	
-	GenerateTask->Run(ENamedThreads::GameThread);
+	GenerateTask->Start(ENamedThreads::GameThread);
 }
 
 void SCreateGameDataDialog::ReportGenerationProgress(TSharedRef<ICharonTask> Task, int TaskIndex, int TaskNum)
