@@ -1,10 +1,10 @@
 
 #pragma once
 
+UENUM(BlueprintType)
 /*
  * List of serialization formats supported by UGameDataBase-derived classes.
  */
-UENUM(BlueprintType)
 enum class EGameDataFormat : uint8
 {
 	/*

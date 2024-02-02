@@ -29,6 +29,7 @@ public:
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 
+	/** ICharonEditorModule implementation */
 	virtual TSharedPtr<FExtensibilityManager> GetGameDataEditorMenuExtensibilityManager() override { return EditorMenuExtensibilityManager; }
 	virtual TSharedPtr<FExtensibilityManager> GetGameDataEditorToolBarExtensibilityManager() override { return EditorToolBarExtensibilityManager; }
 

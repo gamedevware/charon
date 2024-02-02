@@ -1,9 +1,9 @@
 #pragma once
 
+UENUM(BlueprintType)
 /**
  * When to fallback to alternative localization text.
  */
-UENUM(BlueprintType)
 enum class ELocalizedStringFallbackOption : uint8
 {
 	/**

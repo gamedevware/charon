@@ -1,7 +1,7 @@
 #pragma once
 
 #include "EImportReportDocumentChangeStatus.h"
-#include "FDocumentValidationError.h"
+#include "GameData/CommandLine/FDocumentValidationError.h"
 #include "FImportReportDocumentChange.generated.h"
 
 USTRUCT()

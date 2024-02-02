@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameData/UImportGameDataFactory.h"
+#include "GameDataAssetActions/UImportGameDataFactory.h"
 #include "UObject/Class.h"
 #include "Misc/FeedbackContext.h"
 #include "JsonObjectConverter.h"

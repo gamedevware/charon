@@ -7,6 +7,9 @@
 
 #include "UGameDataLibrary.generated.h"
 
+/*
+ * Additional function for Blueprints related to game data.
+ */
 UCLASS()
 class UGameDataDocumentReferenceLibrary : public UBlueprintFunctionLibrary
 {
