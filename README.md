@@ -1,5 +1,7 @@
+
 Charon - Game Data Editor
 =========================
+![NuGet Version](https://img.shields.io/nuget/v/GameDevWare.Charon)
 
 <img width="894" alt="dashboard" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/cover_github.png"/>  
 
