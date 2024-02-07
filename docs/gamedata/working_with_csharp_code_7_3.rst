@@ -28,7 +28,7 @@ You can access your documents as a list:
 .. code-block:: csharp
 
   var allHeroes = gameData.AllHeroes.AsList // -> IReadOnlyList<Hero>
-  var rootHeroes = gameData.RootHeroes.AsList // -> IReadOnlyList<Hero>
+  var heroes = gameData.Heroes.AsList // -> IReadOnlyList<Hero>
 
 Or you can access specific documents by their ``Id`` or *Unique* properties:
 

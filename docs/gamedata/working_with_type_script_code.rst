@@ -40,7 +40,7 @@ You can access your documents as a list:
 .. code-block:: js
 
   let heroes = gameData.heroesAll; // all heroes from all documents -> readonly Hero[]
-  let heroes = gameData.heroesRoot; // heroes only from root collection -> readonly Hero[]
+  let heroes = gameData.heroes; // heroes only from root collection -> readonly Hero[]
 
 Or you can access specific documents by their ``Id`` or *Unique* properties:
 

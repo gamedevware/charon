@@ -37,23 +37,23 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="998"
-     inkscape:window-height="815"
+     inkscape:window-width="1405"
+     inkscape:window-height="901"
      id="namedview6"
      showgrid="false"
      inkscape:zoom="0.417193"
-     inkscape:cx="469.78526"
+     inkscape:cx="61.101509"
      inkscape:cy="337.91756"
-     inkscape:window-x="1774"
-     inkscape:window-y="134"
+     inkscape:window-x="1367"
+     inkscape:window-y="48"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg4" />
   <circle
-     style="display:inline;fill:#fffffe;fill-opacity:1;stroke:#ff0000;stroke-width:0.01133858;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="display:inline;fill:#fffffe;fill-opacity:1;stroke:#ff0000;stroke-width:0.01111181;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="path4520"
      cx="11.972876"
      cy="12.027124"
-     r="12.044785" />
+     r="11.803889" />
   <path
      d="M 12,0 C 5.373,0 0,5.373 0,12 0,18.627 5.373,24 12,24 18.627,24 24,18.627 24,12 24,5.373 18.627,0 12,0 Z m 0,1.846 c 5.595,0.007 10.128,4.545 10.128,10.141 0,5.601 -4.54,10.141 -10.141,10.141 -5.601,0 -10.141,-4.54 -10.141,-10.141 0,-2.8 1.135,-5.335 2.97,-7.17 1.837,-1.835 4.374,-2.97 7.176,-2.97 h 0.007 z m 0,2.77 C 7.608,5.39 3.692,9.44 3.692,13.846 5.841,10.052 7.276,9.779 7.673,9.779 c 0.397,0 0.606,0.206 0.606,0.663 v 5.654 c 0,0.703 -1.366,0.588 -1.818,0.519 1.67,2.485 5.539,2.77 5.539,2.77 l 1.846,-1.846 1.846,0.923 c 2.914,-1.334 4.615,-4.19 4.615,-4.615 -0.701,0.868 -1.646,1.515 -2.731,1.836 l -0.039,0.01 c -0.245,0 -0.923,-0.126 -0.923,-0.462 V 8.538 c 0,-0.581 1.342,-2.354 1.846,-3 -3.332,0.873 -4.298,2.394 -4.298,2.394 0,0 -0.253,-0.548 -1.24,-0.548 0.501,0.473 0.838,1.114 0.922,1.832 l 0.001,0.014 v 5.654 c -0.525,0.373 -1.144,0.653 -1.813,0.801 l -0.034,0.006 c -0.64,0 -0.952,-0.26 -0.952,-0.75 0,-0.49 0.029,-6.634 0.029,-6.634 0,0 -0.923,0.339 -0.923,-1.558 0,-0.949 1.846,-2.135 1.846,-2.135 z"
      id="path2"
