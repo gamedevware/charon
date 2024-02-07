@@ -28,14 +28,16 @@ It is available in three deployment variants, including a [standalone/offline](h
 
 What is Charon
 ==============
-It is .NET 4.6 console application which could be used as command line tool for performing CRUD operation with your game data or as HTTP Server to provide UI for modelling and editing your game data. There are plugins for Unity and Unreal Engine which provides more intergrated experience while using Charon.  
-As any .NET application it could launched as is on Windows and via Mono on MacOSx and Linux.  
+It is a .NET 4.6 console application that can be used as a command-line tool for performing CRUD operations with your game data, or as an HTTP Server to provide a UI for modeling and editing your game data. There are plugins for Unity and Unreal Engine that provide a more integrated experience while using Charon.  
+As with any .NET application, it can be launched as is on Windows and via Mono on macOS and Linux.
 
 How it work
 ===========
+You create an empty `gamedata.json` file when launching the Charon.exe application, which acts as an HTTP server. You edit your game data in the UI, then generate source code for your game engine. With this source code, you load `gamedata.json` into your game and use it in a safe and structured manner.
+
 <img width="894" alt="scheme" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/how_it_works.png"/>  
 
-If you use plugins for Unity or Unreal Engine it is little bit easier than in the diagram shown.
+If you use plugins for Unity or Unreal Engine, it is a little bit easier than shown in the diagram.
 
 C# Code Example
 ===============
