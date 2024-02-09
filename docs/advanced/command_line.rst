@@ -21,17 +21,21 @@ Or use `Nuget client <https://learn.microsoft.com/en-us/nuget/install-nuget-clie
 
   nuget install GameDevWare.Charon -ExcludeVersion -PackageSaveMode nupkg -PreRelease -OutputDirectory ./
 
-Cake Script (dotnet tool)
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Bootstrap scripts (recommended)
+^^^^^^^^^^^^^^^^^
 
-Alternatively, you can follow the guide for :doc:`standalone launch <../standalone/installation_and_updates>`. To pass commands to the ``update_and_launch.cake`` script, use the ``--`` parameter and continue with the command and it's parameters.
+Alternatively, you can use one of two bootstrap scripts:
+  - `RunCharon.bat (Windows) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat>`_
+  - `RunCharon.sh (Linux, MacOS) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.sh>`_
+
+Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/dotnet>`_ tool to be available in ``PATH`` and `mono <https://www.mono-project.com/download/stable/>`_ installed for Linux and MacOS.
 
 .. code-block:: bash
   
   dotnet tool restore
-  dotnet cake "./update_and_launch.cake" -- DATA EXPORT --help
-                                          ^
-                            your command goes after this
+  RunCharon.bat DATA EXPORT --help
+                ^
+                your command goes here
 
 Command Syntax
 --------------
@@ -53,7 +57,7 @@ Commands have the following syntax:
   # some parameters don't require a value (e.g. flag).
   Charon.exe VERSION --verbose
   
-OSX and Linux
+Linux and MacOS
 -------------
 
 To run ``Charon.exe`` on non-Windows systems, you need to have the ``mono`` runtime installed, which can be 
@@ -64,11 +68,14 @@ either a global one from ``$PATH`` or a local installation.
   # for globally installed mono
   mono Charon.exe VERSION
 
-  # for non-brew installed mono on OSX
+  # for non-brew installed mono on MacOS
   /Library/Frameworks/Mono.framework/Commands/mono Charon.exe VERSION
   
   # for some linux installations
   /usr/bin/mono Charon.exe VERSION
+  
+  # or use bootstrap script
+  ./RunCharon.sh VERSION
 
 Absolute and relative paths
 ---------------------------

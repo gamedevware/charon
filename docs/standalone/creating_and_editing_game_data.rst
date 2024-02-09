@@ -10,10 +10,12 @@ Any empty file could be used as starting point for standalone application launch
     echo > gamedata.json
     
     # open newly created file
-    charon.exe SERVER START --dataBase ./gamedata.json --launchDefaultBrowser --log out
+
+    # Windows
+    ./RunCharon.sh SERVER START --dataBase ./gamedata.json --launchDefaultBrowser --log out
     
-	# or using bootstrap script
-    dotnet cake "./update_and_launch.cake" -- SERVER START --dataBase ./gamedata.json  --launchDefaultBrowser --log out
+    # Linux, MacOS
+    ./RunCharon.sh SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
 
 See also
 --------
@@ -25,8 +27,5 @@ See also
 - :doc:`Filling Documents <../gamedata/filling_documents>`
 - :doc:`Publication of Game Data <../gamedata/publication>`
 - :doc:`Generating Source Code <../gamedata/generating_source_code>`
-- :doc:`Working with Source Code (C# 4.0) <../gamedata/working_with_csharp_code_4_0>`
-- :doc:`Working with Source Code (C# 7.3) <../gamedata/working_with_csharp_code_7_3>`
-- :doc:`Working with Source Code (TypeScript) <../gamedata/working_with_type_script_code>`
 - :doc:`Frequently Asked Questions (FAQ) <../faq>`
 - :doc:`Glossary <../glossary>`
