@@ -5,17 +5,17 @@ Any empty file could be used as starting point for standalone application launch
 
 .. code-block:: bash
 
-    # create new empty game data file
-    # available formats are .json, gdjs, .msgpack, .msgpck, .gdmp
-    echo > gamedata.json
-    
-    # open newly created file
-
-    # Windows
-    ./RunCharon.sh SERVER START --dataBase ./gamedata.json --launchDefaultBrowser --log out
-    
-    # Linux, MacOS
-    ./RunCharon.sh SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
+  # create new empty game data file
+  # available formats are .json, gdjs, .msgpack, .msgpck, .gdmp
+  echo > gamedata.json
+  
+  # open newly created file
+  
+  # Windows
+  ./RunCharon.sh SERVER START --dataBase ./gamedata.json --launchDefaultBrowser --log out
+  
+  # Linux, MacOS
+  ./RunCharon.sh SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
 
 See also
 --------

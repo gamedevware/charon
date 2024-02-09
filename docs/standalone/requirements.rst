@@ -31,11 +31,11 @@ Linux
 
 .. code-block:: bash
 
-    # check for mono is already installed
-    mono --version
-    
-    # check for .NET Core is already installed
-    dotnet --version
+  # check for mono is already installed
+  mono --version
+  
+  # check for .NET Core is already installed
+  dotnet --version
 
 See also
 --------

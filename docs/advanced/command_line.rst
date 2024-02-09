@@ -22,17 +22,17 @@ Or use `Nuget client <https://learn.microsoft.com/en-us/nuget/install-nuget-clie
   nuget install GameDevWare.Charon -ExcludeVersion -PackageSaveMode nupkg -PreRelease -OutputDirectory ./
 
 Bootstrap scripts (recommended)
-^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Alternatively, you can use one of two bootstrap scripts:
+Alternatively, you can use one of two bootstrap scripts:  
+
   - `RunCharon.bat (Windows) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat>`_
   - `RunCharon.sh (Linux, MacOS) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.sh>`_
 
 Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/dotnet>`_ tool to be available in ``PATH`` and `mono <https://www.mono-project.com/download/stable/>`_ installed for Linux and MacOS.
 
 .. code-block:: bash
-  
-  dotnet tool restore
+
   RunCharon.bat DATA EXPORT --help
                 ^
                 your command goes here

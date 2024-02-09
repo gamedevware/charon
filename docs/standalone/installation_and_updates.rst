@@ -1,34 +1,37 @@
 Installation and Updates
 ========================
 
-There is two bootstrap scripts which download and run latest version of Charon on your PC:
-  - `RunCharon.bat (Windows) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat>`_
-  - `RunCharon.sh (Linux, MacOS) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.sh>`_
+There is two bootstrap scripts which download and run latest version of Charon on your PC:  
 
-Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/dotnet>`_ tool to be available in ``PATH`` and `mono <https://www.mono-project.com/download/stable/>`_ installed for Linux and MacOS.
+  - `RunCharon.bat (Windows) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat>`_  
+  - `RunCharon.sh (Linux, MacOS) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.sh>`_  
+
+Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/dotnet>`_ tool to be available in ``PATH`` 
+and `mono <https://www.mono-project.com/download/stable/>`_ installed for Linux and MacOS.  
 
 
 Step By Step
 ------------
 
-1. Download one of the scripts into a local folder ``/charon``.
-   a) Windows: `RunCharon.bat <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat>`_
-   b) Linux, MacOS: `RunCharon.sh <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.sh>`_
-2. Navigate to the local folder ``cd /charon``.
-3. Run ``RunCharon.bat`` or ``RunCharon.sh`` depending on your OS.
-4. Wait for the script to automatically download and upgrade ``Charon.exe``, and display help text.
-5. Create an empty file named `./gamedata.json`
-6. Run ``Charon.exe`` in standalone mode
+1. Download one of the scripts into a local folder ``/charon``.  
+    a) Windows: `RunCharon.bat <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat>`_  
+    b) Linux, MacOS: `RunCharon.sh <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.sh>`_  
+2. Navigate to the local folder ``cd /charon``. 
+3. Run ``RunCharon.bat`` or ``RunCharon.sh`` depending on your OS.  
+4. Wait for the script to automatically download and upgrade ``Charon.exe``, and display help text.  
+5. Create an empty file named `./gamedata.json`  
+6. Run ``Charon.exe`` in standalone mode  
 
 .. code-block:: bash
-    # Windows
-    ./RunCharon.bat SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
-    
-    # Linux, MacOS
-    chmod +x ./RunCharon.sh
-    ./RunCharon.sh SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
 
-After finishing your work, you could just terminate the process.
+  # Windows
+  ./RunCharon.bat SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
+  
+  # Linux, MacOS
+  chmod +x ./RunCharon.sh
+  ./RunCharon.sh SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
+
+After finishing your work, you could just terminate the process.  
 
 See also
 --------
