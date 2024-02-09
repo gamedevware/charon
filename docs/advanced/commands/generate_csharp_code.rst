@@ -49,13 +49,13 @@ This command does not delete previously generated files, and it is the responsib
      --outputDirectory "c:\my app\scripts"
      
      # Linux or OSX
-     --outputDirectory "~/my app/templates"
+     --outputDirectory "~/my app/scripts"
      
      # Relative path
-     --outputDirectory "./my app/templates"
+     --outputDirectory "./my app/scripts"
      
 --languageVersion
-   arget C# version. By default it is 4.0.
+   Target C# version. By default it is 4.0.
    
    .. code-block:: bash
    
@@ -132,27 +132,39 @@ This command does not delete previously generated files, and it is the responsib
    
    .. code-block:: bash
    
-     # Follow all references during loading to ensure no broken references exist. 
-     # This will result in longer loading times.
+     # Eagerly resolves and validates all references in loaded documents.
+     # When enabled, this optimization ensures that all references in documents are resolved and validated
+     # during loading. This comes with a performance cost but guarantees the validity of references.
      --optimizations eagerReferenceResolution
      
-     # Expose raw Reference and ReferenceCollection properties instead of hiding them behind their values.
+     # Opts for raw references without generating helper methods for referenced documents.
+     # With this optimization, the generated code will not include helper methods for accessing
+     # referenced documents, keeping only accessors that work with raw references.
      --optimizations rawReferences
      
-     # Expose raw LocalizedText properties instead of hiding them as ``string``.
+     # Avoids generating helper methods for localized strings, keeping only raw accessors.
+     # This optimization eliminates helper methods for accessing localized text, instead providing
+     # accessors that deal directly with lists of localized texts.
      --optimizations rawLocalizedStrings
      
-     # Disable the string de-duplication algorithm during loading. 
-     # This will result in shorter loading times, but with the downside of increased memory usage.
-     --optimizations disableStringOptimization
+     # Disables string pooling during game data loading.
+     # Turning off string pooling can yield a minor performance improvement at the cost of increased
+     # memory usage, as it avoids reusing short strings.
+     --optimizations disableStringPooling
      
-     # Exclude JSON-related code to reduce generated code size 
+     # Disables generation of code for loading game data from JSON formatted files.
+     # This optimization omits code related to JSON serialization, useful when JSON formatted
+     # game data is not used.
      --optimizations disableJsonSerialization
      
-     # Exclude Message Pack-related code to reduce generated code size
+     # Disables generation of code for loading game data from Message Pack formatted files.
+     # Similar to DisableJsonSerialization, this option removes code related to loading data
+     # from Message Pack formatted files.
      --optimizations disableMessagePackSerialization
      
-     # Exclude code responsible to patch loading to reduce generated code size
+     # Disables generation of code related to applying patches during game data loading.
+     # This removes a significant portion of code that is mainly used for modding support,
+     # where patches are applied to game data at runtime.
      --optimizations disablePatching
 
 This command supports :doc:`universal parameters <universal_parameters>`.

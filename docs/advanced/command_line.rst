@@ -142,4 +142,6 @@ List of Commands
 - :doc:`DATA I18N LANGUAGES <commands/data_i18n_languages>`
 - :doc:`GENERATE TEMPLATES <commands/generate_templates>`
 - :doc:`GENERATE CSHARPCODE <commands/generate_csharp_code>`
+- :doc:`GENERATE TYPESCRIPTCODE <commands/generate_typescript_code>`
+- :doc:`GENERATE UECPPCODE <commands/generate_uecpp_code>`
 - :doc:`GENERATE TEXT <commands/generate_text>`
