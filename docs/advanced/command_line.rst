@@ -24,6 +24,7 @@ Or use `Nuget client <https://learn.microsoft.com/en-us/nuget/install-nuget-clie
 Bootstrap scripts (recommended)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+
 Alternatively, you can use one of two bootstrap scripts:  
 
   - `RunCharon.bat (Windows) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat>`_
