@@ -25,16 +25,16 @@ Getting Started
 ===============
 
 To begin using this plugin, the initial step involves installing the plugin from the Unreal Engine Marketplace. 
-Once installed, you'll need to `enable the plugin<https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ for your project through the project settings. 
+Once installed, you'll need to `enable the plugin <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ for your project through the project settings. 
 Following this, a rebuild of your project's source code is necessary. The final step in the setup process is the creation of your first game data file.
 
 Installation
 ^^^^^^^^^^^^
 
-1. Add to cart `Charon plugin<https://www.unrealengine.com/marketplace/en-US/product/customizable-flock-system-niagara-animals>`_ in the Unreal Engine Marketplace.
-2. Follow the `instruction<https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ on installing plugin into your project.
+1. Add to cart `Charon plugin <https://www.unrealengine.com/marketplace/en-US/product/customizable-flock-system-niagara-animals>`_ in the Unreal Engine Marketplace.
+2. Follow the `instruction <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ on installing plugin into your project.
 3. Rebuild project source code.
-4. Enable plugin in "Edit -> Plugins..." if needed.
+4. Enable plugin in **Edit -> Plugins...** if needed.
 
 Core Concepts
 =============
@@ -47,7 +47,7 @@ For instance, rather than embedding damage calculations directly in the game's c
 Or for example, mission progression is not hardcoded; it's outlined in editable text files, making these aspects of game design highly flexible.  
 This approach not only facilitates quick adjustments during development but also simplifies adding modding support post-release.  
 
-`Data Driven Gameplay Elements (UE Documentation)<https://docs.unrealengine.com/5.3/en-US/data-driven-gameplay-elements-in-unreal-engine/>`_  
+`Data Driven Gameplay Elements (UE Documentation) <https://docs.unrealengine.com/5.3/en-US/data-driven-gameplay-elements-in-unreal-engine/>`_  
 
 
 Understanding the Plugin's Architecture
@@ -73,7 +73,7 @@ Working with the Plugin
 Creating Game Data
 ^^^^^^^^^^^^^^^^^^
 
-To create a new game data file within the Unreal Engine Editor, open the ``Content Drawer``, right-click in the desired folder, and select the ``Miscellaneous->Game Data`` menu option. 
+To create a new game data file within the Unreal Engine Editor, open the **Content Drawer**, right-click in the desired folder, and select the **Miscellaneous->Game Data** menu option. 
 Name your game data file and proceed according to the instructions in the dialog window that appears.  
   
 :doc:`Detailed guide for creating game data.<creating_game_data>`
@@ -85,15 +85,15 @@ Editing Game Data
   :width: 800
   :alt: Charon UI in Unreal Engine editor
 
-To edit a game data file in the Unreal Engine Editor, navigate to the ``Content Drawer``, find the corresponding .uasset file, and double-click it. 
+To edit a game data file in the Unreal Engine Editor, navigate to the **Content Drawer**, find the corresponding .uasset file, and double-click it. 
 This action opens a new window featuring a user interface for editing the game data. Remember to reimport and, if necessary, regenerate the source 
 code after completing your edits.  
 
-Refencing Data in Bluprint
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Refencing Game Data in Bluprints
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Similar to the DataTable's ``FDataTableRowHandle``, the Charon plugin introduces a specific type for referencing documents within Blueprints, 
-named ``FGameDataDocumentReference``. This type is housed within the Charon module.
+named ``FGameDataDocumentReference``. This type is housed within the Charon module. Here is example of **Game Data Document Reference** used to resolve *Hero* document:
 
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/document_reference.png
   :width: 800
@@ -105,8 +105,8 @@ Advanced Features
 Localization and Multi-Language Support
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Charon facilitates multi-language text support through the ``Localizable Text` data type. When creating a *Schema*, properties can be defined with various data types, including ``Localizable Text``.
-Initially, all localizable text defaults to English. Additional languages can be added via ``Project Settings -> Internationalization -> Translation Languages`` in the Charon UI.  
+Charon facilitates multi-language text support through the ``Localizable Text`` data type. When creating a *Schema*, properties can be defined with various data types, including ``Localizable Text``.
+Initially, all localizable text defaults to English [``EN-us``]. Additional languages can be added via **Project Settings -> Internationalization -> Translation Languages** in the Charon UI.  
   
 :doc:`Exporting/importing localizable data.<../advanced/internationalization>`  
 
@@ -116,7 +116,7 @@ Referencing Unreal Engine Assets
 
 By default, game data files and the Charon editor are unaware of the surrounding content/assets. 
 To reference assets such as sounds, textures, models, or animations, you can create a 'UEAsset' schema with three 
-properties: Id (required), Path, and Name. Prepare a JSON object listing your assets (see Unreal Engine ``AssetRegistry`` module documentation):
+properties: *Id* (required), *Path*, and *Name*. Prepare a JSON object listing your assets (see Unreal Engine ``AssetRegistry`` module documentation):
 
 .. code-block:: json
   
@@ -130,11 +130,11 @@ properties: Id (required), Path, and Name. Prepare a JSON object listing your as
       ]
   }
 
-Then, import this list into your game data file using the ``FCharonCli::Import`` method with ``EImportMode::Replace`` import mode. It's crucial that the ``Id`` field of imported 
+Then, import this list into your game data file using the ``FCharonCli::Import`` method with ``EImportMode::Replace`` import mode. It's crucial that the *Id* field of imported 
 records remains stable and unchanged across imports for the same assets.
 
 To streamline the process of importing asset paths, consider leveraging the ``ICharonEditorModule::OnGameDataPreSynchronization`` event. 
-This allows for automatic execution of the import routine each time the ``Import`` button is clicked in the UI.
+This allows for automatic execution of the import routine each time the **Import** button is clicked in the UI.
 
 See also
 --------
