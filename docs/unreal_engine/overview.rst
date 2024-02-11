@@ -27,13 +27,24 @@ To begin using this plugin, the initial step involves installing the plugin from
 Once installed, you'll need to `enable the plugin <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ for your project through the project settings. 
 Following this, a rebuild of your project's C++ code is necessary. The final step in the setup process is the creation of your first game data file.
 
-Installation
-------------
+Installation from Marketplace [not published yet]
+-------------------------------------------------
 
-1. Add to cart `Charon plugin <https://www.unrealengine.com/marketplace/en-US/product/customizable-flock-system-niagara-animals>`_ in the Unreal Engine Marketplace.
+1. Add to cart `Charon plugin <https://github.com/gamedevware/charon-unreal-engine/tree/main/src/GameDevWare.Charon.UnrealEngine>`_ in the Unreal Engine Marketplace.
 2. Follow the `instruction <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ on installing plugin into your project.
 3. Rebuild project C++ code.
 4. Enable plugin in **Edit → Plugins...** if needed.
+
+Installation from GitHub
+------------------------
+
+1. Clone or download the `plugin source code <https://github.com/gamedevware/charon-unreal-engine/tree/main>`_ from the GitHub repository.
+2. Create a ``<project-dir>/Plugins/Charon`` directory.
+3. Copy the plugin files into this directory. Ensure **Charon.uplugin** is located at the path ``<project-dir>/Plugins/Charon/Charon.uplugin`` after copying.
+4. Remove the ``"EngineVersion"`` attribute if your engine doesn't match the plugin's engine version.
+5. Rebuild the project's C++ code.
+6. Enable the plugin in **Edit → Plugins...** if needed.
+
 
 Core Concepts
 =============

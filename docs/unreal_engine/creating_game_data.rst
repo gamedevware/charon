@@ -1,4 +1,4 @@
-How to Creating Game Data File
+How to Create Game Data File
 ==============================
 
 To create a new game data file within the Unreal Engine Editor, open the **Content Drawer**, right-click in the desired folder, and select in the **Create Advanced Assets** section **Miscellaneous → Game Data** menu option. 
