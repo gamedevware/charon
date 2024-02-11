@@ -10,7 +10,7 @@ It provides a user-friendly interface that requires no special skills for game d
 For programmers, Charon streamlines development workflows by generating code to load game data seamlessly into the game.
 
 Key Features
-============
+------------
 
 - **Data Modeling**: Define game entities like characters, items, missions, quests, and dialogs to meet the specific needs of your game. Interconnect and fill these tables within one UI.
 - **Error Control**: Implements validation checks to verify the accuracy of input data, reducing the likelihood of errors that could impact gameplay or development.
@@ -25,21 +25,21 @@ Getting Started
 
 To begin using this plugin, the initial step involves installing the plugin from the Unreal Engine Marketplace. 
 Once installed, you'll need to `enable the plugin <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ for your project through the project settings. 
-Following this, a rebuild of your project's source code is necessary. The final step in the setup process is the creation of your first game data file.
+Following this, a rebuild of your project's C++ code is necessary. The final step in the setup process is the creation of your first game data file.
 
 Installation
-^^^^^^^^^^^^
+------------
 
 1. Add to cart `Charon plugin <https://www.unrealengine.com/marketplace/en-US/product/customizable-flock-system-niagara-animals>`_ in the Unreal Engine Marketplace.
 2. Follow the `instruction <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ on installing plugin into your project.
-3. Rebuild project source code.
+3. Rebuild project C++ code.
 4. Enable plugin in **Edit → Plugins...** if needed.
 
 Core Concepts
 =============
 
 Data-Driven Design Principles
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------
 
 Data-driven design emphasizes the control of gameplay through data, rather than embedded code, with game mechanics and processes determined by structured data files.  
 For instance, rather than embedding damage calculations directly in the game's code, these are defined by data specifying weapon effects and the rules for their application.  
@@ -50,7 +50,7 @@ This approach not only facilitates quick adjustments during development but also
 
 
 Understanding the Plugin's Architecture
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------
 
 The Charon plugin is structured into two modules: 
   - ``CharonEditor`` module acts as an Unreal Engine Editor extension. Extension points for the module are declared in the ``ICharonEditorModule`` class, and automation of game data processing is facilitated through the ``FCharonCli`` class.  
@@ -58,7 +58,7 @@ The Charon plugin is structured into two modules:
   
 Working with data in this plugin is akin to how the built-in DataTable functions. There is a data source file, a module containing the code required to load the data, 
 and an asset that will be utilized in the game. Whenever you edit a data source file, you need to re-import this data into the asset. 
-Should the data structure in the source file change, then the source code must be regenerated.  
+Should the data structure in the source file change, then the C++ code must be regenerated.  
 
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/plugin_assets.png
   :width: 800
@@ -75,7 +75,7 @@ Creating Game Data
 To create a new game data file within the Unreal Engine Editor, open the **Content Drawer**, right-click in the desired folder, and select in the **Create Advanced Assets** section **Miscellaneous → Game Data** menu option. 
 Name your game data file and proceed according to the instructions in the dialog window that appears.  
   
-:doc:`Detailed guide for creating game data.<creating_game_data>`
+:doc:`Detailed guide on how to create game data. <creating_game_data>`
 
 Editing Game Data
 ^^^^^^^^^^^^^^^^^
@@ -99,7 +99,7 @@ named ``FGameDataDocumentReference``. This type is housed within the Charon modu
   :alt: Charon document reference example screenshot
 
 Advanced Features
-=================
+-----------------
 
 Localization and Multi-Language Support
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -113,19 +113,20 @@ Referencing Unreal Engine Assets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 By default, game data files and the Charon editor are unaware of the surrounding content/assets. 
-To reference assets such as sounds, textures, models, or animations, you can create a 'UEAsset' schema with three 
-properties: *Id* (required), *Path*, and *Name*. Prepare a JSON object listing your assets (see Unreal Engine ``AssetRegistry`` module documentation):
+To reference assets such as sounds, textures, models, or animations. For example you can create a 'UeSoundAsset' schema with three 
+properties: *Id* (required), *Path*, and *Name*. Prepare a ``FJsonObject`` listing of your assets (see Unreal Engine ``AssetRegistry`` module documentation) in following format:
 
 .. code-block:: json
   
   {
-      "UEAsset": [{
+      "UeSoundAsset": [{
               "Id": "_Content_Sounds_MySound",
               "Path": "/Content/Sounds/MySound",
               "Name": "MySound"
           }
           /* other assets */
-      ]
+      ],
+      /* other document collections to import */
   }
 
 Then, import this list into your game data file using the ``FCharonCli::Import`` method with ``EImportMode::Replace`` import mode. It's crucial that the *Id* field of imported 
@@ -134,15 +135,17 @@ records remains stable and unchanged across imports for the same assets.
 To streamline the process of importing asset paths, consider leveraging the ``ICharonEditorModule::OnGameDataPreSynchronization`` event. 
 This allows for automatic execution of the import routine each time the **Import** button is clicked in the UI.
 
+After you've imported the asset list into the game data file, you can reference them from your documents by adding a ``Document Reference`` property with **Reference Type → UeSoundAsset** to the schema.
+
 Feedback
-========
+--------
 
 We welcome and encourage feedback, particularly bug reports and suggestions, to help improve our tool. If you have any questions or would like to share your thoughts, 
-please join our `Discord community <https://discord.gg/2quB5vXryd>`_ or reach out to us via email at `support@gamedevware.com <mailto:support@gamedevware.com>`_.
-
+please join our `Discord community <https://discord.gg/2quB5vXryd>`_ or reach out to us via email at `support@gamedevware.com <mailto:support@gamedevware.com>`_.  
+  
 
 See also
---------
+^^^^^^^^
 
 - :doc:`Basic Navigation and User Interface Overview <../gamedata/basics>`
 - :doc:`Creating Document Type (Schema) <../gamedata/creating_schema>`
