@@ -3,8 +3,8 @@ Installation and Updates
 
 There is two bootstrap scripts which download and run latest version of Charon on your PC:  
 
-  - RunCharon.bat for Windows  
-  - RunCharon.sh for Linux or MacOS  
+  - ``RunCharon.bat`` for Windows  
+  - ``RunCharon.sh`` for Linux or MacOS  
 
 Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/dotnet>`_ tool to be available in ``PATH`` 
 and `mono <https://www.mono-project.com/download/stable/>`_ installed for Linux and MacOS.  
@@ -12,7 +12,6 @@ and `mono <https://www.mono-project.com/download/stable/>`_ installed for Linux 
 
 Step By Step
 ------------
-
 
 1. Download one of the scripts into a local folder ``/charon``.  
     a) `RunCharon.bat (Windows) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat>`_  
