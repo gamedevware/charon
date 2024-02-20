@@ -81,7 +81,7 @@ Working with the Plugin
 =======================
 
 Creating Game Data
-^^^^^^^^^^^^^^^^^^
+------------------
 
 To create a new game data file within the Unreal Engine Editor, open the **Content Drawer**, right-click in the desired folder, and select in the **Create Advanced Assets** section **Miscellaneous → Game Data** menu option. 
 Name your game data file and proceed according to the instructions in the dialog window that appears.  
@@ -89,7 +89,7 @@ Name your game data file and proceed according to the instructions in the dialog
 :doc:`Detailed guide on how to create game data. <creating_game_data>`
 
 Editing Game Data
-^^^^^^^^^^^^^^^^^
+------------------
 
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/ue_editor_screenshot.png
   :width: 800
@@ -100,7 +100,7 @@ This action opens a new window featuring a user interface for editing the game d
 code after completing your edits.  
 
 Refencing Game Data in Bluprints
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------
 
 Similar to the DataTable's ``FDataTableRowHandle``, the Charon plugin introduces a specific type for referencing documents within Blueprints, 
 named ``FGameDataDocumentReference``. This type is housed within the Charon module. Here is example of **Game Data Document Reference** used to resolve *Hero* document:
