@@ -8,7 +8,7 @@ EXITCODE=0
 RESTORE_IS_DONE=0
 
 check_mono_version() {
-    local mono_version=$(mono --version | head -n1 | grep -oP 'version \K[0-9]+')
+    local mono_version=$(mono --version | head -n1 | grep -oE 'version [0-9]+' | awk '{print $2}')
 
     if [[ -z "$mono_version" ]]; then
         exit_failure_wrong_or_missing_mono
@@ -143,4 +143,4 @@ exit_success() {
 # Start the process
 check_mono_version
 locate_executable
-run_executable
+run_executable "$@"
