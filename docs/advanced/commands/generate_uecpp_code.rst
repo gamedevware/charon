@@ -1,4 +1,4 @@
-Generate C# Source Code
+Generate Unreal Engine C++ Source Code
 ========================
 
 Generates C++ for Unreal Engine source code for game data into output directory.
