@@ -35,7 +35,12 @@ Game data creation or code generation/compilation may encounter issues under cer
 **No Game Data Class in Import Window**
 - **Problem**: The generated game data module is not being compiled.
 - **Solution**: Ensure it's added to your ``<project-name>.Target.cs`` and ``<project-name>Editor.Target.cs`` files as an extra module. 
-If missing, include the expression ``ExtraModuleNames.Add("<module-name>");`` in both target files.  
+If missing, include following expression in both target files:
+
+.. code-block:: cs
+  
+  ExtraModuleNames.Add("<module-name>");
+
   
 Additionally, verify that your **.uproject** file includes the generated module definition. If it's absent, add the following module definition to the **Modules** list:
 

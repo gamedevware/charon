@@ -65,9 +65,7 @@ This approach not only facilitates quick adjustments during development but also
 Understanding the Plugin's Architecture
 ---------------------------------------
 
-The Charon plugin is structured into two modules: 
-  - ``CharonEditor`` module acts as an Unreal Engine Editor extension. Extension points for the module are declared in the ``ICharonEditorModule`` class, and automation of game data processing is facilitated through the ``FCharonCli`` class.  
-  - ``Charon`` module, houses the core logic and shared code crucial for handling game data files.  
+**Plugin Assets**  
   
 Working with data in this plugin is akin to how the built-in DataTable functions. There is a data source file, a module containing the code required to load the data, 
 and an asset that will be utilized in the game. Whenever you edit a data source file, you need to re-import this data into the asset. 
@@ -78,7 +76,13 @@ Should the data structure in the source file change, then the C++ code must be r
   :alt: Charon assets scheme in Unreal Engine
 
 For scenarios requiring dynamic loading of game data, this can be accomplished through the ``TryLoad`` method on the game data class, which accepts the source JSON file.  
-
+  
+**Plugin Modules**  
+  
+The Charon plugin is structured into two modules: 
+  - ``CharonEditor`` module acts as an Unreal Engine Editor extension. Extension points for the module are declared in the ``ICharonEditorModule`` class, and automation of game data processing is facilitated through the ``FCharonCli`` class.  
+  - ``Charon`` module, houses the core logic and shared code crucial for handling game data files.  
+  
 Working with the Plugin
 =======================
 
@@ -112,10 +116,10 @@ named ``FGameDataDocumentReference``. This type is housed within the Charon modu
   :alt: Charon document reference example screenshot
 
 Advanced Features
------------------
+=======================
 
 Localization and Multi-Language Support
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------
 
 Charon facilitates multi-language text support through the ``Localizable Text`` data type. When creating a *Schema*, properties can be defined with various data types, including ``Localizable Text``.
 Initially, all localizable text defaults to ``EN-us`` (US English). Additional languages can be added via **Project Settings → Internationalization → Translation Languages** in the Charon UI.  
@@ -123,7 +127,7 @@ Initially, all localizable text defaults to ``EN-us`` (US English). Additional l
 :doc:`Exporting/importing localizable data.<../advanced/internationalization>`  
 
 Referencing Unreal Engine Assets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------
 
 By default, game data files and the Charon editor are unaware of the surrounding content/assets. 
 To reference assets such as sounds, textures, models, or animations. For example you can create a 'UeSoundAsset' schema with three 
