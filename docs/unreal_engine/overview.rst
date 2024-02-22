@@ -23,14 +23,14 @@ Key Features
 Getting Started
 ===============
 
-To begin using this plugin, the initial step involves installing the plugin from the Unreal Engine Marketplace. 
+To begin using `this <com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4>`_ plugin, the initial step involves installing the plugin from the Unreal Engine Marketplace. 
 Once installed, you'll need to `enable the plugin <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ for your project through the project settings. 
 Following this, a rebuild of your project's C++ code is necessary. The final step in the setup process is the creation of your first game data file.
 
 Installation from Marketplace [not published yet]
 -------------------------------------------------
 
-1. Add to cart `Charon plugin <https://github.com/gamedevware/charon-unreal-engine/tree/main/src/GameDevWare.Charon.UnrealEngine>`_ in the Unreal Engine Marketplace.
+1. Add to cart `Charon plugin <com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4>`_ in the Unreal Engine Marketplace.
 2. Follow the `instruction <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ on installing plugin into your project.
 3. Rebuild project C++ code.
 4. Enable plugin in **Edit → Plugins...** if needed.
@@ -52,12 +52,14 @@ Core Concepts
 Data-Driven Design Principles
 -----------------------------
 
-Data-driven design emphasizes the control of gameplay through data, rather than embedded code, with game mechanics and processes determined by structured data files.  
-For instance, rather than embedding damage calculations directly in the game's code, these are defined by data specifying weapon effects and the rules for their application.  
+Data-driven design emphasizes the control of gameplay through data, rather than source code/blueprints, with game mechanics and processes determined by structured data files.  
+For instance, rather than embedding damage calculations directly in the game's source code, these are defined by data specifying weapon effects and the rules for their application.  
 Or for example, mission progression is not hardcoded; it's outlined in editable text files, making these aspects of game design highly flexible.  
 This approach not only facilitates quick adjustments during development but also simplifies adding modding support post-release.  
 
-`Data Driven Gameplay Elements (UE Documentation) <https://docs.unrealengine.com/5.3/en-US/data-driven-gameplay-elements-in-unreal-engine/>`_  
+  - `Data Driven Gameplay Elements (UE Documentation) <https://docs.unrealengine.com/5.3/en-US/data-driven-gameplay-elements-in-unreal-engine/>`_  
+  - `Modify Everything! Data-Driven Dynamic Gameplay Effects on 'For Honor' (Video) <https://www.gdcvault.com/play/1024050/Modify-Everything-Data-Driven-Dynamic>`_
+  - `Data-driven Design in Unreal (Article) <https://benui.ca/unreal/data-driven-design/>`_
 
 
 Understanding the Plugin's Architecture
