@@ -15,7 +15,10 @@ The following C# code creates ``GameData`` class and loads your game data into m
   using System.IO;
   
   var fileStream = File.OpenRead("RpgGameData.gdjs"); // or .json
-  var gameData = new GameData(fileStream, new Formatters.GameDataLoadOptions { Format = Formatters.Format.Json });
+  var gameData = new GameData(fileStream, new Formatters.GameDataLoadOptions { 
+    Format = Formatters.Format.Json,
+    // Patches = new [] { patchStream1, patchStream2, ... }
+  });
   fileStream.Dispose();
 
 The file ``RpgGameData.gdjs`` could be :doc:`published <publication>` game data or original database file (.gdjs or .gdmp).  

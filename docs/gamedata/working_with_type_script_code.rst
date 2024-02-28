@@ -27,7 +27,8 @@ The following Type Script code creates ``GameData`` class and loads your game da
   const gameDataStream = gameDataRequest.response;
   
   const gameData = new GameData(gameDataStream, {
-    format: Formatters.GameDataFormat.Json
+    format: Formatters.GameDataFormat.Json,
+    // patches: [patchStream1, patchStream2, ...]
   });
   
 The content of ``gameDataStream`` could be :doc:`published <publication>` game data or original database file (.gdjs or .gdmp).  

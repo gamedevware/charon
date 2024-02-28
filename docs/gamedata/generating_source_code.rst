@@ -44,6 +44,8 @@ See also
 - :doc:`Working with Source Code (C# 4.0) <working_with_csharp_code_4_0>`
 - :doc:`Working with Source Code (C# 7.3) <working_with_csharp_code_7_3>`
 - :doc:`Working with Source Code (TypeScript) <working_with_type_script_code>`
+- :doc:`Working with Source Code (UE C++) <working_with_uecpp_code_>`
 - :doc:`Command Line Interface (CLI) <../advanced/command_line>`
 - :doc:`GENERATE CSHARPCODE Command <../advanced/commands/generate_csharp_code>`
 - :doc:`GENERATE TYPESCRIPTCODE Command <../advanced/commands/generate_typescript_code>`
+- :doc:`GENERATE UECPP Command <../advanced/commands/generate_uecpp_code>`
