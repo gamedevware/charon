@@ -132,28 +132,9 @@ To display list of available commands add `--help` or `/?`.
   
 .. _CommandLine_Commands:
 
-List of Commands
-----------------
+.. toctree::
+   :caption: List of Commands
+   :titlesonly:
+   :glob:
 
-- :doc:`SERVER START <commands/serve>`
-- :doc:`VERSION <commands/version>`
-- :doc:`DATA EXPORT <commands/data_export>`
-- :doc:`DATA IMPORT <commands/data_import>`
-- :doc:`DATA BACKUP <commands/data_backup>`
-- :doc:`DATA RESTORE <commands/data_restore>`
-- :doc:`DATA VALIDATE <commands/data_validate>`
-- :doc:`DATA CREATE <commands/data_create>`
-- :doc:`DATA UPDATE <commands/data_update>`
-- :doc:`DATA DELETE <commands/data_delete>`
-- :doc:`DATA FIND <commands/data_find>`
-- :doc:`DATA LIST <commands/data_list>`
-- :doc:`DATA CREATEPATCH <commands/data_create_patch>`
-- :doc:`DATA APPLYPATCH <commands/data_apply_patch>`
-- :doc:`DATA I18N EXPORT <commands/data_i18n_export>`
-- :doc:`DATA I18N IMPORT <commands/data_i18n_import>`
-- :doc:`DATA I18N LANGUAGES <commands/data_i18n_languages>`
-- :doc:`GENERATE TEMPLATES <commands/generate_templates>`
-- :doc:`GENERATE CSHARPCODE <commands/generate_csharp_code>`
-- :doc:`GENERATE TYPESCRIPTCODE <commands/generate_typescript_code>`
-- :doc:`GENERATE UECPPCODE <commands/generate_uecpp_code>`
-- :doc:`GENERATE TEXT <commands/generate_text>`
+   commands/*
