@@ -8,27 +8,27 @@ This section provides examples using default class names, but it is possible to 
 Loading Game Data
 -----------------
 
-The following C++ code creates ``GameData`` class and loads your game data into memory.
+The following C++ code creates ``UGameData`` class and loads your game data into memory.
 
 .. code-block:: cpp
   
-	IFileManager& FileManager = IFileManager::Get();
+  IFileManager& FileManager = IFileManager::Get();
 
-	const FString GameDataFilePath = TEXT("./RpgGameData.gdjs");  // or .json
-	const TUniquePtr<FArchive> GameDataStream = TUniquePtr<FArchive>(FileManager.CreateFileReader(*GameDataFilePath, EFileRead::FILEREAD_None));
+  const FString GameDataFilePath = TEXT("./RpgGameData.gdjs");  // or .json
+  const TUniquePtr<FArchive> GameDataStream = TUniquePtr<FArchive>(FileManager.CreateFileReader(*GameDataFilePath, EFileRead::FILEREAD_None));
 	
-	UGameData* GameData = NewObject<UGameData>();
+  UGameData* GameData = NewObject<UGameData>();
 
-	FGameDataLoadOptions Options;
-	Options.Format = EGameDataFormat::Json;
-	// Options.Patches.Add(PatchStream1);
+  FGameDataLoadOptions Options;
+  Options.Format = EGameDataFormat::Json;
+  // Options.Patches.Add(PatchStream1);
   // Options.Patches.Add(PatchStream2);
   // ...
 	
-	if (!GameData->TryLoad(GameDataStream.Get(), Options))
-	{
-		// Handle failure
-	}
+  if (!GameData->TryLoad(GameDataStream.Get(), Options))
+  {
+    // Handle failure
+  }
 
 The file ``RpgGameData.gdjs`` could be :doc:`published <publication>` game data or original database file (.gdjs or .gdmp).  
   
@@ -57,3 +57,4 @@ See also
 --------
 
 - :doc:`Generating Source Code <generating_source_code>`
+- :doc:`Working with Source Code (UE C++) <working_with_uecpp_code_>`

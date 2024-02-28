@@ -92,3 +92,4 @@ See also
 --------
 
 - :doc:`Generating Source Code <generating_source_code>`
+- :doc:`GENERATE CSHARPCODE Command <../advanced/commands/generate_csharp_code>`

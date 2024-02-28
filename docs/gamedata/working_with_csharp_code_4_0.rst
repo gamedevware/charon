@@ -1,6 +1,9 @@
 Working with Source Code (C# 4.0)
 =============================
 
+.. warning::
+    This is deprecated code generator and shouldn't be used in new projects.
+
 Accessing game data during runtime is possible by utilizing the generated source code.
 
 This section provides examples using default class names, but it is possible to customize class names during the source code generation process. Additionally, this customization allows to avoid naming collisions with existing code.
@@ -90,3 +93,4 @@ See also
 --------
 
 - :doc:`Generating Source Code <generating_source_code>`
+- :doc:`GENERATE CSHARPCODE Command <../advanced/commands/generate_csharp_code>`

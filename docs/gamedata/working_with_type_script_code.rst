@@ -73,3 +73,4 @@ See also
 --------
 
 - :doc:`Generating Source Code <generating_source_code>`
+- :doc:`GENERATE TYPESCRIPTCODE Command <../advanced/commands/generate_typescript_code>`
