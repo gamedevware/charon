@@ -149,11 +149,12 @@ Imports documents from file to a game data.
 
 This command supports :doc:`universal parameters <universal_parameters>`.
 
-------------------
- Input Data Schema
-------------------
+.. _CommandLine_Import_Structure:
+---------------------
+ Input Data Scructure
+---------------------
 
-The data you input should follow this schema (recommended):
+The data you input should follow this structure (recommended):
 
    .. code-block:: js
      
@@ -167,7 +168,7 @@ The data you input should follow this schema (recommended):
        }
      }
      
-This schema is also accepted:
+This structure is also accepted:
 
    .. code-block:: js
      

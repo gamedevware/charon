@@ -70,6 +70,8 @@ Import translated text from a specified file into game data.
 --input
    Path to a file with data to import. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or :doc:`URL <remote_input_output>`.
 
+   :ref:`See input data structure requirements. <CommandLine_Import_Structure>`  
+
    .. code-block:: bash
 
      # standart input (default)
@@ -117,51 +119,3 @@ Import translated text from a specified file into game data.
    Allows you to run the command without actually making any changes to the game data, providing a preview of what would happen.
 
 This command supports :doc:`universal parameters <universal_parameters>`.
-
-------------------
- Input Data Schema
-------------------
-
-The data you input should follow this schema (recommended):
-
-   .. code-block:: js
-     
-     {
-       "Collections": {
-         "<Schema-Name>": [
-           {
-             // <Document>
-           }
-         ]
-       }
-     }
-     
-This schema is also accepted:
-
-   .. code-block:: js
-     
-     {
-       "<Schema-Name>": [
-         {
-           // <Document>
-         }
-       ]
-     }
-     
-A list of documents is accepted if only one name in ``--schemas`` is specified:
-
-   .. code-block:: js
-   
-     [
-       {
-         // <Document>
-       }
-     ]
-     
-And single document is accepted too if only one name in ``--schemas`` is specified:
-
-   .. code-block:: js
-   
-     {
-       // <Document>
-     }

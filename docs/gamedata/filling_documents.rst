@@ -11,7 +11,7 @@ JSON files can be imported via the user interface by following these steps:
 2. Click on ``Actions → Import...``.
 3. Select the JSON file and follow the steps in the import wizard.
 
-:doc:`See structure requirements. <../advanced/commands/data_import>`
+:ref:`See structure requirements. <CommandLine_Import_Structure>`
 
 Exporting to Spreadsheet and Importing Back
 -------------------------------------------
