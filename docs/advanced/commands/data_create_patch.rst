@@ -3,8 +3,8 @@ Create Patch
 
 Outputs the differences between two game datas as a file that can be used later to :doc:`DATA APPLYPATCH <data_apply_patch>` to another game data.
 
-- :doc:`Installation <../command_line:installation>`
-- :doc:`Commands Reference <../command_line>`
+- :ref:`CLI Installation <CommandLine_Installation>`
+- :ref:`Commands Reference <CommandLine_Commands>`
 - :doc:`Universal Parameters <universal_parameters>`
 - :doc:`URL-based Input/Output <remote_input_output>`
 

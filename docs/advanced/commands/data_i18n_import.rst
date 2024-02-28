@@ -3,8 +3,8 @@ Importing Translated Data
 
 Import translated text from a specified file into game data.
 
-- :doc:`Installation <../command_line:installation>`
-- :doc:`Commands Reference <../command_line>`
+- :ref:`CLI Installation <CommandLine_Installation>`
+- :ref:`Commands Reference <CommandLine_Commands>`
 - :doc:`Universal Parameters <universal_parameters>`
 - :doc:`URL-based Input/Output <remote_input_output>`
 

@@ -27,7 +27,7 @@ To begin using `this <com.epicgames.launcher://ue/marketplace/product/b4231a7970
 Once installed, you'll need to `enable the plugin <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ for your project through the project settings. 
 Following this, a rebuild of your project's C++ code is necessary. The final step in the setup process is the creation of your first game data file.
 
-Installation from Marketplace [not published yet]
+Installation from Marketplace
 -------------------------------------------------
 
 1. Add to cart `Charon plugin <com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4>`_ in the Unreal Engine Marketplace.

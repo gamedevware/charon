@@ -5,8 +5,8 @@ Checks the game data for validity and produces a report.
 
 The exit code will be ``1`` if the report contains errors and the ``--output`` is set to ``err``. Otherwise, the exit code will be ``0``.
 
-- :doc:`Installation <../command_line:installation>`
-- :doc:`Commands Reference <../command_line>`
+- :ref:`CLI Installation <CommandLine_Installation>`
+- :ref:`Commands Reference <CommandLine_Commands>`
 - :doc:`Universal Parameters <universal_parameters>`
 - :doc:`URL-based Input/Output <remote_input_output>`
 

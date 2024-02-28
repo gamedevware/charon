@@ -4,10 +4,13 @@ Generate Text from Templates
 | Generates text from T4 templates into output directory.
 | Note that this command is experimental and may not be reliable.
 | It is recommended to use an IDE or open-source alternatives for generating text with T4 templates.
+| See: `dotnet-t4 <https://github.com/mono/t4>`_
+
+
 | See :doc:`GENERATE TEMPLATES <generate_templates>` for details.
 
-- :doc:`Installation <../command_line:installation>`
-- :doc:`Commands Reference <../command_line>`
+- :ref:`CLI Installation <CommandLine_Installation>`
+- :ref:`Commands Reference <CommandLine_Commands>`
 
 ---------------
  Command

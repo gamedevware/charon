@@ -4,6 +4,8 @@ Command Line Interface (CLI)
 Most of Charon functionality could be accessed via CLI commands. The application itself uses the `getops <https://en.wikipedia.org/wiki/Getopts>`_ syntax.
 You should be familiar with terminal on your OS to fully tap potential of CLI.
 
+.. _CommandLine_Installation:
+
 Installation
 ------------
 
@@ -128,6 +130,8 @@ To display list of available commands add `--help` or `/?`.
   #>               ] [--outputFormat <TEXT>] [--outputFormattingOptions [<TEXT>]] [--mode <EXPORTMODE>] [--credentials [<
   #>               TEXT>]]
   
+.. _CommandLine_Commands:
+
 List of Commands
 ----------------
 

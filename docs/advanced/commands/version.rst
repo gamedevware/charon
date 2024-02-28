@@ -3,8 +3,8 @@ Get Charon Version
 
 Gets version of ``Charon.exe`` application.
 
-- :doc:`Installation <../command_line:installation>`
-- :doc:`Commands Reference <../command_line>`
+- :ref:`CLI Installation <CommandLine_Installation>`
+- :ref:`Commands Reference <CommandLine_Commands>`
 
 ---------------
  Command
