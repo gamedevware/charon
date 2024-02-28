@@ -67,7 +67,25 @@ Formulas inherit the ``Function`` type and can be invoked as-is or with ``invoke
   // or
   var reward = gameData.lootSettings.rewardFormula.invoke()  // -> number
 
-Formula's parameters are passed as arguments of ``invoke`` method.
+Formula's parameters are passed as arguments of ``invoke`` method.  
+
+Any non-game data related types are imported from ```formula.known.types.ts``, which should be created by the developer and have all required types exported.
+Here is an example of a ``formula.known.types.ts`` file:
+
+.. code-block:: js
+  
+  import { MyFormulaContext } from '../my.formula.context';
+
+  // example of MyFormulaContext type.
+  export MyFormulaContext;
+
+  // example of Assets.Scripts.CheckContext.  
+  export namespace Assets.Scripts {
+    export class CheckContext {
+      myField: string;
+    }
+  }
+
 
 See also
 --------

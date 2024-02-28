@@ -57,4 +57,4 @@ See also
 --------
 
 - :doc:`Generating Source Code <generating_source_code>`
-- :doc:`Working with Source Code (UE C++) <working_with_uecpp_code_>`
+- :doc:`GENERATE UECPP Command <../advanced/commands/generate_uecpp_code>`
