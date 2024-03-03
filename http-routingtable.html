@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTTP Routing Table &mdash; Charon 2024.1.6 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=a5c4661c" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f776fc56"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+        <script src="_static/tabs.js?v=3030b3cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+ 
+
+    <script>
+      DOCUMENTATION_OPTIONS.COLLAPSE_INDEX = true;
+    </script>
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Charon
+          </a>
+              <div class="version">
+                2024.1.6
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="standalone/overview.html">Standalone Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="standalone/overview.html#requirements">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web/cli_access_to_web_project.html">CLI Access to Web Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Working with Game Data</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gamedata/working_with_uecpp_code_.html">Working with Source Code (UE C++)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/game_data_schema.html">Game Data Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">HTTP Routing Table</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+   <h1>HTTP Routing Table</h1>
+
+   <div class="modindex-jumpbox">
+   <a href="#cap-/app"><strong>/app</strong></a> | 
+   <a href="#cap-/auth"><strong>/auth</strong></a> | 
+   <a href="#cap-/billing"><strong>/billing</strong></a> | 
+   <a href="#cap-/context"><strong>/context</strong></a> | 
+   <a href="#cap-/datasource"><strong>/datasource</strong></a> | 
+   <a href="#cap-/membership"><strong>/membership</strong></a> | 
+   <a href="#cap-/notification"><strong>/notification</strong></a> | 
+   <a href="#cap-/preferences"><strong>/preferences</strong></a> | 
+   <a href="#cap-/project"><strong>/project</strong></a> | 
+   <a href="#cap-/resourceStorage"><strong>/resourceStorage</strong></a> | 
+   <a href="#cap-/search"><strong>/search</strong></a> | 
+   <a href="#cap-/token"><strong>/token</strong></a> | 
+   <a href="#cap-/user"><strong>/user</strong></a> | 
+   <a href="#cap-/workspace"><strong>/workspace</strong></a>
+   </div>
+
+   <table class="indextable modindextable">
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/app"><td></td><td>
+       <strong>/app</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--app-log-"><code class="xref">PUT /app/log/</code></a></td><td>
+       <em>Log specified message on server. Used internally while standalone-hosted.</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/auth"><td></td><td>
+       <strong>/auth</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--auth-flow-api-key-"><code class="xref">POST /auth/flow/api-key/</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--auth-flow-email-code-"><code class="xref">POST /auth/flow/email-code/</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--auth-flow-oauth2-authenticationProvider-complete-"><code class="xref">POST /auth/flow/oauth2/{authenticationProvider}/complete/</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--auth-flow-oauth2-authenticationProvider-prepare-"><code class="xref">POST /auth/flow/oauth2/{authenticationProvider}/prepare/</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--auth-flow-on-behalf-"><code class="xref">POST /auth/flow/on-behalf/</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--auth-flow-password-"><code class="xref">POST /auth/flow/password/</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--auth-one-time-code-"><code class="xref">POST /auth/one-time-code/</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/billing"><td></td><td>
+       <strong>/billing</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--billing-userId-account-"><code class="xref">GET /billing/{userId}/account/</code></a></td><td>
+       <em>Get billing account by id.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--billing-userId-payment-status-"><code class="xref">GET /billing/{userId}/payment/status/</code></a></td><td>
+       <em>Get status of payment for subscription for workspace.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--billing-notification-"><code class="xref">POST /billing/notification/</code></a></td><td>
+       <em>Accept notification from payment gate.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--billing-userId-account-"><code class="xref">POST /billing/{userId}/account/</code></a></td><td>
+       <em>Update billing information</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--billing-userId-contact-request-"><code class="xref">POST /billing/{userId}/contact-request/</code></a></td><td>
+       <em>Request contact from sales representative.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--billing-userId-customer-portal-"><code class="xref">POST /billing/{userId}/customer-portal/</code></a></td><td>
+       <em>Get url of customer portal for user if available.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--billing-userId-payment-"><code class="xref">POST /billing/{userId}/payment/</code></a></td><td>
+       <em>Make payment for selected invoice.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--billing-userId-payment-status-"><code class="xref">POST /billing/{userId}/payment/status/</code></a></td><td>
+       <em>Start subscription session for workspace.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--billing-userId-payment-upcoming-"><code class="xref">POST /billing/{userId}/payment/upcoming/</code></a></td><td>
+       <em>Get prorated upcoming payment information.</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/context"><td></td><td>
+       <strong>/context</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--context-"><code class="xref">GET /context/</code></a></td><td>
+       <em>Get page context.</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/datasource"><td></td><td>
+       <strong>/datasource</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-"><code class="xref">GET /datasource/{dataSourceId}/</code></a></td><td>
+       <em>Backup data source.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-capabilities-"><code class="xref">GET /datasource/{dataSourceId}/capabilities/</code></a></td><td>
+       <em>Get data source&#39;s capabilities.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-collection-schemaNameOrId-"><code class="xref">GET /datasource/{dataSourceId}/collection/{schemaNameOrId}/</code></a></td><td>
+       <em>Find document by it&#39;s id or unique property value.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-collections-"><code class="xref">GET /datasource/{dataSourceId}/collections/</code></a></td><td>
+       <em>Export documents from multiple collections.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-collections-raw-"><code class="xref">GET /datasource/{dataSourceId}/collections/raw/</code></a></td><td>
+       <em>Export documents from multiple collections into downloadable format without response wrapper.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-documents-query-"><code class="xref">GET /datasource/{dataSourceId}/documents/query/</code></a></td><td>
+       <em>Query documents from all collections.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-formula-type-"><code class="xref">GET /datasource/{dataSourceId}/formula/type/</code></a></td><td>
+       <em>List formula types.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-formula-type-typeName-"><code class="xref">GET /datasource/{dataSourceId}/formula/type/{typeName}/</code></a></td><td>
+       <em>Get formula type by name.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-loading-progress-"><code class="xref">GET /datasource/{dataSourceId}/loading-progress/</code></a></td><td>
+       <em>Get data source&#39;s loading progress.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-present-users-"><code class="xref">GET /datasource/{dataSourceId}/present-users/</code></a></td><td>
+       <em>Get list of users present in specificated data source.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-process-"><code class="xref">GET /datasource/{dataSourceId}/process/</code></a></td><td>
+       <em>List processes.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-process-processId-"><code class="xref">GET /datasource/{dataSourceId}/process/{processId}/</code></a></td><td>
+       <em>Get process&#39;s state.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-process-processId-result-raw-"><code class="xref">GET /datasource/{dataSourceId}/process/{processId}/result/raw/</code></a></td><td>
+       <em>Get process&#39;s execution result without response wrapper.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-raw-"><code class="xref">GET /datasource/{dataSourceId}/raw/</code></a></td><td>
+       <em>Backup data source into downloadable format without response wrapper.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-source-code-templates-"><code class="xref">GET /datasource/{dataSourceId}/source-code/templates/</code></a></td><td>
+       <em>Get T4 templates for generating source code.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--datasource-dataSourceId-stats-"><code class="xref">GET /datasource/{dataSourceId}/stats/</code></a></td><td>
+       <em>Get data source&#39;s statistics.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--datasource-dataSourceId-collection-schemaNameOrId-"><code class="xref">POST /datasource/{dataSourceId}/collection/{schemaNameOrId}/</code></a></td><td>
+       <em>Update document.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--datasource-dataSourceId-collection-schemaNameOrId-documents-"><code class="xref">POST /datasource/{dataSourceId}/collection/{schemaNameOrId}/documents/</code></a></td><td>
+       <em>List documents.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--datasource-dataSourceId-converter-raw-"><code class="xref">POST /datasource/{dataSourceId}/converter/raw/</code></a></td><td>
+       <em>Convert specified game data documents from request body to JSON format and return it without response wrapper.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--datasource-dataSourceId-documents-query-"><code class="xref">POST /datasource/{dataSourceId}/documents/query/</code></a></td><td>
+       <em>Pick multiple documents by their unique properties e.g. batched find request. Max documents per request is - 20.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--datasource-dataSourceId-process-processId-"><code class="xref">POST /datasource/{dataSourceId}/process/{processId}/</code></a></td><td>
+       <em>Stop process.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--datasource-dataSourceId-source-code-"><code class="xref">POST /datasource/{dataSourceId}/source-code/</code></a></td><td>
+       <em>Generate source code for data source.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--datasource-dataSourceId-transaction-transactionId-"><code class="xref">POST /datasource/{dataSourceId}/transaction/{transactionId}/</code></a></td><td>
+       <em>Commit pending transaction.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--datasource-dataSourceId-validity-"><code class="xref">POST /datasource/{dataSourceId}/validity/</code></a></td><td>
+       <em>Validadate data source with specified requirements/parameters.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--datasource-dataSourceId-"><code class="xref">PUT /datasource/{dataSourceId}/</code></a></td><td>
+       <em>Restore data source from specified documents.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--datasource-dataSourceId-collection-schemaNameOrId-"><code class="xref">PUT /datasource/{dataSourceId}/collection/{schemaNameOrId}/</code></a></td><td>
+       <em>Create document.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--datasource-dataSourceId-collection-schemaNameOrId-documents-"><code class="xref">PUT /datasource/{dataSourceId}/collection/{schemaNameOrId}/documents/</code></a></td><td>
+       <em>Bulk change documents.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--datasource-dataSourceId-collections-"><code class="xref">PUT /datasource/{dataSourceId}/collections/</code></a></td><td>
+       <em>Import documents into multiple collections.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--datasource-dataSourceId-transaction-"><code class="xref">PUT /datasource/{dataSourceId}/transaction/</code></a></td><td>
+       <em>Wait for data source availability and begin new transaction. Identifier specified in request later could be used with other request in `transaction` parameter.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#delete--datasource-dataSourceId-collection-schemaNameOrId-"><code class="xref">DELETE /datasource/{dataSourceId}/collection/{schemaNameOrId}/</code></a></td><td>
+       <em>Delete document by it&#39;s id.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#delete--datasource-dataSourceId-transaction-transactionId-"><code class="xref">DELETE /datasource/{dataSourceId}/transaction/{transactionId}/</code></a></td><td>
+       <em>Reject pending transaction.</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/membership"><td></td><td>
+       <strong>/membership</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--membership-packages-"><code class="xref">GET /membership/packages/</code></a></td><td>
+       <em>Get all membership packages.</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/notification"><td></td><td>
+       <strong>/notification</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--notification-"><code class="xref">GET /notification/</code></a></td><td>
+       <em>Subscribe on notifications from server. This is WebSocket endpoint, any non &#39;Upgrade&#39; requests will fail.</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/preferences"><td></td><td>
+       <strong>/preferences</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--preferences-"><code class="xref">GET /preferences/</code></a></td><td>
+       <em>Get default preferences.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--preferences-"><code class="xref">PUT /preferences/</code></a></td><td>
+       <em>Save default preferences.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#delete--preferences-user-"><code class="xref">DELETE /preferences/user/</code></a></td><td>
+       <em>Reset all user&#39;s preferences.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#patch--preferences-"><code class="xref">PATCH /preferences/</code></a></td><td>
+       <em>Patch default preferences.</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/project"><td></td><td>
+       <strong>/project</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--project-"><code class="xref">GET /project/</code></a></td><td>
+       <em>Get all available projects.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--project-my-"><code class="xref">GET /project/my/</code></a></td><td>
+       <em>Get current user&#39;s projects.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--project-projectId-"><code class="xref">GET /project/{projectId}/</code></a></td><td>
+       <em>Get project by id.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--project-projectId-preferences-"><code class="xref">GET /project/{projectId}/preferences/</code></a></td><td>
+       <em>Get project team-shared preferences.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--project-projectId-preferences-user-"><code class="xref">GET /project/{projectId}/preferences/user/</code></a></td><td>
+       <em>Get project user&#39;s preferences.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--project-projectId-"><code class="xref">POST /project/{projectId}/</code></a></td><td>
+       <em>Update project with new parameters.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--project-projectId-branch-branchName-"><code class="xref">POST /project/{projectId}/branch/{branchName}/</code></a></td><td>
+       <em>Updade branch in project.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--project-projectId-permissions-"><code class="xref">POST /project/{projectId}/permissions/</code></a></td><td>
+       <em>Update project permissions.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--project-projectId-workspace-"><code class="xref">POST /project/{projectId}/workspace/</code></a></td><td>
+       <em>Transfer project form one workspace to another.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--project-"><code class="xref">PUT /project/</code></a></td><td>
+       <em>Create new project.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--project-projectId-branch-"><code class="xref">PUT /project/{projectId}/branch/</code></a></td><td>
+       <em>Create branch in project.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--project-projectId-branch-branchName-"><code class="xref">PUT /project/{projectId}/branch/{branchName}/</code></a></td><td>
+       <em>Push branch content into another branch in this project.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--project-projectId-members-"><code class="xref">PUT /project/{projectId}/members/</code></a></td><td>
+       <em>Invite another user into project.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--project-projectId-preferences-"><code class="xref">PUT /project/{projectId}/preferences/</code></a></td><td>
+       <em>Save project team-shared preferences.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--project-projectId-preferences-user-"><code class="xref">PUT /project/{projectId}/preferences/user/</code></a></td><td>
+       <em>Save project user&#39;s preferences.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#delete--project-projectId-"><code class="xref">DELETE /project/{projectId}/</code></a></td><td>
+       <em>Delete project and all related data.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#delete--project-projectId-branch-branchName-"><code class="xref">DELETE /project/{projectId}/branch/{branchName}/</code></a></td><td>
+       <em>Delete branch in project.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#delete--project-projectId-members-"><code class="xref">DELETE /project/{projectId}/members/</code></a></td><td>
+       <em>Expel another user from project.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#patch--project-projectId-preferences-"><code class="xref">PATCH /project/{projectId}/preferences/</code></a></td><td>
+       <em>Patch project team-shared preferences.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#patch--project-projectId-preferences-user-"><code class="xref">PATCH /project/{projectId}/preferences/user/</code></a></td><td>
+       <em>Patch project user&#39;s preferences.</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/resourceStorage"><td></td><td>
+       <strong>/resourceStorage</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--resourceStorage-resourceId-"><code class="xref">GET /resourceStorage/{resourceId}/</code></a></td><td>
+       <em>Get resource metadata by id.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--resourceStorage-resourceId-data-"><code class="xref">GET /resourceStorage/{resourceId}/data/</code></a></td><td>
+       <em>Get resource binary data by id.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--resourceStorage-"><code class="xref">PUT /resourceStorage/</code></a></td><td>
+       <em>Create resource.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#delete--resourceStorage-resourceId-"><code class="xref">DELETE /resourceStorage/{resourceId}/</code></a></td><td>
+       <em>Delete resource by id.</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/search"><td></td><td>
+       <strong>/search</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--search-"><code class="xref">POST /search/</code></a></td><td>
+       <em>Search for users, projects, workspaces by specified keyword.</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/token"><td></td><td>
+       <strong>/token</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--token"><code class="xref">POST /token</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/user"><td></td><td>
+       <strong>/user</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--user-"><code class="xref">GET /user/</code></a></td><td>
+       <em>Get all available users.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--user-me-"><code class="xref">GET /user/me/</code></a></td><td>
+       <em>Get current user.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--user-userId-"><code class="xref">GET /user/{userId}/</code></a></td><td>
+       <em>Get user by id.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--user-userId-public-"><code class="xref">GET /user/{userId}/public/</code></a></td><td>
+       <em>Get user public profile by id.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--user-password-reset-"><code class="xref">POST /user/password-reset/</code></a></td><td>
+       <em>Change user password by using code from email.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--user-public-"><code class="xref">POST /user/public/</code></a></td><td>
+       <em>Get public profiles of users by their ids.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--user-userId-"><code class="xref">POST /user/{userId}/</code></a></td><td>
+       <em>Update user with new parameters.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--user-userId-invitations-invitationId-"><code class="xref">POST /user/{userId}/invitations/{invitationId}/</code></a></td><td>
+       <em>Accept invitation.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--user-userId-login-api-key-"><code class="xref">POST /user/{userId}/login/api-key/</code></a></td><td>
+       <em>Add API key login to user.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--user-userId-login-password-"><code class="xref">POST /user/{userId}/login/password/</code></a></td><td>
+       <em>Change user password by using temporary code or old password.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--user-userId-mfa-email-code-"><code class="xref">POST /user/{userId}/mfa/email-code/</code></a></td><td>
+       <em>Configure email-code multi-factor authentication.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--user-"><code class="xref">PUT /user/</code></a></td><td>
+       <em>Create user with specified parameters.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--user-password-reset-"><code class="xref">PUT /user/password-reset/</code></a></td><td>
+       <em>Request password reset.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#delete--user-userId-"><code class="xref">DELETE /user/{userId}/</code></a></td><td>
+       <em>Strip personal information from user, quit all groups and block any access to this user.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#delete--user-userId-invitations-invitationId-"><code class="xref">DELETE /user/{userId}/invitations/{invitationId}/</code></a></td><td>
+       <em>Decline invitation.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#delete--user-userId-login-api-key-"><code class="xref">DELETE /user/{userId}/login/api-key/</code></a></td><td>
+       <em>Delete API key login from user.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#delete--user-userId-login-tokens-"><code class="xref">DELETE /user/{userId}/login/tokens/</code></a></td><td>
+       <em>Revoke all issues tokens for specified user.</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/workspace"><td></td><td>
+       <strong>/workspace</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--workspace-"><code class="xref">GET /workspace/</code></a></td><td>
+       <em>Get all available workspaces.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--workspace-my-"><code class="xref">GET /workspace/my/</code></a></td><td>
+       <em>Get current user&#39;s workspaces.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--workspace-workspaceId-"><code class="xref">GET /workspace/{workspaceId}/</code></a></td><td>
+       <em>Get workspace by id.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--workspace-workspaceId-members-"><code class="xref">GET /workspace/{workspaceId}/members/</code></a></td><td>
+       <em>Get workspace members.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--workspace-workspaceId-preferences-"><code class="xref">GET /workspace/{workspaceId}/preferences/</code></a></td><td>
+       <em>Get workspace team-shared preferences.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#get--workspace-workspaceId-preferences-user-"><code class="xref">GET /workspace/{workspaceId}/preferences/user/</code></a></td><td>
+       <em>Get user&#39;s workspace preferences.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--workspace-workspaceId-"><code class="xref">POST /workspace/{workspaceId}/</code></a></td><td>
+       <em>Update workspace with new parameters.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#post--workspace-workspaceId-quota-usage-"><code class="xref">POST /workspace/{workspaceId}/quota-usage/</code></a></td><td>
+       <em>Get workspace quota usage.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--workspace-workspaceId-administrators-"><code class="xref">PUT /workspace/{workspaceId}/administrators/</code></a></td><td>
+       <em>Promote member to workspace administrators.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--workspace-workspaceId-preferences-"><code class="xref">PUT /workspace/{workspaceId}/preferences/</code></a></td><td>
+       <em>Save workspace team-shared preferences.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#put--workspace-workspaceId-preferences-user-"><code class="xref">PUT /workspace/{workspaceId}/preferences/user/</code></a></td><td>
+       <em>Save user&#39;s workspace preferences.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#delete--workspace-workspaceId-administrators-"><code class="xref">DELETE /workspace/{workspaceId}/administrators/</code></a></td><td>
+       <em>Demote member from workspace administrators.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#patch--workspace-workspaceId-preferences-"><code class="xref">PATCH /workspace/{workspaceId}/preferences/</code></a></td><td>
+       <em>Patch workspace team-shared preferences.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="web/rest.html#patch--workspace-workspaceId-preferences-user-"><code class="xref">PATCH /workspace/{workspaceId}/preferences/user/</code></a></td><td>
+       <em>Patch user&#39;s workspace preferences.</em></td></tr>
+   </table>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
