@@ -168,6 +168,69 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       x-anonymous: true
+  /auth/flow/api-key/:
+    post:
+      tags:
+        - Authentication
+      description: Start authentication flow with API Key.
+      operationId: BeginApiKeyAuthenticationFlow
+      requestBody:
+        description: API Key-based authentication flow.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                apiKey:
+                  maxLength: 16384
+                  minLength: 1
+                  type: string
+              x-name: ApiKeyAuthenticateRequest
+      responses:
+        '200':
+          description: Authentication flow stage.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeginApiKeyAuthenticationFlowResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-anonymous: true
+  /auth/flow/on-behalf/:
+    post:
+      tags:
+        - Authentication
+      description: Start authentication flow on behalf of another user.
+      operationId: BeginOnBehalfAuthenticationFlow
+      requestBody:
+        description: On behalf-based authentication flow.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  format: objectId
+              x-name: OnBehalfAuthenticateRequest
+      responses:
+        '200':
+          description: Authentication flow stage.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeginOnBehalfAuthenticationFlowResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-anonymous: true
   '/auth/flow/oauth2/{authenticationProvider}/prepare/':
     post:
       tags:
@@ -1103,7 +1166,7 @@ paths:
                       - eagerReferenceResolution
                       - rawReferences
                       - rawLocalizedStrings
-                      - disableStringOptimization
+                      - disableStringPooling
                       - disableJsonSerialization
                       - disableMessagePackSerialization
                       - disablePatching
@@ -2408,7 +2471,7 @@ paths:
     get:
       tags:
         - Project
-      summary: Get current user's workspaces.
+      summary: Get current user's projects.
       operationId: getCurrentProjects
       responses:
         '200':
@@ -5090,6 +5153,30 @@ components:
           readOnly: true
       x-response: true
     ContinueAuthenticationFlowWithEmailTotpCodeResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/AuthenticationFlowStage'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    BeginApiKeyAuthenticationFlowResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/AuthenticationFlowStage'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    BeginOnBehalfAuthenticationFlowResponse:
       type: object
       properties:
         result:

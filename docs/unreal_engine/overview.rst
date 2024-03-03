@@ -67,7 +67,7 @@ Understanding the Plugin's Architecture
 
 **Plugin Assets**  
   
-Working with data in this plugin is akin to how the built-in DataTable functions. There is a data source file, a module containing the code required to load the data, 
+Working with data in this plugin is akin to how the built-in *DataTable* functions. There is a data source file, a module containing the code required to load the data, 
 and an asset that will be utilized in the game. Whenever you edit a data source file, you need to re-import this data into the asset. 
 Should the data structure in the source file change, then the C++ code must be regenerated.  
 
@@ -105,7 +105,7 @@ To edit a game data file in the Unreal Engine Editor, navigate to the **Content 
 This action opens a new window featuring a user interface for editing the game data. Remember to reimport and, if necessary, regenerate the source 
 code after completing your edits.  
 
-Refencing Game Data in Bluprints
+Refencing Game Data in Blueprints
 --------------------------------
 
 Similar to the DataTable's ``FDataTableRowHandle``, the Charon plugin introduces a specific type for referencing documents within Blueprints, 

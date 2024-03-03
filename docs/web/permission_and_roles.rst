@@ -37,5 +37,5 @@ Workspace Administrator and Workspace Owner Role:
 See also
 --------
 
-- :doc:`Basics <basics>`
+- :doc:`Overview <overview>`
 - `Web-based Application <https://gamedevware.com?ref=documentation>`_
