@@ -31,7 +31,11 @@ Installation from Marketplace
 -------------------------------------------------
 
 1. Add to cart `Charon plugin <com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4>`_ in the Unreal Engine Marketplace.
-2. Follow the `instruction <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ on installing plugin into your project.
+2. Follow the `instruction <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ on installing plugin into your project:
+  a. Click **Install to Engine** and select the engine version.
+  b. Open your project and go to **Edit → Plugins...** window.
+  c. Type **Charon** in the **Search** bar.
+  d. Check the checkbox near the plugin's name to enable it.
 3. Rebuild project C++ code.
 4. Enable plugin in **Edit → Plugins...** if needed.
 

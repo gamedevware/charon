@@ -14,7 +14,7 @@ Step By Step
 5. **Check for Errors:** Ensure there are no error messages in the dialog window that opens, then press *Next*.
 6. **Wait for Module Generation:** Allow time for the new module to be generated, watching the wizard in the dialog proceed to the next step automatically.
 7. **Review Summary:** Check the summary and verify there are no suspicious errors in the *Output Log* window.
-8. **Recompile C++ Code:** Use your IDE of choice to recompile the C++ code.
+8. **Recompile C++ Code:** Use your IDE of choice to recompile the C++ code. Restart Unreal Engine Editor if needed. 
 9. **Import Game Data:** Reopen the *Content Drawer* window and click the **Import** button.
 10. **Select .gdjs File:** Locate and select the *.gdjs* game data file you named in step 4, then click *Ok*.
 11. **Choose Game Data Class:** Select the *Game Data* class, which should match the game data file name. If it's not listed, return to step 7.
