@@ -49,44 +49,54 @@ There is two bootstrap scripts which download and run latest version of Charon o
 Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/dotnet>`_ tool to be available in ``PATH`` 
 and `mono <https://www.mono-project.com/download/stable/>`_ installed for Linux and MacOS.  
 
-1. Download one of the scripts into a local folder ``/charon``.  
+1. Download one of the scripts into a local folder ``charon``.  
     a) `RunCharon.bat (Windows) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat>`_  
     b) `RunCharon.sh (Linux, MacOS) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.sh>`_  
-2. Navigate to the local folder ``cd /charon``. 
+2. Navigate to the local folder ``cd charon``. 
 3. Run ``RunCharon.bat`` or ``RunCharon.sh`` depending on your OS.  
 4. Wait for the script to automatically download and upgrade ``Charon.exe``, and display help text.  
-5. Create an empty file named ``./gamedata.json``  
+5. Create an empty file named ``gamedata.json``  
 6. Run ``Charon.exe`` in standalone mode  
 
 .. code-block:: bash
-
   # Windows
-  ./RunCharon.bat SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
+  
+  @echo off
+  # cd %USERPROFILE% 
+  mkdir Charon
+  cd Charon
+  curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.bat
+  echo. > gamedata.json
+  call RunCharon.bat
   
   # Linux, MacOS
-  chmod +x ./RunCharon.sh
-  ./RunCharon.sh SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
-
-After finishing your work, you could just terminate the process.  
+  
+  # cd $HOME
+  cd %USERPROFILE%
+  mkdir Charon
+  cd Charon
+  curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.bat
+  touch gamedata.json
+  chmod +x RunCharon.sh
+  ./RunCharon.sh
+  
 
 Creating and Editing Game Data
 ==============================
 
-Any empty file could be used as starting point for standalone application launch.
+Any empty **gamedata.json** file could be used as starting point for standalone application launch. 
+The editor will automatically fill the empty file with the initial data.  
 
 .. code-block:: bash
 
-  # create new empty game data file
-  # available formats are .json, gdjs, .msgpack, .msgpck, .gdmp
-  echo > gamedata.json
+  # Windows start
+  ./RunCharon.bat SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
   
-  # open newly created file
-  
-  # Windows
-  ./RunCharon.sh SERVER START --dataBase ./gamedata.json --launchDefaultBrowser --log out
-  
-  # Linux, MacOS
+  # Linux, MacOS start
   ./RunCharon.sh SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
+
+After finishing your work, you could just terminate the process.  
+
 
 See also
 --------

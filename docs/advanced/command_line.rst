@@ -35,10 +35,28 @@ Alternatively, you can use one of two bootstrap scripts:
 Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/dotnet>`_ tool to be available in ``PATH`` and `mono <https://www.mono-project.com/download/stable/>`_ installed for Linux and MacOS.
 
 .. code-block:: bash
+  # Windows
+  
+  mkdir Charon
+  cd Charon
+  curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.bat
+  
+  call RunCharon.bat DATA EXPORT --help
+  #                  ^
+  #         your command goes here
+  
+  # Linux, MacOS
 
-  RunCharon.bat DATA EXPORT --help
-                ^
-                your command goes here
+  mkdir Charon
+  cd Charon
+  curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.bat
+  
+  chmod +x RunCharon.sh
+  
+  ./RunCharon.sh DATA EXPORT --help
+  #              ^
+  #      your command goes here
+  
 
 Command Syntax
 --------------
