@@ -4,6 +4,7 @@
 SCRIPT_DIR=$(cd "`dirname "$0"`" && pwd)
 EXECUTABLE_DIR=$SCRIPT_DIR
 EXECUTABLE_NAME="Charon.exe"
+EXECUTABLE_PATH="$SCRIPT_DIR/$EXECUTABLE_NAME"
 EXITCODE=0
 RESTORE_IS_DONE=0
 
@@ -24,6 +25,7 @@ locate_executable() {
     for D in "$SCRIPT_DIR"/gamedevware.charon/*/; do
         if [[ -e "$D/tools/$EXECUTABLE_NAME" ]]; then
             EXECUTABLE_DIR="$D/tools"
+            EXECUTABLE_PATH="$D/tools/$EXECUTABLE_NAME"
             return
         fi
     done
@@ -93,19 +95,17 @@ run_executable() {
 EOF
     fi
 
-    pushd "$EXECUTABLE_DIR" > /dev/null
     STANDALONE__APPLICATIONDATAPATH="$SCRIPT_DIR/data"
     STANDALONE__APPLICATIONTEMPPATH="$SCRIPT_DIR/temp"
     SERILOG__WRITETO__0__NAME="File"
     SERILOG__WRITETO__0__ARGS__PATH="$SCRIPT_DIR/logs/log_.txt"
 
     # Drop in configuration file before launching executable
-    cp "$SCRIPT_DIR/appsettings.json" "./appsettings.json"
+    cp "$SCRIPT_DIR/appsettings.json" "$EXECUTABLE_DIR/appsettings.json"
     
     # Run 'mono Charon.exe' with passed parameters
-    mono "./$EXECUTABLE_NAME" "$@"
+    mono "$EXECUTABLE_PATH" "$@"
     EXITCODE=$?
-    popd > /dev/null
 
     if [[ "$EXITCODE" != "0" ]]; then
         exit_failure

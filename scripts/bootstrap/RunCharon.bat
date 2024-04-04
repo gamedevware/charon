@@ -11,6 +11,7 @@ SETLOCAL DISABLEDELAYEDEXPANSION
 set "SCRIPT_DIR=%DRIVE_LETTER%%~p0"
 set "EXECUTABLE_DIR=%DRIVE_LETTER%%~p0"
 set "EXECUTABLE_NAME=Charon.exe"
+set "EXECUTABLE_PATH=%EXECUTABLE_DIR%\%EXECUTABLE_NAME%"
 set EXITCODE=0
 set RESTORE_IS_DONE=0
 
@@ -21,6 +22,7 @@ set "FILE_NAME=Charon.exe"
 for /d %%D in ("%SCRIPT_DIR%\gamedevware.charon\*") do (
     if exist "%%D\tools\%EXECUTABLE_NAME%" (
         set "EXECUTABLE_DIR=%%D\tools"
+        set "EXECUTABLE_PATH=%%D\tools\%EXECUTABLE_NAME%"
         goto Run_Executable
     )
 )
@@ -86,19 +88,15 @@ IF NOT EXIST "%SCRIPT_DIR%\appsettings.json" (
     ) > "%SCRIPT_DIR%\appsettings.json"
 )
 
-pushd "%EXECUTABLE_DIR%"
-
 set "STANDALONE__APPLICATIONDATAPATH=%SCRIPT_DIR%\data"
 set "STANDALONE__APPLICATIONTEMPPATH=%SCRIPT_DIR%\temp"
 set "SERILOG__WRITETO__0__NAME=File"
 set "SERILOG__WRITETO__0__ARGS__PATH=%SCRIPT_DIR%\logs\log_.txt"
 
 rem Drop in configuration file before launching executable
-copy /Y "%SCRIPT_DIR%\appsettings.json" ".\appsettings.json" >nul
+copy /Y "%SCRIPT_DIR%\appsettings.json" "%EXECUTABLE_DIR%\appsettings.json" >nul
 rem Run Charon.exe with passed parameters
-call "%EXECUTABLE_NAME%" %*
-
-popd
+call "%EXECUTABLE_PATH%" %*
 
 set EXITCODE=%ERRORLEVEL%
 

@@ -68,25 +68,32 @@ Or use following bootstrap script:
 
       .. code-block:: bash
   
+        rem ##### Load and run bootstrap script #####
+
         @echo off
-        # cd %USERPROFILE% 
         mkdir Charon
         cd Charon
         curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.bat
-        echo. > gamedata.json
+        echo. 2>  gamedata.json
+        
+        rem ##### Start editor #####
+
         RunCharon.bat SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
 
    .. tab:: Linux, MacOS
 
       .. code-block:: bash
 
-        # cd $HOME
-        cd %USERPROFILE%
+        ##### Load and run bootstrap script #####
+
         mkdir Charon
         cd Charon
-        curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.bat
+        curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.sh
         touch gamedata.json
         chmod +x RunCharon.sh
+        
+        ##### Start editor #####
+
         ./RunCharon.sh SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
 
 Creating and Editing Game Data
