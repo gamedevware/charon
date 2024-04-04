@@ -92,4 +92,4 @@ This command supports :doc:`universal parameters <universal_parameters>`.
  Output Data Schema
 ------------------
 
-The backed-up data follows the schema of :doc:`game data <../game_data_schema>`.
+The backed-up data follows the schema of :doc:`game data <../game_data_structure>`.

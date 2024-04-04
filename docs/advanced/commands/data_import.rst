@@ -151,7 +151,7 @@ This command supports :doc:`universal parameters <universal_parameters>`.
 
 .. _CommandLine_Import_Structure:
 ---------------------
- Input Data Scructure
+ Input Data Structure
 ---------------------
 
 The data you input should follow this structure (recommended):
