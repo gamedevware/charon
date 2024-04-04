@@ -59,6 +59,7 @@ and `mono <https://www.mono-project.com/download/stable/>`_ installed for Linux 
 6. Run ``Charon.exe`` in standalone mode  
 
 .. code-block:: bash
+
   # Windows
   
   @echo off
