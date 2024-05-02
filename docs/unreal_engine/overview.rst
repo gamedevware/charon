@@ -23,24 +23,23 @@ Key Features
 Getting Started
 ===============
 
-To begin using `this <com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4>`_ plugin, the initial step involves installing the plugin from the Unreal Engine Marketplace. 
+To begin using `this <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ plugin, the initial step involves installing the plugin from the Unreal Engine Marketplace. 
 Once installed, you'll need to `enable the plugin <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ for your project through the project settings. 
 Following this, a rebuild of your project's C++ code is necessary. The final step in the setup process is the creation of your first game data file.
 
 Installation from Marketplace
 -------------------------------------------------
 
-1. Add to cart `Charon plugin <com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4>`_ in the Unreal Engine Marketplace.
+1. Add to cart Charon plugin `[Epic Launcher] <com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4>`_ / `[Web] <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ in the Unreal Engine Marketplace.
 2. Follow the `instruction <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ on installing plugin into your project:
   a. Click **Install to Engine** and select the engine version.
   b. Open your project and go to **Edit → Plugins...** window.
   c. Type **Charon** in the **Search** bar.
   d. Check the checkbox near the plugin's name to enable it.
 3. Rebuild project C++ code.
-4. Enable plugin in **Edit → Plugins...** if needed.
 
-Installation from GitHub
-------------------------
+Building from Source Code
+-------------------------
 
 1. Clone or download the `plugin source code <https://github.com/gamedevware/charon-unreal-engine/tree/main>`_ from the GitHub repository.
 2. Create a ``<project-dir>/Plugins/Charon`` directory.
