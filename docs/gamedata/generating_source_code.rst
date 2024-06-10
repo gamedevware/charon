@@ -3,6 +3,11 @@ Generating Source Code
 
 The process of generating source code allows game data to be used inside a game. This process involves specifying the language (e.g. C#) and various generation parameters/optimizations. It can be done from both the project's dashboard user interface and the command-line interface (CLI).
 
+
+.. csv-table:: Features
+   :file: source_code_features.csv
+   :header-rows: 1
+
 Using Project's Dashboard UI
 -----------------------------
 
@@ -12,7 +17,7 @@ To generate source code from the dashboard, follow these steps:
 2. Click on the *Generate Source Code* button.
 3. Choose the language you want to generate the source code in.
 4. Specify any generation parameters required.
-5. Click on the *Finish* button to initiate the process.
+5. Click on the *Generate* button to initiate the process.
 6. Download archive file with generated source code.
 
 Using Command-Line Interface (CLI)
