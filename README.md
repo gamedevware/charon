@@ -98,6 +98,23 @@ let heroes = gameData.heroes; // -> readonly Hero[]
 let hero = gameData.heroesAll.find("Arbalest"); // -> Hero | undefined
 ```
 
+Haxe Code Example
+=================
+```haxe
+import GameData;
+import Formatters;
+import haxe.io.Path;
+sys.io.File;
+
+var input = File.read("RpgGameData.gdjs"); // or .json
+var options = new GameDataLoadOptions();
+options.format = GameDataFormat.Json;
+var gameData = new GameData(input, options);
+
+var allHeroes = gameData.heroesAll.list // -> ReadOnlyArray<Hero>
+var heroById = gameData.heroesAll.get("Arbalest"); // -> Hero
+```
+
 License
 =======
 * Generated Code - MIT  

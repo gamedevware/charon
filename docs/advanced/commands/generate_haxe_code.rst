@@ -1,7 +1,7 @@
-Generate Unreal Engine C++ Source Code
+Generate Haxe Source Code
 ========================
 
-Generates C++ for Unreal Engine source code for game data into output directory.
+Generates Haxe source code for game data into output directory.
 
 This command does not delete previously generated files, and it is the responsibility of the user to ensure that any previous files are removed before running the command again.
 
@@ -17,10 +17,10 @@ This command does not delete previously generated files, and it is the responsib
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe GENERATE UECPPCODE --dataBase "c:\My Project\Content\gamedata.json" --outputDirectory "c:\My Project\Source\Gamedata"
+  Charon.exe GENERATE HAXE --dataBase "c:\my app\gamedata.json" --packageName "" --outputDirectory "c:\my app\scripts"
 
   # remote game data
-  Charon.exe GENERATE UECPPCODE --dataBase "https://charon.live/view/data/My_Game/develop/" --outputDirectory "./My Project/Source/Gamedata" --credentials "<API-Key>"
+  Charon.exe GENERATE HAXE --dataBase "https://charon.live/view/data/My_Game/develop/" --packageName "" --outputDirectory "./scripts" --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -32,7 +32,7 @@ This command does not delete previously generated files, and it is the responsib
    .. code-block:: bash
    
      # local file
-     --dataBase "c:\My Project\Content\gamedata.json"
+     --dataBase "c:\my app\gamedata.json"
      
      # remote server
      --dataBase "https://charon.live/view/data/My_Game/develop/"
@@ -46,25 +46,24 @@ This command does not delete previously generated files, and it is the responsib
    .. code-block:: bash
    
      # Windows
-     --outputDirectory "c:\My Project\Source\Gamedata"
+     --outputDirectory "c:\my app\scripts"
      
      # Linux or OSX
-     --outputDirectory "~/My Project/Source/Gamedata"
+     --outputDirectory "~/my app/scripts"
      
      # Relative path
-     --outputDirectory "./My Project/Source/Gamedata"
-     
+     --outputDirectory "./my app/scripts"
+
 --documentClassName
    Name for base class for all documents.
 
    .. code-block:: bash
    
      # name (default)
-     --documentClassName Document # became UDocument in generated code
+     --documentClassName Document
      
-     # in case of custom inheritance chain
-	 # class SHOULD publicly inherit UDocument
-     --documentClassName GameDataDocument # became UGameDataDocument in generated code
+     # in case of name collision
+     --documentClassName GameDataDocument
      
 --gameDataClassName
    Name for class containing whole in-memory game data.
@@ -72,18 +71,23 @@ This command does not delete previously generated files, and it is the responsib
    .. code-block:: bash
    
      # name (default)
-     --gameDataClassName GameData # became UGameData in generated code
+     --gameDataClassName GameData
      
      # in case of name collision
-     --gameDataClassName MyGameData # became UMyGameData in generated code
+     --gameDataClassName MyGameData
      
---defineConstants
-   Preprocessor constants to define. Use semicolon(;) to separate multiple values.
+--packageName
+   Package name for all generated classes.
    
    .. code-block:: bash
+
+     # empty package (default)
+     --packageName ""
    
-     --defineConstants NO_OPTIMIZATIONS;USE_FSTRING_ONLY
+     # named
+     --packageName GameParameters
      
+
 --indentation
    Indentation style for generated code.
    
@@ -108,6 +112,9 @@ This command does not delete previously generated files, and it is the responsib
      
      # Unix style \\n
      --lineEndings Unix
+     
+--splitFiles
+   Set this flag to lay out generated classes into separate files. If not set, then one giant file with the name of ``--gameDataClassName``.cs will be generated.
 
 --optimizations
    List of enabled optimization in generated code.

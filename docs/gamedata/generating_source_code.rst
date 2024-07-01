@@ -39,6 +39,7 @@ Example
 - Use the ``--outputDirectory`` parameter to specify the location where generated files will be saved.
 - Use the ``--namespace`` and  ``--gameDataClassName`` parameters to adjust the signature of generated classes.
 - Use the ``--splitFiles`` parameter to generate multiple files instead of one large one.
+- Use the ``--clearOutputDirectory`` parameter to clear the output directory from generated files when re-generating source code.
 
 Once the process is complete, the generated source code will be available at ``--outputDirectory``.
 
@@ -50,7 +51,9 @@ See also
 - :doc:`Working with Source Code (C# 7.3) <working_with_csharp_code_7_3>`
 - :doc:`Working with Source Code (TypeScript) <working_with_type_script_code>`
 - :doc:`Working with Source Code (UE C++) <working_with_uecpp_code_>`
+- :doc:`Working with Source Code (Haxe) <working_with_haxe_code_>`
 - :doc:`Command Line Interface (CLI) <../advanced/command_line>`
 - :doc:`GENERATE CSHARPCODE Command <../advanced/commands/generate_csharp_code>`
 - :doc:`GENERATE TYPESCRIPTCODE Command <../advanced/commands/generate_typescript_code>`
 - :doc:`GENERATE UECPP Command <../advanced/commands/generate_uecpp_code>`
+- :doc:`GENERATE HAXE Command <../advanced/commands/generate_haxe_code>`
