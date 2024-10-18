@@ -114,7 +114,7 @@ This command does not delete previously generated files, and it is the responsib
      --lineEndings Unix
      
 --splitFiles
-   Set this flag to lay out generated classes into separate files. If not set, then one giant file with the name of ``--gameDataClassName``.cs will be generated.
+   Set this flag to lay out generated classes into separate files. If not set, then one giant file with the name of ``--gameDataClassName``.hx will be generated.
 
 --optimizations
    List of enabled optimization in generated code.

@@ -97,7 +97,14 @@ This command does not delete previously generated files, and it is the responsib
    
    .. code-block:: bash
    
-     --defineConstants USE_DYNAMIC_EXPRESSIONS;SUPPRESS_BUILD_IN_FORMULAS
+     # Use GameDevWare.Dynamic.Expressions.dll for formulas
+     --defineConstants USE_DYNAMIC_EXPRESSIONS
+   
+     # Exclude all formula related code from compilation
+     --defineConstants SUPPRESS_BUILD_IN_FORMULAS
+   
+     # Enable some JSON formatting optimizations using System.Memory.dll and System.Buffers.Text namespace.
+     --defineConstants BUFFERS_TEXT_DLL
      
 --indentation
    Indentation style for generated code.
