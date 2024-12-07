@@ -35,6 +35,7 @@ Analyzing Game Requirements
 ---------------------------
 
 .. figure:: ./general_design.png
+
 This step involves analyzing the game requirements to understand the design and functionality of the game. It includes studying the game design document and identifying key features, gameplay mechanics, and data elements that need to be captured and represented in the game.
 
 Identifying Schemas and Relationships 
@@ -59,6 +60,7 @@ This step involves defining schemas to represent the structure and properties of
 See also
 --------
 
+- :doc:`Implementing Inheritance <inheritance>`
 - :doc:`Filling Documents <filling_documents>`
 - :doc:`Publishing Game Data <publication>`
 - :doc:`Generating Source Code <generating_source_code>`
