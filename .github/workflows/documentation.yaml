@@ -14,6 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
+      - uses: ts-graphviz/setup-graphviz@v2
       - name: Install dependencies
         run: |
           pip install sphinx sphinx_rtd_theme sphinxcontrib-openapi sphinx-copybutton sphinx-tabs
