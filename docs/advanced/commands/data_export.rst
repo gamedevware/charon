@@ -192,20 +192,7 @@ Exports documents into a file.
 This command supports :doc:`universal parameters <universal_parameters>`.
 
 ------------------
- Output Data Schema
+ Output
 ------------------
 
-The expored data follow this schema:
-
-   .. code-block:: js
-     
-     {
-       "Collections": {
-         "<Schema-Name>": [
-           {
-             // <Document>
-           },
-           // ...
-         ]
-       }
-     }
+The exported data follows the general :doc:`game data structure <../game_data_structure>`, but omits `ToolsVersion`, `RevisionHash`, and `ChangeNumber` when the export mode is **not** set to publication.

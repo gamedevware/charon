@@ -89,7 +89,7 @@ Create Backup
 This command supports :doc:`universal parameters <universal_parameters>`.
 
 ------------------
- Output Data Schema
+ Output
 ------------------
 
-The backed-up data follows the schema of :doc:`game data <../game_data_structure>`.
+The back up data follows the general :doc:`game data structure <../game_data_structure>`.
