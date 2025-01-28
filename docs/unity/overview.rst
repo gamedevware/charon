@@ -22,38 +22,49 @@ Key Features
 Getting Started
 ===============
 
-Requirements
+Prerequisites
 ------------
 
-Unity plugin uses `Charon.exe`, which is a .NET application built for .NET Framework 4.7.2 and tested for compatibility with Mono 5.18.0.
+Unity plugin uses `dotnet tool charon`, which is a .NET Core application built for .NET 8.
 
-**Windows**
+.. tabs::
 
-1. Download and install `NET Framework 4.7.2+ <https://dotnet.microsoft.com/en-us/download/dotnet-framework/net472>`_.
-2. Make sure you have write access to ``%APPDATA%/Charon``.
+   .. tab:: Windows
 
-**OSX**
+      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      2. Make sure you have write access to ``%APPDATA%/Charon``.
 
-1. Download and install `Mono runtime 5.18.0+ <http://www.mono-project.com/download/#download-mac>`_.
-2. Make sure you have write access to ``~/Library/Application Support/Charon``.
-3. Make sure ``mono`` is available to the current user.
+   .. tab:: MacOS
 
-**Linux**
+      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      2. Make sure you have write access to ``~/Library/Application Support/Charon``.
+      3. Make sure ``dotnet`` is available from ``$PATH``.
 
-1. Download and install `Mono runtime 5.18.0+ <https://www.mono-project.com/download/stable/#download-lin>`_.
-2. Make sure you have write access to ``~/.config``.
-3. Make sure ``mono`` is available to the current user.
+   .. tab:: Linux
 
-**Checking installed Mono version**
+      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      2. Make sure you have write access to ``~/.config``.
+      3. Make sure ``dotnet`` is available from ``$PATH``.
+
+**Checking Available .NET Versions**
 
 .. code-block:: bash
 
     # check for mono already installed
-    mono --version
+    dotnet --list-sdks
 
-**Checking Available Runtime Version**
+.. code-block:: bash
+    # output for dotnet --list-sdks
+    5.0.303 [C:\Program Files\dotnet\sdk]
+    5.0.408 [C:\Program Files\dotnet\sdk]
+    6.0.428 [C:\Program Files\dotnet\sdk]
+    7.0.120 [C:\Program Files\dotnet\sdk]
+    8.0.206 [C:\Program Files\dotnet\sdk]
+    8.0.405 [C:\Program Files\dotnet\sdk]
 
-To examine your current .NET Framework runtime or Mono runtime version, you need to select 
+**Checking installed .NET version**
+
+To examine your current .NET runtime version, you need to select 
 **Tools** → **Charon** → **Troubleshooting** → **Check Runtime Version...** in the Unity menu after plugin being installed.
 
 Installation from Unity Asset Store

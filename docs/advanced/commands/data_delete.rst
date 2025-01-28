@@ -15,10 +15,10 @@ Deletes a document. For a bulk deletion use :doc:`DATA IMPORT <data_import>` com
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA DELETE --dataBase "c:\my app\gamedata.json" --schema Item --id "Sword"
+  dotnet tool charon DATA DELETE --dataBase "c:\my app\gamedata.json" --schema Item --id "Sword"
 
   # remote game data
-  Charon.exe DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --id "Sword" --credentials "<API-Key>"
+  dotnet tool charon DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --id "Sword" --credentials "<API-Key>"
 
 ---------------
  Parameters
@@ -107,7 +107,7 @@ Deletes a document. For a bulk deletion use :doc:`DATA IMPORT <data_import>` com
      # Message Pack
      --outputFormat msgpack
      
-     # XML
+     # XML (removed in 2025.1.1) 
      --outputFormat xml
      
 --outputFormattingOptions

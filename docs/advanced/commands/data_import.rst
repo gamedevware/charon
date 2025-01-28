@@ -15,10 +15,10 @@ Imports documents from file to a game data.
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA IMPORT --dataBase "c:\my app\gamedata.json" --schemas Character --input "c:\my app\characters.json" --inputFormat json --mode safeUpdate
+  dotnet tool charon DATA IMPORT --dataBase "c:\my app\gamedata.json" --schemas Character --input "c:\my app\characters.json" --inputFormat json --mode safeUpdate
   
   # remote game data
-  Charon.exe DATA IMPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --input "./characters.json" --inputFormat json --mode safeUpdate --credentials "<API-Key>"
+  dotnet tool charon DATA IMPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --input "./characters.json" --inputFormat json --mode safeUpdate --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -135,7 +135,7 @@ Imports documents from file to a game data.
      # Message Pack
      --inputFormat msgpack
      
-     # XML
+     # XML (removed in 2025.1.1) 
      --inputFormat xml
      
      # XLSX Spreadsheet

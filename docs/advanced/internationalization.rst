@@ -32,7 +32,7 @@ To export translatable text data as *XLSX*, run the :doc:`DATA EXPORT <commands/
 
 .. code-block:: bash
 
-  Charon.exe DATA EXPORT --dataBase "c:\my app\gamedata.json" --properties [LocalizedText] --output "c:\my app\text_all_languages.xlsx" --outputFormat xlsx
+  dotnet tool charon DATA EXPORT --dataBase "c:\my app\gamedata.json" --properties [LocalizedText] --output "c:\my app\text_all_languages.xlsx" --outputFormat xlsx
   
 - Use ``--properties [LocalizedText]`` parameter to indicate that only the properties containing ``LocalizedText`` should be exported.
 - Use ``--languages`` parameter to limit the number of exported languages.
@@ -46,7 +46,7 @@ Once your data is processed (e.g., translated), you can import it using the :doc
 
 .. code-block:: bash
 
-  Charon.exe DATA IMPORT --dataBase "c:\my app\gamedata.json" --input "c:\my app\text_all_languages.xlsx" --inputFormat xlsx --mode safeUpdate
+  dotnet tool charon DATA IMPORT --dataBase "c:\my app\gamedata.json" --input "c:\my app\text_all_languages.xlsx" --inputFormat xlsx --mode safeUpdate
   
 Exporting to XLIFF
 ^^^^^^^^^^^^^^^^^^
@@ -55,7 +55,7 @@ To export translatable text data as *XLIFF*, run the :doc:`DATA I18N EXPORT <com
 
 .. code-block:: bash
 
-  Charon.exe DATA I18N EXPORT --dataBase "c:\my app\gamedata.json" --sourceLanguage en --targetLanguage fr --output "c:\my app\en_fr_texts.xliff" --outputFormat xliff
+  dotnet tool charon DATA I18N EXPORT --dataBase "c:\my app\gamedata.json" --sourceLanguage en --targetLanguage fr --output "c:\my app\en_fr_texts.xliff" --outputFormat xliff
 
 - Use the ``--outputFormat`` parameter to indicate the exact format of the exported data, which can be either *xliff*, *xiff1*, or *xliff2*.
 - Use ``--sourceLanguage`` to indicate the language text is being translated from as the *source*, and ``--targetLanguage`` to indicate the *target* language that the text is being translated to.
@@ -68,7 +68,7 @@ Once the data has been processed, you can import it using the :doc:`DATA I18N IM
 
 .. code-block:: bash
 
-  Charon.exe DATA I18N IMPORT --dataBase "c:\my app\gamedata.json" --input "c:\my app\en_fr_texts.xliff"
+  dotnet tool charon DATA I18N IMPORT --dataBase "c:\my app\gamedata.json" --input "c:\my app\en_fr_texts.xliff"
   
 Other formats
 ^^^^^^^^^^^^^

@@ -15,10 +15,10 @@ Outputs the differences between two game datas as a file that can be used later 
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA CREATEPATCH --dataBase "c:\my app\gamedata.json" --input "c:\my app\gamedata_patch.json" --inputFormat json
+  dotnet tool charon DATA CREATEPATCH --dataBase "c:\my app\gamedata.json" --input "c:\my app\gamedata_patch.json" --inputFormat json
   
   # remote game data
-  Charon.exe DATA CREATEPATCH --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./gamedata_patch.json" --inputFormat json --credentials "<API-Key>"
+  dotnet tool charon DATA CREATEPATCH --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./gamedata_patch.json" --inputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -93,7 +93,7 @@ Outputs the differences between two game datas as a file that can be used later 
      # Message Pack
      --outputFormat msgpack
      
-     # XML
+     # XML (removed in 2025.1.1) 
      --outputFormat xml
      
 

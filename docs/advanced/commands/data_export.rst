@@ -15,10 +15,10 @@ Exports documents into a file.
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA EXPORT --dataBase "c:\my app\gamedata.json" --schemas Character --output "c:\my app\characters.json" --outputFormat json
+  dotnet tool charon DATA EXPORT --dataBase "c:\my app\gamedata.json" --schemas Character --output "c:\my app\characters.json" --outputFormat json
   
   # remote game data
-  Charon.exe DATA EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --output "./characters.json" --outputFormat json --credentials "<API-Key>"
+  dotnet tool charon DATA EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --output "./characters.json" --outputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -180,7 +180,7 @@ Exports documents into a file.
      # Message Pack
      --outputFormat msgpack
      
-     # XML
+     # XML (removed in 2025.1.1) 
      --outputFormat xml
      
      # XLSX Spreadsheet

@@ -14,5 +14,5 @@ CLI Example:
 
 .. code-block:: bash
 
-  Charon.exe SERVER START ./gamedata.json --port 8080 --launchDefaultBrowser --resetPreferences
+  dotnet tool charon SERVER START ./gamedata.json --launchDefaultBrowser --resetPreferences
 

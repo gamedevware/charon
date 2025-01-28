@@ -27,8 +27,48 @@ To begin using `this <https://www.unrealengine.com/marketplace/en-US/product/cha
 Once installed, you'll need to `enable the plugin <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ for your project through the project settings. 
 Following this, a rebuild of your project's C++ code is necessary. The final step in the setup process is the creation of your first game data file.
 
+Prerequisites
+-------------
+
+The Unreal Engine plugin is written in C++ but relies on ``dotnet tool charon``, a .NET Core application which runs on .NET 8.
+
+.. tabs::
+
+   .. tab:: Windows
+
+      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      2. Make sure you have write access to ``%APPDATA%/Charon``.
+
+   .. tab:: MacOS
+
+      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      2. Make sure you have write access to ``~/Library/Application Support/Charon``.
+      3. Make sure ``dotnet`` is available from ``$PATH``.
+
+   .. tab:: Linux
+
+      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      2. Make sure you have write access to ``~/.config``.
+      3. Make sure ``dotnet`` is available from ``$PATH``.
+
+**Checking Available .NET Versions**
+
+.. code-block:: bash
+
+    # check for mono already installed
+    dotnet --list-sdks
+
+.. code-block:: bash
+    # output for dotnet --list-sdks
+    5.0.303 [C:\Program Files\dotnet\sdk]
+    5.0.408 [C:\Program Files\dotnet\sdk]
+    6.0.428 [C:\Program Files\dotnet\sdk]
+    7.0.120 [C:\Program Files\dotnet\sdk]
+    8.0.206 [C:\Program Files\dotnet\sdk]
+    8.0.405 [C:\Program Files\dotnet\sdk]
+
 Installation from Marketplace
--------------------------------------------------
+-----------------------------
 
 1. Add to cart Charon plugin `[Epic Launcher] <com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4>`_ / `[Web] <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ in the Unreal Engine Marketplace.
 2. Follow the `instruction <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ on installing plugin into your project:
