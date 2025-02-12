@@ -15,10 +15,10 @@ Import translated text from a specified file into game data.
 .. code-block:: bash
 
   # local game data (windows)
-  dotnet tool charon DATA I18N IMPORT --dataBase "c:\my app\gamedata.json" --input "c:\my app\character_loc.xliff" --inputFormat xliff
+  dotnet charon DATA I18N IMPORT --dataBase "c:\my app\gamedata.json" --input "c:\my app\character_loc.xliff" --inputFormat xliff
   
   # remote game data
-  dotnet tool charon DATA I18N IMPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./character_loc.xliff" --inputFormat xliff --credentials "<API-Key>"
+  dotnet charon DATA I18N IMPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./character_loc.xliff" --inputFormat xliff --credentials "<API-Key>"
 
 ---------------
  Parameters
@@ -66,6 +66,9 @@ Import translated text from a specified file into game data.
      # negation
      --schemas Char* !Character
      --schemas !*Item*
+
+--languages
+   The list of languages to import. Values are `language tags (BCP 47) <https://msdn.microsoft.com/en-US/library/system.globalization.cultureinfo.name(v=vs.110).aspx>`_. 
 
 --input
    Path to a file with data to import. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or :doc:`URL <remote_input_output>`.

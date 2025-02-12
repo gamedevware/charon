@@ -8,14 +8,14 @@ The standalone version is typically used by individual game developers or small 
 Prerequisites
 ============
 
-Unity plugin uses `dotnet tool charon`, which is a .NET Core application built for .NET 8.
+Unity plugin uses `dotnet charon`, which is a .NET Core application built for .NET 8.
 
 .. tabs::
 
    .. tab:: Windows
 
       1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
-      2. Make sure you have write access to ``%APPDATA%/Charon``.
+      2. Make sure you have write access to ``%APPDATA%/Charon`` (C:\Users\%USERNAME%\AppData\Roaming\Charon).
 
    .. tab:: MacOS
 
@@ -26,7 +26,7 @@ Unity plugin uses `dotnet tool charon`, which is a .NET Core application built f
    .. tab:: Linux
 
       1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
-      2. Make sure you have write access to ``~/.config``.
+      2. Make sure you have write access to ``~/.config/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 
 **Checking Available .NET Versions**

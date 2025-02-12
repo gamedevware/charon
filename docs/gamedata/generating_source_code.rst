@@ -34,7 +34,7 @@ Example
 
 .. code-block:: bash
 
-  dotnet tool charon GENERATE CSHARPCODE --dataBase "c:\my app\gamedata.json" --namespace "MyGame.Parameters" --outputDirectory "c:\my app\scripts"
+  dotnet charon GENERATE CSHARPCODE --dataBase "c:\my app\gamedata.json" --namespace "MyGame.Parameters" --outputDirectory "c:\my app\scripts"
 
 - Use the ``--outputDirectory`` parameter to specify the location where generated files will be saved.
 - Use the ``--namespace`` and  ``--gameDataClassName`` parameters to adjust the signature of generated classes.

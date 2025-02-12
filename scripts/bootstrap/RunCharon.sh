@@ -1,146 +1,82 @@
 #!/bin/bash
 
-# ###### DETERMINE CURRENT DIRECTORY ##########
+# Add typical paths for mono and dotnet to PATH
+export PATH=$PATH:/usr/local/bin:/usr/bin:/usr/sbin:/opt/homebrew/bin:/opt/local/bin:/usr/local/share/dotnet:/usr/share/dotnet:/snap/bin
+
+
+# Find the current directory of the script
 SCRIPT_DIR=$(cd "`dirname "$0"`" && pwd)
-EXECUTABLE_DIR=$SCRIPT_DIR
-EXECUTABLE_NAME="Charon.exe"
-EXECUTABLE_PATH="$SCRIPT_DIR/$EXECUTABLE_NAME"
-EXITCODE=0
-RESTORE_IS_DONE=0
 
-check_mono_version() {
-    local mono_version=$(mono --version | head -n1 | grep -oE 'version [0-9]+' | awk '{print $2}')
-
-    if [[ -z "$mono_version" ]]; then
-        exit_failure_wrong_or_missing_mono
-    fi
-
-    if (( mono_version < 5 )); then
-        exit_failure_wrong_or_missing_mono
+# Check if dotnet is installed
+check_dotnet() {
+    if ! command -v dotnet &> /dev/null; then
+        echo ".NET SDK is not installed." >&2
+        echo "Please install .NET SDK from https://dotnet.microsoft.com/en-us/download" >&2
+        exit 1
     fi
 }
 
-locate_executable() {
-    FILE_NAME="Charon.exe"
-    for D in "$SCRIPT_DIR"/gamedevware.charon/*/; do
-        if [[ -e "$D/tools/$EXECUTABLE_NAME" ]]; then
-            EXECUTABLE_DIR="$D/tools"
-            EXECUTABLE_PATH="$D/tools/$EXECUTABLE_NAME"
-            return
-        fi
-    done
-
-    if [[ "$RESTORE_IS_DONE" == "1" ]]; then
-        exit_failure_no_executable
+# Get the installed dotnet version
+get_dotnet_version() {
+    DOTNET_VERSION=$(dotnet --version 2>/dev/null)
+    if [ -z "$DOTNET_VERSION" ]; then
+        echo "Failed to retrieve .NET version. Ensure 'dotnet' is installed and available in the PATH." >&2
+        exit 1
     fi
-
-    if [ ! -f "$SCRIPT_DIR/Charon.csproj" ]; then
-        cat > "$SCRIPT_DIR/Charon.csproj" << EOF
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="GameDevWare.Charon" Version="*"  />
-  </ItemGroup>
-</Project>
-EOF
-    fi
-
-    # ###### RESTORING NUGET PACKAGE ##########
-    pushd "$SCRIPT_DIR" > /dev/null
-    dotnet restore --packages "." --force --ignore-failed-sources > /dev/null
-    EXITCODE=$?
-    popd > /dev/null
-    RESTORE_IS_DONE=1
-
-    if [[ "$EXITCODE" != "0" ]]; then
-        exit_failure_dotnet_restore_failed
-    fi
-
-    locate_executable
+    MAJOR_VERSION=$(echo "$DOTNET_VERSION" | cut -d. -f1)
 }
 
-run_executable() {
-    if [ ! -f "$SCRIPT_DIR/appsettings.json" ]; then
-        cat > "$SCRIPT_DIR/appsettings.json" << EOF
-{
-	"Logging": {
-		"LogLevel": {
-			"Default": "Debug"
-		}
-	},
-	"Serilog": {
-		"Using": [ "Serilog.Sinks.Console", "Serilog.Sinks.File" ],
-		"MinimumLevel": "Debug",
-		"WriteTo": [
-			{
-				"Name": "File",
-				"Args": {
-					"path": "logs/log_.txt",
-					"rollingInterval": "Day",
-					"buffered": false,
-					"fileSizeLimitBytes": 10485760,
-					"rollOnFileSizeLimit": true,
-					"outputTemplate": "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}: {Message}{NewLine}{Exception}"
-				}
-			}
-		],
-		"Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId" ],
-		"Properties": {
-			"Application": "Charon"
-		}
-	}
-}
-EOF
+# Check if the major version is 8 or later
+check_dotnet_version() {
+    if [ "$MAJOR_VERSION" -lt 8 ]; then
+        echo ".NET version $DOTNET_VERSION is installed, but it is not version 8 or later." >&2
+        echo "Please install .NET 8 or later from https://dotnet.microsoft.com/en-us/download" >&2
+        exit 1
     fi
+}
 
-    STANDALONE__APPLICATIONDATAPATH="$SCRIPT_DIR/data"
-    STANDALONE__APPLICATIONTEMPPATH="$SCRIPT_DIR/temp"
-    SERILOG__WRITETO__0__NAME="File"
-    SERILOG__WRITETO__0__ARGS__PATH="$SCRIPT_DIR/logs/log_.txt"
-
-    # Drop in configuration file before launching executable
-    cp "$SCRIPT_DIR/appsettings.json" "$EXECUTABLE_DIR/appsettings.json"
+# Install/Update charon tool
+install_update_charon_tool() {
+    pushd "$SCRIPT_DIR" > /dev/null || exit 1
+    if ! dotnet tool install dotnet-charon --local --create-manifest-if-needed > /dev/null 2>&1; then
+        echo "Failed to execute the 'dotnet tool install dotnet-charon' command to retrieve the latest package version from NuGet." >&2
+        echo "Ensure that the 'dotnet' tool is installed and available in the 'PATH'." >&2
+        echo "Check https://dotnet.microsoft.com/en-us/download for the installer." >&2
+        popd > /dev/null || exit 1
+        exit 1
+    fi
+    popd > /dev/null || exit 1
     
-    # Run 'mono Charon.exe' with passed parameters
-    mono "$EXECUTABLE_PATH" "$@"
-    EXITCODE=$?
+    pushd "$SCRIPT_DIR" > /dev/null || exit 1
+    if ! dotnet tool update dotnet-charon --local > /dev/null 2>&1; then
+        echo "Failed to execute the 'dotnet tool update dotnet-charon' command to retrieve the latest package version from NuGet." >&2
+        popd > /dev/null || exit 1
+        exit 1
+    fi
+    popd > /dev/null || exit 1
+}
 
-    if [[ "$EXITCODE" != "0" ]]; then
-        exit_failure
-    else
-        exit_success
+# Run charon tool with specified parameters
+run_tool() {
+    # Ensure required directories exist
+    mkdir -p "$SCRIPT_DIR/data" "$SCRIPT_DIR/temp" "$SCRIPT_DIR/logs"
+
+    pushd "$SCRIPT_DIR" > /dev/null || exit 1
+    dotnet charon "$@"
+    EXITCODE=$?
+    popd > /dev/null || exit 1
+
+    if [ "$EXITCODE" -ne 0 ]; then
+        exit "$EXITCODE"
     fi
 }
 
-exit_failure_wrong_or_missing_mono() {
-    EXITCODE=-3
-    echo "Wrong or missing installation of 'mono' framework. Ensure that the 'mono' v5+ is installed and available in the 'PATH'. Check https://www.mono-project.com/download/stable/ for the installer."
-    exit_failure
-}
+# Main script execution
+check_dotnet
+get_dotnet_version
+check_dotnet_version
+install_update_charon_tool
+run_tool "$@"
 
-exit_failure_dotnet_restore_failed() {
-    EXITCODE=-2
-    echo "Failed to execute the 'dotnet restore' command to retrieve the latest package version from NuGet. Ensure that the 'dotnet' tool is installed and available in the 'PATH'. Check 'https://dotnet.microsoft.com/en-us/download' for the installer."
-    exit_failure
-}
-
-exit_failure_no_executable() {
-    EXITCODE=-1
-    echo "Unable to find the '$FILE_NAME' executable in './gamedevware.charon/*/tools' subfolders."
-    exit_failure
-}
-
-exit_failure() {
-    exit $EXITCODE
-}
-
-exit_success() {
-    exit 0
-}
-
-# Start the process
-check_mono_version
-locate_executable
-run_executable "$@"
+# Exit successfully
+exit 0

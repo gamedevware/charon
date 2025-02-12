@@ -17,10 +17,10 @@ This command does not delete previously generated files, and it is the responsib
 .. code-block:: bash
 
   # local game data (windows)
-  dotnet tool charon GENERATE HAXE --dataBase "c:\my app\gamedata.json" --packageName "" --outputDirectory "c:\my app\scripts"
+  dotnet charon GENERATE HAXE --dataBase "c:\my app\gamedata.json" --packageName "" --outputDirectory "c:\my app\scripts"
 
   # remote game data
-  dotnet tool charon GENERATE HAXE --dataBase "https://charon.live/view/data/My_Game/develop/" --packageName "" --outputDirectory "./scripts" --credentials "<API-Key>"
+  dotnet charon GENERATE HAXE --dataBase "https://charon.live/view/data/My_Game/develop/" --packageName "" --outputDirectory "./scripts" --credentials "<API-Key>"
   
 ---------------
  Parameters

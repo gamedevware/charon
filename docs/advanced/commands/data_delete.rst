@@ -15,10 +15,10 @@ Deletes a document. For a bulk deletion use :doc:`DATA IMPORT <data_import>` com
 .. code-block:: bash
 
   # local game data (windows)
-  dotnet tool charon DATA DELETE --dataBase "c:\my app\gamedata.json" --schema Item --id "Sword"
+  dotnet charon DATA DELETE --dataBase "c:\my app\gamedata.json" --schema Item --id "Sword"
 
   # remote game data
-  dotnet tool charon DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --id "Sword" --credentials "<API-Key>"
+  dotnet charon DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --id "Sword" --credentials "<API-Key>"
 
 ---------------
  Parameters
@@ -114,3 +114,17 @@ Deletes a document. For a bulk deletion use :doc:`DATA IMPORT <data_import>` com
    Additional options for specified format.
  
 This command supports :doc:`universal parameters <universal_parameters>`.
+
+------------------
+ Output
+------------------
+
+Outputs the deleted document in its state at the time of deletion.
+
+.. code-block:: json
+  
+  {
+    "Id": "Sword"
+    
+    /* rest of properties of deleted document */
+  }

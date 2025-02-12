@@ -25,7 +25,7 @@ Getting Started
 Prerequisites
 ------------
 
-Unity plugin uses `dotnet tool charon`, which is a .NET Core application built for .NET 8.
+Unity plugin uses `dotnet charon`, which is a .NET Core application built for .NET 8.
 
 .. tabs::
 

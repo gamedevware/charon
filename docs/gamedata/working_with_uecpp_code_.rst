@@ -1,6 +1,9 @@
 Working with Source Code (UE C++)
 =================================
 
+.. warning::
+    The source code for Unreal Engine requires a `plugin <https://www.fab.com/listings/8cdfd7af-e1e9-4c97-b28d-d4b196767824>`_ to be installed to function. If you get compilation errors, make sure the plugin is `installed and enabled <../unreal_engine/overview>`_.
+
 Accessing game data during runtime is possible by utilizing the generated source code.
 
 This section provides examples using default class names, but it is possible to customize class names during the source code generation process. Additionally, this customization allows to avoid naming collisions with existing code.

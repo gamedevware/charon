@@ -28,7 +28,7 @@ Examples
 .. code-block:: bash
   
   # publish data to FTP
-  dotnet tool charon DATA EXPORT 
+  dotnet charon DATA EXPORT 
     --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"     
     --output "ftp://user:password@example.com/public/gamedata.json"
     --mode publication 
@@ -36,19 +36,19 @@ Examples
     --credentials "<API-Key>" 
     
   # import localization from remote HTTP server 
-  dotnet tool charon DATA I18N IMPORT
+  dotnet charon DATA I18N IMPORT
     --dataBase "file:///c:/my app/gamedata.json" 
     --input "https://example.com/translated/gamedata.xliff"
     --inputFormat xliff
 
   # print languages for game data in local file
-  dotnet tool charon DATA I18N LANGUAGES --dataBase "file:///c:/my app/gamedata.json" 
+  dotnet charon DATA I18N LANGUAGES --dataBase "file:///c:/my app/gamedata.json" 
   
   # print languages for game data in local file relative to current working directory
-  dotnet tool charon DATA I18N LANGUAGES --dataBase "file:///./gamedata.json" 
+  dotnet charon DATA I18N LANGUAGES --dataBase "file:///./gamedata.json" 
   
   # print languages for game data at remote server using API Key
   export CHARON_API_KEY=87758CC0D7C745D0948F2A8AFE61BC81
-  dotnet tool charon DATA I18N LANGUAGES --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"  
+  dotnet charon DATA I18N LANGUAGES --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"  
   
     

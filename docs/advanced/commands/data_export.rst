@@ -15,17 +15,17 @@ Exports documents into a file.
 .. code-block:: bash
 
   # local game data (windows)
-  dotnet tool charon DATA EXPORT --dataBase "c:\my app\gamedata.json" --schemas Character --output "c:\my app\characters.json" --outputFormat json
+  dotnet charon DATA EXPORT --dataBase "c:\my app\gamedata.json" --schemas Character --output "c:\my app\characters.json" --outputFormat json
   
   # remote game data
-  dotnet tool charon DATA EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --output "./characters.json" --outputFormat json --credentials "<API-Key>"
+  dotnet charon DATA EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --output "./characters.json" --outputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters
 ---------------
 
 --dataBase
-   Absolute or relative oath to game data. Use quotation marks if your path contains spaces.
+   Absolute or relative path to game data. Use quotation marks if your path contains spaces.
 
    .. code-block:: bash
    
@@ -196,3 +196,70 @@ This command supports :doc:`universal parameters <universal_parameters>`.
 ------------------
 
 The exported data follows the general :doc:`game data structure <../game_data_structure>`, but omits `ToolsVersion`, `RevisionHash`, and `ChangeNumber` when the export mode is **not** set to publication.
+
+.. code-block:: json
+  
+  {
+    "Collections": 
+    {
+      "Character": 
+      [
+        {
+          "Id": "Knight"
+          
+          /* rest of properties of document */
+        },
+        {
+          "Id": "Templar"
+          
+          /* rest of properties of document */
+        },
+        // ...
+      ]
+    }
+  }
+
+------------------
+ Modifying Exported Data with `yq`
+------------------
+
+The exported data can be accessed or modified using the `yq` tool, a lightweight and portable command-line YAML, JSON, and XML processor. `yq` uses `jq`-like syntax and supports common operations for manipulating structured data.
+
+To use `yq` with exported JSON data:
+
+1. **Install `yq`**:
+   Follow the installation instructions from the official `yq` documentation: https://mikefarah.gitbook.io/yq/.
+
+2. **Query Data**:
+   Use `yq` to query specific fields or values from the exported JSON file.
+
+   .. code-block:: bash
+
+     # Query a specific field
+     yq '.Collections.Character[0].name' characters.json
+
+3. **Modify Data**:
+   Use `yq` to update or add fields in the exported JSON file.
+
+   .. code-block:: bash
+     # Export data
+     dotnet charon DATA EXPORT --dataBase gamedata.json --schemas Character --output characters.json
+
+     # Update a field
+     yq -i '.Collections.Character[0].name = "New Name"' characters.json
+
+     # Add a new field
+     yq -i '.Collections.Character[0].level = 10' characters.json
+
+     # Import data back
+     dotnet charon DATA IMPORT --dataBase gamedata.json --schemas Character --input characters.json --mode safeUpdate
+
+4. **Convert Formats**:
+   `yq` can also convert between JSON, YAML, and other supported formats.
+
+   .. code-block:: bash
+
+     # Convert JSON to YAML
+     yq -o=yaml characters.json > characters.yaml
+
+For more advanced usage, refer to the `yq` documentation: https://mikefarah.gitbook.io/yq/.

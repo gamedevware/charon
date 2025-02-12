@@ -15,10 +15,10 @@ Restores game data from a file created by :doc:`DATA BACKUP <data_backup>` comma
 .. code-block:: bash
 
   # local game data (windows)
-  dotnet tool charon DATA RESTORE --dataBase "c:\my app\gamedata.json" --input "c:\my app\backup.msgpkg" --inputFormat msgpack
+  dotnet charon DATA RESTORE --dataBase "c:\my app\gamedata.json" --input "c:\my app\backup.msgpkg" --inputFormat msgpack
 
   # remote game data
-  dotnet tool charon DATA RESTORE --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./backup.msgpkg" --inputFormat msgpack --credentials "<API-Key>"
+  dotnet charon DATA RESTORE --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./backup.msgpkg" --inputFormat msgpack --credentials "<API-Key>"
   
 ---------------
  Parameters

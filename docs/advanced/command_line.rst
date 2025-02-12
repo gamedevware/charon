@@ -19,8 +19,7 @@ The easiest way to install is to use the infrastructure provided by the `dotnet 
   dotnet tool install -g dotnet-charon
   
   # install charon in current working directory
-  dotnet new tool-manifest
-  dotnet tool install dotnet-charon
+  dotnet tool install dotnet-charon --local --create-manifest-if-needed 
 
 To update current tool use following commands:
 
@@ -30,7 +29,7 @@ To update current tool use following commands:
   dotnet tool update --global dotnet-charon
   
   # update local tool
-  dotnet tool update dotnet-charon
+  dotnet tool update dotnet-charon --local
 
 Option 2: Bootstrap scripts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -78,18 +77,18 @@ Commands have the following syntax:
 
 .. code-block:: bash
 
-  dotnet tool charon COMMAND --parameterName <parameter-value>
+  dotnet charon COMMAND --parameterName <parameter-value>
    
   # parameters can have more than one value. 
   # Use space to separate values
-  dotnet tool charon EXPORT --schemas Item Armor "Project Settings" Quest
+  dotnet charon EXPORT --schemas Item Armor "Project Settings" Quest
 
   # if your value contains a space, put it inside the quotation marks.
   # Escape characters and other rules depend on the OS you are running.
-  dotnet tool charon "c:\my application\my path.txt"
+  dotnet charon "c:\my application\my path.txt"
   
   # some parameters don't require a value (e.g. flag).
-  dotnet tool charon VERSION --verbose
+  dotnet charon VERSION --verbose
 
 Absolute and relative paths
 ---------------------------
@@ -125,16 +124,16 @@ To display list of available commands add `--help` or `/?`.
 
 .. code-block:: bash
   
-  dotnet tool charon --help
+  dotnet charon --help
   
-  #> Usage: dotnet tool charon <action> [--<param> || (--<param> <paramValue> ...) ...]
+  #> Usage: dotnet charon <action> [--<param> || (--<param> <paramValue> ...) ...]
   #>
   #> Verbs:
   #>  DATA        Data manipulation actions.
   #>  GENERATE    Code generation actions.
   #>  VERSION     Print version.
   
-  dotnet tool charon DATA EXPORT --help
+  dotnet charon DATA EXPORT --help
   
   #> Usage:
   #>   DATA EXPORT --dataBase <URI> [--schemas [<TEXT>]] [--properties [<TEXT>]] [--languages [<TEXT>]] [--output <TEXT>

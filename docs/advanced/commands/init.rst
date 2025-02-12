@@ -13,13 +13,13 @@ Initializes an empty or missing file with initial data. Path to game data should
 .. code-block:: bash
 
   # full path (windows)
-  dotnet tool charon INIT "c:\my app\gamedata.gdjs"
+  dotnet charon INIT "c:\my app\gamedata.gdjs"
   
   # full path (linux)
-  dotnet tool charon INIT "/var/mygame/gamedata.json"
+  dotnet charon INIT "/var/mygame/gamedata.json"
   
   # relative path
-  dotnet tool charon INIT mygame/gamedata.json
+  dotnet charon INIT mygame/gamedata.json
   
 ---------------
  Parameters

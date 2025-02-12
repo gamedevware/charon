@@ -30,7 +30,7 @@ Following this, a rebuild of your project's C++ code is necessary. The final ste
 Prerequisites
 -------------
 
-The Unreal Engine plugin is written in C++ but relies on ``dotnet tool charon``, a .NET Core application which runs on .NET 8.
+The Unreal Engine plugin is written in C++ but relies on ``dotnet charon``, a .NET Core application which runs on .NET 8.
 
 .. tabs::
 
