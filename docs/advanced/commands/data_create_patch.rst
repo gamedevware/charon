@@ -102,6 +102,6 @@ Outputs the differences between two game datas as a file that can be used later 
 
 --credentials
    This parameter sets the API key used to access *BOTH* remote servers. 
-   If this is not suitable, consider :doc:`downloading <https://github.com/gamedevware/charon/blob/main/docs/advanced/commands/data_backup>` the data locally and running this command on local files instead.
+   If this is not suitable, consider :doc:`downloading <data_backup>` the data locally and running this command on local files instead.
  
 This command supports :doc:`universal parameters <universal_parameters>`.

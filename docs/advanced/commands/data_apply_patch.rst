@@ -1,7 +1,7 @@
 Apply Patch
 ===========
 
-Applies patch created with :doc:`DATA CREATEPATCH <commands/data_create_patch>` command to a game data.
+Applies patch created with :doc:`DATA CREATEPATCH <data_create_patch>` command to a game data.
 
 - :ref:`CLI Installation <CommandLine_Installation>`
 - :ref:`Commands Reference <CommandLine_Commands>`
