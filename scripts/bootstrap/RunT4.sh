@@ -35,30 +35,30 @@ check_dotnet_version() {
     fi
 }
 
-# Install/Update charon tool
-install_update_charon_tool() {
-    # Check if dotnet-charon is installed locally
-    if dotnet tool list --local | grep -q 'dotnet-charon'; then
-        pushd "$SCRIPT_DIR" > /dev/null || exit 1
-        dotnet tool update dotnet-charon --local > /dev/null 2>&1;
-        popd > /dev/null || exit 1
+# Install/Update t4 tool
+install_update_t4_tool() {
+    # Check if dotnet-t4 is installed locally
+    if dotnet tool list --local | grep -q 'dotnet-t4'; then
+    pushd "$SCRIPT_DIR" > /dev/null || exit 1
+    dotnet tool update dotnet-t4 --local > /dev/null 2>&1;
+    popd > /dev/null || exit 1
     else
-        pushd "$SCRIPT_DIR" > /dev/null || exit 1
-        if ! dotnet tool install dotnet-charon --local --create-manifest-if-needed > /dev/null 2>&1; then
-            echo "Failed to execute the 'dotnet tool install dotnet-charon' command to retrieve the latest package version from NuGet." >&2
-            echo "Ensure that the 'dotnet' tool is installed and available in the 'PATH'." >&2
-            echo "Check https://dotnet.microsoft.com/en-us/download for the installer." >&2
-            popd > /dev/null || exit 1
-            exit 1
-        fi
+    pushd "$SCRIPT_DIR" > /dev/null || exit 1
+    if ! dotnet tool install dotnet-t4 --local --create-manifest-if-needed > /dev/null 2>&1; then
+        echo "Failed to execute the 'dotnet tool install dotnet-t4' command to retrieve the latest package version from NuGet." >&2
+        echo "Ensure that the 'dotnet' tool is installed and available in the 'PATH'." >&2
+        echo "Check https://dotnet.microsoft.com/en-us/download for the installer." >&2
         popd > /dev/null || exit 1
+        exit 1
+    fi
+    popd > /dev/null || exit 1
     fi
 }
 
-# Run charon tool with specified parameters
+# Run t4 tool with specified parameters
 run_tool() {
     pushd "$SCRIPT_DIR" > /dev/null || exit 1
-    dotnet charon "$@"
+    dotnet t4 "$@"
     EXITCODE=$?
     popd > /dev/null || exit 1
 
@@ -71,7 +71,7 @@ run_tool() {
 check_dotnet
 get_dotnet_version
 check_dotnet_version
-install_update_charon_tool
+install_update_t4_tool
 run_tool "$@"
 
 # Exit successfully
