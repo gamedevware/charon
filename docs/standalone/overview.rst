@@ -5,6 +5,10 @@ The standalone version of the game development `tool <https://www.nuget.org/pack
 a computer, and it allows the user to design and model game data, as well as generate source code for it. 
 The standalone version is typically used by individual game developers or small development teams who want to work offline.
 
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
+  :width: 800
+  :alt: Charon editor UI
+
 Prerequisites
 ============
 

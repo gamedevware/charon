@@ -19,6 +19,10 @@ Key Features
 - **Modding Support**: Empowers your gaming community by providing them with the tools to create and share mods, enhancing the longevity and depth of your game.
 - **Dynamic Load**: Facilitates the dynamic loading of game data, enabling features like A/B testing or the ability to push hot updates directly to your players.
 
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
+  :width: 800
+  :alt: Charon editor UI
+
 Getting Started
 ===============
 

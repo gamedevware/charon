@@ -9,6 +9,10 @@ meaning that all projects within the workspace are subject to the same subscript
 A project is a virtual location for storing game data, localization settings, backups, branches, and members. When a project is created,
  the user becomes its owner and can invite other members to join.  
 
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
+  :width: 800
+  :alt: Charon editor UI
+
 Starting with a new Project
 -------------------------
 
