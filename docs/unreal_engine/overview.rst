@@ -114,7 +114,7 @@ Working with data in this plugin is akin to how the built-in *DataTable* functio
 and an asset that will be utilized in the game. Whenever you edit a data source file, you need to re-import this data into the asset. 
 Should the data structure in the source file change, then the C++ code must be regenerated.  
 
-.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/plugin_assets.png
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/ue_plugin_assets.png
   :width: 800
   :alt: Charon assets scheme in Unreal Engine
 
@@ -154,7 +154,7 @@ Refencing Game Data in Blueprints
 Similar to the DataTable's ``FDataTableRowHandle``, the Charon plugin introduces a specific type for referencing documents within Blueprints, 
 named ``FGameDataDocumentReference``. This type is housed within the Charon module. Here is example of **Game Data Document Reference** used to resolve *Hero* document:
 
-.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/document_reference.png
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/ue_document_reference.png
   :width: 800
   :alt: Charon document reference example screenshot
 
@@ -205,7 +205,7 @@ please join our `Discord community <https://discord.gg/2quB5vXryd>`_ or reach ou
   
 
 See also
-^^^^^^^^
+--------
 
 - :doc:`Basic Navigation and User Interface Overview <../gamedata/basics>`
 - :doc:`Creating Document Type (Schema) <../gamedata/creating_schema>`

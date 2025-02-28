@@ -25,7 +25,7 @@ Getting Started
 Prerequisites
 ------------
 
-Unity plugin uses `dotnet charon`, which is a .NET Core application built for .NET 8.
+Unity plugin uses ``dotnet charon`` tool, which is a .NET Core application built for .NET 8.
 
 .. tabs::
 
@@ -48,9 +48,11 @@ Unity plugin uses `dotnet charon`, which is a .NET Core application built for .N
 
 **Checking Available .NET Versions**
 
+In terminal window run ``dotnet --list-sdks`` command:
+
 .. code-block:: bash
 
-    # check for mono already installed
+    # check for dotnet already installed
     dotnet --list-sdks
 
 .. code-block:: bash
@@ -62,31 +64,37 @@ Unity plugin uses `dotnet charon`, which is a .NET Core application built for .N
     8.0.206 [C:\Program Files\dotnet\sdk]
     8.0.405 [C:\Program Files\dotnet\sdk]
 
-**Checking installed .NET version**
+Installation from OpenUPM (recommended)
+---------------------------------------
 
-To examine your current .NET runtime version, you need to select 
-**Tools** → **Charon** → **Troubleshooting** → **Check Runtime Version...** in the Unity menu after plugin being installed.
+1. Install the required software for your operating system.
+2. Ensure your Unity version is 2021.3 or later.
+3. Open the `OpenUPM <https://openupm.com/packages/com.gamedevware.charon/>`_ page for the plugin.
+4. Click the **Manual Installation** button in the upper right corner and follow the instructions.
+
 
 Installation from Unity Asset Store
 -----------------------------------
 
 1. Install the required software for your operating system.
-2. Make sure your Unity version is 2020.1+.
-3. Open the `Charon plugin <https://assetstore.unity.com/packages/tools/visual-scripting/game-data-editor-charon-95117>`_ in Unity Asset Store .
+2. Ensure your Unity version is 2021.3 or later.
+3. Open the `Charon plugin <https://assetstore.unity.com/packages/tools/visual-scripting/game-data-editor-charon-95117>`_ in the Unity Asset Store.
 4. Click **Add To My Assets**.
-5. Open Unity Package Manager by going to **Window → PackageManager**.
+5. Open the Unity Package Manager by navigating to **Window → Package Manager**.
 6. Wait for the package manager to populate the list.
-7. Select **My Assets** from the dropdown on the top left corner.
-8. Select **Charon** from the list and click download. If it’s already downloaded, you will see an import option.
+7. Select **My Assets** from the dropdown in the top left corner.
+8. Select **Charon** from the list and click **Download**. If it’s already downloaded, you will see an **Import** option.
+
 
 Installation from GitHub
 ------------------------
 
 1. Install the required software for your operating system.
 2. Clone or download the `plugin source code <https://github.com/gamedevware/charon-unity3d>`_ from the GitHub repository.
-3. Create a ``<project-dir>/Assets/Editor/GameDevWare.Charon`` directory.
-4. Copy the plugin files from ``src/example/GameDevWare.Charon.Unity.2021/Assets/Editor/GameDevWare.Charon`` into this directory.
-5. Restart Unity if needed.
+3. Create a ``<project-dir>/Packages/com.gamedevware.charon`` directory.
+4. Copy the plugin files from ``src/GameDevWare.Charon.Unity/Packages/com.gamedevware.charon`` into this directory.
+5. Restart Unity if necessary.
+
 
 Core Concepts
 =============
@@ -94,12 +102,12 @@ Core Concepts
 Data-Driven Design Principles
 -----------------------------
 
-Data-driven design emphasizes the control of gameplay through data, rather than source code/blueprints, with game mechanics and processes determined by structured data files.  
-For instance, rather than embedding damage calculations directly in the game's source code, these are defined by data specifying weapon effects and the rules for their application.  
-Or for example, mission progression is not hardcoded; it's outlined in editable text files, making these aspects of game design highly flexible.  
+Data-driven design emphasizes controlling gameplay through data rather than source code or blueprints. Game mechanics and processes are determined by structured data files.  
+For example, instead of embedding damage calculations directly in the game's source code, these are defined by data specifying weapon effects and the rules for their application.  
+Similarly, mission progression is not hardcoded; it is outlined in editable text files, making these aspects of game design highly flexible.  
 This approach not only facilitates quick adjustments during development but also simplifies adding modding support post-release.  
 
-  - `Modify Everything! Data-Driven Dynamic Gameplay Effects on 'For Honor' (Video) <https://www.gdcvault.com/play/1024050/Modify-Everything-Data-Driven-Dynamic>`_
+  - `Modify Everything! Data-Driven Dynamic Gameplay Effects in 'For Honor' (Video) <https://www.gdcvault.com/play/1024050/Modify-Everything-Data-Driven-Dynamic>`_
   - `Data-driven Design in Unreal (Article) <https://benui.ca/unreal/data-driven-design/>`_
 
 
@@ -108,19 +116,19 @@ Understanding the Plugin's Architecture
 
 **Plugin Assets**  
 
-All game data information is stored in a JSON file within your project. The generated source code is utilized to load this data into the game. 
-Additionally, you have the option to create a ``ScriptableObject`` asset with game data and integrate it into the game.
- Whenever there's a modification in the data structure within a JSON file, it's necessary to regenerate the C# source code and recreate the *.asset* file if it's being utilized.
-
-.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/plugin_assets.png
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/unity_plugin_assets.png
   :width: 800
   :alt: Charon assets scheme in Unity
 
-**Plugin Libraries**  
+All game data information is stored in a JSON file within your project. The generated source code is used to load this data into the game. 
+Additionally, a ``ScriptableObject`` asset will be created, which can be used to access game data from your scenes.
 
-The plugin comprises the ``Assets/Editor/GameDevWare.Charon/GameDevWare.Charon.Unity.dll`` library, alongside the ``GameDevWare.Charon.Unity.Settings.json`` configuration file and the current settings stored in the ``/Library/Charon`` folder.  
-  
-The library contains the code required for seamless integration into the Unity editor environment and is not essential for running the game. The generated source code for game data is self-contained and does not rely on any external dependencies.  
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/unity_plugin_asset_inspector.png
+  :width: 519
+  :alt: Charon asset Inspector view
+
+Whenever there is a modification in the data structure within a JSON file, it is necessary to regenerate the C# source code and reimport the *.asset* file. To do this, select the *.asset* file and press the **Synchronize** button.
+
 
 Working with the Plugin
 =======================
@@ -128,27 +136,25 @@ Working with the Plugin
 Creating Game Data
 ------------------
 
-To create a new game data file within the Unity Editor, open the **Project** window, right-click in the desired folder, and select in the **Create → Game Data → Game Data (JSON)** menu option. 
-Name your game data file and select it to review settings in **Inspector** window.  
+To create a new game data file within the Unity Editor, open the **Project** window, right-click in the desired folder, and select the **Create → Game Data** menu option. 
 
 1. Open the **Project** window and navigate to the desired folder.
-2. Right-click the **Project** window and select **Create → Game Data → Game Data (JSON)**.
-3. Double-click on the created file to start editing.
+2. Right-click in the **Project** window and select **Create → Game Data**.
+3. Name your game data file and click the **Create** button.
+4. Wait for the source code and assets to be created in the specified folder and for the editor to recompile the scripts.
+5. Double-click the created *.asset* or *.gdjs* file to start editing.
 
-.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/unity_create_gamedata.png
-  :width: 800
-  :alt: Unity Editor Create Game Data
 
 Editing Game Data
 ------------------
 
-To edit a game data file in the Unity Editor, open the **Project** window, find the corresponding *.gdjs* or *.gdmp* file, and double-click it. 
-This action opens a new web browser window featuring a user interface for editing the game data. Remember to reimport and, if necessary, regenerate the source 
-code after completing your edits.  
+To edit a game data file in the Unity Editor, open the **Project** window, find the corresponding *.gdjs*, *.gdmp*, or *.asset* file, and double-click it. 
+This action opens a new web browser window featuring a user interface for editing the game data. Remember to **Synchronize** assets from the Inspector window after completing your edits.  
 
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/unity_edit_gamedata.png
   :width: 800
   :alt: Charon UI in Unity Editor
+
 
 Advanced Features
 =======================
@@ -158,38 +164,44 @@ Localization and Multi-Language Support
 
 Charon facilitates multi-language text support through the ``Localizable Text`` data type. When creating a *Schema*, properties can be defined with various data types, including ``Localizable Text``.
 Initially, all localizable text defaults to ``EN-us`` (US English). Additional languages can be added via **Project Settings → Internationalization → Translation Languages** in the Charon UI.  
-  
+
 :doc:`Exporting/importing localizable data.<../advanced/internationalization>`  
 
 
-Referencing Unity Assets
-------------------------
+Referencing Game Data in Scenes
+-------------------------------
 
-By default, game data files and the Charon editor are unaware of the surrounding content/assets. 
-To reference assets such as sounds, textures, models, or animations. For example you can create a 'UnitySoundAsset' schema with three 
-properties: *Id* (required), *Path*, and *Name*. Prepare a listing of your assets (see Unity ``AssetDatabase`` class documentation) in following format:
+The Charon plugin introduces a specific type for referencing documents within scenes, named ``GameDataDocumentReference``. This type is part of the Charon package. To create such a reference, add a field with the ``GameDataDocumentReference`` type to your component class. 
 
-.. code-block:: json
+.. code-block:: csharp
   
+  public class HeroComponent : MonoBehaviour
   {
-      "UnitySoundAsset": [{
-              "Id": "_Content_Sounds_MySound",
-              "Path": "/Content/Sounds/MySound",
-              "Name": "MySound"
-          }
-          /* other assets */
-      ],
-      /* other document collections to import */
+    public GameDataDocumentReference heroReference;
   }
 
-Then, import this list into your game data file using the ``CharonCli.ImportAsync`` method with ``ImportMode.Replace`` import mode. It's crucial that the *Id* field of imported 
-records remains stable and unchanged across imports for the same assets.
+You can then configure it in the Inspector. Here is an example of a **Game Data Document Reference** used to point to a *Hero* document:
 
-After you've imported the asset list into the game data file, you can reference them from your documents by adding a ``Document Reference`` property with **Reference Type → Unity Sound Asset** to the schema.
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/unity_document_reference.png
+  :width: 516
+  :alt: Charon document reference example screenshot
 
-.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/unity_asset_reference.png
-  :width: 800
-  :alt: Charon assets scheme in Unity
+To get an instance of a document in your game code, call the ``GameDataDocumentReference.GetReferencedDocument<Hero>()`` method.
+
+.. code-block:: csharp
+  
+  private void OnEnable()
+  {
+    var hero = this.heroReference.GetReferencedDocument<Hero>();
+    Debug.Log(hero.Name);
+  }
+
+
+Work & Build Automation
+-----------------------
+
+To facilitate automation of work or builds, a programmatic interface for working with game data is provided. You can read more about it on the :doc:`CharonCli <charon_cli.rst>` class documentation page.
+
 
 Feedback
 --------
@@ -199,7 +211,7 @@ please join our `Discord community <https://discord.gg/2quB5vXryd>`_ or reach ou
   
 
 See also
-^^^^^^^^
+--------
 
 - :doc:`Basic Navigation and User Interface Overview <../gamedata/basics>`
 - :doc:`Creating Document Type (Schema) <../gamedata/creating_schema>`
