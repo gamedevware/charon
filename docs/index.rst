@@ -1,9 +1,13 @@
 Overview
 ==================
 .. note::
-   Try out online version at `gamedevware.com <https://gamedevware.com?ref=documentation>`_.  
+   Try out online version at `gamedevware.com <https://gamedevware.com>`_.  
 
-Charon is a powerful game development tool that streamlines the game development process. It provides a structured approach to designing and modeling game data, with automatic source code generation that reduces the load on programmers and eliminates human errors. Charon also offers support for working with text in multiple languages, with easy loading and unloading of translated text. With Charon, game developers can focus on creating engaging gameplay experiences without worrying about the technical details of managing game data. It is available in three deployment variants, including a :doc:`standalone  <standalone/overview>` application, :doc:`web <web/overview>` application, :doc:`Unity <unity/overview>` plugin and :doc:`Unreal Engine </unreal_engine/overview>` plugin.  
+
+Charon is a powerful data-driven game development tool designed to streamline the creation and management of static game data within Unity. 
+It allows both developers and game designers to efficiently model and edit game entities such as characters, items, missions, quests, and more, directly within the Unity environment. Charon simplifies the process of data manipulation, offering a user-friendly interface and automatic source code generation, which significantly reduces development time and minimizes manual coding errors.
+
+Charon also offers support for working with text in multiple languages, with easy loading and unloading of translated text. With Charon, game developers can focus on creating engaging gameplay experiences without worrying about the technical details of managing game data. It is available in three deployment variants, including a :doc:`standalone  <standalone/overview>` application, :doc:`web <web/overview>` application, :doc:`Unity <unity/overview>` plugin and :doc:`Unreal Engine </unreal_engine/overview>` plugin.  
   
 **TLDR** Charon is an in-game database for your game, replacing spreadsheets or config files.  
 

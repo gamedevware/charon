@@ -1,11 +1,10 @@
 
 Charon - Game Data Editor
 =========================
-![NuGet Version](https://img.shields.io/nuget/v/GameDevWare.Charon)
 
 <img width="894" alt="dashboard" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/cover_github.png"/>  
 
-[Documentation](https://gamedevware.github.io/charon/) • [Discord](https://discord.gg/2quB5vXryd) • [Website](https://www.gamedevware.com/) • [Changelog](https://www.gamedevware.com/changelog) • [Issues](https://github.com/gamedevware/charon/issues)  
+[Documentation](https://gamedevware.github.io/charon/) [[PDF]](https://gamedevware.github.io/charon/pdf/documentation.pdf)   • [Discord](https://discord.gg/2quB5vXryd) • [Website](https://www.gamedevware.com/) • [Changelog](https://www.gamedevware.com/changelog) • [Issues](https://github.com/gamedevware/charon/issues)  
   
 Plugins 
 -------
@@ -13,7 +12,7 @@ Plugins
 [<img width="100" alt="unity" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/unity_logo.svg"/>](https://gamedevware.github.io/charon/unity/overview.html)
 [<img width="100" alt="unreal engine" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/unreal_engine_logo.svg"/>](https://gamedevware.github.io/charon/unreal_engine/overview.html)  
 
-[Unity](https://gamedevware.github.io/charon/unity/overview.html) [Unreal Engine](https://gamedevware.github.io/charon/unreal_engine/overview.html)  
+[[Unity Asset Store]](https://gamedevware.github.io/charon/unity/overview.html) [[Unity OpenUPM]](https://openupm.com/packages/com.gamedevware.charon/) [[Unreal Engine Marketplace]](https://gamedevware.github.io/charon/unreal_engine/overview.html)  
 
 Standalone
 ----------
@@ -23,17 +22,32 @@ Standalone
 Summary
 =======
 
-Charon is a powerful game development tool that streamlines the game development process. 
-It provides a structured approach to designing and modeling game data, with automatic source code generation that reduces the load on programmers and eliminates human errors. 
+Charon is a powerful data-driven game development tool designed to streamline the creation and management of static game data within Unity. 
+It allows both developers and game designers to efficiently model and edit game entities such as characters, items, missions, quests, and more, directly within the Unity environment. Charon simplifies the process of data manipulation, offering a user-friendly interface and automatic source code generation, which significantly reduces development time and minimizes manual coding errors.
 Charon also offers support for working with text in multiple languages, with easy loading and unloading of translated text. 
 
 With Charon, game developers can focus on creating engaging gameplay experiences without worrying about the technical details of managing game data. 
 It is available in three deployment variants, including a [standalone/offline](https://gamedevware.github.io/charon/standalone/overview.html) application, [web](https://gamedevware.github.io/charon/web/overview.html) application, [Unity](https://gamedevware.github.io/charon/unity/overview.html) and [Unreal Engine](https://gamedevware.github.io/charon/unreal_engine/overview.html) plugins.  
 
+Why Choose Charon?
+==================
+
+Charon replaces traditional spreadsheets or config files with an in-game database, 
+offering a structured and efficient way to manage game data. It allows developers to focus on creating engaging gameplay 
+experiences without worrying about the technical details of data management.
+
+Is It Free?
+===========
+The offline version, CLI and plugins are completely free and have no restrictions. 
+They are distributed under a free license and allow you to distribute tools along with the game for modding games.  
+
+The online version, which allows working in large teams on shared game data, requires a subscription.
+
 What is Charon
 ==============
-It is a .NET 4.6 console application that can be used as a command-line tool for performing CRUD operations with your game data, or as an HTTP Server to provide a UI for modeling and editing your game data. There are plugins for Unity and Unreal Engine that provide a more integrated experience while using Charon.  
-As with any .NET application, it can be launched as is on Windows and via Mono on macOS and Linux.
+
+It is a .NET 8 console application that can be used as a command-line tool for performing CRUD operations with your game data, or as an HTTP Server to provide a UI for modeling and editing your game data. There are plugins for [Unity](https://gamedevware.github.io/charon/unity/overview.html) and [Unreal Engine](https://gamedevware.github.io/charon/unreal_engine/overview.html) that provide a more integrated experience while using Charon.  
+As with any .NET application, it can be launched as is on Windows, macOS and Linux and via `dotnet`.
 
 How it works
 ============
