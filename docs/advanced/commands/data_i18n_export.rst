@@ -66,6 +66,9 @@ Export text that can be translated into a file.
      # negation
      --schemas Char* !Character
      --schemas !*Item*
+     
+     # excluding system schemas (Schema, SchemaProperty, ProjectSettings)
+     --schemas ![system]
 
 --sourceLanguage
    Source (original) language for translation. Value is `language tag (BCP 47) <https://msdn.microsoft.com/en-US/library/system.globalization.cultureinfo.name(v=vs.110).aspx>`_. 

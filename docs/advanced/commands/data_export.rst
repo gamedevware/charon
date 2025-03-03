@@ -67,6 +67,9 @@ Exports documents into a file.
      --schemas Char* !Character
      --schemas !*Item*
      
+     # excluding system schemas (Schema, SchemaProperty, ProjectSettings)
+     --schemas ![system]
+     
 --properties
    A list of properties or property types to export. By default all properties are exported.
    

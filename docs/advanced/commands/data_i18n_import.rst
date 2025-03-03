@@ -66,6 +66,9 @@ Import translated text from a specified file into game data.
      # negation
      --schemas Char* !Character
      --schemas !*Item*
+     
+     # excluding system schemas (Schema, SchemaProperty, ProjectSettings)
+     --schemas ![system]
 
 --languages
    The list of languages to import. Values are `language tags (BCP 47) <https://msdn.microsoft.com/en-US/library/system.globalization.cultureinfo.name(v=vs.110).aspx>`_. 

@@ -67,6 +67,9 @@ Imports documents from file to a game data.
      --schemas Char* !Character
      --schemas !*Item*
      
+     # excluding system schemas (Schema, SchemaProperty, ProjectSettings)
+     --schemas ![system]
+     
 --mode
    Import mode controls merge behavior during import.
    
