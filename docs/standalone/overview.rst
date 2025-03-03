@@ -12,7 +12,7 @@ The standalone version is typically used by individual game developers or small 
 Prerequisites
 ============
 
-Unity plugin uses `dotnet charon`, which is a .NET Core application built for .NET 8.
+Standalone application uses `dotnet charon` tool, which is a .NET Core application built for .NET 8.
 
 .. tabs::
 
@@ -52,7 +52,20 @@ Unity plugin uses `dotnet charon`, which is a .NET Core application built for .N
 Installation and Updates
 ========================
 
-There is two bootstrap scripts which download and run latest version of Charon on your PC:  
+You can use just two commands to install the command line tool, or use a bootstrap script that will check dependencies and installed software, and then download and run the tool for you.
+
+.. code-block:: bash
+
+  # install charon globally (run it once)
+  dotnet tool install -g dotnet-charon
+  
+  # update global tool
+  dotnet tool update -g dotnet-charon
+  
+  # run tool
+  dotnet charon INIT ./gamedata.json
+
+Two bootstrap scripts which download and run latest version of Charon on your PC:  
 
   - ``RunCharon.bat`` for Windows  
   - ``RunCharon.sh`` for Linux or MacOS  
@@ -96,7 +109,7 @@ Or use following bootstrap script:
 
         mkdir Charon
         cd Charon
-        curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.sh        
+        curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.sh
         chmod +x RunCharon.sh
 		./RunCharon.sh INIT ./gamedata.json
         

@@ -9,6 +9,8 @@ You should be familiar with terminal on your OS to fully tap potential of CLI.
 Installation
 ------------
 
+Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+
 Option 1: dotnet tool (recommended)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The easiest way to install is to use the infrastructure provided by the `dotnet tool <https://learn.microsoft.com/en-us/dotnet/core/tools/global-tools>`_.
