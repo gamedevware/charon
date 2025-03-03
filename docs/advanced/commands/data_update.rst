@@ -17,10 +17,10 @@ Update Document
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA UPDATE --dataBase "c:\my app\gamedata.json" --schema Item --input "c:\my app\item.json" --inputFormat json 
+  dotnet charon DATA UPDATE --dataBase "c:\my app\gamedata.json" --schema Item --input "c:\my app\item.json" --inputFormat json 
 
   # remote game data
-  Charon.exe DATA UPDATE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --input "./item.json" --inputFormat json --credentials "<API-Key>"
+  dotnet charon DATA UPDATE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --input "./item.json" --inputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -103,7 +103,7 @@ Update Document
      # Message Pack
      --inputFormat msgpack
      
-     # XML
+     # XML (removed in 2025.1.1) 
      --inputFormat xml
 
 --inputFormattingOptions
@@ -156,7 +156,7 @@ Update Document
      # Message Pack
      --outputFormat msgpack
      
-     # XML
+     # XML (removed in 2025.1.1) 
      --outputFormat xml
      
 --outputFormattingOptions
@@ -211,3 +211,18 @@ And single document too:
      {
        // <Document>
      }
+
+------------------
+ Output
+------------------
+
+Outputs the updated document with all the edits that were made to make it conform to the schema.
+
+.. code-block:: json
+  
+  {
+    "Id": "Sword"
+    
+    /* rest of properties of updated document */
+  }
+

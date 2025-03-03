@@ -4,9 +4,16 @@ Working with Logs
 Charon creates a log files with various messages that may be useful for troubleshooting and debugging.
 
 Unity Plugin
-   Log files are saved to ``<project-directory>/Library/Charon/Logs/``.
+   Log files are saved to ``<project-directory>/Library/Charon/logs/``.
+
+Unreal Engine Plugin
+   Log files are saved to ``<project-directory>/Intermediate/Charon/logs/``.
+
 CLI and Standalone
-   Log files are saved to ``<charon-directory>/logs/`.
+   Log files are saved to:
+    - Windows: ``C:/Users/%USERNAME%/AppData/Roaming/Charon/logs/`.
+    - MacOS: ``~/Library/Application Support/Charon/logs``
+    - Linux: ``~/.config/Charon/logs``
 
 Note: Make sure to replace ``<project-directory>`` and ``<charon-directory>`` with the actual directories on your system.
 
@@ -19,6 +26,7 @@ to *verbose*. This way more information is included in logs.
 
 Unity Plugin
    In menu select ``Tools → Charon → Troubleshooting → Verbose Logs``.
+
 CLI and Standalone
    Launch with ``--verbose`` parameter.
 
@@ -28,5 +36,5 @@ CLI Example:
 
 .. code-block:: bash
 
-  Charon.exe SERVER START ./gamedata.json --port 8080 --launchDefaultBrowser --verbose
+  dotnet charon SERVER START ./gamedata.json --launchDefaultBrowser --verbose
 

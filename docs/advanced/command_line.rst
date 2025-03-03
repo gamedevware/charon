@@ -9,30 +9,40 @@ You should be familiar with terminal on your OS to fully tap potential of CLI.
 Installation
 ------------
 
-Manual Download
-^^^^^^^^^^^^^^^
+Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
 
-The ``Charon.exe`` package can be `downloaded from Nuget <https://www.nuget.org/packages/GameDevWare.Charon>`_ and extracted as a `ZIP <https://www.7-zip.org/>`_ archive, containing the application located in the ``tools/`` directory.
-
-Nuget Client
-^^^^^^^^^^^^
-
-Or use `Nuget client <https://learn.microsoft.com/en-us/nuget/install-nuget-client-tools>`_ to download and unpack package:
+Option 1: dotnet tool (recommended)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The easiest way to install is to use the infrastructure provided by the `dotnet tool <https://learn.microsoft.com/en-us/dotnet/core/tools/global-tools>`_.
 
 .. code-block:: bash
 
-  nuget install GameDevWare.Charon -ExcludeVersion -PackageSaveMode nupkg -PreRelease -OutputDirectory ./
+  # install charon globally
+  dotnet tool install -g dotnet-charon
+  
+  # install charon in current working directory
+  dotnet tool install dotnet-charon --local --create-manifest-if-needed 
 
-Bootstrap scripts (recommended)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To update current tool use following commands:
 
+.. code-block:: bash
+  
+  # update global tool
+  dotnet tool update --global dotnet-charon
+  
+  # update local tool
+  dotnet tool update dotnet-charon --local
+
+Option 2: Bootstrap scripts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Alternatively, you can use one of two bootstrap scripts:  
 
   - `RunCharon.bat (Windows) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat>`_
   - `RunCharon.sh (Linux, MacOS) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.sh>`_
 
-Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/dotnet>`_ tool to be available in ``PATH`` and `mono <https://www.mono-project.com/download/stable/>`_ installed for Linux and MacOS.
+Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download>`_ tool to be included in the system PATH. 
+The scripts handle the installation of the Charon tool and ensure it stays up to date.
 
 .. tabs::
 
@@ -44,9 +54,9 @@ Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/do
         cd Charon
         curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.bat
         
-        RunCharon.bat DATA EXPORT --help
-        #              ^
-        #         your command goes here
+        .\RunCharon.bat DATA EXPORT --help
+        #               ^
+        #      your command goes here
 
    .. tab:: Linux, MacOS
 
@@ -56,7 +66,7 @@ Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/do
         cd Charon
         curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.bat
         
-        chmod +x RunCharon.sh
+        chmod +x ./RunCharon.sh
         
         ./RunCharon.sh DATA EXPORT --help
         #               ^
@@ -69,38 +79,18 @@ Commands have the following syntax:
 
 .. code-block:: bash
 
-  Charon.exe COMMAND --parameterName <parameter-value>
+  dotnet charon COMMAND --parameterName <parameter-value>
    
   # parameters can have more than one value. 
   # Use space to separate values
-  Charon.exe EXPORT --schemas Item Armor "Project Settings" Quest
+  dotnet charon EXPORT --schemas Item Armor "Project Settings" Quest
 
   # if your value contains a space, put it inside the quotation marks.
   # Escape characters and other rules depend on the OS you are running.
-  Charon.exe SERVE --dataBase "c:\my application\my path.txt"
+  dotnet charon "c:\my application\my path.txt"
   
   # some parameters don't require a value (e.g. flag).
-  Charon.exe VERSION --verbose
-  
-Linux and MacOS
--------------
-
-To run ``Charon.exe`` on non-Windows systems, you need to have the ``mono`` runtime installed, which can be 
-either a global one from ``$PATH`` or a local installation.
-
-.. code-block:: bash
-
-  # for globally installed mono
-  mono Charon.exe VERSION
-
-  # for non-brew installed mono on MacOS
-  /Library/Frameworks/Mono.framework/Commands/mono Charon.exe VERSION
-  
-  # for some linux installations
-  /usr/bin/mono Charon.exe VERSION
-  
-  # or use bootstrap script
-  ./RunCharon.sh VERSION
+  dotnet charon VERSION --verbose
 
 Absolute and relative paths
 ---------------------------
@@ -136,16 +126,16 @@ To display list of available commands add `--help` or `/?`.
 
 .. code-block:: bash
   
-  Charon.exe --help
+  dotnet charon --help
   
-  #> Usage: Charon.exe <action> [--<param> || (--<param> <paramValue> ...) ...]
+  #> Usage: dotnet charon <action> [--<param> || (--<param> <paramValue> ...) ...]
   #>
   #> Verbs:
   #>  DATA        Data manipulation actions.
   #>  GENERATE    Code generation actions.
   #>  VERSION     Print version.
   
-  Charon.exe DATA EXPORT --help
+  dotnet charon DATA EXPORT --help
   
   #> Usage:
   #>   DATA EXPORT --dataBase <URI> [--schemas [<TEXT>]] [--properties [<TEXT>]] [--languages [<TEXT>]] [--output <TEXT>

@@ -29,18 +29,18 @@ if %MAJOR_VERSION% LSS 8 (
     goto Old_Dotnet_Installed
 )
 
-:: Install/Update charon tool
-:Install_Update_Charon_Tool
+:: Install/Update t4 tool
+:Install_Update_T4_Tool
 
 pushd "%SCRIPT_DIR%"
+dotnet tool list --local | findstr /i /c:"dotnet-t4" >nul 2>&1
 if NOT EXIST ".config\dotnet-tools.json" (
     dotnet new tool-manifest -o . >nul
 )
-dotnet tool list --local | findstr /i /c:"dotnet-charon" >nul 2>&1
 if %ERRORLEVEL% EQU 0 (
-    dotnet tool update dotnet-charon --local --tool-manifest .config/dotnet-tools.json >nul
+    dotnet tool update dotnet-t4 --local --tool-manifest .config/dotnet-tools.json >nul
 ) else (
-    dotnet tool install dotnet-charon --local --tool-manifest .config/dotnet-tools.json >nul
+    dotnet tool install dotnet-t4 --local --tool-manifest .config/dotnet-tools.json >nul
 
     if %ERRORLEVEL% NEQ 0 (
         popd
@@ -53,7 +53,7 @@ popd
 :Run_Tool
 
 pushd "%SCRIPT_DIR%"
-dotnet charon %*
+dotnet t4 %*
 set EXITCODE=%ERRORLEVEL%
 popd
 
@@ -67,7 +67,7 @@ goto Exit_Success
 
 :Exit_Failure_Dotnet_Restore_Failed
 set EXITCODE=-2
-echo Failed to execute the 'dotnet tool install dotnet-charon' command to retrieve the latest package version from NuGet. Ensure that the 'dotnet' tool is installed and available in the 'PATH'. Check 'https://dotnet.microsoft.com/en-us/download' for the installer. 1>&2
+echo Failed to execute the 'dotnet tool install dotnet-t4' command to retrieve the latest package version from NuGet. Ensure that the 'dotnet' tool is installed and available in the 'PATH'. Check 'https://dotnet.microsoft.com/en-us/download' for the installer. 1>&2
 goto Exit_Failure
 
 :Exit_No_Dotnet_Installed

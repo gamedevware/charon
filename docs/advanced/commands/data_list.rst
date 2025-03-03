@@ -15,10 +15,10 @@ Seaches for a documents.
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA LIST --dataBase "c:\my app\gamedata.json" --schema Character
+  dotnet charon DATA LIST --dataBase "c:\my app\gamedata.json" --schema Character
   
   # remote game data
-  Charon.exe DATA LIST --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Character --credentials "<API-Key>"
+  dotnet charon DATA LIST --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Character --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -186,10 +186,39 @@ Seaches for a documents.
      # Message Pack
      --outputFormat msgpack
      
-     # XML
+     # XML (removed in 2025.1.1) 
      --outputFormat xml
 
 --outputFormattingOptions
    Additional options for specified format.
 
 This command supports :doc:`universal parameters <universal_parameters>`.
+
+------------------
+ Output
+------------------
+
+The exported data follows the general :doc:`game data structure <../game_data_structure>`, but omits `ToolsVersion`, `RevisionHash`, and `ChangeNumber`.
+
+.. code-block:: json
+  
+  {
+    "Collections": 
+    {
+      "Character": 
+      [
+        {
+          "Id": "Knight"
+          
+          /* rest of properties of document */
+        },
+        {
+          "Id": "Templar"
+          
+          /* rest of properties of document */
+        },
+        // ...
+      ]
+    }
+  }
+

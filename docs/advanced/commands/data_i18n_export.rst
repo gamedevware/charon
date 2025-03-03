@@ -15,10 +15,10 @@ Export text that can be translated into a file.
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA I18N EXPORT --dataBase "c:\my app\gamedata.json" --schemas Character --sourceLanguage en-US --targetLanguage fr --output "c:\my app\character_loc.xliff" --outputFormat xliff
+  dotnet charon DATA I18N EXPORT --dataBase "c:\my app\gamedata.json" --schemas Character --sourceLanguage en-US --targetLanguage fr --output "c:\my app\character_loc.xliff" --outputFormat xliff
 
   # remote game data
-  Charon.exe DATA I18N EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --sourceLanguage en-US --targetLanguage fr --output "./character_loc.xliff" --outputFormat xliff --credentials "<API-Key>"
+  dotnet charon DATA I18N EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --sourceLanguage en-US --targetLanguage fr --output "./character_loc.xliff" --outputFormat xliff --credentials "<API-Key>"
 
 ---------------
  Parameters
@@ -66,6 +66,9 @@ Export text that can be translated into a file.
      # negation
      --schemas Char* !Character
      --schemas !*Item*
+     
+     # excluding system schemas (Schema, SchemaProperty, ProjectSettings)
+     --schemas ![system]
 
 --sourceLanguage
    Source (original) language for translation. Value is `language tag (BCP 47) <https://msdn.microsoft.com/en-US/library/system.globalization.cultureinfo.name(v=vs.110).aspx>`_. 
@@ -132,6 +135,9 @@ Export text that can be translated into a file.
      
      # XSLX Spreadsheet
      --outputFormat xslx
+     
+     # JSON
+     --outputFormat json
      
 
 --outputFormattingOptions

@@ -5,60 +5,81 @@ The standalone version of the game development `tool <https://www.nuget.org/pack
 a computer, and it allows the user to design and model game data, as well as generate source code for it. 
 The standalone version is typically used by individual game developers or small development teams who want to work offline.
 
-Requirements
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
+  :width: 800
+  :alt: Charon editor UI
+
+Prerequisites
 ============
 
-Charon is a .NET Framework 4.7.2 and/or Mono 5.18.0 application. It currently uses ``.NET Core`` tools for bootstrap scripts.
+Standalone application uses `dotnet charon` tool, which is a .NET Core application built for .NET 8.
 
 .. tabs::
 
    .. tab:: Windows
 
-      1. Download and install `.NET Framework 4.7.2+ <https://dotnet.microsoft.com/en-us/download/dotnet-framework/net472>`_.
-      2. Download and install `.NET Core 5+ <https://dotnet.microsoft.com/en-us/download/dotnet>`_.
-      3. Make sure you have write access to ``%APPDATA%/Charon``.
+      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      2. Make sure you have write access to ``%APPDATA%/Charon`` (C:\Users\%USERNAME%\AppData\Roaming\Charon).
 
    .. tab:: MacOS
 
-      1. Download and install `Mono runtime 5.18.0+ <http://www.mono-project.com/download/#download-mac>`_.
-      2. Download and install `.NET Core 5+ <https://dotnet.microsoft.com/en-us/download/dotnet>`_.
-      3. Make sure you have write access to ``~/Library/Application Support/Charon``.
-      4. Make sure ``mono`` is available from ``$PATH``.
+      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      2. Make sure you have write access to ``~/Library/Application Support/Charon``.
+      3. Make sure ``dotnet`` is available from ``$PATH``.
 
    .. tab:: Linux
 
-      1. Download and install `Mono runtime 5.18.0+ <https://www.mono-project.com/download/stable/#download-lin>`_.
-      2. Download and install `.NET Core 5+ <https://dotnet.microsoft.com/en-us/download/dotnet>`_.
-      3. Make sure you have write access to ``~/.config``.
-      4. Make sure ``mono`` is available from ``$PATH``.
+      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      2. Make sure you have write access to ``~/.config/Charon``.
+      3. Make sure ``dotnet`` is available from ``$PATH``.
+
+**Checking Available .NET Versions**
 
 .. code-block:: bash
 
-  # check for mono is already installed
-  mono --version
-  
-  # check for .NET Core is already installed
-  dotnet --version
+    # check for mono already installed
+    dotnet --list-sdks
+
+.. code-block:: bash
+    # output for dotnet --list-sdks
+    5.0.303 [C:\Program Files\dotnet\sdk]
+    5.0.408 [C:\Program Files\dotnet\sdk]
+    6.0.428 [C:\Program Files\dotnet\sdk]
+    7.0.120 [C:\Program Files\dotnet\sdk]
+    8.0.206 [C:\Program Files\dotnet\sdk]
+    8.0.405 [C:\Program Files\dotnet\sdk]
 
 Installation and Updates
 ========================
 
-There is two bootstrap scripts which download and run latest version of Charon on your PC:  
+You can use just two commands to install the command line tool, or use a bootstrap script that will check dependencies and installed software, and then download and run the tool for you.
+
+.. code-block:: bash
+
+  # install charon globally (run it once)
+  dotnet tool install -g dotnet-charon
+  
+  # update global tool
+  dotnet tool update -g dotnet-charon
+  
+  # run tool
+  dotnet charon INIT ./gamedata.json
+
+Two bootstrap scripts which download and run latest version of Charon on your PC:  
 
   - ``RunCharon.bat`` for Windows  
   - ``RunCharon.sh`` for Linux or MacOS  
 
-Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/dotnet>`_ tool to be available in ``PATH`` 
-and `mono <https://www.mono-project.com/download/stable/>`_ installed for Linux and MacOS.  
+Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/dotnet>`_ tool to be available in ``PATH``.
 
   1. Download one of the scripts into a local folder ``charon``.  
       a) `RunCharon.bat (Windows) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat>`_  
       b) `RunCharon.sh (Linux, MacOS) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.sh>`_  
   2. Navigate to the local folder ``cd charon``. 
   3. Run ``RunCharon.bat`` or ``RunCharon.sh`` depending on your OS.  
-  4. Wait for the script to automatically download and upgrade ``Charon.exe``, and display help text.  
-  5. Create an empty file named ``gamedata.json``  
-  6. Run ``Charon.exe`` in standalone mode  
+  4. Wait for the script to automatically download and upgrade ``dotnet-charon tool``, and display help text.  
+  5. Create an empty file named ``RunCharon.bat INIT gamedata.json``  
+  6. Run in standalone mode: ``RunCharon.bat gamedata.json``  
 
 Or use following bootstrap script:  
 
@@ -74,11 +95,11 @@ Or use following bootstrap script:
         mkdir Charon
         cd Charon
         curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.bat
-        echo. 2>  gamedata.json
+        ./RunCharon.bat INIT ./gamedata.json
         
         rem ##### Start editor #####
 
-        RunCharon.bat SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
+        ./RunCharon.bat ./gamedata.json --log out
 
    .. tab:: Linux, MacOS
 
@@ -89,12 +110,12 @@ Or use following bootstrap script:
         mkdir Charon
         cd Charon
         curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.sh
-        touch gamedata.json
         chmod +x RunCharon.sh
+		./RunCharon.sh INIT ./gamedata.json
         
         ##### Start editor #####
 
-        ./RunCharon.sh SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
+        ./RunCharon.sh ./gamedata.json --log out
 
 Creating and Editing Game Data
 ==============================
@@ -108,15 +129,15 @@ The editor will automatically fill the empty file with the initial data.
 
       .. code-block:: bash
   
-        ./RunCharon.bat SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
+        ./RunCharon.bat ./gamedata.json --log out
 
    .. tab:: Linux, MacOS
 
       .. code-block:: bash
 
-        ./RunCharon.sh SERVER START --database ./gamedata.json --launchDefaultBrowser --log out
+        ./RunCharon.sh ./gamedata.json --log out
 
-After finishing your work, you could just terminate the process.  
+After finishing your work, you could just terminate the process with ``CTRL+C`` keyboard shortcut or close terminal window.  
 
 See also
 --------

@@ -17,10 +17,10 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA DELETE --dataBase "c:\my app\gamedata.json" --schema Item --id "Sword"
+  dotnet charon DATA DELETE --dataBase "c:\my app\gamedata.json" --schema Item --id "Sword"
   
   # remote game data
-  Charon.exe DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --id "Sword" --credentials "<API-Key>"
+  dotnet charon DATA DELETE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --id "Sword" --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -107,7 +107,7 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
      # Message Pack
      --outputFormat msgpack
      
-     # XML
+     # XML (removed in 2025.1.1) 
      --outputFormat xml
      
 --outputFormattingOptions

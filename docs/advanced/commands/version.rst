@@ -1,7 +1,7 @@
 Get Charon Version
 ==================
 
-Gets version of ``Charon.exe`` application.
+Gets version of ``dotnet charon`` application.
 
 - :ref:`CLI Installation <CommandLine_Installation>`
 - :ref:`Commands Reference <CommandLine_Commands>`
@@ -12,12 +12,8 @@ Gets version of ``Charon.exe`` application.
 
 .. code-block:: bash
 
-  # Windows
-  Charon.exe VERSION
-  #> 2023.2.3-alpha
-  
-  # Linux or OSX
-  mono Charon.exe VERSION
+  # Windows, Linux or OSX
+  dotnet charon VERSION
   #> 2023.2.3-alpha
   
 ---------------

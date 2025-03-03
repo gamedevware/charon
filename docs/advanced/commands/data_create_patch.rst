@@ -15,17 +15,17 @@ Outputs the differences between two game datas as a file that can be used later 
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA CREATEPATCH --dataBase "c:\my app\gamedata.json" --input "c:\my app\gamedata_patch.json" --inputFormat json
+  dotnet charon DATA CREATEPATCH --dataBase "c:\my app\gamedata.json" --input "c:\my app\gamedata_patch.json" --inputFormat json
   
   # remote game data
-  Charon.exe DATA CREATEPATCH --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./gamedata_patch.json" --inputFormat json --credentials "<API-Key>"
+  dotnet charon DATA CREATEPATCH --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./gamedata_patch.json" --inputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters
 ---------------
 
 --dataBase1
-   Absolute or relative oath to a first game data. Use quotation marks if your path contains spaces.
+   Absolute or relative path to a first game data. Use quotation marks if your path contains spaces.
 
    .. code-block:: bash
    
@@ -36,7 +36,7 @@ Outputs the differences between two game datas as a file that can be used later 
      --dataBase1 "https://charon.live/view/data/My_Game/develop/"
      
 --dataBase2
-   Absolute or relative oath to a second game data. Use quotation marks if your path contains spaces.
+   Absolute or relative path to a second game data. Use quotation marks if your path contains spaces.
 
    .. code-block:: bash
    
@@ -93,7 +93,7 @@ Outputs the differences between two game datas as a file that can be used later 
      # Message Pack
      --outputFormat msgpack
      
-     # XML
+     # XML (removed in 2025.1.1) 
      --outputFormat xml
      
 

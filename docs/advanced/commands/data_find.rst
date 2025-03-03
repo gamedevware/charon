@@ -15,10 +15,10 @@ Seaches for a document.
 .. code-block:: bash
 
   # local game data (windows)
-  Charon.exe DATA FIND --dataBase "c:\my app\gamedata.json" --schema Character --id John
+  dotnet charon DATA FIND --dataBase "c:\my app\gamedata.json" --schema Character --id John
   
   # remote game data
-  Charon.exe DATA FIND --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Character --id John --credentials "<API-Key>"
+  dotnet charon DATA FIND --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Character --id John --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -107,10 +107,25 @@ Seaches for a document.
      # Message Pack
      --outputFormat msgpack
      
-     # XML
+     # XML (removed in 2025.1.1) 
      --outputFormat xml
 
 --outputFormattingOptions
    Additional options for specified format.
 
 This command supports :doc:`universal parameters <universal_parameters>`.
+
+------------------
+ Output
+------------------
+
+Outputs the found document.
+
+.. code-block:: json
+  
+  {
+    "Id": "John"
+    
+    /* rest of properties of found document */
+  }
+

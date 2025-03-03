@@ -20,6 +20,10 @@ Key Features
 - **Modding Support**: Empowers your gaming community by providing them with the tools to create and share mods, enhancing the longevity and depth of your game.
 - **Dynamic Load**: Facilitates the dynamic loading of game data, enabling features like A/B testing or the ability to push hot updates directly to your players.
 
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
+  :width: 800
+  :alt: Charon editor UI
+
 Getting Started
 ===============
 
@@ -27,8 +31,48 @@ To begin using `this <https://www.unrealengine.com/marketplace/en-US/product/cha
 Once installed, you'll need to `enable the plugin <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ for your project through the project settings. 
 Following this, a rebuild of your project's C++ code is necessary. The final step in the setup process is the creation of your first game data file.
 
+Prerequisites
+-------------
+
+The Unreal Engine plugin is written in C++ but relies on ``dotnet charon``, a .NET Core application which runs on .NET 8.
+
+.. tabs::
+
+   .. tab:: Windows
+
+      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      2. Make sure you have write access to ``%APPDATA%/Charon``.
+
+   .. tab:: MacOS
+
+      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      2. Make sure you have write access to ``~/Library/Application Support/Charon``.
+      3. Make sure ``dotnet`` is available from ``$PATH``.
+
+   .. tab:: Linux
+
+      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      2. Make sure you have write access to ``~/.config``.
+      3. Make sure ``dotnet`` is available from ``$PATH``.
+
+**Checking Available .NET Versions**
+
+.. code-block:: bash
+
+    # check for dotnet already installed
+    dotnet --list-sdks
+
+.. code-block:: bash
+    # output for dotnet --list-sdks
+    5.0.303 [C:\Program Files\dotnet\sdk]
+    5.0.408 [C:\Program Files\dotnet\sdk]
+    6.0.428 [C:\Program Files\dotnet\sdk]
+    7.0.120 [C:\Program Files\dotnet\sdk]
+    8.0.206 [C:\Program Files\dotnet\sdk]
+    8.0.405 [C:\Program Files\dotnet\sdk]
+
 Installation from Marketplace
--------------------------------------------------
+-----------------------------
 
 1. Add to cart Charon plugin `[Epic Launcher] <com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4>`_ / `[Web] <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ in the Unreal Engine Marketplace.
 2. Follow the `instruction <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ on installing plugin into your project:
@@ -74,7 +118,7 @@ Working with data in this plugin is akin to how the built-in *DataTable* functio
 and an asset that will be utilized in the game. Whenever you edit a data source file, you need to re-import this data into the asset. 
 Should the data structure in the source file change, then the C++ code must be regenerated.  
 
-.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/plugin_assets.png
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/ue_plugin_assets.png
   :width: 800
   :alt: Charon assets scheme in Unreal Engine
 
@@ -114,7 +158,7 @@ Refencing Game Data in Blueprints
 Similar to the DataTable's ``FDataTableRowHandle``, the Charon plugin introduces a specific type for referencing documents within Blueprints, 
 named ``FGameDataDocumentReference``. This type is housed within the Charon module. Here is example of **Game Data Document Reference** used to resolve *Hero* document:
 
-.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/document_reference.png
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/ue_document_reference.png
   :width: 800
   :alt: Charon document reference example screenshot
 
@@ -165,7 +209,7 @@ please join our `Discord community <https://discord.gg/2quB5vXryd>`_ or reach ou
   
 
 See also
-^^^^^^^^
+--------
 
 - :doc:`Basic Navigation and User Interface Overview <../gamedata/basics>`
 - :doc:`Creating Document Type (Schema) <../gamedata/creating_schema>`

@@ -15,7 +15,7 @@ The following Haxe code creates ``GameData`` class and loads your game data into
   import GameData;
   import Formatters;
   import haxe.io.Path;
-  sys.io.File;
+  import sys.io.File;
   
   var input = File.read("RpgGameData.gdjs"); // or .json
   var options = new GameDataLoadOptions();

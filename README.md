@@ -37,11 +37,25 @@ As with any .NET application, it can be launched as is on Windows and via Mono o
 
 How it works
 ============
-You create an empty `gamedata.json` file when launching the Charon.exe application, which acts as an HTTP server. You edit your game data in the UI, then generate source code for your game engine. With this source code, you load `gamedata.json` into your game and use it in a safe and structured manner.
 
 <img width="894" alt="scheme" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/how_it_works.png"/>  
 
-If you use plugins for Unity or Unreal Engine, it is a little bit easier than shown in the diagram.
+To get started with Charon, you’ll need the following:  
+- The `dotnet` runtime installed.  
+- Either [Unity](https://gamedevware.github.io/charon/unity/overview.html), the [Unreal Engine](https://gamedevware.github.io/charon/unreal_engine/overview.html) plugin, or the [standalone](https://www.nuget.org/packages/dotnet-charon/) tool, which you can install globally using the command:  
+  ```bash  
+  dotnet tool install dotnet-charon --global  
+  ```
+Once set up, follow these steps:
+- Create an empty `gamedata.json` file or use `dotnet charon INIT gamedata.json` command.
+- Launch the Charon tool by running:
+  ```bash  
+  dotnet charon gamedata.json
+  ```
+  This command starts an HTTP server and automatically opens the Charon UI in your default web browser.
+- Use the intuitive web-based UI to design and edit your game data.
+- After editing, utilize Charon’s source code generator to produce engine-specific source code for your game data.
+- Integrate the generated source code into your game project. This allows you to load the `gamedata.json` file into your game in a structured and type-safe way, ensuring seamless and error-free data usage.
 
 Editor's UI
 ===========

@@ -31,6 +31,7 @@ paths:
                     - authorization_code
                     - refresh_token
                   type: string
+        required: true
       responses:
         '200':
           description: Authorization granted result.
@@ -119,6 +120,7 @@ paths:
                 password:
                   $ref: '#/components/schemas/PasswordString'
               x-name: EmailPasswordAuthenticateRequest
+        required: true
       responses:
         '200':
           description: Authentication flow stage.
@@ -154,6 +156,7 @@ paths:
                   minLength: 1
                   type: string
               x-name: EmailTotpCodeAuthenticateRequest
+        required: true
       responses:
         '200':
           description: Authentication flow stage.
@@ -186,6 +189,7 @@ paths:
                   minLength: 1
                   type: string
               x-name: ApiKeyAuthenticateRequest
+        required: true
       responses:
         '200':
           description: Authentication flow stage.
@@ -204,7 +208,7 @@ paths:
     post:
       tags:
         - Authentication
-      description: Start authentication flow on behalf of another user.
+      description: Start authentication flow on behalf of another user (Administrator only).
       operationId: BeginOnBehalfAuthenticationFlow
       requestBody:
         description: On behalf-based authentication flow.
@@ -217,6 +221,7 @@ paths:
                   type: string
                   format: objectId
               x-name: OnBehalfAuthenticateRequest
+        required: true
       responses:
         '200':
           description: Authentication flow stage.
@@ -230,7 +235,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-      x-anonymous: true
+      security:
+        - BearerAuth: [ ]
   '/auth/flow/oauth2/{authenticationProvider}/prepare/':
     post:
       tags:
@@ -318,6 +324,7 @@ paths:
                   type: string
                 clientId:
                   type: string
+        required: true
       responses:
         '204':
           description: URL has been opened (or ignored).
@@ -355,6 +362,7 @@ paths:
                   type: string
                   description: The wait timeout for starting a transaction. Can't be negative or zero time.
                   format: time
+        required: true
       responses:
         '204':
           description: The transaction has started.
@@ -450,7 +458,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataDocument'
+              $ref: '#/components/schemas/JsonObject'
+        required: true
       responses:
         '200':
           description: Created document.
@@ -478,7 +487,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataDocument'
+              $ref: '#/components/schemas/JsonObject'
+        required: true
       responses:
         '200':
           description: Updated document.
@@ -565,6 +575,7 @@ paths:
                   items:
                     $ref: '#/components/schemas/Sorter'
                   nullable: true
+        required: true
       responses:
         '200':
           description: Found documents.
@@ -601,7 +612,8 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/NullableDataDocument'
+                $ref: '#/components/schemas/JsonObject'
+        required: true
       responses:
         '200':
           description: Created document.
@@ -678,6 +690,7 @@ paths:
                   uniqueSchemaPropertyValue:
                     type: string
                 x-name: FindRequest
+        required: true
       responses:
         '200':
           description: Pick results in same order as requested.
@@ -707,32 +720,30 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-          text/xml:
-            schema:
-              type: object
+              $ref: '#/components/schemas/JsonObject'
           application/x-msgpack:
             schema:
-              type: object
+              $ref: '#/components/schemas/JsonObject'
           application/bson:
             schema:
-              type: object
+              $ref: '#/components/schemas/JsonObject'
           application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
             schema:
-              type: object
+              $ref: '#/components/schemas/JsonObject'
           application/xliff+xml;version=1:
             schema:
-              type: object
+              $ref: '#/components/schemas/JsonObject'
           application/xliff+xml;version=2:
             schema:
-              type: object
+              $ref: '#/components/schemas/JsonObject'
+        required: true
       responses:
         '200':
           description: Converted game data document.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GameDataDocument'
+                $ref: '#/components/schemas/RawResponse'
         default:
           description: Operation failure response.
           content:
@@ -764,25 +775,22 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-            text/xml:
-              schema:
-                type: object
+                $ref: '#/components/schemas/RawResponse'
             application/x-msgpack:
               schema:
-                type: object
+                $ref: '#/components/schemas/RawResponse'
             application/bson:
               schema:
-                type: object
+                $ref: '#/components/schemas/RawResponse'
             application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
               schema:
-                type: object
+                $ref: '#/components/schemas/RawResponse'
             application/xliff+xml;version=1:
               schema:
-                type: object
+                $ref: '#/components/schemas/RawResponse'
             application/xliff+xml;version=2:
               schema:
-                type: object
+                $ref: '#/components/schemas/RawResponse'
         default:
           description: Operation failure response.
           content:
@@ -807,16 +815,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-            text/xml:
-              schema:
-                type: object
+                $ref: '#/components/schemas/RawResponse'
             application/x-msgpack:
               schema:
-                type: object
+                $ref: '#/components/schemas/RawResponse'
             application/bson:
               schema:
-                type: object
+                $ref: '#/components/schemas/RawResponse'
         default:
           description: Operation failure response.
           content:
@@ -915,9 +920,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExportResponse'
-            text/xml:
-              schema:
-                $ref: '#/components/schemas/ExportResponse'
             application/x-msgpack:
               schema:
                 $ref: '#/components/schemas/ExportResponse'
@@ -947,12 +949,7 @@ paths:
       summary: Import documents into multiple collections.
       operationId: import
       parameters:
-        - name: importMode
-          in: query
-          description: Import mode.
-          required: true
-          schema:
-            $ref: '#/components/schemas/ImportMode'
+        - $ref: '#/components/parameters/importMode'
         - $ref: '#/components/parameters/schemas'
         - $ref: '#/components/parameters/languages'
         - $ref: '#/components/parameters/validationOptions'
@@ -962,25 +959,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GameDataDocument'
-          text/xml:
-            schema:
-              $ref: '#/components/schemas/GameDataDocument'
+              $ref: '#/components/schemas/JsonObject'
           application/x-msgpack:
             schema:
-              $ref: '#/components/schemas/GameDataDocument'
+              $ref: '#/components/schemas/JsonObject'
           application/bson:
             schema:
-              $ref: '#/components/schemas/GameDataDocument'
+              $ref: '#/components/schemas/JsonObject'
           application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
             schema:
-              $ref: '#/components/schemas/GameDataDocument'
+              $ref: '#/components/schemas/JsonObject'
           application/xliff+xml;version=1:
             schema:
-              $ref: '#/components/schemas/GameDataDocument'
+              $ref: '#/components/schemas/JsonObject'
           application/xliff+xml;version=2:
             schema:
-              $ref: '#/components/schemas/GameDataDocument'
+              $ref: '#/components/schemas/JsonObject'
+        required: true
       responses:
         '200':
           description: Import report.
@@ -1012,9 +1007,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BackupResponse'
-            text/xml:
-              schema:
-                $ref: '#/components/schemas/BackupResponse'
             application/x-msgpack:
               schema:
                 $ref: '#/components/schemas/BackupResponse'
@@ -1039,16 +1031,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GameDataDocument'
-          text/xml:
-            schema:
-              $ref: '#/components/schemas/GameDataDocument'
+              $ref: '#/components/schemas/JsonObject'
           application/x-msgpack:
             schema:
-              $ref: '#/components/schemas/GameDataDocument'
+              $ref: '#/components/schemas/JsonObject'
           application/bson:
             schema:
-              $ref: '#/components/schemas/GameDataDocument'
+              $ref: '#/components/schemas/JsonObject'
+        required: true
       responses:
         '200':
           description: Data source restoration result.
@@ -1129,13 +1119,7 @@ paths:
               type: object
               properties:
                 targetLanguage:
-                  enum:
-                    - cSharp40
-                    - cSharp73
-                    - typeScript
-                    - ueCpp
-                  type: string
-                  x-name: SourceCodeTargetLanguage
+                  $ref: '#/components/schemas/TargetSourceCodeLanguage'
                 documentClassName:
                   type: string
                 gameDataClassName:
@@ -1165,14 +1149,16 @@ paths:
                     enum:
                       - eagerReferenceResolution
                       - rawReferences
-                      - rawLocalizedStrings
+                      - rawLocalizedTexts
                       - disableStringPooling
                       - disableJsonSerialization
                       - disableMessagePackSerialization
                       - disablePatching
                       - disableFormulaCompilation
+                      - disableDocumentIdEnums
                     type: string
                     x-name: SourceCodeGenerationOptimizations
+        required: true
       responses:
         '200':
           description: Source code packed into .zip archive.
@@ -1341,26 +1327,135 @@ paths:
         - BearerAuth: [ ]
     parameters:
       - $ref: '#/components/parameters/dataSourceId'
-  '/datasource/{dataSourceId}/formula/type/{typeName}/':
-    get:
+  '/datasource/{dataSourceId}/completion/schema/':
+    post:
       tags:
-        - Formulas
-      summary: Get formula type by name.
-      operationId: getFormulaTypes
+        - AiCompletion
+      summary: Suggest schema structure with specified AI tool.
+      operationId: suggestSchemaDesign
       parameters:
-        - name: typeName
-          in: path
-          description: Type name to find.
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/dataSourceId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contextSchema:
+                  type: string
+                  nullable: true
+                existingSchemas:
+                  type: array
+                  items:
+                    type: string
+                userPrompt:
+                  maxLength: 16384
+                  minLength: 2
+                  type: string
+        required: true
       responses:
         '200':
-          description: Type description.
+          description: AI completion response with schema structure in natural language.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetFormulaTypesResponse'
+                $ref: '#/components/schemas/SuggestSchemaDesignResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/datasource/{dataSourceId}/completion/schema/icon/':
+    post:
+      tags:
+        - AiCompletion
+      summary: Suggest an icon for schema using AI tool.
+      operationId: suggestSchemaIcon
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+        - name: iconSet
+          in: query
+          description: Name of icon set to select from.
+          required: true
+          schema:
+            maxLength: 128
+            minLength: 1
+            type: string
+        - name: schemaName
+          in: query
+          description: Name of the schema to generate icon for.
+          required: true
+          schema:
+            maxLength: 128
+            minLength: 1
+            type: string
+        - name: schemaDescription
+          in: query
+          description: Description of the schema to generate icon for.
+          schema:
+            maxLength: 2048
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: AI completion response with schema structure in natural language.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuggestSchemaIconResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/datasource/{dataSourceId}/completion/thread/{threadId}/':
+    post:
+      tags:
+        - AiCompletion
+      summary: Send AI chat message to specified chat thread.
+      operationId: sendAiChatMessage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                regenerate:
+                  type: boolean
+                userPrompt:
+                  maxLength: 16384
+                  minLength: 2
+                  type: string
+        required: true
+      responses:
+        '200':
+          description: AI completion response with schema structure in natural language.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendAiChatMessageResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+    delete:
+      tags:
+        - AiCompletion
+      summary: Delete existing AI chat thread.
+      operationId: deleteAiChatThread
+      responses:
+        '204':
+          description: Thread has been deleted.
         default:
           description: Operation failure response.
           content:
@@ -1371,6 +1466,62 @@ paths:
         - BearerAuth: [ ]
     parameters:
       - $ref: '#/components/parameters/dataSourceId'
+      - $ref: '#/components/parameters/threadId'
+  '/datasource/{dataSourceId}/translation/':
+    post:
+      tags:
+        - MachineTranslation
+      summary: Machine translate portion of game data. First language in the list is a source language.
+      operationId: translate
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+        - $ref: '#/components/parameters/schemas'
+        - $ref: '#/components/parameters/languages'
+        - $ref: '#/components/parameters/translationMode'
+      responses:
+        '202':
+          description: Translation process has been started.
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/datasource/{dataSourceId}/collection/{schemaNameOrId}/translation/':
+    post:
+      tags:
+        - MachineTranslation
+      summary: Machine translate specified document. First language in the list is a source language.
+      operationId: translateDocument
+      parameters:
+        - $ref: '#/components/parameters/schemaNameOrId'
+        - $ref: '#/components/parameters/dataSourceId'
+        - $ref: '#/components/parameters/languages'
+        - $ref: '#/components/parameters/translationMode'
+      requestBody:
+        description: A document to translate.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonObject'
+        required: true
+      responses:
+        '200':
+          description: Translated document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranslateDocumentResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
   '/project/{projectId}/preferences/':
     get:
       tags:
@@ -1402,7 +1553,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NullableDataDocument'
+              $ref: '#/components/schemas/JsonObject'
+        required: true
       responses:
         '204':
           description: Preferences has been saved.
@@ -1425,6 +1577,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/JsonPatches'
+        required: true
       responses:
         '204':
           description: Patch has been applyed.
@@ -1469,7 +1622,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NullableDataDocument'
+              $ref: '#/components/schemas/JsonObject'
+        required: true
       responses:
         '204':
           description: Preferences has been saved.
@@ -1492,9 +1646,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/JsonPatches'
+        required: true
       responses:
         '204':
-          description: Patch has been applyed.
+          description: Patch has been applied.
         default:
           description: Operation failure response.
           content:
@@ -1536,7 +1691,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NullableDataDocument'
+              $ref: '#/components/schemas/JsonObject'
+        required: true
       responses:
         '204':
           description: Preferences has been saved.
@@ -1559,6 +1715,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/JsonPatches'
+        required: true
       responses:
         '204':
           description: Patch has been applyed.
@@ -1603,7 +1760,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NullableDataDocument'
+              $ref: '#/components/schemas/JsonObject'
+        required: true
       responses:
         '204':
           description: Preferences has been saved.
@@ -1626,6 +1784,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/JsonPatches'
+        required: true
       responses:
         '204':
           description: Patch has been applyed.
@@ -1687,7 +1846,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NullableDataDocument'
+              $ref: '#/components/schemas/JsonObject'
+        required: true
       responses:
         '204':
           description: Preferences has been saved.
@@ -1710,6 +1870,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/JsonPatches'
+        required: true
       responses:
         '204':
           description: Patch has been applyed.
@@ -1784,6 +1945,7 @@ paths:
                   nullable: true
                   x-name: UserCreationPasswordCredential
               x-name: UserCreationRequest
+        required: true
       responses:
         '201':
           description: User has been created.
@@ -1810,6 +1972,7 @@ paths:
               items:
                 type: string
                 format: objectId
+        required: true
       responses:
         '200':
           description: List of user public profiles.
@@ -1863,6 +2026,7 @@ paths:
                   pattern: \w+@\w+
                   type: string
               x-name: UserPasswordResetRequest
+        required: true
       responses:
         '204':
           description: Password reset request has been accepted.
@@ -1891,6 +2055,7 @@ paths:
                 newPassword:
                   $ref: '#/components/schemas/PasswordString'
               x-name: UserResetPasswordRequest
+        required: true
       responses:
         '204':
           description: Password has been reset.
@@ -1947,6 +2112,7 @@ paths:
                   type: string
                   nullable: true
               x-name: UpdateUserRequest
+        required: true
       responses:
         '200':
           description: Updated workspace.
@@ -2021,6 +2187,7 @@ paths:
                 newPassword:
                   $ref: '#/components/schemas/PasswordString'
               x-name: UserChangePasswordRequest
+        required: true
       responses:
         '204':
           description: Password has been changed.
@@ -2050,6 +2217,7 @@ paths:
                 isEnabled:
                   type: boolean
               x-name: ConfigureEmailCodeMfaRequest
+        required: true
       responses:
         '204':
           description: Multi-factor authentication has been configured.
@@ -2106,6 +2274,7 @@ paths:
                   format: int32
                   nullable: true
               x-name: AddApiKeyRequest
+        required: true
       responses:
         '200':
           description: List of workspaces.
@@ -2276,6 +2445,7 @@ paths:
                   type: string
                   nullable: true
               x-name: UpdateWorkspaceRequest
+        required: true
       responses:
         '200':
           description: Updated workspace.
@@ -2452,6 +2622,7 @@ paths:
                   type: string
                   nullable: true
               x-name: CreateProjectRequest
+        required: true
       responses:
         '200':
           description: Created project.
@@ -2529,7 +2700,14 @@ paths:
                 newPictureUrl:
                   type: string
                   nullable: true
+                newTags:
+                  maxItems: 20
+                  type: array
+                  items:
+                    type: string
+                  nullable: true
               x-name: UpdateProjectRequest
+        required: true
       responses:
         '200':
           description: Updated project.
@@ -2579,6 +2757,7 @@ paths:
                 name:
                   $ref: '#/components/schemas/BranchName'
               x-name: CreateBranchRequest
+        required: true
       responses:
         '204':
           description: Branch has been created.
@@ -2608,6 +2787,7 @@ paths:
                 destinationBranchName:
                   $ref: '#/components/schemas/BranchName'
               x-name: PushBranchRequest
+        required: true
       responses:
         '204':
           description: Branch has been updated.
@@ -2622,7 +2802,7 @@ paths:
     post:
       tags:
         - Project
-      summary: Updade branch in project.
+      summary: Update branch in project.
       operationId: updateBranch
       requestBody:
         description: Branch update parameters.
@@ -2638,6 +2818,7 @@ paths:
                   format: int32
                   nullable: true
               x-name: UpdateBranchRequest
+        required: true
       responses:
         '204':
           description: Branch has been updated.
@@ -2685,6 +2866,7 @@ paths:
                   type: string
                   format: objectId
               x-name: TransferProjectRequest
+        required: true
       responses:
         '204':
           description: Project has been transfered.
@@ -2721,6 +2903,7 @@ paths:
                   pattern: \w+@\w+
                   type: string
               x-name: InviteIntoProjectRequest
+        required: true
       responses:
         '204':
           description: Invite has been sent.
@@ -2776,6 +2959,7 @@ paths:
                   items:
                     $ref: '#/components/schemas/ProjectPermission'
               x-name: UpdateProjectPermissionsRequest
+        required: true
       responses:
         '204':
           description: Project permissions has been updated.
@@ -2882,6 +3066,7 @@ paths:
                   type: string
                   nullable: true
               x-name: UpdateBillingAccountRequest
+        required: true
       responses:
         '200':
           description: Updated billing account.
@@ -2974,6 +3159,7 @@ paths:
                   maxLength: 256
                   type: string
               x-name: StartSubscriptionSessionRequest
+        required: true
       responses:
         '200':
           description: Payment action response.
@@ -3008,6 +3194,7 @@ paths:
                   type: string
                   format: objectId
               x-name: MakePaymentRequest
+        required: true
       responses:
         '200':
           description: Payment action response.
@@ -3048,6 +3235,7 @@ paths:
                 currencyCode:
                   $ref: '#/components/schemas/CurrencyCode'
               x-name: UpcomingPaymentParameters
+        required: true
       responses:
         '200':
           description: Upcoming payment information
@@ -3082,6 +3270,7 @@ paths:
                   maxLength: 256
                   type: string
               x-name: GetCustomerPortalUrlRequest
+        required: true
       responses:
         '200':
           description: Portal url or none.
@@ -3144,6 +3333,7 @@ paths:
                     $ref: '#/components/schemas/SearchResultItemType'
                   nullable: true
               x-name: SearchRequest
+        required: true
       responses:
         '200':
           description: Search result with found search items.
@@ -3193,6 +3383,7 @@ paths:
           application/octet-stream:
             schema:
               $ref: '#/components/schemas/Blob'
+        required: true
       responses:
         '200':
           description: Created resource id.
@@ -3336,8 +3527,7 @@ components:
             - in
           type: string
         value:
-          type: object
-          nullable: true
+          $ref: '#/components/schemas/JsonValue'
         caseSensitive:
           type: boolean
       additionalProperties: false
@@ -3365,10 +3555,18 @@ components:
     DataDocument:
       type: object
       x-external-type: DataDocument
+    DataDocumentValue:
+      x-external-type: DataDocumentValue
     NullableDataDocument:
       type: object
       nullable: true
       x-external-type: DataDocument
+    JsonObject:
+      type: object
+      nullable: true
+      x-external-type: JsonObject
+    JsonValue:
+      x-external-type: JsonValue
     BulkChangeResult:
       type: object
       properties:
@@ -3431,10 +3629,9 @@ components:
       type: object
       properties:
         id:
-          type: object
+          $ref: '#/components/schemas/DataDocumentValue'
         newId:
-          type: object
-          nullable: true
+          $ref: '#/components/schemas/DataDocumentValue'
         schemaName:
           type: string
         schemaId:
@@ -3483,7 +3680,7 @@ components:
       type: object
       properties:
         id:
-          type: object
+          $ref: '#/components/schemas/DataDocumentValue'
         schemaName:
           type: string
         schemaId:
@@ -3542,6 +3739,12 @@ components:
         - publication
         - localization
         - extraction
+      type: string
+    TranslationMode:
+      enum:
+        - all
+        - staleAndMissing
+        - onlyMissing
       type: string
     ExportResult:
       type: object
@@ -3681,6 +3884,51 @@ components:
         - schema
         - document
       type: string
+    AiCompletionResult:
+      type: object
+      properties:
+        id:
+          type: string
+        threadId:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiChatMessage'
+        completionTokens:
+          type: integer
+          format: int32
+          nullable: true
+        promptTokens:
+          type: integer
+          format: int32
+          nullable: true
+        totalTokens:
+          type: integer
+          format: int32
+          nullable: true
+        tokensLeft:
+          type: integer
+          format: int64
+          nullable: true
+      additionalProperties: false
+      readOnly: true
+    AiChatMessage:
+      type: object
+      properties:
+        role:
+          enum:
+            - user
+            - assistant
+            - system
+          type: string
+        content:
+          type: string
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+      readOnly: true
     PageContext:
       type: object
       properties:
@@ -3689,8 +3937,6 @@ components:
             - server
             - user
             - dataSource
-          type: string
-        serverVersion:
           type: string
         serverCapabilities:
           $ref: '#/components/schemas/ServerCapabilities'
@@ -3702,6 +3948,8 @@ components:
           type: string
           format: objectId
           nullable: true
+        workspaceCapabilities:
+          $ref: '#/components/schemas/WorkspaceCapabilities'
         projectId:
           type: string
           format: objectId
@@ -3717,15 +3965,15 @@ components:
           type: object
           properties:
             projectPersonal:
-              $ref: '#/components/schemas/NullableDataDocument'
+              $ref: '#/components/schemas/JsonObject'
             projectShared:
-              $ref: '#/components/schemas/NullableDataDocument'
+              $ref: '#/components/schemas/JsonObject'
             workspacePersonal:
-              $ref: '#/components/schemas/NullableDataDocument'
+              $ref: '#/components/schemas/JsonObject'
             workspaceShared:
-              $ref: '#/components/schemas/NullableDataDocument'
+              $ref: '#/components/schemas/JsonObject'
             serverDefault:
-              $ref: '#/components/schemas/NullableDataDocument'
+              $ref: '#/components/schemas/JsonObject'
           x-name: PreferencesByLayer
       additionalProperties: false
       readOnly: true
@@ -3768,33 +4016,48 @@ components:
     ServerCapabilities:
       type: object
       properties:
+        serverVersion:
+          type: string
         features:
           type: array
           items:
-            enum:
-              - none
-              - authentication
-              - remoteLogging
-              - termsOfService
-              - privacyPolicy
-              - projectSelection
-              - projectDelete
-              - projectTransfer
-              - projectMembers
-              - projectBranches
-              - projectPermissions
-              - projectCustomization
-              - userDelete
-              - revokeTokens
-              - billing
-              - apiKeys
-              - googleAuthentication
-              - microsoftAuthentication
-              - githubAuthentication
-            type: string
-            x-name: ServerFeature
+            $ref: '#/components/schemas/ServerFeature'
       additionalProperties: false
       readOnly: true
+    WorkspaceCapabilities:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServerFeature'
+      additionalProperties: false
+      nullable: true
+      readOnly: true
+    ServerFeature:
+      enum:
+        - none
+        - authentication
+        - remoteLogging
+        - termsOfService
+        - privacyPolicy
+        - projectSelection
+        - projectDelete
+        - projectTransfer
+        - projectMembers
+        - projectBranches
+        - projectPermissions
+        - projectCustomization
+        - userDelete
+        - revokeTokens
+        - billing
+        - aiCompletion
+        - machineTranslation
+        - apiKeys
+        - googleAuthentication
+        - microsoftAuthentication
+        - githubAuthentication
+      type: string
     ProcessState:
       type: object
       properties:
@@ -3808,6 +4071,7 @@ components:
           $ref: '#/components/schemas/ProcessType'
         initiatorName:
           type: string
+          nullable: true
         initiatorId:
           type: string
           format: objectId
@@ -3838,6 +4102,7 @@ components:
         - backup
         - restore
         - generateSourceCode
+        - translate
       type: string
     ProcessWorkflowStatus:
       enum:
@@ -3851,6 +4116,8 @@ components:
     FormulaType:
       type: object
       properties:
+        sourceCodeLanguage:
+          $ref: '#/components/schemas/TargetSourceCodeLanguage'
         kind:
           enum:
             - class
@@ -3861,17 +4128,11 @@ components:
           type: string
         name:
           type: string
-        namespace:
+        packageOrNamespaceName:
           type: string
         fullName:
           type: string
-        baseTypeFullName:
-          type: string
-        declaringTypeFullName:
-          type: string
-        assemblyName:
-          type: string
-        assemblyFullName:
+        moduleName:
           type: string
       additionalProperties: false
       readOnly: true
@@ -3974,6 +4235,15 @@ components:
           $ref: '#/components/schemas/UserLogin'
         apiKey:
           type: string
+    TargetSourceCodeLanguage:
+      enum:
+        - cSharp40
+        - cSharp73
+        - typeScript
+        - ueCpp
+        - haxe
+      type: string
+      x-name: SourceCodeTargetLanguage
     PresenceInfo:
       required:
         - sessionId
@@ -4070,10 +4340,10 @@ components:
         backupStorageSize:
           type: integer
           format: int32
-        translationTokens:
+        machineTranslationTokens:
           type: integer
           format: int32
-        aiSuggestionTokens:
+        aiCompletionTokens:
           type: integer
           format: int32
     Project:
@@ -4303,6 +4573,7 @@ components:
                   type: integer
                   format: int32
                   nullable: true
+              nullable: true
             storage:
               type: object
               properties:
@@ -4314,17 +4585,19 @@ components:
                   type: integer
                   format: int32
                   nullable: true
+              nullable: true
             serviceTokens:
               type: object
               properties:
-                translation:
+                machineTranslation:
                   type: integer
                   format: int32
                   nullable: true
-                aiSuggestion:
+                aiCompletion:
                   type: integer
                   format: int32
                   nullable: true
+              nullable: true
         prices:
           type: array
           items:
@@ -4358,8 +4631,8 @@ components:
       properties:
         type:
           enum:
-            - aiSuggestionToken
-            - translationToken
+            - aiCompletionToken
+            - machineTranslationToken
           type: string
           x-name: ResourceAllowanceType
         amount:
@@ -4369,6 +4642,12 @@ components:
           type: integer
           format: int64
         startDate:
+          type: string
+          format: date
+        lastUpdateDate:
+          type: string
+          format: date
+        lastRollDate:
           type: string
           format: date
     MembershipPrice:
@@ -4520,8 +4799,7 @@ components:
         op:
           $ref: '#/components/schemas/JsonPatchOperation'
         value:
-          type: object
-          nullable: true
+          $ref: '#/components/schemas/JsonValue'
         from:
           $ref: '#/components/schemas/JsonPointer'
     JsonPointer:
@@ -4547,6 +4825,8 @@ components:
       minLength: 24
       pattern: '^[0-9a-fA-F]+$'
       type: string
+    RawResponse:
+      type: object
     ErrorResponse:
       type: object
       properties:
@@ -4602,6 +4882,7 @@ components:
         - parameterValueMinSizeOverflow
         - parameterValueMaxSizeOverflow
         - parameterValueItemsDuplicate
+        - invalidImportData
         - jsonPatchInvalidParameter
         - jsonPatchTestFailed
         - jsonPatchForbiddenOperation
@@ -4637,6 +4918,9 @@ components:
         - uniqueValueDuplication
         - invalidIdFormat
         - invalidGeneratedIdFormat
+        - componentsInRootCollection
+        - missingSettingsDocument
+        - moreThanOneSettingsDocument
         - invalidNameFormat
         - reservedName
         - invalidSize
@@ -4659,6 +4943,12 @@ components:
         - invalidRowCount
         - duplicateSpecificationKey
         - emailIsAlreadyTaken
+        - aiCompletionFailed
+        - billingFailed
+        - aiCompletionTokenLimitReached
+        - machineTranslationTokenLimitReached
+        - invalidSchema
+        - invalidSchemaProperty
       type: string
     Preferences:
       type: object
@@ -4710,9 +5000,6 @@ components:
         deletingMultipleDocumentsPolicy:
           $ref: '#/components/schemas/DialogActionPreference'
         selectedLanguageId:
-          type: string
-          nullable: true
-        viewMode:
           type: string
           nullable: true
         designMode:
@@ -5117,6 +5404,14 @@ components:
           nullable: true
       additionalProperties: false
       x-implements: INotificationContent
+    ServerShutdownNotification:
+      type: object
+      properties:
+        reason:
+          type: string
+          nullable: true
+      additionalProperties: false
+      x-implements: INotificationContent
     IssueOneTimeCodeResponse:
       type: object
       properties:
@@ -5479,11 +5774,47 @@ components:
           nullable: true
           readOnly: true
       x-response: true
-    GetFormulaTypesResponse:
+    SuggestSchemaDesignResponse:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/FormulaType'
+          $ref: '#/components/schemas/AiCompletionResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    SuggestSchemaIconResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/AiCompletionResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    SendAiChatMessageResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/AiCompletionResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    TranslateDocumentResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/UpdateResult'
         errors:
           type: array
           items:
@@ -5495,7 +5826,7 @@ components:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/NullableDataDocument'
+          $ref: '#/components/schemas/JsonObject'
         errors:
           type: array
           items:
@@ -5507,7 +5838,7 @@ components:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/NullableDataDocument'
+          $ref: '#/components/schemas/JsonObject'
         errors:
           type: array
           items:
@@ -5519,7 +5850,7 @@ components:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/NullableDataDocument'
+          $ref: '#/components/schemas/JsonObject'
         errors:
           type: array
           items:
@@ -5531,7 +5862,7 @@ components:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/NullableDataDocument'
+          $ref: '#/components/schemas/JsonObject'
         errors:
           type: array
           items:
@@ -5543,7 +5874,7 @@ components:
       type: object
       properties:
         result:
-          $ref: '#/components/schemas/NullableDataDocument'
+          $ref: '#/components/schemas/JsonObject'
         errors:
           type: array
           items:
@@ -5965,15 +6296,22 @@ components:
     dataSourceId:
       name: dataSourceId
       in: path
-      description: Id of data source.
+      description: Id of data source. Usually it is a branchId from one of branches from Project.
       required: true
       schema:
         type: string
         format: objectId
+    threadId:
+      name: threadId
+      in: path
+      description: Id of AI chat thread.
+      required: true
+      schema:
+        type: string
     projectId:
       name: projectId
       in: path
-      description: Id of project.
+      description: Id of project. Project are located within workspace.
       required: true
       schema:
         type: string
@@ -6013,14 +6351,14 @@ components:
     transactionId:
       name: transactionId
       in: path
-      description: Id or name of transaction.
+      description: Id or name of transaction. Optional.
       required: true
       schema:
         type: string
     branchName:
       name: branchName
       in: path
-      description: Name of branch.
+      description: Name of branch. Branches are located inside Project.
       required: true
       schema:
         $ref: '#/components/schemas/BranchName'
@@ -6090,6 +6428,20 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/ExportMode'
+    importMode:
+      name: importMode
+      in: query
+      description: Import mode.
+      required: true
+      schema:
+        $ref: '#/components/schemas/ImportMode'
+    translationMode:
+      name: translationMode
+      in: query
+      description: Translation mode.
+      required: true
+      schema:
+        $ref: '#/components/schemas/TranslationMode'
     validationOptions:
       name: validationOptions
       in: query
