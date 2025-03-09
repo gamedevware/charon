@@ -204,7 +204,7 @@ To get an instance of a document in your game code, call the ``GameDataDocumentR
 Work & Build Automation
 -----------------------
 
-To facilitate automation of work or builds, a programmatic interface for working with game data is provided. You can read more about it on the :doc:`CharonCli <charon_cli.rst>` class documentation page.
+To facilitate automation of work or builds, a programmatic interface for working with game data is provided. You can read more about it on the :doc:`CharonCli <charon_cli>` class documentation page.
 
 
 Feedback
