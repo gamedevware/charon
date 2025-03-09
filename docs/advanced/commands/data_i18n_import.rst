@@ -121,6 +121,59 @@ Import translated text from a specified file into game data.
 --inputFormattingOptions
    Additional options for specified format.
    
+--output
+   Optional path to a import report file. If the file exists, it will be overwritten. The directory must already exist. 
+   Alternatively, you can output to `Standard Error <https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>`_, 
+   `Standard Output <https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>`_, 
+   `/dev/null <https://en.wikipedia.org/wiki/Null_device>`_, or a :doc:`URL <remote_input_output>`.
+  
+   .. code-block:: bash
+
+     # standart output
+     --output out
+     --output con
+
+     # standart error
+     --output err
+     
+     # null device (default)
+     --output null
+     
+     # absolute path (windows)
+     --output "c:\my app\document.json"
+     
+     # absolute path (unix)
+     --output /user/data/document.json
+     
+     # relative path (universal)
+     --output "./document.json"
+     
+     # remote location (HTTP)
+     --output "http://example.com/document.json"
+     
+     # remote location with authentication (FTP)
+     --output "ftp://user:password@example.com/document.json"
+     
+--outputFormat
+   Format of import report.
+   
+   .. code-block:: bash
+    
+     # JSON (default)
+     --outputFormat json
+     
+     # BSON
+     --outputFormat bson
+     
+     # Message Pack
+     --outputFormat msgpack
+     
+     # XLSX Spreadsheet
+     --outputFormat xlsx
+     
+--outputFormattingOptions
+   Additional options for specified format.
+   
 --dryRun
    Allows you to run the command without actually making any changes to the game data, providing a preview of what would happen.
 
