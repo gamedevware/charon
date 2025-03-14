@@ -73,6 +73,15 @@ Import translated text from a specified file into game data.
 --languages
    The list of languages to import. Values are `language tags (BCP 47) <https://msdn.microsoft.com/en-US/library/system.globalization.cultureinfo.name(v=vs.110).aspx>`_. 
 
+   .. code-block:: bash
+   
+     # Import specific language
+     --languages en-US es-ES
+   
+     # Import all languages
+     --languages *
+     
+
 --input
    Path to a file with data to import. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or :doc:`URL <remote_input_output>`.
 

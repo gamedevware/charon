@@ -76,14 +76,27 @@ Get a list of supported translation languages. Primary language always shows up 
      # JSON (default)
      --outputFormat json
      
+     #> [
+     #>   "en-US",
+     #>   "es-ES",
+     #> ]
+     
+     
      # Space separated list
      --outputFormat list
      
+     #> en-US es-ES
+     
      # New line (OS specific) separated list
      --outputFormat table
-
+     
+     #> en-US
+	 #> es-ES
+     
+	 
 --outputFormattingOptions
    Additional options for specified format.
 
 This command supports :doc:`universal parameters <universal_parameters>`.
+
 
