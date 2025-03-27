@@ -55,9 +55,11 @@ How it works
 
 <img width="894" alt="scheme" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/how_it_works.png"/>  
 
-To get started with Charon, you’ll need the following:  
-- The `dotnet` runtime installed.  
-- Either [Unity](https://gamedevware.github.io/charon/unity/overview.html), the [Unreal Engine](https://gamedevware.github.io/charon/unreal_engine/overview.html) plugin, or the [standalone](https://www.nuget.org/packages/dotnet-charon/) tool, which you can install globally using the command:  
+[Unity](https://gamedevware.github.io/charon/unity/overview.html) or the [Unreal Engine](https://gamedevware.github.io/charon/unreal_engine/overview.html) plugin provides a more natural experience of interacting with game data. Check out the corresponding plugin page for more information on getting started.
+
+To get started with standalone Charon, you’ll need the following:  
+- The `dotnet` runtime [installed](https://dotnet.microsoft.com/en-us/download).  
+- Use [standalone](https://www.nuget.org/packages/dotnet-charon/) tool, which you can install globally using the command:  
   ```bash  
   dotnet tool install dotnet-charon --global  
   ```
@@ -69,7 +71,7 @@ Once set up, follow these steps:
   ```
   This command starts an HTTP server and automatically opens the Charon UI in your default web browser.
 - Use the intuitive web-based UI to design and edit your game data.
-- After editing, utilize Charon’s source code generator to produce engine-specific source code for your game data.
+- After editing, utilize Charon’s source code generator to produce language/engine-specific source code for your game data.
 - Integrate the generated source code into your game project. This allows you to load the `gamedata.json` file into your game in a structured and type-safe way, ensuring seamless and error-free data usage.
 
 Editor's UI
