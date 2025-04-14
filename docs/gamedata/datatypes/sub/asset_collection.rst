@@ -1,7 +1,7 @@
 Asset Path Collection
 ======================
 
-The ``Asset Path Collection`` is a sub-type of the ``Text`` data type and is used to store multiple paths to game assets within game data.  
+The ``Asset Path Collection`` is a sub-type of the :doc:`Text <../all/text>` data type and is used to store multiple paths to game assets within game data.  
 Each path is separated by the ``|`` (pipe) character.
 
 Paths are typically relative to the project root and can be used to load assets directly at runtime.

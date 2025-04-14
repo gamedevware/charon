@@ -1,7 +1,7 @@
 Asset Path
 ==========
 
-The ``Asset Path`` is a sub-type of the ``Text`` data type and is used to store a path to a game asset within game data. 
+The ``Asset Path`` is a sub-type of the :doc:`Text <../all/text>` data type and is used to store a path to a game asset within game data. 
 
 Paths are typically relative to the project root and can be used to load assets directly at runtime.
 
