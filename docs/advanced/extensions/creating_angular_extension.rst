@@ -220,6 +220,6 @@ Publishing
 Once your component is built, tested, and versioned, you can publish it to NPM and reference it in Charon's ``Project Settings → Extensions`` tab.  
 Your custom editor will then be available in the schema designer for relevant property types.
 
-.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/schema_designer_select_editor.png
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/schema_designer_select_extension_editor.png
   :width: 800
   :alt: Schema Designer with Custom Editor

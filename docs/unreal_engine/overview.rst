@@ -176,30 +176,11 @@ Initially, all localizable text defaults to ``EN-us`` (US English). Additional l
 Referencing Unreal Engine Assets
 --------------------------------
 
-By default, game data files and the Charon editor are unaware of the surrounding content/assets. 
-To reference assets such as sounds, textures, models, or animations. For example you can create a 'UeSoundAsset' schema with three 
-properties: *Id* (required), *Path*, and *Name*. Prepare a ``FJsonObject`` listing of your assets (see Unreal Engine ``AssetRegistry`` module documentation) in following format:
+To reference assets within the game, you can use a special :doc:`sub-data <../gamedata/datatypes/sub/asset>` type. Create a property with the ``Text`` type, enable the `Advanced Options`, and select the `Asset Path` editor for this property.
 
-.. code-block:: json
-  
-  {
-      "UeSoundAsset": [{
-              "Id": "_Content_Sounds_MySound",
-              "Path": "/Content/Sounds/MySound",
-              "Name": "MySound"
-          }
-          /* other assets */
-      ],
-      /* other document collections to import */
-  }
-
-Then, import this list into your game data file using the ``FCharonCli::Import`` method with ``EImportMode::Replace`` import mode. It's crucial that the *Id* field of imported 
-records remains stable and unchanged across imports for the same assets.
-
-To streamline the process of importing asset paths, consider leveraging the ``ICharonEditorModule::OnGameDataPreSynchronization`` event. 
-This allows for automatic execution of the import routine each time the **Import** button is clicked in the UI.
-
-After you've imported the asset list into the game data file, you can reference them from your documents by adding a ``Document Reference`` property with **Reference Type → UeSoundAsset** to the schema.
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/schema_designer_select_editor.png
+  :width: 800
+  :alt: Schema Designer with Custom Editor
 
 Feedback
 --------

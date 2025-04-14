@@ -200,6 +200,15 @@ To get an instance of a document in your game code, call the ``GameDataDocumentR
     Debug.Log(hero.Name);
   }
 
+Referencing Unity Assets
+------------------------
+
+To reference assets within the game, you can use a special :doc:`sub-data <../gamedata/datatypes/sub/asset>` type. Create a property with the ``Text`` type, enable the `Advanced Options`, and select the `Asset Path` editor for this property.
+
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/schema_designer_select_editor.png
+  :width: 800
+  :alt: Schema Designer with Custom Editor
+
 
 Work & Build Automation
 -----------------------
