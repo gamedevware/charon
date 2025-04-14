@@ -11,9 +11,9 @@ Unreal Engine Plugin
 
 CLI and Standalone
    Log files are saved to:
-    - Windows: ``C:/Users/%USERNAME%/AppData/Roaming/Charon/logs/`.
-    - MacOS: ``~/Library/Application Support/Charon/logs``
-    - Linux: ``~/.config/Charon/logs``
+    - Windows: ``C:/ProgramData/Charon/logs/``.
+    - MacOS: ``/Library/Application Support/Charon/logs``
+    - Linux: ``/usr/share/Charon/logs``
 
 Note: Make sure to replace ``<project-directory>`` and ``<charon-directory>`` with the actual directories on your system.
 
