@@ -55,6 +55,54 @@ Formulas
 
 Formulas are currently not supported.
 
+Extension of Generated Code
+-------------------------
+
+Customizing Metadata
+^^^^^^^^^^^^^^^^^^^^
+
+You can append additional `metadata <https://haxe.org/manual/lf-metadata.html>`_ to the generated classes and their properties by modifying the ``Specification`` field of the related schema or property.
+
+metadata annotations are specified using the ``haxeAttribute`` key in the ``Specification`` string, which uses the ``application/x-www-form-urlencoded`` format.
+
+To help construct the correct value, you can use a spreadsheet formula (e.g., in Excel or Google Sheets):
+
+.. code-block:: none
+
+  # Place your attribute in cell A1
+  =TEXTJOIN("&", 1, IF(ISBLANK(A1), "", "&haxeAttribute=" & ENCODEURL(A1)))
+
+Alternatively, use JavaScript to generate the encoded string:
+
+.. code-block:: javascript
+
+  const params = new URLSearchParams(); 
+  params.append("haxeAttribute", ":deprecated"); 
+  console.log(params.toString());
+  // → haxeAttribute=%3Adeprecated
+
+After obtaining the encoded string, append it to the existing ``Specification`` value.
+
+Example:
+
+.. code-block:: none
+
+  # Original Specification value:
+  icon=material&group=Metadata
+
+  # New attribute to add:
+  haxeAttribute=%3Adeprecated
+
+  # Final Specification value:
+  icon=material&group=Metadata&haxeAttribute=%3Adeprecated
+
+You can add multiple metadata annotations by including multiple ``haxeAttribute`` keys:
+
+.. code-block:: none
+
+  haxeAttribute=broken&haxeAttribute=range%281%2C+2%29
+
+These metadata annotations will be emitted directly into the generated Haxe code, attached to the appropriate class or property.
 
 See also
 --------

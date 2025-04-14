@@ -56,6 +56,50 @@ Formulas
 
 Formulas are currently not supported.
 
+Extension of Generated Code
+-------------------------
+
+Customizing Metadata
+^^^^^^^^^^^^^^^^^^^^^^
+
+You can append additional or replace existing `macro <https://dev.epicgames.com/documentation/en-us/unreal-engine/objects-in-unreal-engine>`_ to the generated classes and their properties by modifying the ``Specification`` field of the related schema or property.
+
+Metadata annotations are specified using the ``uecppAttribute`` key in the ``Specification`` string, which uses the ``application/x-www-form-urlencoded`` format.
+
+To help construct the correct value, you can use a spreadsheet formula (e.g., in Excel or Google Sheets):
+
+.. code-block:: none
+
+  # Place your attribute in cell A1
+  =TEXTJOIN("&", 1, IF(ISBLANK(A1), "", "&uecppAttribute=" & ENCODEURL(A1)))
+
+Alternatively, use JavaScript to generate the encoded string:
+
+.. code-block:: javascript
+
+  const params = new URLSearchParams(); 
+  params.append("uecppAttribute", "UPROPERTY(EditAnywhere, Meta = (Bitmask))"); 
+  console.log(params.toString());
+  // → uecppAttribute=UPROPERTY%28EditAnywhere%2C+Meta+%3D+%28Bitmask%29%29
+
+After obtaining the encoded string, append it to the existing ``Specification`` value.
+
+Example:
+
+.. code-block:: none
+
+  # Original Specification value:
+  icon=material&group=Metadata
+
+  # New attribute to add:
+  uecppAttribute=UCLASS%28BlueprintType%29
+
+  # Final Specification value:
+  icon=material&group=Metadata&uecppAttribute=UCLASS%28BlueprintType%29
+
+These metadata annotations will be emitted directly into the generated C++ code, attached to the appropriate class or property.
+
+
 See also
 --------
 

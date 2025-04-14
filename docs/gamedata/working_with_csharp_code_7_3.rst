@@ -57,9 +57,11 @@ Formulas are executed with Invoke method:
 
 Formula's parameters are passed as arguments of ``Invoke`` method.
 
-Generated Code Extensions
+Extension of Generated Code
 -------------------------
 
+Partial Classes and Methods
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 When generating source code for game data, the resulting C# classes are declared as `partial <https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/partial-classes-and-methods>`_. This means that the classes can be extended by the programmer to add custom functionality.
 
 For example, let's say that you have generated a ``GameData`` class for your game data. This class contains properties and methods for accessing and manipulating the data. However, you want to add some custom functionality to this class, such as a method for getting specific documents by criteria.
@@ -82,11 +84,57 @@ In this example, the ``GameData`` class is declared as partial, and two partial 
 
 By using partial classes in this way, you can extend the functionality of the generated classes without modifying the generated code directly. This allows you to keep your custom code separate from the generated code, making it easier to maintain and update your game data classes over time.
 
-There is also two extension points on ``GameData`` class:
+There is also extension point on ``GameData`` class:
 
 .. code-block:: csharp
 
   partial void OnInitialize(); // Called after loading and prepping all data.
+
+Customizing Attributes
+^^^^^^^^^^^^^^^^^^^^^^
+
+You can append additional `C# Attributes <https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/reflection-and-attributes/>`_ to the generated classes and their properties by modifying the ``Specification`` field of the related schema or property.
+
+Attributes are specified using the ``csAttribute`` key in the ``Specification`` string, which uses the ``application/x-www-form-urlencoded`` format.
+
+To help construct the correct value, you can use a spreadsheet formula (e.g., in Excel or Google Sheets):
+
+.. code-block:: none
+
+  # Place your attribute in cell A1
+  =TEXTJOIN("&", 1, IF(ISBLANK(A1), "", "&csAttribute=" & ENCODEURL(A1)))
+
+Alternatively, use JavaScript to generate the encoded string:
+
+.. code-block:: javascript
+
+  const params = new URLSearchParams(); 
+  params.append("csAttribute", "Obsolete(\"Value is obsolete, do not use\")"); 
+  console.log(params.toString());
+  // → csAttribute=Obsolete%28%22Value%20is%20obsolete%2C%20do%20not%20use%22%29
+
+After obtaining the encoded string, append it to the existing ``Specification`` value.
+
+Example:
+
+.. code-block:: none
+
+  # Original Specification value:
+  icon=material&group=Metadata
+
+  # New attribute to add:
+  csAttribute=Obsolete%28%22Value%20is%20obsolete%2C%20do%20not%20use%22%29
+
+  # Final Specification value:
+  icon=material&group=Metadata&csAttribute=Obsolete%28%22Value%20is%20obsolete%2C%20do%20not%20use%22%29
+
+You can add multiple attributes by including multiple ``csAttribute`` keys:
+
+.. code-block:: none
+
+  csAttribute=Serializable&csAttribute=DebuggerDisplay%28%22Id%3D%7BId%7D%22%29
+
+These attributes will be emitted directly into the generated C# code, attached to the appropriate class or property.
 
 See also
 --------

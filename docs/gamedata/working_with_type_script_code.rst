@@ -87,6 +87,56 @@ Here is an example of a ``formula.known.types.ts`` file:
   }
 
 
+Extension of Generated Code
+-------------------------
+
+Customizing Decorators
+^^^^^^^^^^^^^^^^^^^^^^
+
+You can append additional `TypeScript Decorators <https://www.typescriptlang.org/docs/handbook/decorators.html>`_ to the generated classes and their properties by modifying the ``Specification`` field of the related schema or property.
+
+Decorators are specified using the ``tsAttribute`` key in the ``Specification`` string, which uses the ``application/x-www-form-urlencoded`` format.
+
+To help construct the correct value, you can use a spreadsheet formula (e.g., in Excel or Google Sheets):
+
+.. code-block:: none
+
+  # Place your attribute in cell A1
+  =TEXTJOIN("&", 1, IF(ISBLANK(A1), "", "&tsAttribute=" & ENCODEURL(A1)))
+
+Alternatively, use JavaScript to generate the encoded string:
+
+.. code-block:: javascript
+
+  const params = new URLSearchParams(); 
+  params.append("tsAttribute", "deprecated(\"Value is deprecated\")");
+  console.log(params.toString());
+  // → tsAttribute=deprecated%28%22Value+is+deprecated%22%29
+
+After obtaining the encoded string, append it to the existing ``Specification`` value.
+
+Example:
+
+.. code-block:: none
+
+  # Original Specification value:
+  icon=material&group=Metadata
+
+  # New attribute to add:
+  tsAttribute=deprecated%28%22Value+is+deprecated%22%29
+
+  # Final Specification value:
+  icon=material&group=Metadata&tsAttribute=deprecated%28%22Value+is+deprecated%22%29
+
+You can add multiple attributes by including multiple ``tsAttribute`` keys:
+
+.. code-block:: none
+
+  tsAttribute=@Input&tsAttribute=range%281%2C+2%29
+
+These attributes will be emitted directly into the generated TypeScript code, attached to the appropriate class or property.
+
+
 See also
 --------
 
