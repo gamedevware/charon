@@ -18,7 +18,7 @@ Source Code Type
    | Haxe                                                  | Int or Int64                                                    |
    +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
-   May be checked for uniqueness.
+   Integers can be marked as unique.
 Size
    32 or 64bit
 

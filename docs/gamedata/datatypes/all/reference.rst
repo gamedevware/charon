@@ -1,11 +1,11 @@
 Reference
 =========
 
-The ``Reference`` data type allows the creation of non-embedding relationships between documents. A reference is essentially a pointer to another document, using that document's ``Id`` as a key. This allows for easier linking between related documents, without having to embed one document inside another.
+The ``Reference`` data type enables the creation of non-embedded relationships between documents. A reference acts as a pointer to another document by using that document's ``Id`` as a key. This approach facilitates linking between related documents without the need to duplicate or embed data.
 
-When using a ``Reference``, the referenced documents are not stored within the parent document, but rather as references to their respective locations. This can be useful when dealing with large, complex data sets where it's more efficient to reference data than to embed it. Additionally, this data type can help enforce data integrity by ensuring that references to other documents are valid.
+When using a ``Reference``, the target documents are not stored within the parent document but are instead referenced externally. This is particularly beneficial when working with large or complex data sets, where referencing is more efficient and maintains separation of concerns. It also promotes data integrity by ensuring that only valid document references are maintained.
 
-For example, in a game, a **Chest** with loot table might have a reference to a specific inventory **Item** document, rather than having the entire **Item** embedded inside the **Chest** document. This makes it easier to manage the loot separately of items and maintain the relationship between the **Chest**, loot table and and the **Item**.
+For example, in a game scenario, a **Chest** with a loot table might hold a reference to an **Item** document, rather than embedding the entire **Item** directly within the **Chest**. This separation allows independent management of the loot logic and item definitions while preserving their relationships.
 
 Source Code Type
    +-------------------------------------------------------+-----------------------------------------------------------------+
@@ -20,8 +20,15 @@ Source Code Type
    | Haxe                                                  | DocumentReference{T} or T                                       |
    +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
-   May NOT be checked for uniqueness.
+   Reference cannot be marked as unique.
+Specification 
+   References support the following specification parameter:
    
+   - ``displayTextTemplate`` — Defines a template string for how the referenced value is displayed in the UI.  
+     Example:  
+     ``displayTextTemplate=Item%3A+%7BName%7D%2C+Count%3A+%7BCount%7D``  
+     (renders as: `Item: {Name}, Count: {Count}`)
+
 Example
 -------
 

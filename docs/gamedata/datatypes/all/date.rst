@@ -17,7 +17,7 @@ Source Code Type
    | Haxe                                                  | Date                                                            |
    +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
-   May NOT be checked for uniqueness.
+   Date cannot be marked as unique.
 Format
    ``yyyy-MM-ddTHH:mm:ss.fffZ``
 

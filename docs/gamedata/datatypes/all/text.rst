@@ -16,7 +16,7 @@ Source Code Type
    | Haxe                                                  | String                                                          |
    +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
-   May be checked for uniqueness (case sensitive for uniqueness purposes).
+   Text can be marked as unique (case sensitive for uniqueness purposes).
 Size
    May be limited in number of characters. 0 - no limit.
 
@@ -26,3 +26,13 @@ Example
 .. code-block:: js
 
   "Hello world!"
+  
+Sub-Types
+---------
+ - :doc:`Asset Path <../sub/asset>`
+ - :doc:`Asset Path Collection <../sub/asset_collection>`
+ - :doc:`Vector 2/3/4 <../sub/vector>`
+ - :doc:`Integer Vector 2/3/4<../sub/vector_int>`
+ - :doc:`Rectangle<../sub/rectangle>`
+ - :doc:`Integer Rectangle<../sub/rectangle_int>`
+ - :doc:`Tags<../sub/tags>`

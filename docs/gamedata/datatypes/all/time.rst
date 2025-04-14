@@ -18,7 +18,7 @@ Source Code Type
    | Haxe                                                  | TimeSpan (Bundled)                                              |
    +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
-   May NOT be checked for uniqueness.
+   Time cannot be marked as unique.
 Format
    ``[DD.]HH:mm:ss`` or ``<number-of-seconds>``
    

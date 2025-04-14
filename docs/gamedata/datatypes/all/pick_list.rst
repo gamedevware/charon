@@ -20,9 +20,13 @@ Source Code Type
    | Haxe                                                  | ``abstract``                                                             |
    +-------------------------------------------------------+--------------------------------------------------------------------------+
 Uniqueness
-   May be checked for uniqueness.
+   Pick Lists can be marked as unique.
 Size
    32 or 64bit
+Specification 
+   Pick Lists support the following specification parameters:
+   - ``typeName`` — Custom type name for the generated class. If omitted, a name is derived from the containing schema and property.  
+     Example: ``typeName=MyEnum``
 
 Example
 -------

@@ -1,20 +1,20 @@
 Formula
 =======
 
-Formula data type is a way to store and use C# expressions inside game data. It allows game developers to perform calculations based on certain inputs and parameters that are not known until runtime. A formula can be any valid C# expression that returns a value of any supported data type.
+The **Formula** data type allows storing and evaluating C# expressions within game data. It enables developers to define logic that performs calculations based on dynamic inputs and parameters not known until runtime. A formula can be any valid C# expression that returns a value of a supported data type.
 
-Formulas are typically used in situations where there are complex calculations involved, such as determining the damage a weapon does based on various factors like the target's resistance and the type of attack being used. By storing these calculations as formulas, game developers can easily modify and tweak them without having to recompile the entire game code.
+Formulas are especially useful in scenarios involving complex calculations, such as determining weapon damage based on factors like target resistance and attack type. By encapsulating such logic in formulas, developers can fine-tune gameplay mechanics without modifying or recompiling the source code.
 
-During runtime, formulas can be evaluated using the values of any other properties or data types that are passed to formula as arguments. This allows for a great deal of flexibility in designing game mechanics and balancing gameplay.
+At runtime, formulas are evaluated using arguments passed to them. These arguments can reference other data properties or objects, providing a high level of flexibility in defining game rules and balancing.
 
-For example, a formula for calculating the damage a weapon does to a target could be stored as follows:
+For example, a damage formula might look like this:
 
 .. code-block:: js
   
   (weaponPower * (1.0 - targetResistance)) * attackMultiplier
-  
-This formula takes the weapon power, subtracts the target's resistance, and then multiplies the result by an attack multiplier. 
-The resulting value is the final amount of damage the weapon does to the target.
+
+This expression multiplies weapon power by a factor based on the target’s resistance and then scales the result by an attack multiplier. The final result is the computed damage.
+
 
 Source Code Type
    +-------------------------------------------------------+-----------------------------------------------------------------+
@@ -29,8 +29,18 @@ Source Code Type
    | Haxe                                                  | ``class``                                                       |
    +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
-   May NOT be checked for uniqueness.
-   
+   Formulas cannot be marked as unique.
+Specification 
+   Formulas support the following specification parameters:
+   - ``param.<name>`` — Defines a formula parameter and its type.  
+     Example: ``param.id=System.Int32``
+   - ``resultType`` — Specifies the return type of the formula.  
+     Example: ``resultType=System.String``
+   - ``knownType`` — Declares types known to the formula. Only static members of known types can be accessed.  
+     Example: ``knownType=System.FMath``
+   - ``typeName`` — Custom type name for the generated class. If omitted, a name is derived from the containing schema and property.  
+     Example: ``typeName=MyDamageCalculatingFormula``
+
 Example
 -------
 

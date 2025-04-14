@@ -16,7 +16,7 @@ Source Code Type
    | Haxe                                                  | LocalizedText or String                                         |
    +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
-   May NOT be checked for uniqueness.
+   Localized Text cannot be marked as unique.
 Size
    May be limited in number of characters. 0 - no limit.
    

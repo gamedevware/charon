@@ -20,7 +20,7 @@ Source Code Type
    | Haxe                                                  | Bool                                                            |
    +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
-   May be checked for uniqueness.
+   Logical can be marked as unique.
 
 Example
 -------

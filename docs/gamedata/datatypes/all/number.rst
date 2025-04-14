@@ -20,9 +20,15 @@ Source Code Type
    | Haxe                                                  | Float                                                           |
    +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
-   May be checked for uniqueness.
+   Numbers can be marked as unique.
 Size
    32 or 64bit
+Specification 
+   Numbers support the following specification parameters:
+   - ``precision`` — Specify decimal precision of stored number.  
+     Example: ``precision=2``
+   - ``displayPrecision`` — Specify decimal precision of displayed in UI number.  
+     Example: ``displayPrecision=2``
 
 Example
 -------

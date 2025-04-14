@@ -1,11 +1,11 @@
 Reference Collection
 ====================
 
-The ``ReferenceCollection`` data type is used to create non-embedded relationships between documents. It allows for referencing multiple documents of the same type from within another document. 
+The ``ReferenceCollection`` data type is used to create non-embedded, one-to-many relationships between documents. It allows a document to reference multiple documents of the same type without embedding them directly.
 
-When using a ``ReferenceCollection``, the referenced documents are not stored within the parent document, but rather as references to their respective locations. This can be useful when dealing with large, complex data sets where it's more efficient to reference data than to embed it. Additionally, this data type can help enforce data integrity by ensuring that references to other documents are valid.
+When using a ``ReferenceCollection``, the referenced documents are stored as references to their original locations, rather than being embedded in the parent document. This approach is particularly useful when dealing with large or complex datasets where referencing is more efficient and scalable than embedding. It also helps maintain data integrity by ensuring that all references point to valid documents.
 
-For example, a game might have a collection of quests, each of which references a collection of objectives. The objectives might be stored in a separate collection for purpose rof e-use, and can be referenced by the quest document using the ``ReferenceCollection`` data type.
+For example, in a game, each **Quest** may reference a collection of **Objectives**. These objectives can be defined separately for reuse across multiple quests. The ``ReferenceCollection`` data type enables the quest document to maintain a list of references to objective documents.
 
 Source Code Type
    +-------------------------------------------------------+-----------------------------------------------------------------+
@@ -20,10 +20,17 @@ Source Code Type
    | Haxe                                                  | ReadOnlyArray{T}                                                |
    +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
-   May NOT be checked for uniqueness.
+   Reference Collection cannot be marked as unique.
 Size
    May be limited in number of items. 0 - no limit.
+Specification 
+   References support the following specification parameter:
    
+   - ``displayTextTemplate`` — Defines a template string for how the referenced value is displayed in the UI.  
+     Example:  
+     ``displayTextTemplate=Item%3A+%7BName%7D%2C+Count%3A+%7BCount%7D``  
+     (renders as: `Item: {Name}, Count: {Count}`)
+
 Example
 -------
 
