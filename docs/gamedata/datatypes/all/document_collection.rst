@@ -4,8 +4,18 @@ Document Collection
 The DocumentCollection data type is used to store an array of sub-documents, which are used to represent complex structures.
 It is important to note that the lifetime of sub-documents is tied to the lifetime of the parent document, meaning that any changes (e.g. deletion) to the parent document will affect all of its sub-documents.
 
-C# Type
-   ``ReadOnlyList{T}`` where ``T`` is Schema
+Source Code Type
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Language                                              | Type                                                            |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C#                                                    | ReadOnlyCollection{T}                                           |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | TypeScript                                            | ReadOnlyArray{T}                                                |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C++ (Unreal Engine)                                   | TArray{T}                                                       |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Haxe                                                  | ReadOnlyArray{T}                                                |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
    May NOT be checked for uniqueness.
 Size

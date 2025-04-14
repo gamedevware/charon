@@ -5,8 +5,18 @@ The ``MultiPickList`` data type is used when you want to allow the selection of 
 
 ``MultiPickList`` is particularly useful when you want to replace several :doc:`Logical <logical>` properties that have a related meaning with a single property. For example, instead of having three separate properties to indicate if a item can be broken, disassembled, or sold, you can use a MultiPickList with the options "CanBeBreaken," "CanBeDisassembled," and "CanBeSold."
 
-C# Type
-  ``enum`` based on System.SByte, System.Int16, System.Int32, System.Int64
+Source Code Type
+   +-------------------------------------------------------+--------------------------------------------------------------------------+
+   | Language                                              | Type                                                                     |
+   +-------------------------------------------------------+--------------------------------------------------------------------------+
+   | C#                                                    | ``[Flags] enum``                                                         |
+   +-------------------------------------------------------+--------------------------------------------------------------------------+
+   | TypeScript                                            | ``enum``                                                                 |
+   +-------------------------------------------------------+--------------------------------------------------------------------------+
+   | C++ (Unreal Engine)                                   | ``UENUM(meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))`` |
+   +-------------------------------------------------------+--------------------------------------------------------------------------+
+   | Haxe                                                  | ``abstract``                                                             |
+   +-------------------------------------------------------+--------------------------------------------------------------------------+
 Uniqueness
    May be checked for uniqueness.
 Size

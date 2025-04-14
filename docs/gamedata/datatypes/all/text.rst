@@ -3,8 +3,18 @@ Text
 
 The ``Text`` data type is used to store simple text values in game data. Unlike the :doc:`LocalizedText <localized_text>` data type, ``Text`` does not have support for multiple translations of the same text. Instead, it allows for the storage of any UTF symbol in a single language. This data type is useful for fields that do not require localization, such as character names, item descriptions, or game lore.
 
-C# Type
-   ``System.String``
+Source Code Type
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Language                                              | Type                                                            |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C#                                                    | System.String                                                   |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | TypeScript                                            | string                                                          |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C++ (Unreal Engine)                                   | FString                                                         |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Haxe                                                  | String                                                          |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
    May be checked for uniqueness (case sensitive for uniqueness purposes).
 Size

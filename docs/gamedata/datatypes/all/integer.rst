@@ -5,8 +5,18 @@ The ``Integer`` data type is a whole number data type that is limited to 64 bits
 
 Unlike the :doc:`Number  <number>` data type, integers do not have any precision caveats since they do not store decimal values. Therefore, they are suitable for calculations that require exact values.
 
-C# Type
-   ``System.SByte``, ``System.Int16``, ``System.Int32``, ``System.Int64``
+Source Code Type
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Language                                              | Type                                                            |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C#                                                    | System.Int32 or System.Int64                                    |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | TypeScript                                            | number or bigint                                                |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C++ (Unreal Engine)                                   | int32 or int64                                                  |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Haxe                                                  | Int or Int64                                                    |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
    May be checked for uniqueness.
 Size

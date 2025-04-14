@@ -4,8 +4,18 @@ Document
 The ``Document`` data type in game data schema is used to represent complex structures. A document can contain multiple properties of different data types, including other documents or document collections, allowing for hierarchical data modeling.
 It is important to note that the lifetime of sub-documents is tied to the lifetime of the parent document, meaning that any changes (e.g. deletion) to the parent document will affect all of its sub-documents.
 
-C# Type
-   ``class``
+Source Code Type
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Language                                              | Type                                                            |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C#                                                    | ``class``                                                       |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | TypeScript                                            | ``class``                                                       |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C++ (Unreal Engine)                                   | ``UCLASS``                                                      |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Haxe                                                  | ``class``                                                       |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
    May NOT be checked for uniqueness.
    

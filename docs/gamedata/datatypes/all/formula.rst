@@ -16,8 +16,18 @@ For example, a formula for calculating the damage a weapon does to a target coul
 This formula takes the weapon power, subtracts the target's resistance, and then multiplies the result by an attack multiplier. 
 The resulting value is the final amount of damage the weapon does to the target.
 
-C# Type
-   ``class``
+Source Code Type
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Language                                              | Type                                                            |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C#                                                    | ``class``                                                       |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | TypeScript                                            | ``class``                                                       |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C++ (Unreal Engine)                                   | ``UCLASS``                                                      |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Haxe                                                  | ``class``                                                       |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
    May NOT be checked for uniqueness.
    

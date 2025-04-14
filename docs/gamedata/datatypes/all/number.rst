@@ -7,8 +7,18 @@ Some use cases for the ``Number`` data type include representing quantities, suc
 
 When working with ``Numbers`` in game data, it is important to ensure that the precision is appropriate for the use case. Additionally, it may be necessary to round numbers to a certain number of decimal places to avoid displaying unnecessarily precise values to players.
 
-C# Type
-   ``System.Single`` or ``System.Double``
+Source Code Type
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Language                                              | Type                                                            |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C#                                                    | System.Single or System.Double                                  |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | TypeScript                                            | number                                                          |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C++ (Unreal Engine)                                   | float or double                                                 |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Haxe                                                  | Float                                                           |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
    May be checked for uniqueness.
 Size

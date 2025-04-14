@@ -7,8 +7,18 @@ When using a ``Reference``, the referenced documents are not stored within the p
 
 For example, in a game, a **Chest** with loot table might have a reference to a specific inventory **Item** document, rather than having the entire **Item** embedded inside the **Chest** document. This makes it easier to manage the loot separately of items and maintain the relationship between the **Chest**, loot table and and the **Item**.
 
-C# Type
-   ``Reference{T}`` or ``T`` where ``T`` is Schema
+Source Code Type
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Language                                              | Type                                                            |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C#                                                    | DocumentReference{T} or T                                       |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | TypeScript                                            | DocumentReference{T} or T                                       |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C++ (Unreal Engine)                                   | FGameDataDocumentReference                                      |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Haxe                                                  | DocumentReference{T} or T                                       |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
    May NOT be checked for uniqueness.
    

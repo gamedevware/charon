@@ -7,8 +7,18 @@ When using a ``ReferenceCollection``, the referenced documents are not stored wi
 
 For example, a game might have a collection of quests, each of which references a collection of objectives. The objectives might be stored in a separate collection for purpose rof e-use, and can be referenced by the quest document using the ``ReferenceCollection`` data type.
 
-C# Type
-   ``ReadOnlyList{T}`` or ``ReadOnlyList{Reference{T}}`` where ``T`` is Schema
+Source Code Type
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Language                                              | Type                                                            |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C#                                                    | ReadOnlyCollection{T}                                           |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | TypeScript                                            | ReadOnlyArray{T}                                                |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C++ (Unreal Engine)                                   | TArray{T}                                                       |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Haxe                                                  | ReadOnlyArray{T}                                                |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
    May NOT be checked for uniqueness.
 Size

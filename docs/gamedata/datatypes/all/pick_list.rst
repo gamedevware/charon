@@ -7,8 +7,18 @@ Pick List
 
 For example, in a game where the player can choose a character class, the ``PickList`` data type can be used to define the available options, such as "Warrior," "Mage," or "Rogue." This ensures that the player can only choose from the available options and helps to prevent invalid inputs.
 
-C# Type
-   ``enum`` based on ``System.SByte``, ``System.Int16``, ``System.Int32``, ``System.Int64``
+Source Code Type
+   +-------------------------------------------------------+--------------------------------------------------------------------------+
+   | Language                                              | Type                                                                     |
+   +-------------------------------------------------------+--------------------------------------------------------------------------+
+   | C#                                                    | ``enum``                                                                 |
+   +-------------------------------------------------------+--------------------------------------------------------------------------+
+   | TypeScript                                            | ``enum``                                                                 |
+   +-------------------------------------------------------+--------------------------------------------------------------------------+
+   | C++ (Unreal Engine)                                   | ``UENUM``                                                                |
+   +-------------------------------------------------------+--------------------------------------------------------------------------+
+   | Haxe                                                  | ``abstract``                                                             |
+   +-------------------------------------------------------+--------------------------------------------------------------------------+
 Uniqueness
    May be checked for uniqueness.
 Size

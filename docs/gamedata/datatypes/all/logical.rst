@@ -7,8 +7,18 @@ For example, a game designer may use a ``Logical`` data type to represent whethe
 
 The :doc:`MultiPickList <multi_pick_list>` data type can also be used to represent boolean values, but it allows the selection of multiple options instead of just two. This can be useful for representing more complex options or flags that require multiple selections. However, if the options are limited to just two, it is recommended to use the Logical data type for clarity and simplicity.
 
-C# Type
-   ``System.Boolean``
+Source Code Type
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Language                                              | Type                                                            |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C#                                                    | System.Boolean                                                  |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | TypeScript                                            | boolean                                                         |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | C++ (Unreal Engine)                                   | bool                                                            |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
+   | Haxe                                                  | Bool                                                            |
+   +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
    May be checked for uniqueness.
 
