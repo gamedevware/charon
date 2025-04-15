@@ -58,7 +58,7 @@ This step involves defining schemas to represent the structure and properties of
    datatypes/*
 
 See also
---------
+========
 
 - :doc:`Implementing Inheritance <inheritance>`
 - :doc:`Filling Documents <filling_documents>`

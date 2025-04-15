@@ -13,7 +13,7 @@ Asset Path Collection supports the following specification parameters:
 - ``assetType`` — Filters the types of assets to select.  
   For Unity and Unreal Engine, this refers to class names.  
   For standalone builds, it refers to file extensions.  
-  Example: ``assetType=Texture`` or ``assetType=UTexture2D``
+  Example: ``assetType=Texture`` or ``assetType=Texture2D``
 
 UI Behavior
 -----------
