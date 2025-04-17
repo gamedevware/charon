@@ -20,12 +20,12 @@ Description
 
 The **Description** helps other users understand the purpose of the property. It is shown in the UI and is also included as a documentation comment in the generated source code for the corresponding field/property.
 
-Shared Property
----------------
+Sync Name
+---------
 
 Some properties describe data types that are common across multiple schemas.  
 For example, a ``PickList`` property might benefit from shared pick options used in several schemas.  
-These linked properties are referred to as :doc:`Shared Properties <shared_property>`.
+These synced properties are referred to as :doc:`Shared Properties <shared_property>`.
 
 Data Type
 ---------

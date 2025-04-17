@@ -42,6 +42,30 @@ Asset Localization
 Localizable asset paths are not currently supported.  
 If this is a required feature, you are encouraged to suggest it in Charon’s `Discord <https://discord.gg/2quB5vXryd>`_ channel.
 
+Path Origin
+-----------
+
+The meaning of "relative path" for asset references depends on how the game data editor is launched:
+
+- **Unity Editor**:  
+  Paths are relative to the Unity project root directory, typically the directory containing the ``Assets`` folder.  
+  Asset paths will usually start with ``Assets/``.  
+  Example: ``Assets/Textures/MyTexture.png``
+
+- **Unreal Engine Editor**:  
+  Paths are relative to the Unreal project root directory, usually containing the ``Content`` folder.  
+  Asset paths often start with ``/Game/`` because it is Unreal Engine package path, not physical path.  
+  Example: ``/Game/Textures/MyTexture``
+
+- **Standalone Execution** (via CLI):  
+  Paths are relative to the game data file path by default.  
+  This behavior can be customized using either:
+  
+  - The ``--gameAssetsPath`` CLI argument:  
+    ``dotnet tool charon ./gamedata.gdjs --gameAssetsPath "C:/Projects/MyGame/"``
+  
+  - The ``STANDALONE__GAMEASSETSPATH`` environment variable.
+
 Example
 -------
 

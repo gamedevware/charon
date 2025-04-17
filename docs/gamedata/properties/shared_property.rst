@@ -1,7 +1,7 @@
 Shared Property
 ===============
 
-A **Shared Property** is a :doc:`Schema <../schemas/schema>` property that shares data type-related configuration with other properties of the same name across different schemas. When a shared property is modified in one schema, all other linked properties with the same shared name are updated accordingly.
+A **Shared Property** is a :doc:`Schema <../schemas/schema>` property that syncs data type-related configuration with other properties of the same name across different schemas. When a shared property is modified in one schema, all other synced properties with the same shared name are updated accordingly.
 
 Shared properties can be unlinked (or "decoupled") at any time, converting them into independent, schema-specific properties.
 
