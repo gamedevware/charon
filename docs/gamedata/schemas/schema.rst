@@ -63,8 +63,9 @@ See also
 ========
 
 - :doc:`Display Text Template <display_text_template>`
-- :doc:`Property <property>`
-- :doc:`Id Property <id_property>`
-- :doc:`Shared Property <shared_property>`
+- :doc:`Property <../properties/property>`
+- :doc:`Id Property <../properties/id_property>`
+- :doc:`Shared Property <../properties/shared_property>`
+- :doc:`Specification <specification>`
 - :doc:`All Data Types <../datatypes/list>`
 - :doc:`Creating Document Type (Schema) <../creating_schema>`

@@ -25,17 +25,18 @@ would render the document's label as:
 ``Quest #1: RepeatableQuest - Bring 40 wolf skins``
 
 Template Syntax
-===============
+---------------
 
 The display name template is a string that may include *replaceable expressions* enclosed in curly braces (``{}``). These expressions support a subset of C-style syntax and can reference any top-level or nested property of the document.
 
 Property Access
----------------
+^^^^^^^^^^^^^^^
+
 - Top-level properties can be accessed directly by name.
 - Nested properties in embedded documents can be accessed using dot notation, e.g., ``Item.Name``.
 
 Supported Data Types
---------------------
+^^^^^^^^^^^^^^^^^^^^
 
 +------------------------+------------------------+
 | Type                   | Example                |
@@ -51,7 +52,7 @@ Supported Data Types
 
 
 Unary Operators
----------------
+^^^^^^^^^^^^^^^
 
 +------------------------+------------------------+
 | Operator               | Example                |
@@ -64,7 +65,7 @@ Unary Operators
 +------------------------+------------------------+
 
 Binary Operators
-----------------
+^^^^^^^^^^^^^^^^
 
 The following binary expressions are supported:
 
@@ -116,7 +117,7 @@ The following binary expressions are supported:
 
 
 Ternary Operator
-----------------
+^^^^^^^^^^^^^^^^
 
 Ternary expressions are supported using the standard syntax:
 
@@ -127,7 +128,7 @@ Ternary expressions are supported using the standard syntax:
 This will result in either "Total Damage: X" or "Total Heal: X", depending on the value of ``Damage``.
 
 Operator Precedence
--------------------
+^^^^^^^^^^^^^^^^^^^^^
 
 You can control expression evaluation order using parentheses. For example:
 
@@ -139,8 +140,8 @@ See also
 ========
 
 - :doc:`Schema <schema>`
-- :doc:`Property <property>`
-- :doc:`Id Property <id_property>`
-- :doc:`Shared Property <shared_property>`
+- :doc:`Property <../properties/property>`
+- :doc:`Id Property <../properties/id_property>`
+- :doc:`Shared Property <../properties/shared_property>`
 - :doc:`All Data Types <../datatypes/list>`
 - :doc:`Creating Document Type (Schema) <../creating_schema>`

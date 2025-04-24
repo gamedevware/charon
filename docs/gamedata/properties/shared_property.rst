@@ -6,7 +6,7 @@ A **Shared Property** is a :doc:`Schema <../schemas/schema>` property that syncs
 Shared properties can be unlinked (or "decoupled") at any time, converting them into independent, schema-specific properties.
 
 Replicated Parameters
-=====================
+---------------------
 
 Shared properties replicate a defined subset of configuration parameters between themselves:
 
@@ -21,7 +21,7 @@ Shared properties replicate a defined subset of configuration parameters between
 These parameters ensure consistency across schemas that use the same shared property.
 
 Impact on Generated Source Code
-===============================
+-------------------------------
 
 In cases where a property results in a distinct type in the generated source code—such as a `PickList` producing an ``enum``—the **name of the shared property** is used to derive the generated type name.
 

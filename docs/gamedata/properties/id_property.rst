@@ -16,7 +16,7 @@ This property is always named ``Id`` and must satisfy the following constraints:
   - PickList
 
 Generated Id
-============
+-------------
 
 Schemas can specify that the ``Id`` property should be automatically generated.  
 Based on the selected ``Id Generator`` type, an appropriate ``Id`` property will be added to the schema.
@@ -29,7 +29,7 @@ Supported Id Generators:
 - GlobalSequence
 
 Generated ObjectId
-------------------
+^^^^^^^^^^^^^^^^^^
 
 A BSON ObjectId is a 96-bit unique identifier derived from the machine name, process ID, and timestamp.  
 It is always increasing and well-suited for sorting documents by creation time.
@@ -41,7 +41,7 @@ Id property details:
 - **Requirement:** Not Empty  
 
 Generated Guid
---------------
+^^^^^^^^^^^^^^
 
 A GUID (Globally Unique Identifier) is a 128-bit identifier typically represented as a 32-character hexadecimal string.  
 It ensures global uniqueness across systems.
@@ -53,7 +53,7 @@ Id property details:
 - **Requirement:** Not Empty  
 
 Generated Sequence
-------------------
+^^^^^^^^^^^^^^^^^^
 
 A sequential numeric identifier unique to each document within a specific schema.  
 Documents from different schemas may share the same numeric ``Id``.  
@@ -66,7 +66,7 @@ Id property details:
 - **Requirement:** Not Null  
 
 Generated Global Sequence
--------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A globally unique numeric identifier across all schemas and documents in the project.
 
@@ -77,7 +77,7 @@ Id property details:
 - **Requirement:** Not Null  
 
 Non-Generated Id
-================
+----------------
 
 Schemas may also use a manually defined ``Id`` property by selecting the ``None`` option for the ``Id Generator``.  
 You can define the ``Id`` property using any supported data type listed above.

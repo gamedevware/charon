@@ -193,6 +193,7 @@ Schema Property
       - ``Requirement`` (number): Value requirement for the property:  
 	  
           - `0` : None - Value is optional and can be null.  
+		  - `1` : <UNUSED> - Remapped to 2 (NotNull) during saving.  
           - `2` : NotNull - Value is required but can be an empty string/collection.  
           - `3` : NotEmpty - Value is required and cannot be empty.  
 		  
