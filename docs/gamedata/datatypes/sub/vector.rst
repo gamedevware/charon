@@ -1,5 +1,5 @@
 Vector 2/3/4
-------------
+============
 
 The ``Vector 2/3/4`` is a sub-type of the :doc:`Text <../all/text>` data type used to store a group of 2, 3, or 4 decimal values. These values are space-separated and must be parsed from the string before use at runtime.
 
@@ -12,6 +12,13 @@ Validation Behavior
 -------------------
 
 The editor ensures that a valid vector is entered and only stores properly formatted values. However, there is no runtime validation or built-in parsing logic, so the value must be manually parsed in game code.
+
+Example
+-------
+
+.. code-block:: js
+
+  "120.1 56.3 30.0"
 
 Parsing
 -------

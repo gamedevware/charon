@@ -33,12 +33,16 @@ Uniqueness
 Specification 
    Formulas support the following specification parameters:
    - ``param.<name>`` — Defines a formula parameter and its type.  
+   
      Example: ``param.id=System.Int32``
    - ``resultType`` — Specifies the return type of the formula.  
+   
      Example: ``resultType=System.String``
    - ``knownType`` — Declares types known to the formula. Only static members of known types can be accessed.  
+   
      Example: ``knownType=System.FMath``
    - ``typeName`` — Custom type name for the generated class. If omitted, a name is derived from the containing schema and property.  
+   
      Example: ``typeName=MyDamageCalculatingFormula``
 
 Example

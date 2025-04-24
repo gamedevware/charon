@@ -49,15 +49,16 @@ All keys and values must be properly URL-encoded to ensure compatibility with pa
 
 In any browser console or Node.js REPL:
 
-```js
-const params = new URLSearchParams({
-  icon: "sword",
-  group: "Items and Stuff",
-  noThumbnail: true
-});
-console.log(params.toString());
-// Output: icon=sword&group=Items%20and%20Stuff&noThumbnail=true
-```
+  .. code-block:: js
+
+    const params = new URLSearchParams({
+      icon: "sword",
+      group: "Items and Stuff",
+      noThumbnail: true
+    });
+    console.log(params.toString());
+    // Output: icon=sword&group=Items%20and%20Stuff&noThumbnail=true
+
 
 ### Encoding in Excel
 
@@ -65,15 +66,17 @@ To encode values manually using Excel formulas:
 
 - Build a key-value pair:
 
-  ```
-  =ENCODEURL("noThumbnail") & "=" & ENCODEURL("true")
-  ```
+  .. code-block::
+
+    =ENCODEURL("noThumbnail") & "=" & ENCODEURL("true")
+
 
 - Combine multiple:
 
-  ```
-  =ENCODEURL("icon") & "=" & ENCODEURL("sword") & "&" & ENCODEURL("group") & "=" & ENCODEURL("Items and Stuff")
-  ```
+  .. code-block::
+
+    =ENCODEURL("icon") & "=" & ENCODEURL("sword") & "&" & ENCODEURL("group") & "=" & ENCODEURL("Items and Stuff")
+
 
 Best Practices
 --------------
@@ -82,9 +85,10 @@ Best Practices
 - **Avoid spaces or special characters** in keys; values should always be encoded.
 
 See also
-========
+--------
 
 - :doc:`Display Text Template <display_text_template>`
+- :doc:`Property <../properties/property>`
 - :doc:`Schema <../properties/property>`
 - :doc:`All Data Types <../datatypes/list>`
 - :doc:`Creating Document Type (Schema) <../creating_schema>`

@@ -85,6 +85,7 @@ Further reading
    :glob:
 
    /advanced/*
+   /advanced/extensions/overview
 
 .. toctree::
    :caption: Reference

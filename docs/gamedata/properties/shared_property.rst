@@ -23,18 +23,19 @@ These parameters ensure consistency across schemas that use the same shared prop
 Impact on Generated Source Code
 -------------------------------
 
-In cases where a property results in a distinct type in the generated source code—such as a `PickList` producing an ``enum``—the **name of the shared property** is used to derive the generated type name.
+In cases where a property results in a distinct type in the generated source code—such as a `PickList` producing an ``enum``—the name of the shared property is used to derive the generated type name.
 
 For example:
 
 - A shared `PickList` property named ``Damage Type`` would generate:
-  - `DamageType` enum in C#
+
+  - `DamageType` enum in C#, Haxe, TypeScript
   - `EDamageType` enum in Unreal Engine C++
 
 To customize this behavior, the `Generated Type Name` field of the property can be set manually to override the default naming convention.
 
 See also
-========
+--------
 
 - :doc:`Schema <../schemas/schema>`
 - :doc:`Property <property>`

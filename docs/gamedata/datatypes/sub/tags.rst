@@ -1,8 +1,9 @@
 Tags
 ====
 
-The ``Tags`` data type is a sub-type of the :doc:`Text <../all/text>` data type and is used to store a reusable set of tag values (e.g., "fire", "enemy", "magic") that can be shared across multiple documents.  
-Tags are space-separated strings and must be parsed at runtime before use.
+The ``Tag`` data type is a sub-type of the :doc:`Text <../all/text>` data type and is used to store a reusable set of tag values (e.g., "fire", "enemy", "magic") that can be shared across multiple documents.  
+
+The ``Tag Collection`` is a collection variant of this type and it is used to store multiple tags. Each tag is separated by the `` `` (space) character.  
 
 UI Behavior
 -----------

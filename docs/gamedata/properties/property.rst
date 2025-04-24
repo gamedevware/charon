@@ -63,7 +63,7 @@ Id Property
 Each document includes a required :doc:`Id <id_property>` property, which has specific constraints and must be present and valid.
 
 See also
-========
+--------
 
 - :doc:`Schema <../schemas/schema>`
 - :doc:`Id Property <id_property>`

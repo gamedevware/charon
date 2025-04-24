@@ -5,42 +5,45 @@ info:
 servers:
   - url: /api/v1
 paths:
-  /token:
+  /token/:
     post:
       tags:
         - Authentication
-      description: Authenticate with oAuth protocol.
-      operationId: IssueToken
+      summary: Obtain OAuth 2.0 access token
+      description: Exchange authorization credentials for an access token using the OAuth 2.0 protocol. Supports authorization code and refresh token grant types.
+      operationId: issueToken
       requestBody:
         content:
           application/x-www-form-urlencoded:
             schema:
               required:
                 - grant_type
+              type: object
               properties:
                 refresh_token:
                   type: string
-                  description: Refresh token. Required for 'refresh_token' grant type.
+                  description: Required when grant_type is 'refresh_token'
                   nullable: true
                 code:
                   type: string
-                  description: Authorization code. Required for 'authorization_code' grant type.
+                  description: Required when grant_type is 'authorization_code'
                   nullable: true
                 grant_type:
                   enum:
                     - authorization_code
                     - refresh_token
                   type: string
+                  description: The OAuth 2.0 grant type to use
         required: true
       responses:
         '200':
-          description: Authorization granted result.
+          description: Successful token response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/OAuthSuccessResponse'
         '400':
-          description: Authorization failed result.
+          description: Token request failure
           content:
             application/json:
               schema:
@@ -55,16 +58,13 @@ paths:
                       - unsupported_grant_type
                       - invalid_scope
                     type: string
-                    description: Error type.
-                    readOnly: true
+                    description: OAuth 2.0 error code
                   error_description:
                     type: string
-                    description: Error description.
-                    readOnly: true
+                    description: Human-readable error explanation
                   error_uri:
                     type: string
-                    description: Error URI.
-                    readOnly: true
+                    description: URI identifying the error
                 x-name: OAuthFailureResponse
       x-custom-response: true
       x-rate-limiting:
@@ -75,18 +75,19 @@ paths:
     post:
       tags:
         - Authentication
-      description: Request one-time code for current authentication credential. It could be used as 'x-authorization' query parameter instead of 'Authorization' header for WebSockets and download requests.
-      operationId: IssueOneTimeCode
+      summary: Generate one-time authorization code
+      description: Generates a short-lived one-time code that can be used instead of standard authorization headers for WebSocket connections or download requests.
+      operationId: issueOneTimeCode
       parameters:
         - name: Authorization
           in: header
-          description: Authorization header.
+          description: Standard bearer token for authentication
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: One-time code. It has short expiration time.
+          description: One-time code generated successfully
           content:
             application/json:
               schema:
@@ -103,10 +104,10 @@ paths:
     post:
       tags:
         - Authentication
-      description: Begin authentication flow with password request.
-      operationId: BeginPasswordAuthenticationFlow
+      summary: Initiate password authentication flow
+      description: Begins the authentication process using email and password credentials. May return intermediate authentication stages if multi-factor authentication is required.
+      operationId: beginPasswordAuthenticationFlow
       requestBody:
-        description: Password-based authentication request.
         content:
           application/json:
             schema:
@@ -117,13 +118,14 @@ paths:
                   minLength: 3
                   pattern: \w+@\w+
                   type: string
+                  description: User's email address
                 password:
                   $ref: '#/components/schemas/PasswordString'
               x-name: EmailPasswordAuthenticateRequest
         required: true
       responses:
         '200':
-          description: Authentication flow stage.
+          description: Authentication flow stage response
           content:
             application/json:
               schema:
@@ -139,10 +141,10 @@ paths:
     post:
       tags:
         - Authentication
-      description: Continue authentication flow with TOTP code from email.
-      operationId: ContinueAuthenticationFlowWithEmailTotpCode
+      summary: Submit email verification code
+      description: Continues the authentication flow by submitting a time-based one-time password (TOTP) received via email. Requires an active authentication flow ID.
+      operationId: continueAuthenticationFlowWithEmailTotpCode
       requestBody:
-        description: Email TOTP code-based authentication flow.
         content:
           application/json:
             schema:
@@ -150,16 +152,18 @@ paths:
               properties:
                 flowId:
                   type: string
+                  description: Active authentication flow identifier
                   format: objectId
                 code:
                   maxLength: 1024
                   minLength: 1
                   type: string
+                  description: TOTP code from email
               x-name: EmailTotpCodeAuthenticateRequest
         required: true
       responses:
         '200':
-          description: Authentication flow stage.
+          description: Authentication flow stage response
           content:
             application/json:
               schema:
@@ -175,10 +179,10 @@ paths:
     post:
       tags:
         - Authentication
-      description: Start authentication flow with API Key.
-      operationId: BeginApiKeyAuthenticationFlow
+      summary: Initiate API key authentication flow
+      description: Begins authentication using an API key credential. Returns the next stage in the authentication flow.
+      operationId: beginApiKeyAuthenticationFlow
       requestBody:
-        description: API Key-based authentication flow.
         content:
           application/json:
             schema:
@@ -188,11 +192,12 @@ paths:
                   maxLength: 16384
                   minLength: 1
                   type: string
+                  description: API key credential
               x-name: ApiKeyAuthenticateRequest
         required: true
       responses:
         '200':
-          description: Authentication flow stage.
+          description: Authentication flow stage response
           content:
             application/json:
               schema:
@@ -208,10 +213,10 @@ paths:
     post:
       tags:
         - Authentication
-      description: Start authentication flow on behalf of another user (Administrator only).
-      operationId: BeginOnBehalfAuthenticationFlow
+      summary: Initiate on-behalf authentication (Admin only)
+      description: Allows administrators to begin an authentication flow on behalf of another user. Requires administrator privileges.
+      operationId: beginOnBehalfAuthenticationFlow
       requestBody:
-        description: On behalf-based authentication flow.
         content:
           application/json:
             schema:
@@ -219,12 +224,13 @@ paths:
               properties:
                 userId:
                   type: string
+                  description: Target user ID to authenticate as
                   format: objectId
               x-name: OnBehalfAuthenticateRequest
         required: true
       responses:
         '200':
-          description: Authentication flow stage.
+          description: Authentication flow stage response
           content:
             application/json:
               schema:
@@ -241,13 +247,14 @@ paths:
     post:
       tags:
         - Authentication
-      description: Prepare OAuth2 sign-in URL.
-      operationId: BeginOAuth2Authentication
+      summary: Prepare OAuth 2.0 authentication URL
+      description: Generates a redirect URL to initiate OAuth 2.0 authentication with the specified provider.
+      operationId: beginOAuth2Authentication
       parameters:
         - $ref: '#/components/parameters/authenticationProvider'
       responses:
         '200':
-          description: Sign-in URL location.
+          description: OAuth 2.0 redirect information
           content:
             application/json:
               schema:
@@ -263,37 +270,38 @@ paths:
     post:
       tags:
         - Authentication
-      description: Complete OAuth2 authentication.
-      operationId: CompleteOAuth2Authentication
+      summary: Complete OAuth 2.0 authentication
+      description: Finalizes the OAuth 2.0 authentication flow after user redirection from the provider. Processes the authorization code or error response from the OAuth provider.
+      operationId: completeOAuth2Authentication
       parameters:
         - $ref: '#/components/parameters/authenticationProvider'
         - name: code
           in: query
-          description: The authorization code received from the authorization server.
+          description: Authorization code from OAuth provider
           schema:
             type: string
             nullable: true
         - name: state
           in: query
-          description: An opaque value used by the client to maintain state between the request and callback.
+          description: OAuth state parameter for CSRF protection
           required: true
           schema:
             type: string
         - name: error
           in: query
-          description: A single error code.
+          description: OAuth error code if authentication failed
           schema:
             type: string
             nullable: true
         - name: error_description
           in: query
-          description: Human-readable text providing additional information.
+          description: Description of OAuth error
           schema:
             type: string
             nullable: true
       responses:
         '200':
-          description: Authentication flow stage.
+          description: Authentication flow stage response
           content:
             application/json:
               schema:
@@ -309,25 +317,35 @@ paths:
     put:
       tags:
         - Troubleshooting
-      summary: Log specified message on server. Used internally while standalone-hosted.
+      summary: Submit client-side log message to server
+      description: Records a client-generated log message on the server. Primarily used for debugging purposes in standalone-hosted environments where direct client logging is not available. The server may store or process these logs for troubleshooting and monitoring.
       operationId: logMessage
       requestBody:
-        description: A log message to save.
         content:
           application/json:
             schema:
+              required:
+                - message
               type: object
               properties:
                 message:
                   type: string
+                  description: The log message content to be recorded
+                  example: Failed to initialize component X
                 source:
                   type: string
+                  description: Source component or module generating the log
+                  nullable: true
+                  example: Dashboard
                 clientId:
                   type: string
+                  description: Unique client identifier for log correlation
+                  nullable: true
+                  example: dfc533de-d827-47d1-9820-44b057cd5e44
         required: true
       responses:
         '204':
-          description: URL has been opened (or ignored).
+          description: 'Log message was successfully received (though may not necessarily be persisted, depending on server configuration)'
         default:
           description: Operation failure response.
           content:
@@ -340,32 +358,41 @@ paths:
     put:
       tags:
         - DataSource
-      summary: Wait for data source availability and begin new transaction. Identifier specified in request later could be used with other request in `transaction` parameter.
+      summary: Initiate a new data source transaction
+      description: 'Establishes a new transaction context with the specified data source. This operation: - Waits for data source availability (up to the specified start timeout) - Creates a transaction with the given unique identifier - Returns immediately if successful The transaction ID can be used in subsequent operations until committed or rolled back.'
       operationId: beginTransaction
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
       requestBody:
-        description: Begin transaction parameters.
         content:
           application/json:
             schema:
+              required:
+                - id
+                - executionTimeout
+                - startTimeout
               type: object
               properties:
                 id:
                   maxLength: 256
                   minLength: 16
                   type: string
-                  description: Unique identifier for a transaction.
+                  description: Unique transaction identifier. Must be sufficiently complex to prevent collisions. Will be used to reference this transaction in subsequent operations.
+                  example: e2dc2b30-859d-4ff0-beef-555169463872
                 executionTimeout:
                   type: string
-                  description: Timeout for executing a transaction. Can't be negative or zero time.
+                  description: 'Maximum duration allowed for transaction execution (e.g., "00:30:00", "00:05:00"). Must be a positive duration value.'
                   format: time
+                  example: '00:05:00'
                 startTimeout:
                   type: string
-                  description: The wait timeout for starting a transaction. Can't be negative or zero time.
+                  description: 'Maximum wait time for data source to become available (e.g., "00:00:10", "00:01:00"). Must be a positive duration value.'
                   format: time
+                  example: '00:00:10'
         required: true
       responses:
         '204':
-          description: The transaction has started.
+          description: Transaction successfully initialized and ready for operations
         default:
           description: Operation failure response.
           content:
@@ -374,17 +401,19 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
         - BearerAuth: [ ]
-    parameters:
-      - $ref: '#/components/parameters/dataSourceId'
   '/datasource/{dataSourceId}/transaction/{transactionId}/':
     post:
       tags:
         - DataSource
-      summary: Commit pending transaction.
+      summary: Commit an active transaction
+      description: 'Permanently applies all changes made within the transaction scope. After successful commit, the transaction cannot be used for further operations.'
       operationId: commitTransaction
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+        - $ref: '#/components/parameters/transactionId'
       responses:
         '204':
-          description: The transaction has been successfully completed.
+          description: Transaction successfully committed and resources released
         default:
           description: Operation failure response.
           content:
@@ -396,11 +425,15 @@ paths:
     delete:
       tags:
         - DataSource
-      summary: Reject pending transaction.
+      summary: Roll back an active transaction
+      description: Abandons all changes made within the transaction scope and releases resources. Can be called on already-failed transactions for cleanup.
       operationId: rejectTransaction
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+        - $ref: '#/components/parameters/transactionId'
       responses:
         '204':
-          description: The transaction has either been aborted or has already failed.
+          description: Transaction successfully aborted or was already in a failed state. All temporary changes have been discarded.
         default:
           description: Operation failure response.
           content:
@@ -409,31 +442,31 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
         - BearerAuth: [ ]
-    parameters:
-      - $ref: '#/components/parameters/dataSourceId'
-      - $ref: '#/components/parameters/transactionId'
   '/datasource/{dataSourceId}/collection/{schemaNameOrId}/':
     get:
       tags:
         - DataSource
-      summary: Find document by it's id or unique property value.
+      summary: Retrieve a document by ID or unique property
+      description: Fetches a single document using either its unique identifier or a specified unique property value. Returns null if no matching document is found.
       operationId: findDocument
       parameters:
         - name: uniqueSchemaPropertyNameOrId
           in: query
-          description: Document unique property's name. For example 'Id'.
+          description: 'The name of the unique property to search by (e.g., ''Id'', ''Name''). Can also be ''Id'' to search by document identifier.'
           required: true
           schema:
             type: string
+            example: Item
         - name: uniqueSchemaPropertyValue
           in: query
-          description: Document's unique property value. For example it's 'Id' property.
+          description: The value of the specified unique property to match
           required: true
           schema:
             type: string
+            example: Sword
       responses:
         '200':
-          description: Found document or null.
+          description: Document found (or null if not found)
           content:
             application/json:
               schema:
@@ -449,12 +482,13 @@ paths:
     put:
       tags:
         - DataSource
-      summary: Create document.
+      summary: Create a new document
+      description: Inserts a new document into the specified collection. The document will be validated according to the schema's rules.
       operationId: createDocument
       parameters:
         - $ref: '#/components/parameters/validationOptions'
       requestBody:
-        description: A document to create.
+        description: The document data to create
         content:
           application/json:
             schema:
@@ -462,7 +496,7 @@ paths:
         required: true
       responses:
         '200':
-          description: Created document.
+          description: Successfully created document
           content:
             application/json:
               schema:
@@ -478,12 +512,13 @@ paths:
     post:
       tags:
         - DataSource
-      summary: Update document.
+      summary: Update an existing document
+      description: Modifies an existing document in the collection. The entire document or only diff document could be provided with updated values.
       operationId: updateDocument
       parameters:
         - $ref: '#/components/parameters/validationOptions'
       requestBody:
-        description: A document to update.
+        description: The complete document or diff document data with updates
         content:
           application/json:
             schema:
@@ -491,7 +526,7 @@ paths:
         required: true
       responses:
         '200':
-          description: Updated document.
+          description: Successfully updated document
           content:
             application/json:
               schema:
@@ -507,18 +542,20 @@ paths:
     delete:
       tags:
         - DataSource
-      summary: Delete document by it's id.
+      summary: Delete a document by ID
+      description: 'Removes a document from the collection using its unique identifier. Returns the deleted document if found, otherwise returns null.'
       operationId: deleteDocument
       parameters:
         - name: id
           in: query
-          description: Document's id.
+          description: The unique identifier of the document to delete
           required: true
           schema:
             type: string
+            example: 507f1f77bcf86cd799439011
       responses:
         '200':
-          description: Deleted document or null.
+          description: Document deletion result (deleted document or null)
           content:
             application/json:
               schema:
@@ -539,9 +576,11 @@ paths:
     post:
       tags:
         - DataSource
-      summary: List documents.
+      summary: Query documents with filtering and pagination
+      description: 'Retrieves a list of documents matching specified criteria. Supports filtering, sorting, pagination, and full-text search.'
       operationId: listDocuments
       requestBody:
+        description: Document query parameters
         content:
           application/json:
             schema:
@@ -549,36 +588,56 @@ paths:
               properties:
                 path:
                   type: string
-                  description: Path to document within another document. Or '*' if any embedded documents are applicable. Or null if only root documents to return.
+                  description: 'Path to nested documents (e.g., ''/Item'') in RFC-6901 (JSON Pointer) format. Use ''*'' for all embedded documents or null for root documents only.'
                   nullable: true
+                  example: /Item
                 skip:
                   minimum: 0
                   type: integer
+                  description: Number of documents to skip (for pagination)
                   format: int32
                   nullable: true
+                  example: 100
                 take:
                   minimum: 0
                   type: integer
+                  description: Maximum number of documents to return
                   format: int32
                   nullable: true
+                  example: 25
                 query:
                   type: string
-                  description: Any value to search throughout the document.
+                  description: Full-text search term to match across all document fields
                   nullable: true
+                  example: Sword
+                select:
+                  type: array
+                  items:
+                    minLength: 1
+                    type: string
+                    example: /Name
+                  description: 'Specifies in RFC-6901 (JSON Pointer) format which fields to include in the response. - If null or empty, all available fields are returned - The ''Id'' field is always included regardless of selection - Field names are case-sensitive - Nested fields can be specified using slash notation (e.g., "/Item/Name")'
+                  nullable: true
+                  example:
+                    - /Id
+                    - /Name
+                    - /Price
                 filters:
                   type: array
                   items:
                     $ref: '#/components/schemas/Filter'
+                  description: Advanced filtering criteria
                   nullable: true
                 sorters:
                   type: array
                   items:
                     $ref: '#/components/schemas/Sorter'
+                  description: Sorting specifications
                   nullable: true
         required: true
       responses:
         '200':
-          description: Found documents.
+          description: List of matching documents
           content:
             application/json:
               schema:
@@ -594,29 +653,31 @@ paths:
     put:
       tags:
         - DataSource
-      summary: Bulk change documents.
+      summary: Perform bulk document operations
+      description: 'Creates, updates, or deletes multiple documents in a single operation. Supports different import modes and optional dry-run validation.'
       operationId: bulkChangeDocuments
       parameters:
         - $ref: '#/components/parameters/validationOptions'
         - $ref: '#/components/parameters/dryRun'
         - name: importMode
           in: query
-          description: Import mode.
+          description: Determines how documents should be processed.
           required: true
           schema:
             $ref: '#/components/schemas/ImportMode'
       requestBody:
-        description: A documents to change.
+        description: Array of documents to process
         content:
           application/json:
             schema:
               type: array
               items:
                 $ref: '#/components/schemas/JsonObject'
+              description: 'Documents to create, update, or delete'
         required: true
       responses:
         '200':
-          description: Created document.
+          description: Bulk operation results
           content:
             application/json:
               schema:
@@ -637,63 +698,76 @@ paths:
     get:
       tags:
         - DataSource
-      summary: Query documents from all collections.
+      summary: Search across all collections
+      description: Performs a full-text search across all documents in all collections. Results are streamed as they become available using Server-Sent Events (SSE). Empty results are omitted from the stream.
       operationId: queryDocuments
       parameters:
         - name: query
           in: query
-          description: Keyword to lookup in documents.
+          description: Search term to match across all document fields. Supports partial matches and full-text search.
           required: true
           schema:
             type: string
             nullable: true
+            example: Item
         - name: limit
           in: query
-          description: Maximum number of documents to return.
+          description: 'Maximum number of documents to return. If not specified, returns all matching documents.'
           schema:
+            minimum: 1
             type: integer
             format: int32
             nullable: true
+            example: 50
       responses:
         '200':
-          description: Found document stream where each event is instance of 'ListResult'. Empty results are ommited.
+          description: Stream of search results as Server-Sent Events. Each event contains a ListResult object with matching documents.
           content:
             text/event-stream:
               schema:
                 type: object
+                description: SSE stream of document batches
       security:
         - BearerAuth: [ ]
       x-custom-response: true
     post:
       tags:
         - DataSource
-      summary: Pick multiple documents by their unique properties e.g. batched find request. Max documents per request is - 20.
+      summary: Batch retrieve documents by unique identifiers
+      description: Efficiently fetches multiple documents in a single request by their unique properties. Maximum 20 documents per request. Results are returned in the same order as requested.
       operationId: pickDocuments
       requestBody:
-        description: A documents to convert.
+        description: Array of document lookup requests
         content:
           application/json:
             schema:
               maxItems: 20
+              minItems: 1
               type: array
               items:
                 required:
+                  - schemaNameOrId
                   - uniqueSchemaPropertyNameOrId
                   - uniqueSchemaPropertyValue
-                  - schemaNameOrId
                 type: object
                 properties:
                   schemaNameOrId:
                     type: string
+                    description: The collection name or ID where the document resides
+                    example: Item
                   uniqueSchemaPropertyNameOrId:
                     type: string
+                    description: 'The unique property name to match (e.g., ''Id'', ''Name'')'
+                    example: Id
                   uniqueSchemaPropertyValue:
                     type: string
+                    description: The exact value of the specified unique property
+                    example: Sword
                 x-name: FindRequest
         required: true
       responses:
         '200':
-          description: Pick results in same order as requested.
+          description: Array of document lookup results in the same order as requested. Each element is either the found document or null if not found.
           content:
             application/json:
               schema:
@@ -713,10 +787,13 @@ paths:
     post:
       tags:
         - DataSource
-      summary: Convert specified game data documents from request body to JSON format and return it without response wrapper.
+      summary: Convert game data to raw JSON format
+      description: 'Converts game data documents from various formats (XLSX, XLIF, MsgPack, BSON) directly to raw JSON output without any response wrapper.'
       operationId: convertGameDataRaw
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
       requestBody:
-        description: A documents to convert.
+        description: Game data document in supported input format
         content:
           application/json:
             schema:
@@ -739,13 +816,13 @@ paths:
         required: true
       responses:
         '200':
-          description: Converted game data document.
+          description: Successfully converted raw JSON document
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RawResponse'
         default:
-          description: Operation failure response.
+          description: Conversion error response
           content:
             application/json:
               schema:
@@ -753,13 +830,12 @@ paths:
       security:
         - BearerAuth: [ ]
       x-custom-response: true
-    parameters:
-      - $ref: '#/components/parameters/dataSourceId'
   '/datasource/{dataSourceId}/collections/raw/':
     get:
       tags:
         - DataSource
-      summary: Export documents from multiple collections into downloadable format without response wrapper.
+      summary: Export multiple collections in raw format
+      description: 'Exports documents from specified collections directly in downloadable formats (JSON, MsgPack, BSON, XLSX, XLIF) without any response wrapper. Supports filtering by schemas, properties and languages.'
       operationId: exportRaw
       parameters:
         - $ref: '#/components/parameters/dataSourceId'
@@ -771,7 +847,7 @@ paths:
         - $ref: '#/components/parameters/download'
       responses:
         '200':
-          description: Exported documents.
+          description: Raw exported documents in requested format
           content:
             application/json:
               schema:
@@ -792,7 +868,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RawResponse'
         default:
-          description: Operation failure response.
+          description: Export operation failure
           content:
             application/json:
               schema:
@@ -804,14 +880,15 @@ paths:
     get:
       tags:
         - DataSource
-      summary: Backup data source into downloadable format without response wrapper.
+      summary: Create raw data source backup
+      description: 'Generates a complete backup of the data source in raw format (JSON, MsgPack, BSON) without any response wrapper. The backup can be downloaded directly.'
       operationId: backupRaw
       parameters:
         - $ref: '#/components/parameters/dataSourceId'
         - $ref: '#/components/parameters/download'
       responses:
         '200':
-          description: Exported documents.
+          description: Raw backup data in requested format
           content:
             application/json:
               schema:
@@ -823,7 +900,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RawResponse'
         default:
-          description: Operation failure response.
+          description: Backup operation failure
           content:
             application/json:
               schema:
@@ -831,82 +908,12 @@ paths:
       security:
         - BearerAuth: [ ]
       x-custom-response: true
-  '/datasource/{dataSourceId}/loading-progress/':
-    get:
-      tags:
-        - DataSource
-      summary: Get data source's loading progress.
-      operationId: getLoadingProgress
-      responses:
-        '200':
-          description: Data source's capabilities and loading progress.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetLoadingProgressResponse'
-        default:
-          description: Operation failure response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      security:
-        - BearerAuth: [ ]
-    parameters:
-      - $ref: '#/components/parameters/dataSourceId'
-  '/datasource/{dataSourceId}/capabilities/':
-    get:
-      tags:
-        - DataSourceCapabilities
-      summary: Get data source's capabilities.
-      operationId: getCapabilities
-      responses:
-        '200':
-          description: Data source's capabilities.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetCapabilitiesResponse'
-        default:
-          description: Operation failure response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      security:
-        - BearerAuth: [ ]
-    parameters:
-      - $ref: '#/components/parameters/dataSourceId'
-  '/datasource/{dataSourceId}/stats/':
-    get:
-      tags:
-        - DataSource
-      summary: Get data source's statistics.
-      operationId: examine
-      parameters:
-        - $ref: '#/components/parameters/transaction'
-      responses:
-        '200':
-          description: Data source's statistics.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExamineResponse'
-        default:
-          description: Operation failure response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      security:
-        - BearerAuth: [ ]
-    parameters:
-      - $ref: '#/components/parameters/dataSourceId'
   '/datasource/{dataSourceId}/collections/':
     get:
       tags:
         - DataSource
-      summary: Export documents from multiple collections.
+      summary: Export documents from multiple collections
+      description: 'Exports documents from specified collections in various formats (JSON, MsgPack, BSON, XLSX, XLIF). Supports filtering by schemas, properties, and languages. The export can be customized using different modes.'
       operationId: export
       parameters:
         - $ref: '#/components/parameters/exportMode'
@@ -915,7 +922,7 @@ paths:
         - $ref: '#/components/parameters/languages'
       responses:
         '200':
-          description: Exported documents.
+          description: Successfully exported documents
           content:
             application/json:
               schema:
@@ -946,7 +953,8 @@ paths:
     put:
       tags:
         - DataSource
-      summary: Import documents into multiple collections.
+      summary: Import documents into multiple collections
+      description: 'Bulk import documents into specified collections. Supports various data formats (JSON, MsgPack, BSON, XLSX, XLIF) and different import modes (create, update, upsert). Includes validation and dry-run capabilities.'
       operationId: import
       parameters:
         - $ref: '#/components/parameters/importMode'
@@ -955,7 +963,7 @@ paths:
         - $ref: '#/components/parameters/validationOptions'
         - $ref: '#/components/parameters/dryRun'
       requestBody:
-        description: A documents to import.
+        description: Documents to import in supported format
         content:
           application/json:
             schema:
@@ -978,7 +986,7 @@ paths:
         required: true
       responses:
         '200':
-          description: Import report.
+          description: Detailed import operation report
           content:
             application/json:
               schema:
@@ -998,11 +1006,12 @@ paths:
     get:
       tags:
         - DataSource
-      summary: Backup data source.
+      summary: Create complete data source backup
+      description: 'Generates a comprehensive backup of the entire data source including all collections and documents. The backup can be exported in multiple formats (JSON, MsgPack, BSON).'
       operationId: backup
       responses:
         '200':
-          description: Backed up data source.
+          description: Successful backup result
           content:
             application/json:
               schema:
@@ -1024,10 +1033,11 @@ paths:
     put:
       tags:
         - DataSource
-      summary: Restore data source from specified documents.
+      summary: Restore data source from backup
+      description: 'Restores the entire data source from a previously created backup. Supports restoration from various formats (JSON, MsgPack, BSON).'
       operationId: restore
       requestBody:
-        description: A documents to restore.
+        description: Backup data in supported format
         content:
           application/json:
             schema:
@@ -1041,7 +1051,7 @@ paths:
         required: true
       responses:
         '200':
-          description: Data source restoration result.
+          description: Restoration operation result
           content:
             application/json:
               schema:
@@ -1060,7 +1070,8 @@ paths:
     post:
       tags:
         - DataSource
-      summary: Validadate data source with specified requirements/parameters.
+      summary: Validate data source configuration
+      description: 'Performs comprehensive validation of the data source against specified requirements. Checks schema definitions, data integrity, and translation fullness.'
       operationId: validate
       parameters:
         - $ref: '#/components/parameters/dataSourceId'
@@ -1068,7 +1079,7 @@ paths:
         - $ref: '#/components/parameters/validationOptions'
       responses:
         '200':
-          description: Data source's configuration.
+          description: Validation results including any issues found
           content:
             application/json:
               schema:
@@ -1081,15 +1092,91 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
         - BearerAuth: [ ]
+  '/datasource/{dataSourceId}/loading-progress/':
+    get:
+      tags:
+        - DataSource
+      summary: Check data source loading status
+      description: Retrieves the current loading progress and operational state of the data source. Useful for monitoring initialization or migration processes.
+      operationId: getLoadingProgress
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+      responses:
+        '200':
+          description: Current loading state with progress message and percentage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLoadingProgressResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/datasource/{dataSourceId}/capabilities/':
+    get:
+      tags:
+        - DataSourceCapabilities
+      summary: Retrieve data source capabilities
+      description: 'Returns the supported features and limitations of the data source, including supported query operations, indexing capabilities, and schema features.'
+      operationId: getCapabilities
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+      responses:
+        '200':
+          description: Complete capability profile of the data source
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCapabilitiesResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/datasource/{dataSourceId}/stats/':
+    get:
+      tags:
+        - DataSource
+      summary: Get data source issues statistics
+      description: Returns issue metrics about the data source including document counts and issues count.
+      operationId: examine
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+        - $ref: '#/components/parameters/transaction'
+      responses:
+        '200':
+          description: Detailed statistical overview of the data source
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamineResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
   '/datasource/{dataSourceId}/present-users/':
     get:
       tags:
         - UserPresence
-      summary: Get list of users present in specificated data source.
+      summary: Get active users in data source
+      description: 'Retrieves a list of users currently active in the specified data source, including their presence status and user identifiers.'
       operationId: getDataSourcePresentUsers
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
       responses:
         '200':
-          description: List of user presence in data source.
+          description: Array of user presence records
           content:
             application/json:
               schema:
@@ -1102,17 +1189,18 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
         - BearerAuth: [ ]
-    parameters:
-      - $ref: '#/components/parameters/dataSourceId'
   '/datasource/{dataSourceId}/source-code/':
     post:
       tags:
         - DataSource
-      summary: Generate source code for data source.
+      summary: Generate data source SDK
+      description: Creates a source code SDK for the data source in the specified programming language. Supports various code generation options and optimizations. Returns a ZIP archive.
       operationId: generateSourceCode
       parameters:
+        - $ref: '#/components/parameters/dataSourceId'
         - $ref: '#/components/parameters/download'
       requestBody:
+        description: Source code generation configuration
         content:
           application/json:
             schema:
@@ -1122,17 +1210,22 @@ paths:
                   $ref: '#/components/schemas/TargetSourceCodeLanguage'
                 documentClassName:
                   type: string
+                  description: Base class name for document types
                 gameDataClassName:
                   type: string
+                  description: Main class name for game data access
                 namespace:
                   type: string
+                  description: Root namespace for generated code
                 defineConstants:
                   type: string
+                  description: Compiler constants to include
                 lineEndings:
                   enum:
                     - windows
                     - unix
                   type: string
+                  description: Line ending style for generated files
                   x-name: SourceCodeLineEndings
                 indentation:
                   enum:
@@ -1140,9 +1233,11 @@ paths:
                     - twoSpaces
                     - fourSpaces
                   type: string
+                  description: Indentation style for generated code
                   x-name: SourceCodeIndentation
                 splitFiles:
                   type: boolean
+                  description: Whether to split classes into separate files
                 optimizations:
                   type: array
                   items:
@@ -1158,10 +1253,11 @@ paths:
                       - disableDocumentIdEnums
                     type: string
                     x-name: SourceCodeGenerationOptimizations
+                  description: Code generation optimization flags
         required: true
       responses:
         '200':
-          description: Source code packed into .zip archive.
+          description: ZIP archive containing generated source code
           content:
             application/zip:
               schema:
@@ -1169,19 +1265,19 @@ paths:
       security:
         - BearerAuth: [ ]
       x-custom-response: true
-    parameters:
-      - $ref: '#/components/parameters/dataSourceId'
   '/datasource/{dataSourceId}/source-code/templates/':
     get:
       tags:
         - DataSource
-      summary: Get T4 templates for generating source code.
+      summary: Download source code templates
+      description: Retrieves T4 templates used for source code generation. These templates can be customized for specialized SDK generation.
       operationId: getSourceCodeGenerationTemplate
       parameters:
+        - $ref: '#/components/parameters/dataSourceId'
         - $ref: '#/components/parameters/download'
       responses:
         '200':
-          description: Source code generation templates packed into .zip archive.
+          description: ZIP archive containing template files
           content:
             application/zip:
               schema:
@@ -1189,20 +1285,20 @@ paths:
       security:
         - BearerAuth: [ ]
       x-custom-response: true
-    parameters:
-      - $ref: '#/components/parameters/dataSourceId'
   '/datasource/{dataSourceId}/process/':
     get:
       tags:
         - Processes
-      summary: List processes.
+      summary: List all processes
+      description: Retrieves a paginated list of both running and completed processes with their current states.
       operationId: listProcesses
       parameters:
+        - $ref: '#/components/parameters/dataSourceId'
         - $ref: '#/components/parameters/skip'
         - $ref: '#/components/parameters/take'
       responses:
         '200':
-          description: Process state.
+          description: Paginated list of processes with their states
           content:
             application/json:
               schema:
@@ -1215,17 +1311,19 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
         - BearerAuth: [ ]
-    parameters:
-      - $ref: '#/components/parameters/dataSourceId'
   '/datasource/{dataSourceId}/process/{processId}/':
     get:
       tags:
         - Processes
-      summary: Get process's state.
+      summary: Get process details
+      description: Retrieves the complete state information for a specific process.
       operationId: getProcess
+      parameters:
+        - $ref: '#/components/parameters/processId'
+        - $ref: '#/components/parameters/dataSourceId'
       responses:
         '200':
-          description: Process state.
+          description: Detailed state of the requested process
           content:
             application/json:
               schema:
@@ -1241,18 +1339,22 @@ paths:
     post:
       tags:
         - Processes
-      summary: Stop process.
+      summary: Terminate a running process
+      description: Gracefully stops a currently running process with the specified reason.
       operationId: stopProcess
       parameters:
+        - $ref: '#/components/parameters/processId'
+        - $ref: '#/components/parameters/dataSourceId'
         - name: stopReason
           in: query
-          description: Reason why process has been stopped.
+          description: 'Reason for process termination (e.g., ''user_request'', ''maintenance'')'
           required: true
           schema:
             type: string
+            example: user_request
       responses:
         '200':
-          description: Stopped process state.
+          description: Final state of the stopped process
           content:
             application/json:
               schema:
@@ -1265,54 +1367,49 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
         - BearerAuth: [ ]
-    parameters:
-      - $ref: '#/components/parameters/processId'
-      - $ref: '#/components/parameters/dataSourceId'
   '/datasource/{dataSourceId}/process/{processId}/result/raw/':
     get:
       tags:
         - Processes
-      summary: Get process's execution result without response wrapper.
+      summary: Get raw process results
+      description: Retrieves the direct output of a completed process without standard response formatting.
       operationId: getProcessResultRaw
       parameters:
+        - $ref: '#/components/parameters/processId'
+        - $ref: '#/components/parameters/dataSourceId'
         - $ref: '#/components/parameters/download'
       responses:
         '200':
-          description: Process result.
+          description: Raw process output in its native format
           content:
             application/json:
               schema:
                 type: object
-        default:
-          description: Operation failure response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                description: The exact output structure varies by process type
       security:
         - BearerAuth: [ ]
       x-custom-response: true
-    parameters:
-      - $ref: '#/components/parameters/processId'
-      - $ref: '#/components/parameters/dataSourceId'
   '/datasource/{dataSourceId}/formula/type/':
     get:
       tags:
         - Formulas
-      summary: List formula types.
+      summary: List available formula types
+      description: Retrieves a paginated list of formula types/classes that can be used in game data formulas. Supports filtering by type name and pagination.
       operationId: listFormulaTypes
       parameters:
+        - $ref: '#/components/parameters/dataSourceId'
         - $ref: '#/components/parameters/skip'
         - $ref: '#/components/parameters/take'
         - name: query
           in: query
-          description: Any value to search in type name.
+          description: "Search term for filtering types. Can be:\n- Exact type name (e.g., \"DateTime\")\n- Type alias (e.g. int, long)\n- Partial name (e.g., \"Date\")\n- Capital letters (e.g., \"DT\" for \"DateTime\")\n"
           schema:
             type: string
             nullable: true
+            example: DT
       responses:
         '200':
-          description: List of types.
+          description: Paginated list of matching formula types
           content:
             application/json:
               schema:
@@ -1325,13 +1422,79 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
         - BearerAuth: [ ]
-    parameters:
-      - $ref: '#/components/parameters/dataSourceId'
+  '/datasource/{dataSourceId}/assets/':
+    get:
+      tags:
+        - Assets
+      summary: List available assets
+      description: 'Retrieves a paginated list of assets available in the project that can be referenced from game data. Supports filtering by asset type and name, with pagination.'
+      operationId: listAssets
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/take'
+        - name: query
+          in: query
+          description: Search term to filter asset names (empty returns all)
+          schema:
+            type: string
+            nullable: true
+            example: DT
+        - name: types
+          in: query
+          description: Filter by specific asset types (empty returns all)
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Paginated list of matching assets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAssetsResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/datasource/{dataSourceId}/assets/thumbnail/{path}':
+    get:
+      tags:
+        - Assets
+      summary: Get asset thumbnail
+      description: 'Retrieves a thumbnail image (PNG format) for the specified asset. The asset can be identified by various methods including path, unique ID, or numeric ID.'
+      operationId: getAssetThumbnail
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+        - $ref: '#/components/parameters/path'
+        - name: size
+          in: query
+          description: Preferred thumbnail dimensions (width x height in pixels)
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+      responses:
+        '200':
+          description: PNG thumbnail image of the requested asset
+          content:
+            image/png:
+              schema:
+                $ref: '#/components/schemas/Blob'
+      security:
+        - BearerAuth: [ ]
+      x-custom-response: true
   '/datasource/{dataSourceId}/completion/schema/':
     post:
       tags:
         - AiCompletion
-      summary: Suggest schema structure with specified AI tool.
+      summary: Generate schema design suggestions using AI
+      description: Uses AI to propose a game data schema structure based on provided context and requirements.
       operationId: suggestSchemaDesign
       parameters:
         - $ref: '#/components/parameters/dataSourceId'
@@ -1339,23 +1502,28 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - userPrompt
               type: object
               properties:
                 contextSchema:
                   type: string
+                  description: Existing schema context to inform the AI suggestions
                   nullable: true
                 existingSchemas:
                   type: array
                   items:
                     type: string
+                  description: Array of related schema names for reference
                 userPrompt:
                   maxLength: 16384
                   minLength: 2
                   type: string
+                  description: Natural language description of the desired schema
         required: true
       responses:
         '200':
-          description: AI completion response with schema structure in natural language.
+          description: AI-generated schema suggestions in natural language
           content:
             application/json:
               schema:
@@ -1372,13 +1540,14 @@ paths:
     post:
       tags:
         - AiCompletion
-      summary: Suggest an icon for schema using AI tool.
+      summary: Generate icon suggestions for a schema
+      description: Uses AI to recommend appropriate icons for a given schema based on its name and description.
       operationId: suggestSchemaIcon
       parameters:
         - $ref: '#/components/parameters/dataSourceId'
         - name: iconSet
           in: query
-          description: Name of icon set to select from.
+          description: 'Preferred icon set to use (e.g., ''material'', ''fugue'')'
           required: true
           schema:
             maxLength: 128
@@ -1386,7 +1555,7 @@ paths:
             type: string
         - name: schemaName
           in: query
-          description: Name of the schema to generate icon for.
+          description: Name of the schema needing an icon
           required: true
           schema:
             maxLength: 128
@@ -1394,14 +1563,14 @@ paths:
             type: string
         - name: schemaDescription
           in: query
-          description: Description of the schema to generate icon for.
+          description: Optional description to help icon selection
           schema:
             maxLength: 2048
             type: string
             nullable: true
       responses:
         '200':
-          description: AI completion response with schema structure in natural language.
+          description: AI-generated icon suggestions
           content:
             application/json:
               schema:
@@ -1418,24 +1587,29 @@ paths:
     post:
       tags:
         - AiCompletion
-      summary: Send AI chat message to specified chat thread.
+      summary: Continue an AI conversation thread
+      description: Sends a new message to an existing AI chat thread and gets the AI's response.
       operationId: sendAiChatMessage
       requestBody:
         content:
           application/json:
             schema:
+              required:
+                - userPrompt
               type: object
               properties:
                 regenerate:
                   type: boolean
+                  description: Whether to regenerate the last response
                 userPrompt:
                   maxLength: 16384
                   minLength: 2
                   type: string
+                  description: The user's message to the AI
         required: true
       responses:
         '200':
-          description: AI completion response with schema structure in natural language.
+          description: AI's response in the conversation
           content:
             application/json:
               schema:
@@ -1451,11 +1625,12 @@ paths:
     delete:
       tags:
         - AiCompletion
-      summary: Delete existing AI chat thread.
+      summary: Delete an AI conversation thread
+      description: Permanently removes the specified chat thread and all its messages.
       operationId: deleteAiChatThread
       responses:
         '204':
-          description: Thread has been deleted.
+          description: Thread was successfully deleted
         default:
           description: Operation failure response.
           content:
@@ -1471,7 +1646,8 @@ paths:
     post:
       tags:
         - MachineTranslation
-      summary: Machine translate portion of game data. First language in the list is a source language.
+      summary: Initiate bulk translation
+      description: Starts asynchronous translation of game data across multiple schemas and languages.
       operationId: translate
       parameters:
         - $ref: '#/components/parameters/dataSourceId'
@@ -1480,7 +1656,7 @@ paths:
         - $ref: '#/components/parameters/translationMode'
       responses:
         '202':
-          description: Translation process has been started.
+          description: Translation job was successfully queued
         default:
           description: Operation failure response.
           content:
@@ -1493,7 +1669,8 @@ paths:
     post:
       tags:
         - MachineTranslation
-      summary: Machine translate specified document. First language in the list is a source language.
+      summary: Translate a single document
+      description: Synchronously translates a specific document between the specified languages.
       operationId: translateDocument
       parameters:
         - $ref: '#/components/parameters/schemaNameOrId'
@@ -1501,7 +1678,7 @@ paths:
         - $ref: '#/components/parameters/languages'
         - $ref: '#/components/parameters/translationMode'
       requestBody:
-        description: A document to translate.
+        description: The document to be translated in JSON format
         content:
           application/json:
             schema:
@@ -1509,11 +1686,83 @@ paths:
         required: true
       responses:
         '200':
-          description: Translated document.
+          description: The translated document
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TranslateDocumentResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/datasource/{dataSourceId}/extensions/content/{packageNameAndPath}':
+    get:
+      tags:
+        - UiExtensions
+      summary: Get a specific file from an NPM package
+      description: Retrieves a file from the specified NPM package. The response content type is automatically determined by the file extension.
+      operationId: retrievePackageFile
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+        - name: packageNameAndPath
+          in: path
+          description: "The NPM package name and relative path to the file within the package.\nFormat: `package-name/path/to/file`\n"
+          required: true
+          schema:
+            type: string
+          x-wildcard-capture: true
+      responses:
+        '200':
+          description: The requested file content
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+      security:
+        - BearerAuth: [ ]
+      x-custom-response: true
+  '/datasource/{dataSourceId}/extensions/status/{packageName}':
+    get:
+      tags:
+        - UiExtensions
+      summary: Get or initiate package loading status
+      description: "Retrieves the loading status of an NPM package. If the package isn't currently loading,\nthis request will initiate the loading process. Returns a stream of status updates.\n"
+      operationId: retrievePackageLoadStatus
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+        - name: packageName
+          in: path
+          description: The name of the NPM package to check or load
+          required: true
+          schema:
+            type: string
+          x-wildcard-capture: true
+      responses:
+        '200':
+          description: Server-Sent Events stream of package loading status updates
+          content:
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/ExtensionPackageLoadProgress'
+      security:
+        - BearerAuth: [ ]
+      x-custom-response: true
+  '/datasource/{dataSourceId}/extensions/updates':
+    post:
+      tags:
+        - UiExtensions
+      summary: Check for UI extension package updates
+      description: "Verifies if newer versions are available for installed NPM packages used in UI extensions.\nBehavior notes: - Automatically reloads any stale/outdated packages - Skips packages that are currently in the process of loading - Returns immediately after initiating the check (operation is asynchronous)"
+      operationId: checkForPackageUpdates
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+      responses:
+        '202':
+          description: 'Update check initiated successfully. Note: This only indicates the request was accepted, not that updates were found.'
         default:
           description: Operation failure response.
           content:
@@ -3409,7 +3658,7 @@ paths:
         '200':
           description: Found resource.
           content:
-            application/octet-stream:
+            application/json:
               schema:
                 $ref: '#/components/schemas/GetResourceMetadataResponse'
         default:
@@ -3450,11 +3699,10 @@ paths:
           content:
             application/octet-stream:
               schema:
-                $ref: '#/components/schemas/Blob'
+                type: object
       security:
         - BearerAuth: [ ]
       x-custom-response: true
-      x-custom-implementation: true
     parameters:
       - $ref: '#/components/parameters/resourceId'
   /context/:
@@ -3929,6 +4177,30 @@ components:
           nullable: true
       additionalProperties: false
       readOnly: true
+    ExtensionPackageLoadProgress:
+      type: object
+      properties:
+        status:
+          enum:
+            - packageIsNotDeclared
+            - retrievingMetadata
+            - packageNotFound
+            - noCompatibleVersionFound
+            - downloadingPackage
+            - packageDownloadFailed
+            - packageIsTooBig
+            - unpackingPackage
+            - packageUnpackFailed
+            - loaded
+          type: string
+        progressMessage:
+          type: string
+          nullable: true
+        lastStatusUpdate:
+          type: string
+          format: date-time
+      additionalProperties: false
+      readOnly: true
     PageContext:
       type: object
       properties:
@@ -4048,6 +4320,8 @@ components:
         - projectBranches
         - projectPermissions
         - projectCustomization
+        - gameAssets
+        - uiExtensions
         - userDelete
         - revokeTokens
         - billing
@@ -4136,6 +4410,31 @@ components:
           type: string
       additionalProperties: false
       readOnly: true
+    GameAsset:
+      required:
+        - name
+        - hasThumbnail
+        - type
+        - path
+      type: object
+      properties:
+        name:
+          type: string
+          description: Display name of the asset
+        hasThumbnail:
+          type: boolean
+          description: Whether the asset has an available thumbnail
+        thumbnailHash:
+          type: string
+          description: Hash value of thumbnail. If available
+          nullable: true
+        type:
+          type: string
+          description: Type/category of the asset
+        path:
+          type: string
+          description: Project-relative path to the asset
+      description: A game asset that can be referenced from game data
     PublicUserProfile:
       type: object
       properties:
@@ -4979,6 +5278,10 @@ components:
           $ref: '#/components/schemas/DocumentListPreferences'
         dashboard:
           $ref: '#/components/schemas/DashboardPreferences'
+        features:
+          type: object
+          additionalProperties:
+            type: object
         recentDocuments:
           type: object
           additionalProperties:
@@ -5420,13 +5723,11 @@ components:
           properties:
             code:
               type: string
-              description: One-time code.
-              readOnly: true
+              description: The one-time use authorization code
             expires_in:
               type: integer
-              description: The lifetime in seconds of the one-time code.
+              description: Time in seconds until code expiration
               format: int32
-              readOnly: true
           x-name: OneTimeCodeResponse
         errors:
           type: array
@@ -5586,42 +5887,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FindResult'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ApiError'
-          nullable: true
-          readOnly: true
-      x-response: true
-    GetLoadingProgressResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/ProcessState'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ApiError'
-          nullable: true
-          readOnly: true
-      x-response: true
-    GetCapabilitiesResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/DataSourceCapabilities'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ApiError'
-          nullable: true
-          readOnly: true
-      x-response: true
-    ExamineResponse:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/StatisticsResult'
+          description: Ordered results corresponding to the input requests
         errors:
           type: array
           items:
@@ -5689,6 +5955,42 @@ components:
           nullable: true
           readOnly: true
       x-response: true
+    GetLoadingProgressResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/ProcessState'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetCapabilitiesResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/DataSourceCapabilities'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    ExamineResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/StatisticsResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
     GetDataSourcePresentUsersResponse:
       type: object
       properties:
@@ -5701,6 +6003,7 @@ components:
                 $ref: '#/components/schemas/PresenceInfo'
               userId:
                 type: string
+                description: Unique identifier of the user
                 format: objectId
             x-name: UserPresenceInfo
         errors:
@@ -5720,8 +6023,10 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ProcessState'
+              description: Array of process states
             total:
               type: integer
+              description: Total number of processes available
               format: int32
         errors:
           type: array
@@ -5764,9 +6069,35 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/FormulaType'
+              description: Matching formula types
             total:
               type: integer
+              description: Total number of types matching the query
               format: int32
+              nullable: true
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    ListAssetsResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            assets:
+              type: array
+              items:
+                $ref: '#/components/schemas/GameAsset'
+              description: Matching formula types
+            total:
+              type: integer
+              description: Total number of types matching the query
+              format: int32
+              nullable: true
         errors:
           type: array
           items:
@@ -6369,6 +6700,14 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/AuthenticationProvider'
+    path:
+      name: path
+      in: path
+      description: Captured rest of the path.
+      required: true
+      schema:
+        type: string
+      x-wildcard-capture: true
     skip:
       name: skip
       in: query

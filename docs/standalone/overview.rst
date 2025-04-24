@@ -19,7 +19,7 @@ Standalone application uses `dotnet charon` tool, which is a .NET Core applicati
    .. tab:: Windows
 
       1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
-      2. Make sure you have write access to ``%APPDATA%/Charon`` (C:\Users\%USERNAME%\AppData\Roaming\Charon).
+      2. Make sure you have write access to ``%PROGRAMDATA%/Charon``.
 
    .. tab:: MacOS
 
@@ -30,29 +30,35 @@ Standalone application uses `dotnet charon` tool, which is a .NET Core applicati
    .. tab:: Linux
 
       1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
-      2. Make sure you have write access to ``~/.config/Charon``.
+      2. Make sure you have write access to ``/usr/share/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 
 **Checking Available .NET Versions**
 
 .. code-block:: bash
 
-    # check for mono already installed
-    dotnet --list-sdks
+    # check for dotnet already installed
+    dotnet --list-runtimes
 
 .. code-block:: bash
-    # output for dotnet --list-sdks
-    5.0.303 [C:\Program Files\dotnet\sdk]
-    5.0.408 [C:\Program Files\dotnet\sdk]
-    6.0.428 [C:\Program Files\dotnet\sdk]
-    7.0.120 [C:\Program Files\dotnet\sdk]
-    8.0.206 [C:\Program Files\dotnet\sdk]
-    8.0.405 [C:\Program Files\dotnet\sdk]
+
+    # output for dotnet --list-runtimes
+    Microsoft.AspNetCore.App 6.0.36 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 7.0.20 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 9.0.0 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+    Microsoft.NETCore.App 6.0.36 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+    Microsoft.NETCore.App 7.0.20 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+    Microsoft.NETCore.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App] # <- this one is fine
+    Microsoft.NETCore.App 9.0.0 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App] # <- this one too
 
 Installation and Updates
 ========================
 
 You can use just two commands to install the command line tool, or use a bootstrap script that will check dependencies and installed software, and then download and run the tool for you.
+
+dotnet tool (recommended)
+-----------
 
 .. code-block:: bash
 
@@ -64,6 +70,9 @@ You can use just two commands to install the command line tool, or use a bootstr
   
   # run tool
   dotnet charon INIT ./gamedata.json
+
+Bootstrap Script
+----------------
 
 Two bootstrap scripts which download and run latest version of Charon on your PC:  
 
@@ -111,7 +120,7 @@ Or use following bootstrap script:
         cd Charon
         curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.sh
         chmod +x RunCharon.sh
-		./RunCharon.sh INIT ./gamedata.json
+        ./RunCharon.sh INIT ./gamedata.json
         
         ##### Start editor #####
 
@@ -128,14 +137,22 @@ The editor will automatically fill the empty file with the initial data.
    .. tab:: Windows
 
       .. code-block:: bash
-  
-        ./RunCharon.bat ./gamedata.json --log out
+
+        # dotnet charon INIT .\gamedata.json 
+        # or
+        # copy /y NUL .\gamedata.json >NUL
+        
+        dotnet charon .\gamedata.json --log out
 
    .. tab:: Linux, MacOS
 
       .. code-block:: bash
 
-        ./RunCharon.sh ./gamedata.json --log out
+        # dotnet charon INIT ./gamedata.json 
+        # or
+        # touch ./gamedata.json 
+        
+        dotnet charon ./gamedata.json --log out
 
 After finishing your work, you could just terminate the process with ``CTRL+C`` keyboard shortcut or close terminal window.  
 

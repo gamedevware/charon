@@ -25,6 +25,7 @@ Specification
    References support the following specification parameter:
    
    - ``displayTextTemplate`` — Defines a template string for how the referenced value is displayed in the UI.  
+   
      Example:  
      ``displayTextTemplate=Item%3A+%7BName%7D%2C+Count%3A+%7BCount%7D``  
      (renders as: `Item: {Name}, Count: {Count}`)

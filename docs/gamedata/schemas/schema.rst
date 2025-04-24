@@ -60,7 +60,7 @@ Properties
 A list of :doc:`Properties <property>` that define the fields associated with this schema.
 
 See also
-========
+--------
 
 - :doc:`Display Text Template <display_text_template>`
 - :doc:`Property <../properties/property>`

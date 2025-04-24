@@ -56,10 +56,14 @@ This step involves defining schemas to represent the structure and properties of
    :glob:
 
    datatypes/*
+   schemas/*
+   properties/*
 
 See also
-========
+--------
 
+- :doc:`Schema <schemas/schema>`
+- :doc:`Property <properties/property>`
 - :doc:`Implementing Inheritance <inheritance>`
 - :doc:`Filling Documents <filling_documents>`
 - :doc:`Publishing Game Data <publication>`

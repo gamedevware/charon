@@ -1,5 +1,5 @@
 Integer Rectangle
------------------
+=================
 
 The ``Integer Rectangle`` (``RectangleInt``) is a sub-type of the :doc:`Text <../all/text>` data type used to store four integer values representing a rectangle. The components represent ``X``, ``Y``, ``Width``, and ``Height``, in that order. Values are separated by spaces and must be parsed from the string before use at runtime.
 
@@ -12,6 +12,13 @@ Validation Behavior
 -------------------
 
 The editor ensures that a valid integer rectangle is entered and only stores properly formatted values. However, there is no runtime validation or built-in parsing logic, so values must be parsed manually in game code.
+
+Example
+-------
+
+.. code-block:: js
+
+  "50 100 200 25"
 
 Parsing
 -------

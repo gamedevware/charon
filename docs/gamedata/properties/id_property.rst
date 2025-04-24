@@ -7,6 +7,7 @@ This property is always named ``Id`` and must satisfy the following constraints:
 - Must be unique.
 - Required and must be non-empty (for ``Text`` data type).
 - Must use a data type with a stable text representation and comparison support, such as:
+
   - Time
   - Date
   - Number
@@ -39,6 +40,7 @@ Id property details:
 - **Data Type:** Text  
 - **Size:** 24 characters  
 - **Requirement:** Not Empty  
+- **Example:** "049bc0604c363a980b000088"
 
 Generated Guid
 ^^^^^^^^^^^^^^
@@ -51,6 +53,7 @@ Id property details:
 - **Data Type:** Text  
 - **Size:** 32 characters  
 - **Requirement:** Not Empty  
+- **Example:** "6fe4202b1b9c4565b439980138524112"
 
 Generated Sequence
 ^^^^^^^^^^^^^^^^^^
@@ -64,6 +67,7 @@ Id property details:
 - **Data Type:** Integer  
 - **Size:** 32-bit  
 - **Requirement:** Not Null  
+- **Example:** 1
 
 Generated Global Sequence
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -75,6 +79,7 @@ Id property details:
 - **Data Type:** Integer  
 - **Size:** 32-bit  
 - **Requirement:** Not Null  
+- **Example:** 69
 
 Non-Generated Id
 ----------------
@@ -86,7 +91,7 @@ All Id constraints will be automatically validated when saving the schema.
 You can change a schema's ``Id Generator`` to ``None`` at any time, but you cannot switch back to a generator once this change is made.
 
 See also
-========
+--------
 
 - :doc:`Schema <../schemas/schema>`
 - :doc:`Property <property>`

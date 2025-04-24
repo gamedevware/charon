@@ -137,7 +137,7 @@ You can control expression evaluation order using parentheses. For example:
   Max Damage: {BaseDamage * (BaseCriticalChance + BonusCriticalChance)}
 
 See also
-========
+--------
 
 - :doc:`Schema <schema>`
 - :doc:`Property <../properties/property>`
