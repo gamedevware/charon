@@ -70,49 +70,49 @@ Binary Operators
 The following binary expressions are supported:
 
 +-----------------------------+----------------------------------------------+
-| Operator                   | Example                                      |
+| Operator                    | Example                                      |
 +=============================+==============================================+
-| Subtract                   | ``TotalPrice - BasePrice``                   |
+| Subtract                    | ``TotalPrice - BasePrice``                   |
 +-----------------------------+----------------------------------------------+
-| Add                        | ``BaseDamage + BonusDamage``                 |
+| Add                         | ``BaseDamage + BonusDamage``                 |
 +-----------------------------+----------------------------------------------+
-| Concatenate                | ``"Quest #" + Id``                           |
+| Concatenate                 | ``"Quest #" + Id``                           |
 +-----------------------------+----------------------------------------------+
-| Division                   | ``CriticalChance / CurseDebuff``             |
+| Division                    | ``CriticalChance / CurseDebuff``             |
 +-----------------------------+----------------------------------------------+
-| Multiplication             | ``DropRate * 100.0``                          |
+| Multiplication              | ``DropRate * 100.0``                         |
 +-----------------------------+----------------------------------------------+
-| Power                      | ``Damage ** CriticalChance``                 |
+| Power                       | ``Damage ** CriticalChance``                 |
 +-----------------------------+----------------------------------------------+
-| Modulo                     | ``Slots % SlotPerPage``                      |
+| Modulo                      | ``Slots % SlotPerPage``                      |
 +-----------------------------+----------------------------------------------+
-| Bitwise AND                | ``DamageFlags & AdditionalDamageFlags``      |
+| Bitwise AND                 | ``DamageFlags & AdditionalDamageFlags``      |
 +-----------------------------+----------------------------------------------+
-| Bitwise OR                 | ``DamageTypes | ResistanceTypes``            |
+| Bitwise OR                  | ``DamageTypes | ResistanceTypes``            |
 +-----------------------------+----------------------------------------------+
-| Bitwise XOR                | ``ResistanceTypes ^ HealingTypes``           |
+| Bitwise XOR                 | ``ResistanceTypes ^ HealingTypes``           |
 +-----------------------------+----------------------------------------------+
-| Bitwise Left Shift         | ``Flags << 1``                               |
+| Bitwise Left Shift          | ``Flags << 1``                               |
 +-----------------------------+----------------------------------------------+
-| Bitwise Right Shift        | ``Flags >> 1``                               |
+| Bitwise Right Shift         | ``Flags >> 1``                               |
 +-----------------------------+----------------------------------------------+
-| Logical AND (short-circuit)| ``CanWalk && CanRun``                        |
+| Logical AND (short-circuit) | ``CanWalk && CanRun``                        |
 +-----------------------------+----------------------------------------------+
-| Logical OR (short-circuit) | ``HasHead || CanBeHeadshoted``               |
+| Logical OR (short-circuit)  | ``HasHead || CanBeHeadshoted``               |
 +-----------------------------+----------------------------------------------+
-| Greater Than               | ``Count > MaxCount``                         |
+| Greater Than                | ``Count > MaxCount``                         |
 +-----------------------------+----------------------------------------------+
-| Greater Than or Equal      | ``Count >= MaxCount``                        |
+| Greater Than or Equal       | ``Count >= MaxCount``                        |
 +-----------------------------+----------------------------------------------+
-| Less Than                  | ``HP < MaxHP``                               |
+| Less Than                   | ``HP < MaxHP``                               |
 +-----------------------------+----------------------------------------------+
-| Less Than or Equal         | ``HP <= MaxHP``                              |
+| Less Than or Equal          | ``HP <= MaxHP``                              |
 +-----------------------------+----------------------------------------------+
-| Equal To                   | ``Type == "RepeatableQuest"``                |
+| Equal To                    | ``Type == "RepeatableQuest"``                |
 +-----------------------------+----------------------------------------------+
-| Not Equal To               | ``Description != null``                      |
+| Not Equal To                | ``Description != null``                      |
 +-----------------------------+----------------------------------------------+
-| Coalesce                   | ``Nickname ?? Name``                         |
+| Coalesce                    | ``Nickname ?? Name``                         |
 +-----------------------------+----------------------------------------------+
 
 
