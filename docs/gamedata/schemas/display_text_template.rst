@@ -1,4 +1,4 @@
-Display Name Template
+Display Text Template
 =====================
 
 When a document needs to be shown or referenced in the UI, a text representation is required. By default, Charon will use one of the following properties, in order of precedence: ``DisplayName``, ``Name``, ``Title``, or ``Id``. This fallback behavior can often result in uninformative or unclear document labels.

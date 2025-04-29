@@ -90,6 +90,39 @@ You can define the ``Id`` property using any supported data type listed above.
 All Id constraints will be automatically validated when saving the schema.  
 You can change a schema's ``Id Generator`` to ``None`` at any time, but you cannot switch back to a generator once this change is made.
 
+Id Placeholder
+--------------
+
+If you want to assign a temporary value to the ID of a document being created—for example, for internal reference—you can use a placeholder string such as ``_ID_XXX_ANY_UNIQUE_TEXT_HERE_XXX``.  
+This placeholder will be automatically replaced with the actual generated ID during saving or importing.
+
+Before save:
+
+.. code-block:: json
+
+  {
+    "Id": "_ID_ITEM_123",
+    "Name": "My New Item",
+    "ItemReference": {
+      "Id": "_ID_ITEM_123",  // self-reference
+      "DisplayName": "My New Item"
+    }
+  }
+
+After save:
+
+.. code-block:: json
+
+  {
+    "Id": "42",
+    "Name": "My New Item",
+    "ItemReference": {
+      "Id": "42",
+      "DisplayName": "My New Item"
+    }
+  }
+
+  
 See also
 --------
 
