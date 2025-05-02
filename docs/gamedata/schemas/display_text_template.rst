@@ -136,6 +136,83 @@ You can control expression evaluation order using parentheses. For example:
 
   Max Damage: {BaseDamage * (BaseCriticalChance + BonusCriticalChance)}
 
+Boolean Coercion
+^^^^^^^^^^^^^^^^
+
+Many types can be implicitly coerced to a Boolean value:
+
+- **Numeric values** are considered ``true`` if they are not equal to 0.
+- **Documents**, **References**, and **Formulas** are considered ``true`` if they are not null.
+- **Collections** (Document or Reference), **Text**, and **Localized Text** are ``true`` if they are not empty.
+
+Other types must be explicitly compared to a value to be evaluated as Boolean. These coercion rules apply to ternary expressions and unary logical negation (`!`).
+
+.. code-block:: text
+
+  Has Items: {Items ? "Yes" : "No"}
+
+Format Specifiers
+^^^^^^^^^^^^^^^^^
+
+Template expressions can include format specifiers, similar to C#'s formatting syntax. Add a colon and format string at the end of the substitution expression:
+
+.. code-block:: text
+
+  Resist Chance: {ResistChance * 100.0 :F2}
+
+This limits the precision to two decimal places.
+
+**Supported format specifiers:**
+
+- ``F``: Fixed-point (decimal precision), e.g., ``F2`` for two decimal places.
+- ``X`` / ``x``: Uppercase / lowercase hexadecimal (integers only), e.g., ``X16`` for hexadecimal string padded with zeroes to length of 16 characters.
+- ``B``: Binary representation (integers only), e.g., ``B32`` for binary string padded with zeroes to length of 32 characters.
+
+Collection Accessors
+^^^^^^^^^^^^^^^^^^^^
+
+Collections can be accessed by index using square brackets. If the index is out of bounds, the result is ``null``.
+
+.. code-block:: text
+
+  First Item: {Items[0]}
+
+The number of items in a collection can be accessed using the ``.Count`` property:
+
+.. code-block:: text
+
+  Item Count: {Items.Count}
+
+To create a joined string from all items in a collection, use the ``Join(separator: string)`` method:
+
+.. code-block:: text
+
+  Items: {Items.Join(" and ")}
+
+This would produce output like:
+
+``Items: Sword and Shield and Armor``
+
+String Manipulation Methods
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+String expressions support several methods:
+
+- ``Trim()`` — Removes leading and trailing whitespace.
+- ``Substring(start: int, count: int)`` — Extracts a substring from a given position.
+- ``ToString()`` — Converts any non-null value to its string representation.
+
+String concatenation is done using the ``+`` operator:
+
+.. code-block:: text
+
+  Damage: {Damage + " [" + DamageType + "]"}
+
+Result:
+
+``Damage: 100 [Fire]``
+
+
 See also
 --------
 

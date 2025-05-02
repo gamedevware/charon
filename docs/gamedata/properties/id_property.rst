@@ -114,10 +114,10 @@ After save:
 .. code-block:: json
 
   {
-    "Id": "42",
+    "Id": 42,
     "Name": "My New Item",
     "ItemReference": {
-      "Id": "42",
+      "Id": 42,
       "DisplayName": "My New Item"
     }
   }
