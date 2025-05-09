@@ -36,6 +36,22 @@ As with any modern .NET application, it can be launched as is on Windows, macOS 
   :width: 600
   :alt: Charon UI
 
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/dashboard.png
+  :width: 256
+  :alt: Charon Dashboard
+  
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/document_collection.png
+  :width: 256
+  :alt: Charon Documents
+
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/document_form.png
+  :width: 256
+  :alt: Charon Document Form
+
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/documents_import.png
+  :width: 256
+  :alt: Charon Document Import 
+  
 Further reading
 ---------------
 

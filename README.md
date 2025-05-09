@@ -74,10 +74,12 @@ Once set up, follow these steps:
 - After editing, utilize Charon’s source code generator to produce language/engine-specific source code for your game data.
 - Integrate the generated source code into your game project. This allows you to load the `gamedata.json` file into your game in a structured and type-safe way, ensuring seamless and error-free data usage.
 
-Editor's UI
-===========
+Browser-based UI
+================
 
 <img width="894" alt="screenshot" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png"/>  
+<img width="256" alt="screenshot" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/dashboard.png"/>  <img width="256" alt="screenshot" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/document_collection.png"/>  
+<img width="256" alt="screenshot" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/document_form.png"/>  <img width="256" alt="screenshot" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/documents_import.png"/>  
 
 C# Code Example
 ===============
