@@ -77,9 +77,10 @@ Once set up, follow these steps:
 Browser-based UI
 ================
 
-<img width="894" alt="screenshot" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png"/>  
-<img width="256" alt="screenshot" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/dashboard.png"/>  <img width="256" alt="screenshot" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/document_collection.png"/>  
-<img width="256" alt="screenshot" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/document_form.png"/>  <img width="256" alt="screenshot" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/documents_import.png"/>  
+![](docs/assets/editor_screenshot.png)
+
+<img width="256" alt="screenshot" src="docs/assets/dashboard.png"/>  <img width="256" alt="screenshot" src="docs/assets/document_collection.png"/>  
+<img width="256" alt="screenshot" src="docs/assets/document_form.png"/>  <img width="256" alt="screenshot" src="docs/assets/documents_import.png"/>  
 
 C# Code Example
 ===============
