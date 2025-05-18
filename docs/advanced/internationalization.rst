@@ -1,77 +1,113 @@
+===========================
 Internationalization (i18n)
 ===========================
 
-Charon supports storing text data in multiple languages by using the special ``LocalizedText`` data type.
+Charon supports localization by enabling text data to be stored in multiple languages using the :doc:`Localized Text <../gamedata/datatypes/all/localized_text>` data type. This allows game data to be exported for translation, modified externally, and imported back after localization.
 
-A list of possible translation languages is defined in the ``Project Settings``.
+Supported export formats include `XLSX <https://en.wikipedia.org/wiki/Office_Open_XML>`_, `XLIFF <https://en.wikipedia.org/wiki/XLIFF>`_ (XML Localization Interchange File Format) and `JSON <https://www.json.org/json-en.html>`_. These formats are suitable for translation workflows involving external tools or localization teams.
 
-There are two ways to pass translatable text to a third party (e.g., for localization or editing):
+Overview
+========
 
-- You can export all translatable data as an `XLSX <https://en.wikipedia.org/wiki/Office_Open_XML>`_ spreadsheet.
-- You can use the special localization format, `XLIFF <https://en.wikipedia.org/wiki/XLIFF>`_ (XML Localization Interchange File Format).
+Localization workflows in Charon rely on identifying fields of type :doc:`Localized Text <../gamedata/datatypes/all/localized_text>` and processing them through either spreadsheet or industry-standard interchange formats. Translated data can then be re-integrated using import commands.
 
-Translation flow via UI
------------------------
+Common use cases include:
 
-To export and translate your project's data, follow these steps:
+- Managing multi-language game content.
+- Sending text data to third-party localization vendors.
+- Automating translation pipelines with CLI tools.
 
-1. Go to the dashboard of the project for which you want to generate source code.
-2. Click on the "Internationalization Settings" link.
-3. Click on the "Export" button to export the data.
-4. Download the exported file and provide it to your translation team for translation.
-5. Once the data has been translated, click on the "Import" button on the same page.
-6. Select the translated file and follow the steps provided in the import wizard.
+Supported Languages
+===================
 
-Translation flow via CLI
-------------------------
-
-Exporting to XLSX spreadsheet
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-To export translatable text data as *XLSX*, run the :doc:`DATA EXPORT <commands/data_export>` command with the following parameters:
+Translation languages are defined in the **Project Settings**. To view the configured languages via the CLI, run:
 
 .. code-block:: bash
 
-  dotnet charon DATA EXPORT --dataBase "c:\my app\gamedata.json" --properties [LocalizedText] --output "c:\my app\text_all_languages.xlsx" --outputFormat xlsx
-  
-- Use ``--properties [LocalizedText]`` parameter to indicate that only the properties containing ``LocalizedText`` should be exported.
-- Use ``--languages`` parameter to limit the number of exported languages.
+   dotnet charon DATA I18N LANGUAGES --dataBase gamedata.json
 
-Extra columns may be present in the export files, which are required for the correct import of the translated data.
+Exporting Translatable Text
+===========================
 
-Importing from XLSX spreadsheet
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Charon provides two primary formats for exporting localizable content: XLSX and XLIFF. Exporting can be done via the graphical interface or command-line interface.
 
-Once your data is processed (e.g., translated), you can import it using the :doc:`DATA IMPORT <commands/data_import>` command with the ``safeUpdate`` mode:
+XLSX Export (Spreadsheet)
+-------------------------
 
-.. code-block:: bash
-
-  dotnet charon DATA IMPORT --dataBase "c:\my app\gamedata.json" --input "c:\my app\text_all_languages.xlsx" --inputFormat xlsx --mode safeUpdate
-  
-Exporting to XLIFF
-^^^^^^^^^^^^^^^^^^
-
-To export translatable text data as *XLIFF*, run the :doc:`DATA I18N EXPORT <commands/data_i18n_export>` command with the following parameters:
+The following example exports all translatable text to an Excel spreadsheet:
 
 .. code-block:: bash
 
-  dotnet charon DATA I18N EXPORT --dataBase "c:\my app\gamedata.json" --sourceLanguage en --targetLanguage fr --output "c:\my app\en_fr_texts.xliff" --outputFormat xliff
+   dotnet charon DATA EXPORT --dataBase "gamedata.json" --properties [LocalizedText] --output "text_all_languages.xlsx" --outputFormat xlsx
 
-- Use the ``--outputFormat`` parameter to indicate the exact format of the exported data, which can be either *xliff*, *xiff1*, or *xliff2*.
-- Use ``--sourceLanguage`` to indicate the language text is being translated from as the *source*, and ``--targetLanguage`` to indicate the *target* language that the text is being translated to.
-- To get a list of configured translation languages for the game data, run the :doc:`DATA I18N LANGUAGES <commands/data_i18n_languages>` command.
+Key parameters:
 
-Importing from XLIFF
-^^^^^^^^^^^^^^^^^^^^
+- ``--properties [LocalizedText]``: Filters exported data to include only `LocalizedText` fields.
+- ``--languages``: (Optional) Specifies which languages to include in the export.
 
-Once the data has been processed, you can import it using the :doc:`DATA I18N IMPORT <commands/data_i18n_import>` command.
+.. note::
+   The exported spreadsheet may contain additional metadata columns that are required for correct import.
+
+XLIFF Export (Industry Standard)
+--------------------------------
+
+To export translation data in XLIFF format:
 
 .. code-block:: bash
 
-  dotnet charon DATA I18N IMPORT --dataBase "c:\my app\gamedata.json" --input "c:\my app\en_fr_texts.xliff"
-  
-Other formats
-^^^^^^^^^^^^^
+   dotnet charon DATA I18N EXPORT --dataBase "gamedata.json" --sourceLanguage en --targetLanguage fr --output "en_fr_texts.xliff" --outputFormat xliff
 
-While the export and import commands may accept other formats, it cannot be guaranteed that they will be supported.
-  
+Key parameters:
+
+- ``--sourceLanguage``: Language of the original text.
+- ``--targetLanguage``: Language to which the content will be translated.
+- ``--outputFormat``: Format of the exported file. Supported values include `xliff`, `xliff1`, and `xliff2`.
+
+Importing Translated Data
+==========================
+
+After translation, the modified data can be imported back into the project. Both XLSX and XLIFF formats are supported.
+
+XLSX Import
+-----------
+
+To import translated spreadsheet data:
+
+.. code-block:: bash
+
+   dotnet charon DATA IMPORT --dataBase "gamedata.json" --input "text_all_languages.xlsx" --inputFormat xlsx --mode safeUpdate
+
+Key parameters:
+
+- ``--inputFormat xlsx``: Indicates the input file format.
+- ``--mode safeUpdate``: Ensures only existing fields are updated, without creating or deleting data.
+
+XLIFF Import
+------------
+
+To import translated XLIFF content:
+
+.. code-block:: bash
+
+   dotnet charon DATA I18N IMPORT --dataBase "gamedata.json" --input "en_fr_texts.xliff"
+
+Best Practices
+==============
+
+- Use **XLSX** when working with translators familiar with spreadsheet tools.
+- Use **XLIFF** for integration with professional translation software or localization platforms.
+- Validate the translated data with a **dry run** before importing changes into production data.
+
+Unsupported Formats
+===================
+
+While Charon may accept other serialization formats (e.g., BSON, MsgPack), compatibility for internationalization workflows is only guaranteed for XLSX, XLIFF and JSON.
+
+Additional Resources
+====================
+
+- :doc:`DATA EXPORT <commands/data_export>`
+- :doc:`DATA IMPORT <commands/data_import>`
+- :doc:`DATA I18N EXPORT <commands/data_i18n_export>`
+- :doc:`DATA I18N IMPORT <commands/data_i18n_import>`
+- :doc:`DATA I18N LANGUAGES <commands/data_i18n_languages>`
