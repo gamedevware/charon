@@ -49,6 +49,29 @@ Create Document
      
      # id
      --schema 55a4f32faca22e191098f3d9
+    
+--validationOptions
+   List of validation checks and repairs to perform during document creation.
+     
+   .. code-block:: bash
+
+     # no checks
+     --validationOptions none
+
+     # repairs
+     --validationOptions repair
+     --validationOptions repair deduplicateIds
+     --validationOptions repair repairRequiredWithDefaultValue
+     --validationOptions repair eraseInvalidValue
+     
+     # checks (default)
+     --validationOptions checkTranslation
+     --validationOptions checkRequirements
+     --validationOptions checkFormat
+     --validationOptions checkUniqueness
+     --validationOptions checkReferences
+     --validationOptions checkSpecification
+     --validationOptions checkConstraints
      
 --input
    Path to a file with document. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or :doc:`URL <remote_input_output>`.

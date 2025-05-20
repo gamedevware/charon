@@ -45,11 +45,14 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
      
    .. code-block:: bash
 
+     # no checks
+     --validationOptions none
+
      # repairs
      --validationOptions repair     
-     --validationOptions deduplicateIds
-     --validationOptions repairRequiredWithDefaultValue
-     --validationOptions eraseInvalidValue
+     --validationOptions repair deduplicateIds
+     --validationOptions repair repairRequiredWithDefaultValue
+     --validationOptions repair eraseInvalidValue
      
      # checks (default)
      --validationOptions checkTranslation
