@@ -1,7 +1,7 @@
 Unreal Engine Plugin Overview
 =============================
 
-Charon is a versatile plugin tailored for Unreal Engine, designed to facilitate data-driven game design 
+Charon is a versatile `plugin <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ tailored for Unreal Engine, designed to facilitate data-driven game design 
 by allowing both developers and game designers to efficiently manage static game data, like 
 units, items, missions, quests, and other. Unlike Unreal Engine's DataTables, Charon elevates the 
 experience by offering an integrated editing UI directly within Unreal Engine, 
@@ -77,7 +77,7 @@ The Unreal Engine plugin is written in C++ but relies on ``dotnet charon``, a .N
 Installation from Marketplace
 -----------------------------
 
-1. Add to cart Charon plugin `[Epic Launcher] <com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4>`_ / `[Web] <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ in the Unreal Engine Marketplace.
+1. Add to cart Charon plugin `[Epic Launcher] <com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4>`_ / `[Fab.com Asset Page] <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ in the Unreal Engine Marketplace.
 2. Follow the `instruction <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ on installing plugin into your project:
   a. Click **Install to Engine** and select the engine version.
   b. Open your project and go to **Edit → Plugins...** window.
