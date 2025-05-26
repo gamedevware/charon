@@ -167,6 +167,7 @@ This limits the precision to two decimal places.
 - ``F``: Fixed-point (decimal precision), e.g., ``F2`` for two decimal places.
 - ``X`` / ``x``: Uppercase / lowercase hexadecimal (integers only), e.g., ``X16`` for hexadecimal string padded with zeroes to length of 16 characters.
 - ``B``: Binary representation (integers only), e.g., ``B32`` for binary string padded with zeroes to length of 32 characters.
+- ``L``: String length limitation, e.g., ``L12`` for a string shorter than 12 characters nothing will change, but if it is longer than 12 it will be truncated to 12 and an ellipsis character ``…`` will be added.
 
 Collection Accessors
 ^^^^^^^^^^^^^^^^^^^^
