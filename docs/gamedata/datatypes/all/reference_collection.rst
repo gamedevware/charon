@@ -37,7 +37,7 @@ Specification
      Example:  
      ``localOnly=true``
    
-   - ``pathFilter`` — Filters available documents based on their path. Use ``*`` to include all paths, or an empty string ``""`` to include only root-level documents.
+   - ``pathFilter`` — Filters available documents based on their path (RFC 6901 JSON Pointer). Use ``*`` to include all paths, or an empty string ``""`` to include only root-level documents.
    
      Example:  
      ``pathFilter=%2FItem`` (documents under `/Item`)  

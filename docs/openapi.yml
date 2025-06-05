@@ -47,6 +47,10 @@ paths:
           content:
             application/json:
               schema:
+                required:
+                  - error
+                  - error_description
+                  - error_uri
                 type: object
                 properties:
                   error:
@@ -111,6 +115,9 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - email
+                - password
               type: object
               properties:
                 email:
@@ -148,6 +155,9 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - flowId
+                - code
               type: object
               properties:
                 flowId:
@@ -186,6 +196,8 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - apiKey
               type: object
               properties:
                 apiKey:
@@ -220,6 +232,8 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - userId
               type: object
               properties:
                 userId:
@@ -326,26 +340,82 @@ paths:
             schema:
               required:
                 - message
+                - sessionId
               type: object
               properties:
                 message:
                   type: string
                   description: The log message content to be recorded
                   example: Failed to initialize component X
-                source:
-                  type: string
-                  description: Source component or module generating the log
-                  nullable: true
-                  example: Dashboard
-                clientId:
-                  type: string
-                  description: Unique client identifier for log correlation
-                  nullable: true
-                  example: dfc533de-d827-47d1-9820-44b057cd5e44
+                sessionId:
+                  $ref: '#/components/schemas/BrowserSessionId'
         required: true
       responses:
         '204':
           description: 'Log message was successfully received (though may not necessarily be persisted, depending on server configuration)'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  /app/feedback/:
+    put:
+      tags:
+        - Troubleshooting
+      summary: Submit user feedback
+      description: Allows users to submit feedback about their experience with the application. Includes a rating and optional message that will be recorded for product improvement.
+      operationId: leaveFeedback
+      requestBody:
+        description: Feedback details to be submitted
+        content:
+          application/json:
+            schema:
+              required:
+                - message
+                - rating
+              type: object
+              properties:
+                message:
+                  maxLength: 2000
+                  type: string
+                  description: Detailed feedback message from the user. Should describe any issues encountered or suggestions for improvement.
+                  example: The editor crashes when opening large game data files
+                rating:
+                  maximum: 5
+                  minimum: 1
+                  type: integer
+                  description: 'User satisfaction rating where: - 1 = Very dissatisfied - 2 = Dissatisfied - 3 = Neutral - 4 = Satisfied - 5 = Very satisfied'
+                  format: int32
+                  example: 3
+        required: true
+      responses:
+        '204':
+          description: 'Feedback was successfully received and recorded. Note: This does not guarantee any follow-up action will be taken.'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  /app/release-notes/:
+    get:
+      tags:
+        - Troubleshooting
+      summary: Get current version release notes
+      description: 'Retrieves the release notes for the currently deployed server version. Includes information about new features, improvements, and bug fixes.'
+      operationId: getReleaseNotes
+      responses:
+        '200':
+          description: Successfully retrieved release notes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReleaseNotesResponse'
         default:
           description: Operation failure response.
           content:
@@ -792,27 +862,28 @@ paths:
       operationId: convertGameDataRaw
       parameters:
         - $ref: '#/components/parameters/dataSourceId'
+        - $ref: '#/components/parameters/importSchemaNameOrId'
       requestBody:
         description: Game data document in supported input format
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JsonObject'
+              $ref: '#/components/schemas/JsonValue'
           application/x-msgpack:
             schema:
-              $ref: '#/components/schemas/JsonObject'
+              $ref: '#/components/schemas/JsonValue'
           application/bson:
             schema:
-              $ref: '#/components/schemas/JsonObject'
+              $ref: '#/components/schemas/JsonValue'
           application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
             schema:
-              $ref: '#/components/schemas/JsonObject'
+              $ref: '#/components/schemas/JsonValue'
           application/xliff+xml;version=1:
             schema:
-              $ref: '#/components/schemas/JsonObject'
+              $ref: '#/components/schemas/JsonValue'
           application/xliff+xml;version=2:
             schema:
-              $ref: '#/components/schemas/JsonObject'
+              $ref: '#/components/schemas/JsonValue'
         required: true
       responses:
         '200':
@@ -967,22 +1038,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JsonObject'
+              $ref: '#/components/schemas/JsonValue'
           application/x-msgpack:
             schema:
-              $ref: '#/components/schemas/JsonObject'
+              $ref: '#/components/schemas/JsonValue'
           application/bson:
             schema:
-              $ref: '#/components/schemas/JsonObject'
+              $ref: '#/components/schemas/JsonValue'
           application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
             schema:
-              $ref: '#/components/schemas/JsonObject'
+              $ref: '#/components/schemas/JsonValue'
           application/xliff+xml;version=1:
             schema:
-              $ref: '#/components/schemas/JsonObject'
+              $ref: '#/components/schemas/JsonValue'
           application/xliff+xml;version=2:
             schema:
-              $ref: '#/components/schemas/JsonObject'
+              $ref: '#/components/schemas/JsonValue'
         required: true
       responses:
         '200':
@@ -1204,6 +1275,16 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - targetLanguage
+                - documentClassName
+                - gameDataClassName
+                - namespace
+                - defineConstants
+                - lineEndings
+                - indentation
+                - splitFiles
+                - optimizations
               type: object
               properties:
                 targetLanguage:
@@ -1503,6 +1584,7 @@ paths:
           application/json:
             schema:
               required:
+                - existingSchemas
                 - userPrompt
               type: object
               properties:
@@ -1595,6 +1677,7 @@ paths:
           application/json:
             schema:
               required:
+                - regenerate
                 - userPrompt
               type: object
               properties:
@@ -2171,6 +2254,10 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - name
+                - email
+                - passwordCredential
               type: object
               properties:
                 name:
@@ -2187,6 +2274,8 @@ paths:
                   pattern: \w+@\w+
                   type: string
                 passwordCredential:
+                  required:
+                    - password
                   type: object
                   properties:
                     password:
@@ -2269,6 +2358,8 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - email
               type: object
               properties:
                 email:
@@ -2296,6 +2387,9 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - code
+                - newPassword
               type: object
               properties:
                 code:
@@ -2429,6 +2523,9 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - currentPassword
+                - newPassword
               type: object
               properties:
                 currentPassword:
@@ -2461,6 +2558,8 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - isEnabled
               type: object
               properties:
                 isEnabled:
@@ -2510,6 +2609,9 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - title
+                - expirationTimeSeconds
               type: object
               properties:
                 title:
@@ -2849,6 +2951,10 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - workspaceId
+                - name
+                - scriptingLanguage
               type: object
               properties:
                 workspaceId:
@@ -3001,6 +3107,8 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - name
               type: object
               properties:
                 name:
@@ -3031,6 +3139,8 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - destinationBranchName
               type: object
               properties:
                 destinationBranchName:
@@ -3109,6 +3219,8 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - newWorkspaceId
               type: object
               properties:
                 newWorkspaceId:
@@ -3140,6 +3252,9 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - name
+                - email
               type: object
               properties:
                 name:
@@ -3201,6 +3316,8 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - permissions
               type: object
               properties:
                 permissions:
@@ -3274,6 +3391,13 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - taxationType
+                - firstName
+                - lastName
+                - addressLine1
+                - city
+                - countryCode
               type: object
               properties:
                 taxationType:
@@ -3390,6 +3514,13 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - workspaceId
+                - packageName
+                - period
+                - currencyCode
+                - successRedirectUrl
+                - cancelRedirectUrl
               type: object
               properties:
                 workspaceId:
@@ -3437,6 +3568,8 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - invoiceId
               type: object
               properties:
                 invoiceId:
@@ -3472,6 +3605,11 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - workspaceId
+                - packageName
+                - period
+                - currencyCode
               type: object
               properties:
                 workspaceId:
@@ -3513,6 +3651,8 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - returnUrl
               type: object
               properties:
                 returnUrl:
@@ -3700,9 +3840,8 @@ paths:
             application/octet-stream:
               schema:
                 type: object
-      security:
-        - BearerAuth: [ ]
       x-custom-response: true
+      x-anonymous: true
     parameters:
       - $ref: '#/components/parameters/resourceId'
   /context/:
@@ -3758,6 +3897,11 @@ components:
       type: string
       format: password
     Filter:
+      required:
+        - property
+        - operator
+        - value
+        - caseSensitive
       type: object
       properties:
         property:
@@ -3783,6 +3927,9 @@ components:
       nullable: true
       readOnly: true
     Sorter:
+      required:
+        - property
+        - direction
       type: object
       properties:
         property:
@@ -3816,6 +3963,10 @@ components:
     JsonValue:
       x-external-type: JsonValue
     BulkChangeResult:
+      required:
+        - changes
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         changes:
@@ -3829,6 +3980,10 @@ components:
       additionalProperties: false
       readOnly: true
     StatisticsResult:
+      required:
+        - metadataHash
+        - revisionHash
+        - collections
       type: object
       properties:
         metadataHash:
@@ -3842,6 +3997,12 @@ components:
       additionalProperties: false
       readOnly: true
     DocumentsStatisticsRecord:
+      required:
+        - schemaName
+        - schemaId
+        - documentCount
+        - rootDocumentCount
+        - validationErrorCount
       type: object
       properties:
         schemaName:
@@ -3874,6 +4035,14 @@ components:
       description: Statistics of documents for some schema.
       readOnly: true
     BulkChangeRecord:
+      required:
+        - id
+        - newId
+        - schemaName
+        - schemaId
+        - status
+        - comment
+        - errors
       type: object
       properties:
         id:
@@ -3902,6 +4071,10 @@ components:
       additionalProperties: false
       readOnly: true
     ValidationError:
+      required:
+        - path
+        - message
+        - code
       type: object
       properties:
         path:
@@ -3912,6 +4085,10 @@ components:
           $ref: '#/components/schemas/ErrorCode'
       readOnly: true
     ValidateResult:
+      required:
+        - records
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         records:
@@ -3925,6 +4102,11 @@ components:
       additionalProperties: false
       readOnly: true
     ValidationRecord:
+      required:
+        - id
+        - schemaName
+        - schemaId
+        - errors
       type: object
       properties:
         id:
@@ -3940,6 +4122,12 @@ components:
       additionalProperties: false
       readOnly: true
     DataDocumentMeta:
+      required:
+        - schemaId
+        - path
+        - containingDocumentSchemaId
+        - containingDocumentId
+        - errorCount
       type: object
       properties:
         schemaId:
@@ -3995,6 +4183,10 @@ components:
         - onlyMissing
       type: string
     ExportResult:
+      required:
+        - document
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         document:
@@ -4006,6 +4198,10 @@ components:
       additionalProperties: false
       readOnly: true
     BackupResult:
+      required:
+        - document
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         document:
@@ -4017,6 +4213,10 @@ components:
       additionalProperties: false
       readOnly: true
     CreateResult:
+      required:
+        - document
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         document:
@@ -4028,6 +4228,11 @@ components:
       additionalProperties: false
       readOnly: true
     UpdateResult:
+      required:
+        - document
+        - diff
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         document:
@@ -4041,6 +4246,10 @@ components:
       additionalProperties: false
       readOnly: true
     DeleteResult:
+      required:
+        - document
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         document:
@@ -4052,6 +4261,11 @@ components:
       additionalProperties: false
       readOnly: true
     FindResult:
+      required:
+        - document
+        - meta
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         document:
@@ -4065,6 +4279,12 @@ components:
       additionalProperties: false
       readOnly: true
     ListResult:
+      required:
+        - documents
+        - metas
+        - total
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         documents:
@@ -4085,6 +4305,9 @@ components:
       additionalProperties: false
       readOnly: true
     RestoreResult:
+      required:
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         metadataHash:
@@ -4094,6 +4317,9 @@ components:
       additionalProperties: false
       readOnly: true
     SearchResult:
+      required:
+        - items
+        - total
       type: object
       properties:
         items:
@@ -4106,6 +4332,13 @@ components:
       additionalProperties: false
       readOnly: true
     SearchResultItem:
+      required:
+        - type
+        - id
+        - subId
+        - displayText
+        - subDisplayText
+        - pictureUrl
       type: object
       properties:
         type:
@@ -4133,6 +4366,14 @@ components:
         - document
       type: string
     AiCompletionResult:
+      required:
+        - id
+        - threadId
+        - messages
+        - completionTokens
+        - promptTokens
+        - totalTokens
+        - tokensLeft
       type: object
       properties:
         id:
@@ -4162,6 +4403,9 @@ components:
       additionalProperties: false
       readOnly: true
     AiChatMessage:
+      required:
+        - role
+        - content
       type: object
       properties:
         role:
@@ -4178,6 +4422,10 @@ components:
       additionalProperties: false
       readOnly: true
     ExtensionPackageLoadProgress:
+      required:
+        - status
+        - progressMessage
+        - lastStatusUpdate
       type: object
       properties:
         status:
@@ -4202,6 +4450,16 @@ components:
       additionalProperties: false
       readOnly: true
     PageContext:
+      required:
+        - scope
+        - serverCapabilities
+        - userId
+        - workspaceId
+        - workspaceCapabilities
+        - projectId
+        - dataSourceId
+        - dataSourceLocation
+        - preferences
       type: object
       properties:
         scope:
@@ -4234,6 +4492,12 @@ components:
           type: string
           nullable: true
         preferences:
+          required:
+            - projectPersonal
+            - projectShared
+            - workspacePersonal
+            - workspaceShared
+            - serverDefault
           type: object
           properties:
             projectPersonal:
@@ -4250,11 +4514,19 @@ components:
       additionalProperties: false
       readOnly: true
     DataSourceCapabilities:
+      required:
+        - location
+        - limits
       type: object
       properties:
         location:
           type: string
         limits:
+          required:
+            - transactionMaxStartTime
+            - transactionMaxExecutionTime
+            - readOnly
+            - readOnlyReasons
           type: object
           properties:
             transactionMaxStartTime:
@@ -4286,6 +4558,9 @@ components:
       pattern: '^[a-zA-Z_][a-zA-Z0-9_]*$'
       type: string
     ServerCapabilities:
+      required:
+        - serverVersion
+        - features
       type: object
       properties:
         serverVersion:
@@ -4297,6 +4572,8 @@ components:
       additionalProperties: false
       readOnly: true
     WorkspaceCapabilities:
+      required:
+        - features
       type: object
       properties:
         features:
@@ -4333,6 +4610,16 @@ components:
         - githubAuthentication
       type: string
     ProcessState:
+      required:
+        - id
+        - dataSourceId
+        - type
+        - status
+        - progressMessage
+        - progress
+        - startTime
+        - elapsedMilliseconds
+        - canBeStopped
       type: object
       properties:
         id:
@@ -4388,6 +4675,13 @@ components:
         - finishedWithResult
       type: string
     FormulaType:
+      required:
+        - sourceCodeLanguage
+        - kind
+        - name
+        - packageOrNamespaceName
+        - fullName
+        - moduleName
       type: object
       properties:
         sourceCodeLanguage:
@@ -4436,6 +4730,9 @@ components:
           description: Project-relative path to the asset
       description: A game asset that can be referenced from game data
     PublicUserProfile:
+      required:
+        - id
+        - name
       type: object
       properties:
         id:
@@ -4448,6 +4745,16 @@ components:
           nullable: true
       additionalProperties: false
     User:
+      required:
+        - id
+        - type
+        - profile
+        - logins
+        - invitations
+        - workspaces
+        - workspaceAliases
+        - projectAliases
+        - creationTime
       type: object
       properties:
         id:
@@ -4461,6 +4768,9 @@ components:
           type: string
           x-name: UserAccountType
         profile:
+          required:
+            - name
+            - email
           type: object
           properties:
             name:
@@ -4498,6 +4808,10 @@ components:
           type: string
           format: date-time
     WorkspaceAlias:
+      required:
+        - workspaceId
+        - alias
+        - creationTime
       properties:
         workspaceId:
           type: string
@@ -4508,6 +4822,10 @@ components:
           type: string
           format: date-time
     ProjectAlias:
+      required:
+        - projectId
+        - alias
+        - creationTime
       properties:
         projectId:
           type: string
@@ -4518,6 +4836,11 @@ components:
           type: string
           format: date-time
     UserLogin:
+      required:
+        - id
+        - isEnabled
+        - tokenSeries
+        - provider
       properties:
         id:
           type: string
@@ -4529,6 +4852,9 @@ components:
         provider:
           $ref: '#/components/schemas/AuthenticationProvider'
     CreatedApiKey:
+      required:
+        - userLogin
+        - apiKey
       properties:
         userLogin:
           $ref: '#/components/schemas/UserLogin'
@@ -4547,11 +4873,11 @@ components:
       required:
         - sessionId
         - page
+        - routeParameters
       type: object
       properties:
         sessionId:
-          type: integer
-          format: int32
+          $ref: '#/components/schemas/BrowserSessionId'
         page:
           enum:
             - gone
@@ -4565,6 +4891,10 @@ components:
         focusedObject:
           type: object
           nullable: true
+    BrowserSessionId:
+      type: integer
+      description: Unique identifier of User's browser session.
+      format: int32
     AuthenticationProvider:
       enum:
         - emailPassword
@@ -4575,6 +4905,13 @@ components:
         - github
       type: string
     ProjectMembershipInvitation:
+      required:
+        - id
+        - invitedUserId
+        - initiatorUserId
+        - projectId
+        - response
+        - creationTime
       type: object
       properties:
         id:
@@ -4599,6 +4936,14 @@ components:
           type: string
           format: date-time
     Workspace:
+      required:
+        - id
+        - name
+        - pictureUrl
+        - ownerUserId
+        - subscription
+        - administratorUserIds
+        - projects
       type: object
       properties:
         id:
@@ -4625,6 +4970,13 @@ components:
             type: string
             format: objectid
     WorkspaceQuotaUsage:
+      required:
+        - memberCount
+        - projectCount
+        - dataStorageSize
+        - backupStorageSize
+        - machineTranslationTokens
+        - aiCompletionTokens
       type: object
       properties:
         memberCount:
@@ -4646,6 +4998,17 @@ components:
           type: integer
           format: int32
     Project:
+      required:
+        - id
+        - name
+        - pictureUrl
+        - tags
+        - scriptingLanguage
+        - workspaceId
+        - branches
+        - memberUserIds
+        - invitations
+        - permissions
       type: object
       properties:
         id:
@@ -4693,6 +5056,14 @@ components:
         - other
       type: string
     Branch:
+      required:
+        - id
+        - name
+        - isPrimary
+        - databaseName
+        - location
+        - dataSize
+        - backupSize
       type: object
       properties:
         id:
@@ -4718,6 +5089,9 @@ components:
           type: integer
           format: int32
     ProjectPermission:
+      required:
+        - memberUserId
+        - grants
       type: object
       properties:
         memberUserId:
@@ -4734,6 +5108,16 @@ components:
             type: string
             x-name: ProjectPermissionGrant
     BillingAccount:
+      required:
+        - id
+        - taxationType
+        - firstName
+        - lastName
+        - addressLine1
+        - city
+        - countryCode
+        - balance
+        - invoices
       type: object
       properties:
         id:
@@ -4775,6 +5159,15 @@ components:
           items:
             $ref: '#/components/schemas/PaymentInvoice'
     PaymentInvoice:
+      required:
+        - id
+        - creationTime
+        - description
+        - lines
+        - currencyCode
+        - totalAmount
+        - lastUpdateTime
+        - status
       type: object
       properties:
         id:
@@ -4815,6 +5208,10 @@ components:
             - void
           type: string
     PaymentInvoiceLineItem:
+      required:
+        - description
+        - currencyCode
+        - amount
       type: object
       properties:
         description:
@@ -4830,6 +5227,9 @@ components:
         - business
       type: string
     RedirectResult:
+      required:
+        - redirectAction
+        - redirectUrl
       type: object
       properties:
         redirectAction:
@@ -4844,6 +5244,11 @@ components:
           nullable: true
       x-mutable: true
     MembershipPackage:
+      required:
+        - name
+        - title
+        - features
+        - prices
       type: object
       properties:
         name:
@@ -4854,14 +5259,24 @@ components:
         title:
           type: string
         features:
+          required:
+            - backup
+            - projects
+            - storage
+            - serviceTokens
           type: object
           properties:
             backup:
+              required:
+                - allowSchedule
               type: object
               properties:
                 allowSchedule:
                   type: boolean
             projects:
+              required:
+                - maxMembers
+                - maxProjects
               type: object
               properties:
                 maxMembers:
@@ -4874,6 +5289,9 @@ components:
                   nullable: true
               nullable: true
             storage:
+              required:
+                - dataSource
+                - backups
               type: object
               properties:
                 dataSource:
@@ -4886,6 +5304,9 @@ components:
                   nullable: true
               nullable: true
             serviceTokens:
+              required:
+                - machineTranslation
+                - aiCompletion
               type: object
               properties:
                 machineTranslation:
@@ -4902,6 +5323,13 @@ components:
           items:
             $ref: '#/components/schemas/MembershipPrice'
     MembershipSubscription:
+      required:
+        - id
+        - packageName
+        - startDate
+        - endDate
+        - usedResources
+        - cost
       type: object
       properties:
         id:
@@ -4926,6 +5354,13 @@ components:
         cost:
           $ref: '#/components/schemas/MembershipPrice'
     ResourceUsage:
+      required:
+        - type
+        - amount
+        - amountTotal
+        - startDate
+        - lastUpdateDate
+        - lastRollDate
       type: object
       properties:
         type:
@@ -4950,6 +5385,11 @@ components:
           type: string
           format: date
     MembershipPrice:
+      required:
+        - externalId
+        - period
+        - currencyCode
+        - amount
       type: object
       properties:
         externalId:
@@ -4963,6 +5403,9 @@ components:
           type: integer
           format: int32
     CurrencyAmount:
+      required:
+        - currencyCode
+        - amount
       type: object
       properties:
         currencyCode:
@@ -4980,6 +5423,12 @@ components:
         - usd
       type: string
     OAuthSuccessResponse:
+      required:
+        - token_type
+        - access_token
+        - refresh_token
+        - expires_in
+        - user_id
       type: object
       properties:
         token_type:
@@ -5008,6 +5457,10 @@ components:
           readOnly: true
       additionalProperties: false
     AuthenticationFlowStage:
+      required:
+        - flowId
+        - authorizationCode
+        - nextStep
       type: object
       properties:
         flowId:
@@ -5026,6 +5479,8 @@ components:
           x-name: MultiFactorAuthenticationStep
       additionalProperties: false
     AuthenticationRedirect:
+      required:
+        - location
       type: object
       properties:
         location:
@@ -5035,6 +5490,14 @@ components:
       type: string
       format: binary
     StoredResourceMetadata:
+      required:
+        - id
+        - ownerId
+        - fileName
+        - purpose
+        - length
+        - mediaType
+        - md5Hash
       type: object
       properties:
         id:
@@ -5075,6 +5538,10 @@ components:
         - workspacePicture
       type: string
     ChangeWorkspaceSubscriptionRequest:
+      required:
+        - packageName
+        - billingPeriod
+        - billingCurrencyCode
       type: object
       properties:
         packageName:
@@ -5091,6 +5558,9 @@ components:
       items:
         $ref: '#/components/schemas/JsonPatch'
     JsonPatch:
+      required:
+        - path
+        - op
       type: object
       properties:
         path:
@@ -5127,6 +5597,9 @@ components:
     RawResponse:
       type: object
     ErrorResponse:
+      required:
+        - result
+        - errors
       type: object
       properties:
         result:
@@ -5139,6 +5612,9 @@ components:
       readOnly: true
       x-external-type: ErrorResponse
     EmptyResponse:
+      required:
+        - result
+        - errors
       type: object
       properties:
         result:
@@ -5151,6 +5627,9 @@ components:
       readOnly: true
       x-external-type: EmptyResponse
     ApiError:
+      required:
+        - message
+        - code
       type: object
       properties:
         message:
@@ -5250,6 +5729,9 @@ components:
         - invalidSchemaProperty
       type: string
     Preferences:
+      required:
+        - dataSource
+        - authentication
       type: object
       properties:
         dataSource:
@@ -5259,6 +5741,8 @@ components:
       nullable: true
       x-mutable: true
     AuthenticationPreferences:
+      required:
+        - refreshTokens
       type: object
       properties:
         currentUserId:
@@ -5270,6 +5754,14 @@ components:
             type: string
       x-mutable: true
     DataSourcePreferences:
+      required:
+        - documentForm
+        - documentList
+        - dashboard
+        - features
+        - recentDocuments
+        - wizard
+        - mutedWarnings
       type: object
       properties:
         documentForm:
@@ -5296,6 +5788,8 @@ components:
             $ref: '#/components/schemas/MutedWarningPreference'
       x-mutable: true
     DocumentFormPreferences:
+      required:
+        - documentDrafts
       type: object
       properties:
         savingWithErrorsPolicy:
@@ -5317,6 +5811,9 @@ components:
             type: object
       x-mutable: true
     DocumentListPreferences:
+      required:
+        - views
+        - selectedViews
       type: object
       properties:
         views:
@@ -5333,6 +5830,22 @@ components:
       properties:
         sidePanelWidth:
           type: number
+          nullable: true
+        lastReleaseNotesHash:
+          type: string
+          nullable: true
+        lastActivityDate:
+          type: string
+          format: date-time
+          nullable: true
+        activityDateCount:
+          type: number
+          format: int32
+          nullable: true
+        dialogPostponementDate:
+          type: string
+          format: date-time
+          nullable: true
       x-mutable: true
     DialogActionPreference:
       enum:
@@ -5354,6 +5867,12 @@ components:
           nullable: true
       x-mutable: true
     ProcessStartedNotification:
+      required:
+        - dataSourceId
+        - processId
+        - type
+        - startTime
+        - canBeStopped
       type: object
       properties:
         dataSourceId:
@@ -5372,6 +5891,14 @@ components:
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     ProcessProgressChangedNotification:
+      required:
+        - dataSourceId
+        - processId
+        - type
+        - progressMessage
+        - progress
+        - elapsedMilliseconds
+        - canBeStopped
       type: object
       properties:
         dataSourceId:
@@ -5395,6 +5922,13 @@ components:
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     ProcessFinishedNotification:
+      required:
+        - dataSourceId
+        - processId
+        - metadataHash
+        - type
+        - status
+        - elapsedMilliseconds
       type: object
       properties:
         dataSourceId:
@@ -5413,6 +5947,11 @@ components:
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     DocumentCollectionChangedNotification:
+      required:
+        - dataSourceId
+        - metadataHash
+        - revisionHash
+        - schemaId
       type: object
       properties:
         dataSourceId:
@@ -5427,6 +5966,10 @@ components:
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     DataSourceRestoredNotification:
+      required:
+        - dataSourceId
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         dataSourceId:
@@ -5439,6 +5982,10 @@ components:
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     DataSourceLoadedNotification:
+      required:
+        - dataSourceId
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         dataSourceId:
@@ -5451,6 +5998,8 @@ components:
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     DataSourceReloadStartedNotification:
+      required:
+        - dataSourceId
       type: object
       properties:
         dataSourceId:
@@ -5459,6 +6008,10 @@ components:
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     DataSourceReloadedNotification:
+      required:
+        - dataSourceId
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         dataSourceId:
@@ -5471,6 +6024,9 @@ components:
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     DataSourceReloadFailedNotification:
+      required:
+        - dataSourceId
+        - errors
       type: object
       properties:
         dataSourceId:
@@ -5483,6 +6039,10 @@ components:
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     DataSourceSavingNotification:
+      required:
+        - dataSourceId
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         dataSourceId:
@@ -5495,6 +6055,10 @@ components:
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     DataSourceSavedNotification:
+      required:
+        - dataSourceId
+        - metadataHash
+        - revisionHash
       type: object
       properties:
         dataSourceId:
@@ -5507,6 +6071,12 @@ components:
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     DataSourceSaveFailedNotification:
+      required:
+        - dataSourceId
+        - metadataHash
+        - revisionHash
+        - failTime
+        - errors
       type: object
       properties:
         dataSourceId:
@@ -5526,6 +6096,8 @@ components:
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     DataSourceUnloadedNotification:
+      required:
+        - dataSourceId
       type: object
       properties:
         dataSourceId:
@@ -5534,6 +6106,8 @@ components:
       additionalProperties: false
       x-implements: IDataSourceNotificationContent
     UserDeletedNotification:
+      required:
+        - userId
       type: object
       properties:
         userId:
@@ -5542,6 +6116,8 @@ components:
       additionalProperties: false
       x-implements: INotificationContent
     UserPasswordChangedNotification:
+      required:
+        - userId
       type: object
       properties:
         userId:
@@ -5550,6 +6126,10 @@ components:
       additionalProperties: false
       x-implements: IUserNotificationContent
     ProjectCreatedNotification:
+      required:
+        - userId
+        - workspaceId
+        - projectId
       type: object
       properties:
         userId:
@@ -5564,6 +6144,9 @@ components:
       additionalProperties: false
       x-implements: IWorkspaceNotificationContent
     ProjectDeletedNotification:
+      required:
+        - workspaceId
+        - projectId
       type: object
       properties:
         workspaceId:
@@ -5575,6 +6158,9 @@ components:
       additionalProperties: false
       x-implements: IProjectNotificationContent
     ProjectChangedNotification:
+      required:
+        - workspaceId
+        - projectId
       type: object
       properties:
         workspaceId:
@@ -5586,6 +6172,12 @@ components:
       additionalProperties: false
       x-implements: IProjectNotificationContent
     BranchCreatedNotification:
+      required:
+        - userId
+        - workspaceId
+        - projectId
+        - dataSourceId
+        - branchName
       type: object
       properties:
         userId:
@@ -5605,6 +6197,8 @@ components:
       additionalProperties: false
       x-implements: IProjectNotificationContent
     UserCreatedNotification:
+      required:
+        - userId
       type: object
       properties:
         userId:
@@ -5613,6 +6207,8 @@ components:
       additionalProperties: false
       x-implements: IUserNotificationContent
     UserChangedNotification:
+      required:
+        - userId
       type: object
       properties:
         userId:
@@ -5621,6 +6217,8 @@ components:
       additionalProperties: false
       x-implements: IUserNotificationContent
     UserEmailConfirmedNotification:
+      required:
+        - userId
       type: object
       properties:
         userId:
@@ -5629,6 +6227,8 @@ components:
       additionalProperties: false
       x-implements: IUserNotificationContent
     BillingAccountChangedNotification:
+      required:
+        - userId
       type: object
       properties:
         userId:
@@ -5637,6 +6237,10 @@ components:
       additionalProperties: false
       x-implements: IUserNotificationContent
     BillingAccountBalanceChangedNotification:
+      required:
+        - userId
+        - oldAmount
+        - newAmount
       type: object
       properties:
         userId:
@@ -5649,6 +6253,9 @@ components:
       additionalProperties: false
       x-implements: IUserNotificationContent
     WorkspaceCreatedNotification:
+      required:
+        - userId
+        - workspaceId
       type: object
       properties:
         userId:
@@ -5660,6 +6267,8 @@ components:
       additionalProperties: false
       x-implements: IWorkspaceNotificationContent
     WorkspaceChangedNotification:
+      required:
+        - workspaceId
       type: object
       properties:
         workspaceId:
@@ -5668,6 +6277,8 @@ components:
       additionalProperties: false
       x-implements: IWorkspaceNotificationContent
     SubscribeToDataSourceEventsRequest:
+      required:
+        - dataSourceId
       type: object
       properties:
         dataSourceId:
@@ -5699,6 +6310,8 @@ components:
       additionalProperties: false
       x-implements: INotificationContent
     DataSourceNotificationSubscriptionChanged:
+      required:
+        - dataSourceId
       type: object
       properties:
         dataSourceId:
@@ -5708,6 +6321,8 @@ components:
       additionalProperties: false
       x-implements: INotificationContent
     ServerShutdownNotification:
+      required:
+        - reason
       type: object
       properties:
         reason:
@@ -5719,6 +6334,9 @@ components:
       type: object
       properties:
         result:
+          required:
+            - code
+            - expires_in
           type: object
           properties:
             code:
@@ -5801,6 +6419,20 @@ components:
       properties:
         result:
           $ref: '#/components/schemas/AuthenticationFlowStage'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetReleaseNotesResponse:
+      type: object
+      properties:
+        result:
+          type: string
+          description: 'Markdown-formatted release notes containing version information, change log, and update details for the current server version.'
+          example: "# 2025.3.1\n\n## New Features\n- Added support for game data schema validation\n- Implemented bulk import/export operations\n\n## Improvements\n- Enhanced performance for large datasets\n- Updated documentation\n\n## Bug Fixes\n- Fixed issue with formula calculations\n- Resolved UI rendering problems\n"
         errors:
           type: array
           items:
@@ -5997,6 +6629,9 @@ components:
         result:
           type: array
           items:
+            required:
+              - presence
+              - userId
             type: object
             properties:
               presence:
@@ -6017,6 +6652,9 @@ components:
       type: object
       properties:
         result:
+          required:
+            - processes
+            - total
           type: object
           properties:
             processes:
@@ -6063,6 +6701,9 @@ components:
       type: object
       properties:
         result:
+          required:
+            - types
+            - total
           type: object
           properties:
             types:
@@ -6086,6 +6727,9 @@ components:
       type: object
       properties:
         result:
+          required:
+            - assets
+            - total
           type: object
           properties:
             assets:
@@ -6217,6 +6861,9 @@ components:
       type: object
       properties:
         result:
+          required:
+            - users
+            - total
           type: object
           properties:
             users:
@@ -6311,6 +6958,9 @@ components:
       type: object
       properties:
         result:
+          required:
+            - processes
+            - total
           type: object
           properties:
             processes:
@@ -6396,6 +7046,9 @@ components:
       type: object
       properties:
         result:
+          required:
+            - processes
+            - total
           type: object
           properties:
             processes:
@@ -6759,6 +7412,13 @@ components:
         type: array
         items:
           type: string
+        nullable: true
+    importSchemaNameOrId:
+      name: schemaNameOrId
+      in: query
+      description: Id or name of schema in case if request body is array.
+      schema:
+        type: string
         nullable: true
     exportMode:
       name: exportMode
