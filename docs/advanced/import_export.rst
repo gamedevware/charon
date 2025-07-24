@@ -144,8 +144,8 @@ Charon supports multiple import modes depending on the desired outcome:
 +------------------+----------------------------------------------------------+
 | `update`         | Updates existing documents only. No new documents added. |
 +------------------+----------------------------------------------------------+
-| `safeUpdate`     | Updates only top-level fields. Fields are not added or   |
-|                  | removed.                                                 |
+| `safeUpdate`     | Updates only property values. Sub-documents are not      |
+|                  | added or removed.                                        |
 +------------------+----------------------------------------------------------+
 | `replace`        | Replaces the entire collection with imported documents.  |
 +------------------+----------------------------------------------------------+
