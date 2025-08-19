@@ -1,11 +1,15 @@
 Pick List
 =========
 
-``PickList`` is a data type used to define a list of pre-defined options for a property. It allows the user to select only one option from the given list. The options can be defined as a string, and the list can contain any number of options.
+The ``PickList`` data type defines a property that can take one value from a predefined set of options. It is best suited for fields where only a single choice is valid at any given time. This ensures consistency and restricts inputs to known, valid values.  
+This type is commonly used for categorical selections such as character class, item rarity, or region. By standardizing the input, PickList helps reduce errors and supports better validation and filtering within game systems.  
+In user interfaces, a ``PickList`` is typically presented as a dropdown menu, allowing users to choose only one option from the list.  
 
-``PickList`` data type is commonly used to define properties such as gender, language, or country, where there are a limited number of options to choose from. It provides a convenient way to standardize the data, and also helps to prevent errors or inconsistencies in the data.
+Storage on Disk
+   On disk, ``PickList`` values are stored as integer. This value correspond directly to one of the predefined options.  
 
-For example, in a game where the player can choose a character class, the ``PickList`` data type can be used to define the available options, such as "Warrior," "Mage," or "Rogue." This ensures that the player can only choose from the available options and helps to prevent invalid inputs.
+Example
+   In a character creator, the player might choose "Mage" as their class from a list of available options like Warrior, Mage, or Rogue.
 
 Source Code Type
    +-------------------------------------------------------+--------------------------------------------------------------------------+
@@ -34,5 +38,5 @@ Example
 -------
 .. code-block:: js
 
-  1 // internaly stored as integers
+  1 // on-disk stored as integers
   "Apple" // string values also valid
