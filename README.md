@@ -17,7 +17,7 @@ Plugins
 Standalone
 ----------
 
-[How to start with custom game engine](https://gamedevware.github.io/charon/standalone/overview.html) → [C#](https://gamedevware.github.io/charon/gamedata/working_with_csharp_code_7_3.html) • [TypeScript](https://gamedevware.github.io/charon/gamedata/working_with_type_script_code.html)  
+[How to start with custom game engine](https://gamedevware.github.io/charon/standalone/overview.html) → [C#](https://gamedevware.github.io/charon/gamedata/working_with_csharp_code_7_3.html) • [TypeScript](https://gamedevware.github.io/charon/gamedata/working_with_type_script_code.html) • [Haxe](https://gamedevware.github.io/charon/gamedata/working_with_haxe_code.html)  
 
 Summary
 =======
@@ -30,12 +30,12 @@ Charon also offers support for working with text in multiple languages, with eas
 With Charon, game developers can focus on creating engaging gameplay experiences without worrying about the technical details of managing game data. 
 It is available in three deployment variants, including a [standalone/offline](https://gamedevware.github.io/charon/standalone/overview.html) application, [web](https://gamedevware.github.io/charon/web/overview.html) application, [Unity](https://gamedevware.github.io/charon/unity/overview.html) and [Unreal Engine](https://gamedevware.github.io/charon/unreal_engine/overview.html) plugins.  
 
-Why Choose Charon?
-==================
+Why Choose Charon over Spreadsheets?
+====================================
 
 Charon replaces traditional spreadsheets or config files with an in-game database, 
-offering a structured and efficient way to manage game data. It allows developers to focus on creating engaging gameplay 
-experiences without worrying about the technical details of data management.
+offering a structured and efficient way to manage game data. It hides the complexity of 
+game data that inevitably emerges as the game development progresses.
 
 Is It Free?
 ===========
