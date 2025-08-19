@@ -1,7 +1,7 @@
 Specification
 =============
 
-The ``Specification`` field is a flexible extension point available on both :doc:`Schema <schema>` and :doc:`Property <..\properties\property>` documents. It enables developers to attach additional metadata in a standardized format that can be used for custom logic in UI field editors, source code generation, or other tooling integrations.
+The ``Specification`` field is a flexible extension point available on both :doc:`Schema <schema>` and :doc:`Property <../properties/property>` documents. It enables developers to attach additional metadata in a standardized format that can be used for custom logic in UI field editors, source code generation, or other tooling integrations.
 
 Overview
 --------
@@ -45,7 +45,8 @@ Encoding Guide
 
 All keys and values must be properly URL-encoded to ensure compatibility with parsing libraries and avoid format-breaking characters.
 
-### Encoding in JavaScript
+Encoding in JavaScript
+^^^^^^^^^^^^^^^^^^^^^^
 
 In any browser console or Node.js REPL:
 
@@ -60,7 +61,8 @@ In any browser console or Node.js REPL:
     // Output: icon=sword&group=Items%20and%20Stuff&noThumbnail=true
 
 
-### Encoding in Excel
+Encoding in Excel
+^^^^^^^^^^^^^^^^^^^^^
 
 To encode values manually using Excel formulas:
 
@@ -89,7 +91,7 @@ See also
 
 - :doc:`Display Text Template <display_text_template>`
 - :doc:`Property <../properties/property>`
-- :doc:`Schema <../properties/property>`
+- :doc:`Schema <schema>`
 - :doc:`All Data Types <../datatypes/list>`
 - :doc:`Creating Document Type (Schema) <../creating_schema>`
 
