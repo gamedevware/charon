@@ -41,6 +41,9 @@ Starts Charon in standalone mode for specified game data. Path to game data coul
 --launchDefaultBrowser
    Set this flag to open system-default browser on successful start.
 
+--denySchemaEditing 
+   Disable the ability to change the data structure (metadata) for editable game data.
+
 --resetPreferences
    Set this flag to reset UI preferences on successful start.
  
