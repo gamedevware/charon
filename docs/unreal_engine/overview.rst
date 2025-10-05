@@ -40,39 +40,35 @@ The Unreal Engine plugin is written in C++ but relies on ``dotnet charon``, a .N
 
    .. tab:: Windows
 
-      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      1. Download and install `SDK NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``%PROGRAMDATA%/Charon``.
 
    .. tab:: MacOS
 
-      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      1. Download and install `SDK NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``~/Library/Application Support/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 
    .. tab:: Linux
 
-      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      1. Download and install `NET SDK 8+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``/usr/share/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 
-**Checking Available .NET Versions**
+**Checking Available .NET SDK Versions**
 
 .. code-block:: bash
 
     # check for dotnet already installed
-    dotnet --list-runtimes
+    dotnet --list-sdks
 
 .. code-block:: bash
 
-    # output for dotnet --list-runtimes
-    Microsoft.AspNetCore.App 6.0.36 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
-    Microsoft.AspNetCore.App 7.0.20 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
-    Microsoft.AspNetCore.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
-    Microsoft.AspNetCore.App 9.0.0 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
-    Microsoft.NETCore.App 6.0.36 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
-    Microsoft.NETCore.App 7.0.20 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
-    Microsoft.NETCore.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App] # <- this one is fine
-    Microsoft.NETCore.App 9.0.0 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App] # <- this one too
+    # output for dotnet --list-sdks
+    7.0.120 [C:\Program Files\dotnet\sdk]
+    8.0.206 [C:\Program Files\dotnet\sdk]
+    8.0.414 [C:\Program Files\dotnet\sdk]  # <- this one is fine
+    9.0.300 [C:\Program Files\dotnet\sdk]  # <- this one too
 
 Installation from Marketplace
 -----------------------------

@@ -79,6 +79,9 @@ Two bootstrap scripts which download and run latest version of Charon on your PC
   - ``RunCharon.bat`` for Windows  
   - ``RunCharon.sh`` for Linux or MacOS  
 
+.. warning::
+    Bootstrap scripts require **.NET SDK️** to run, not only bare .NET Runtime.
+
 Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/dotnet>`_ tool to be available in ``PATH``.
 
   1. Download one of the scripts into a local folder ``charon``.  
