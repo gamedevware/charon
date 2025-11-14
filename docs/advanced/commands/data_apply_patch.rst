@@ -1,5 +1,5 @@
-Apply Patch
-===========
+Apply Patch (Merge)
+===================
 
 Applies patch created with :doc:`DATA CREATEPATCH <data_create_patch>` command to a game data.
 

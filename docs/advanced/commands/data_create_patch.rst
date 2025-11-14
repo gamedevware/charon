@@ -1,4 +1,4 @@
-Create Patch
+Create Patch (Diff)
 ===========
 
 Outputs the differences between two game datas as a file that can be used later to :doc:`DATA APPLYPATCH <data_apply_patch>` to another game data.
