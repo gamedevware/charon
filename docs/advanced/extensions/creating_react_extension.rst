@@ -155,13 +155,13 @@ Place the generated ``.tgz`` file in:
 
       .. code-block::
 
-        /Library/Application Support/Charon/extensions/
+        /Users/<username>/.config/Charon/extensions/
 
    .. tab:: Linux
 
       .. code-block::
 
-        /usr/share/Charon/extensions/
+        /home/<username>/.config/Charon/extensions/
 
    .. tab:: Unity
 

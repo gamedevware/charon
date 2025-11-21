@@ -46,13 +46,13 @@ The Unreal Engine plugin is written in C++ but relies on ``dotnet charon``, a .N
    .. tab:: MacOS
 
       1. Download and install `SDK NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
-      2. Make sure you have write access to ``~/Library/Application Support/Charon``.
+      2. Make sure you have write access to ``/Users/<username>/.config/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 
    .. tab:: Linux
 
       1. Download and install `NET SDK 8+ <https://dotnet.microsoft.com/en-us/download>`_.
-      2. Make sure you have write access to ``/usr/share/Charon``.
+      2. Make sure you have write access to ``/home/<username>/.config/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 
 **Checking Available .NET SDK Versions**
