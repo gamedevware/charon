@@ -17,8 +17,8 @@ When the editor is rendered, Charon sets ``valueControl`` to allow your componen
 - Add custom validation.
 - Respond to focus events.
 
-Understanding ``ValueControl``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``ValueControl``
+^^^^^^^^^^^^^^^
 
 The ``ValueControl`` interface loosely mirrors Angular’s `AbstractControl <https://angular.dev/api/forms/AbstractControl>`_. Here's a simplified definition:
 
@@ -40,6 +40,22 @@ The ``ValueControl`` interface loosely mirrors Angular’s `AbstractControl <htt
     removeValidators(validators: ValueValidatorFn | ValueValidatorFn[]): void;
     hasValidator(validator: ValueValidatorFn): boolean;
   }
+  
+Purpose of ``ValueControl``
+-----------------------------
+
+The primary purpose of the ValueControl<TValue> interface is to act as a centralized, stateful container that manages a single piece of data (a form field's value) along with all its associated metadata, lifecycle, and interaction states.
+
+It decouples the **data model** and **validation logic** from the specific user interface component (e.g., an HTML ``<input>``).
+
+Key responsibilities include:
+
+* **Value Management:** Storing the current value, tracking its original/starting value, and handling updates (``setValue``, ``patchValue``, ``reset``).
+* **Validation & Status:** Tracking the control's validation state (``valid``, ``invalid``, ``pending``, ``errors``), providing methods to add/remove validators (``addValidators``, ``hasError``), and updating the status (``updateValueAndValidity``).
+* **Interaction State:** Tracking user interaction flags (``touched``, ``untouched``, ``dirty``, ``pristine``) and providing methods to change them (``markAsTouched``).
+* **Hierarchy/Structure:** Maintaining a tree structure with references to its ``parent`` and ``root`` control, allowing for complex, nested forms and path-based lookups (``getByPath``).
+* **Observability:** Exposing change events via observables (``valueChanges``, ``statusChanges``) to allow other parts of the application to react to state changes.
+* **UI Integration (Focus/Toggle):** Providing methods and handlers (``focus``, ``toggle``, ``registerDoFocus``, ``registerDoToggle``) to programmatically control the *view* component it represents.
 
 Reacting to Value Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^^
