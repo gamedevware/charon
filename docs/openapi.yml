@@ -1665,6 +1665,44 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
         - BearerAuth: [ ]
+  '/datasource/{dataSourceId}/completion/':
+    post:
+      tags:
+        - AiCompletion
+      summary: Start new AI-chat thread.
+      description: Start new AI-chat thread with specified system prompt.
+      operationId: startNewThread
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - systemPrompt
+              type: object
+              properties:
+                systemPrompt:
+                  maxLength: 16384
+                  minLength: 2
+                  type: string
+                  description: Natural language instruction to LLM before user prompt.
+        required: true
+      responses:
+        '200':
+          description: AI-chat thread instance. No actual LLM completion requests are made till first user message is sent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartNewThreadResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
   '/datasource/{dataSourceId}/completion/thread/{threadId}/':
     post:
       tags:
@@ -1846,6 +1884,62 @@ paths:
       responses:
         '202':
           description: 'Update check initiated successfully. Note: This only indicates the request was accepted, not that updates were found.'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/datasource/{dataSourceId}/extensions/available/':
+    get:
+      tags:
+        - UiExtensions
+      summary: Get UI extension packages
+      description: Gets a list of available NPM packages from the NPM registry and local pickup folder that can be used in UI extensions. Supports optional filtering by partial package name.
+      operationId: getAvailableExtensions
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+        - name: query
+          in: query
+          description: Optional partial name of the NPM package to search for
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: List of available packages
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAvailableExtensionsResponse'
+        default:
+          description: Operation failure response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: [ ]
+  '/datasource/{dataSourceId}/extensions/upload/':
+    post:
+      tags:
+        - UiExtensions
+      summary: Upload UI extension package
+      description: 'Uploads an NPM package to the local pickup folder for use in UI extensions. The package should be sent as raw binary data (e.g., .tgz file).'
+      operationId: uploadExtensionPackage
+      parameters:
+        - $ref: '#/components/parameters/dataSourceId'
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/Blob'
+        required: true
+      responses:
+        '202':
+          description: Package upload accepted and saved to local pickup folder
         default:
           description: Operation failure response.
           content:
@@ -3919,7 +4013,7 @@ components:
             - in
           type: string
         value:
-          $ref: '#/components/schemas/JsonValue'
+          $ref: '#/components/schemas/NullableJsonValue'
         caseSensitive:
           type: boolean
       additionalProperties: false
@@ -3961,6 +4055,9 @@ components:
       nullable: true
       x-external-type: JsonObject
     JsonValue:
+      x-external-type: JsonValue
+    NullableJsonValue:
+      nullable: true
       x-external-type: JsonValue
     BulkChangeResult:
       required:
@@ -4149,10 +4246,11 @@ components:
     ValidationOption:
       enum:
         - repair
-        - checkTranslation
+        - checkTranslations
         - deduplicateIds
-        - repairRequiredWithDefaultValue
-        - eraseInvalidValue
+        - repairRequiredWithDefaults
+        - resolveConflictingUnions
+        - eraseInvalidValues
         - checkRequirements
         - checkFormat
         - checkUniqueness
@@ -4449,6 +4547,21 @@ components:
           format: date-time
       additionalProperties: false
       readOnly: true
+    AvailableExtensionPackage:
+      required:
+        - name
+        - version
+        - origin
+      type: object
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+        origin:
+          type: string
+      additionalProperties: false
+      readOnly: true
     PageContext:
       required:
         - scope
@@ -4599,6 +4712,7 @@ components:
         - projectCustomization
         - gameAssets
         - uiExtensions
+        - uiExtensionUpload
         - userDelete
         - revokeTokens
         - billing
@@ -5402,6 +5516,9 @@ components:
         amount:
           type: integer
           format: int32
+        discount:
+          type: number
+          default: 0
     CurrencyAmount:
       required:
         - currencyCode
@@ -5568,7 +5685,7 @@ components:
         op:
           $ref: '#/components/schemas/JsonPatchOperation'
         value:
-          $ref: '#/components/schemas/JsonValue'
+          $ref: '#/components/schemas/NullableJsonValue'
         from:
           $ref: '#/components/schemas/JsonPointer'
     JsonPointer:
@@ -5639,39 +5756,39 @@ components:
       x-external-type: ApiError
     ErrorCode:
       enum:
-        - error
-        - notFound
+        - genericError
+        - resourceNotFound
         - serviceUnavailable
         - tooManyRequests
-        - notSupported
+        - operationNotSupported
         - authenticationFailed
         - authorizationFailed
-        - readOnly
-        - invalidRequestBodyFormat
-        - parameterValueIsInvalid
-        - parameterValueIsRequired
-        - parameterValuePatternDoesntMatch
-        - parameterMinValueOverflow
-        - parameterMinValueInclusiveOverflow
-        - parameterMaxValueOverflow
-        - parameterMaxValueInclusiveOverflow
-        - parameterValueMinLengthOverflow
-        - parameterValueMaxLengthOverflow
-        - parameterValueMinSizeOverflow
-        - parameterValueMaxSizeOverflow
-        - parameterValueItemsDuplicate
+        - resourceReadOnly
+        - invalidRequestBody
+        - invalidParameterValue
+        - missingParameterValue
+        - invalidParameterPattern
+        - parameterBelowMinValue
+        - parameterBelowMinValueInclusive
+        - parameterAboveMaxValue
+        - parameterAboveMaxValueInclusive
+        - parameterBelowMinLength
+        - parameterAboveMaxLength
+        - parameterBelowMinSize
+        - parameterAboveMaxSize
+        - duplicateParameterItems
         - invalidImportData
-        - jsonPatchInvalidParameter
+        - invalidJsonPatchParameter
         - jsonPatchTestFailed
-        - jsonPatchForbiddenOperation
-        - deletingReferencedSchema
-        - documentIsProtected
-        - documentIsNotRoot
-        - transactionAborted
-        - transactionAlreadyCompleted
-        - transactionAlreadyExists
-        - transactionDoesNotExists
-        - metadataLoadError
+        - forbiddenJsonPatchOperation
+        - referencedSchemaDeleted
+        - protectedDocument
+        - nonRootDocument
+        - abortedTransaction
+        - completedTransaction
+        - duplicateTransaction
+        - missingTransaction
+        - failedMetadataLoad
         - invalidTimeFormat
         - invalidDateFormat
         - invalidLocalizedTextFormat
@@ -5686,30 +5803,33 @@ components:
         - invalidReferenceFormat
         - invalidReferenceCollectionFormat
         - invalidFormulaFormat
-        - valueIsNull
-        - valueIsEmpty
-        - valueOverflow
-        - valueLengthExceeded
-        - collectionSizeExceeded
+        - nullValue
+        - emptyValue
+        - overflowedValue
+        - exceededValueLength
+        - exceededCollectionSize
         - brokenReference
         - missingTranslation
-        - uniqueValueDuplication
+        - duplicateUniqueValue
         - invalidIdFormat
         - invalidGeneratedIdFormat
-        - componentsInRootCollection
+        - documentsInRootCollection
         - missingSettingsDocument
-        - moreThanOneSettingsDocument
+        - duplicateSettingsDocument
+        - emptyUnion
+        - conflictingUnionOptions
         - invalidNameFormat
         - reservedName
         - invalidSize
         - invalidLanguage
-        - referenceTypeCauseRecursion
+        - recursiveReferenceType
         - invalidIdDataType
         - invalidDataTypeChange
         - invalidIdGeneratorChange
         - invalidRequirementForDataType
+        - nonOptionalTaggedUnionProperty
         - invalidIconFormat
-        - invalidDisplayTextTemplateFormat
+        - invalidDisplayTextTemplate
         - invalidPickName
         - duplicatePickName
         - invalidPickValue
@@ -5720,11 +5840,11 @@ components:
         - invalidPrecision
         - invalidRowCount
         - duplicateSpecificationKey
-        - emailIsAlreadyTaken
-        - aiCompletionFailed
-        - billingFailed
-        - aiCompletionTokenLimitReached
-        - machineTranslationTokenLimitReached
+        - duplicateEmail
+        - failedAiCompletion
+        - failedBilling
+        - exceededAiCompletionTokenLimit
+        - exceededMachineTranslationTokenLimit
         - invalidSchema
         - invalidSchemaProperty
       type: string
@@ -5830,6 +5950,9 @@ components:
       properties:
         sidePanelWidth:
           type: number
+          nullable: true
+        sidePanelExpanded:
+          type: boolean
           nullable: true
         lastReleaseNotesHash:
           type: string
@@ -6773,6 +6896,18 @@ components:
           nullable: true
           readOnly: true
       x-response: true
+    StartNewThreadResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/AiCompletionResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
     SendAiChatMessageResponse:
       type: object
       properties:
@@ -6790,6 +6925,29 @@ components:
       properties:
         result:
           $ref: '#/components/schemas/UpdateResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+          nullable: true
+          readOnly: true
+      x-response: true
+    GetAvailableExtensionsResponse:
+      type: object
+      properties:
+        result:
+          required:
+            - packages
+            - total
+          type: object
+          properties:
+            packages:
+              type: array
+              items:
+                $ref: '#/components/schemas/AvailableExtensionPackage'
+            total:
+              type: integer
+              description: Total number of packages found
         errors:
           type: array
           items:
