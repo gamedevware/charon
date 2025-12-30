@@ -76,7 +76,7 @@ Here is an example of a ``formula.known.types.ts`` file:
   
   import { MyFormulaContext } from '../my.formula.context';
 
-  // example of MyFormulaContext type.
+  // example of re-exporting MyFormulaContext type.
   export MyFormulaContext;
 
   // example of Assets.Scripts.CheckContext.  

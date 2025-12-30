@@ -31,6 +31,20 @@ As a less elegant alternative, introduce a ``ShopItem`` type with fields referen
 
 .. figure:: ./inheritance_aggregation.png
 
+4. Tagged Union (Recommended)
+-----------------------------
+
+A more powerful and storage-efficient alternative to Aggregation is to use a Tagged Union Schema (also known as a Discriminated Union, Sum Type, or ``$oneOf``). Tagged Unions allow documents of different shapes to coexist within the same collection or be embedded inside other documents, making them a natural fit when multiple heterogeneous document types must be handled together.
+
+Union Schemas have several important distinctions from Aggregation:
+
+- They provide first-class support in the editor UI, making them more convenient to create and maintain than other inheritance alternatives.
+- Unassigned properties within a Tagged Union document are not stored and therefore take no space.
+
+When used in this scenario, a ``ShopItem`` can be modeled as a Tagged Union that defines ``Armor``, ``Weapon``, and ``Shield`` as its possible variants.
+
+.. figure:: ./inheritance_tagged_union.png
+
 Conclusion
 ----------
 
