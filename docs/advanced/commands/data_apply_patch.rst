@@ -15,10 +15,10 @@ Applies patch created with :doc:`DATA CREATEPATCH <data_create_patch>` command t
 .. code-block:: bash
 
   # local game data (windows)
-  dotnet charon DATA APPLYPATCH --dataBase "c:\my app\gamedata.json" --input "c:\my app\gamedata_patch.json" --inputFormat json
+  charon DATA APPLYPATCH --dataBase "c:\my app\gamedata.json" --input "c:\my app\gamedata_patch.json" --inputFormat json
   
   # remote game data
-  dotnet charon DATA APPLYPATCH --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./gamedata_patch.json" --inputFormat json --credentials "<API-Key>"
+  charon DATA APPLYPATCH --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./gamedata_patch.json" --inputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters

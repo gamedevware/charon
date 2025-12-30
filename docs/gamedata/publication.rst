@@ -29,7 +29,7 @@ Example
 
 .. code-block:: bash
 
-  dotnet charon DATA EXPORT --dataBase ".\gamedata.json" --mode publication --languages {en-US} --output ".\StreamingAssets\gamedata_pub.json" --outputFormat json
+   charon DATA EXPORT --dataBase ".\gamedata.json" --mode publication --languages {en-US} --output ".\StreamingAssets\gamedata_pub.json" --outputFormat json
 
 - Use the ``--languages`` parameter to specify the language(s) you want to publish. Or omit parameter to publish all languages.
 - Use the ``--outputFormat`` parameter to specify the export format - ``json`` or ``msgpack``.

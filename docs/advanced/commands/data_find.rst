@@ -15,10 +15,10 @@ Seaches for a document.
 .. code-block:: bash
 
   # local game data (windows)
-  dotnet charon DATA FIND --dataBase "c:\my app\gamedata.json" --schema Character --id John
+  charon DATA FIND --dataBase "c:\my app\gamedata.json" --schema Character --id John
   
   # remote game data
-  dotnet charon DATA FIND --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Character --id John --credentials "<API-Key>"
+  charon DATA FIND --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Character --id John --credentials "<API-Key>"
   
 ---------------
  Parameters

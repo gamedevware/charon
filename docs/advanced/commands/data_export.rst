@@ -15,10 +15,10 @@ Exports documents into a file.
 .. code-block:: bash
 
   # local game data (windows)
-  dotnet charon DATA EXPORT --dataBase "c:\my app\gamedata.json" --schemas Character --output "c:\my app\characters.json" --outputFormat json
+  charon DATA EXPORT --dataBase "c:\my app\gamedata.json" --schemas Character --output "c:\my app\characters.json" --outputFormat json
   
   # remote game data
-  dotnet charon DATA EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --output "./characters.json" --outputFormat json --credentials "<API-Key>"
+  charon DATA EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --output "./characters.json" --outputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -246,7 +246,7 @@ To use `yq` with exported JSON data:
 
    .. code-block:: bash
      # Export data
-     dotnet charon DATA EXPORT --dataBase gamedata.json --schemas Character --output characters.json
+     charon DATA EXPORT --dataBase gamedata.json --schemas Character --output characters.json
 
      # Update a field
      yq -i '.Collections.Character[0].name = "New Name"' characters.json
@@ -255,7 +255,7 @@ To use `yq` with exported JSON data:
      yq -i '.Collections.Character[0].level = 10' characters.json
 
      # Import data back
-     dotnet charon DATA IMPORT --dataBase gamedata.json --schemas Character --input characters.json --mode safeUpdate
+     charon DATA IMPORT --dataBase gamedata.json --schemas Character --input characters.json --mode safeUpdate
 
 4. **Convert Formats**:
    `yq` can also convert between JSON, YAML, and other supported formats.

@@ -16,10 +16,10 @@ Create Backup
 .. code-block:: bash
 
   # local game data (windows)
-  dotnet charon DATA BACKUP --dataBase "c:\my app\gamedata.json" --output "c:\my app\backup.msgpkg" --outputFormat msgpack
+  charon DATA BACKUP --dataBase "c:\my app\gamedata.json" --output "c:\my app\backup.msgpkg" --outputFormat msgpack
   
   # remote game data
-  dotnet charon DATA BACKUP --dataBase "https://charon.live/view/data/My_Game/develop/" --output "./backup.msgpkg" --outputFormat msgpack --credentials "<API-Key>"
+  charon DATA BACKUP --dataBase "https://charon.live/view/data/My_Game/develop/" --output "./backup.msgpkg" --outputFormat msgpack --credentials "<API-Key>"
   
 ---------------
  Parameters

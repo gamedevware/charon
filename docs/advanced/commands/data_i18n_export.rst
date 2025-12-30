@@ -15,10 +15,10 @@ Export text that can be translated into a file.
 .. code-block:: bash
 
   # local game data (windows)
-  dotnet charon DATA I18N EXPORT --dataBase "c:\my app\gamedata.json" --schemas Character --sourceLanguage en-US --targetLanguage fr --output "c:\my app\character_loc.xliff" --outputFormat xliff
+  charon DATA I18N EXPORT --dataBase "c:\my app\gamedata.json" --schemas Character --sourceLanguage en-US --targetLanguage fr --output "c:\my app\character_loc.xliff" --outputFormat xliff
 
   # remote game data
-  dotnet charon DATA I18N EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --sourceLanguage en-US --targetLanguage fr --output "./character_loc.xliff" --outputFormat xliff --credentials "<API-Key>"
+  charon DATA I18N EXPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --sourceLanguage en-US --targetLanguage fr --output "./character_loc.xliff" --outputFormat xliff --credentials "<API-Key>"
 
 ---------------
  Parameters

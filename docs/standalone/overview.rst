@@ -1,7 +1,7 @@
 Standalone Application Overview
 ===============================
 
-The standalone version of the game development `tool <https://www.nuget.org/packages/GameDevWare.Charon>`_ is a desktop application that can be installed on 
+The standalone version of the game development `tool <https://www.nuget.org/packages/dotnet-charon>`_ is a CLI application that can be installed on 
 a computer, and it allows the user to design and model game data, as well as generate source code for it. 
 The standalone version is typically used by individual game developers or small development teams who want to work offline.
 
@@ -12,7 +12,7 @@ The standalone version is typically used by individual game developers or small 
 Prerequisites
 ============
 
-Standalone application uses `dotnet charon` tool, which is a .NET Core application built for .NET 8.
+Standalone application uses `dotnet-charon <https://www.nuget.org/packages/dotnet-charon>` tool, which is a .NET Core application built for .NET 8.
 
 .. tabs::
 
@@ -69,7 +69,7 @@ dotnet tool (recommended)
   dotnet tool update -g dotnet-charon
   
   # run tool
-  dotnet charon INIT ./gamedata.json
+   charon INIT ./gamedata.json
 
 Bootstrap Script
 ----------------
@@ -141,28 +141,28 @@ The editor will automatically fill the empty file with the initial data.
 
       .. code-block:: bash
 
-        # dotnet charon INIT .\gamedata.json 
+        # charon INIT .\gamedata.json 
         # or
         # copy /y NUL .\gamedata.json >NUL
         
-        dotnet charon .\gamedata.json --log out
+        charon .\gamedata.json --log out
 
    .. tab:: Linux, MacOS
 
       .. code-block:: bash
 
-        # dotnet charon INIT ./gamedata.json 
+        # charon INIT ./gamedata.json 
         # or
         # touch ./gamedata.json 
         
-        dotnet charon ./gamedata.json --log out
+        charon ./gamedata.json --log out
 
 After finishing your work, you could just terminate the process with ``CTRL+C`` keyboard shortcut or close terminal window.  
 
 See also
 --------
 
-- `Nuget Package <https://www.nuget.org/packages/GameDevWare.Charon>`_
+- `Nuget Package <https://www.nuget.org/packages/dotnet-charon>`_
 - `Bootstrap Scripts <https://github.com/gamedevware/charon/tree/main/scripts/bootstrap/>`_
 - :doc:`Basic Navigation and User Interface Overview <../gamedata/basics>`
 - :doc:`Creating Document Type (Schema) <../gamedata/creating_schema>`

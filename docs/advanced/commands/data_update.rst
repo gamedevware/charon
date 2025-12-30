@@ -17,10 +17,10 @@ Update Document
 .. code-block:: bash
 
   # local game data (windows)
-  dotnet charon DATA UPDATE --dataBase "c:\my app\gamedata.json" --schema Item --input "c:\my app\item.json" --inputFormat json 
+  charon DATA UPDATE --dataBase "c:\my app\gamedata.json" --schema Item --input "c:\my app\item.json" --inputFormat json 
 
   # remote game data
-  dotnet charon DATA UPDATE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --input "./item.json" --inputFormat json --credentials "<API-Key>"
+  charon DATA UPDATE --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Item --input "./item.json" --inputFormat json --credentials "<API-Key>"
   
 ---------------
  Parameters

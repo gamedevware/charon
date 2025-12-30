@@ -79,18 +79,18 @@ Commands have the following syntax:
 
 .. code-block:: bash
 
-  dotnet charon COMMAND --parameterName <parameter-value>
+  charon COMMAND --parameterName <parameter-value>
    
   # parameters can have more than one value. 
   # Use space to separate values
-  dotnet charon EXPORT --schemas Item Armor "Project Settings" Quest
+  charon EXPORT --schemas Item Armor "Project Settings" Quest
 
   # if your value contains a space, put it inside the quotation marks.
   # Escape characters and other rules depend on the OS you are running.
-  dotnet charon "c:\my application\my path.txt"
+  charon "c:\my application\my path.txt"
   
   # some parameters don't require a value (e.g. flag).
-  dotnet charon VERSION --verbose
+  charon VERSION --verbose
 
 Absolute and relative paths
 ---------------------------
@@ -126,16 +126,16 @@ To display list of available commands add `--help` or `/?`.
 
 .. code-block:: bash
   
-  dotnet charon --help
+  charon --help
   
-  #> Usage: dotnet charon <action> [--<param> || (--<param> <paramValue> ...) ...]
+  #> Usage: charon <action> [--<param> || (--<param> <paramValue> ...) ...]
   #>
   #> Verbs:
   #>  DATA        Data manipulation actions.
   #>  GENERATE    Code generation actions.
   #>  VERSION     Print version.
   
-  dotnet charon DATA EXPORT --help
+  charon DATA EXPORT --help
   
   #> Usage:
   #>   DATA EXPORT --dataBase <URI> [--schemas [<TEXT>]] [--properties [<TEXT>]] [--languages [<TEXT>]] [--output <TEXT>

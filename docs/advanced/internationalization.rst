@@ -24,7 +24,7 @@ Translation languages are defined in the **Project Settings**. To view the confi
 
 .. code-block:: bash
 
-   dotnet charon DATA I18N LANGUAGES --dataBase gamedata.json
+   charon DATA I18N LANGUAGES --dataBase gamedata.json
 
 Exporting Translatable Text
 ===========================
@@ -38,7 +38,7 @@ The following example exports all translatable text to an Excel spreadsheet:
 
 .. code-block:: bash
 
-   dotnet charon DATA EXPORT --dataBase "gamedata.json" --properties [LocalizedText] --output "text_all_languages.xlsx" --outputFormat xlsx
+   charon DATA EXPORT --dataBase "gamedata.json" --properties [LocalizedText] --output "text_all_languages.xlsx" --outputFormat xlsx
 
 Key parameters:
 
@@ -55,7 +55,7 @@ To export translation data in XLIFF format:
 
 .. code-block:: bash
 
-   dotnet charon DATA I18N EXPORT --dataBase "gamedata.json" --sourceLanguage en --targetLanguage fr --output "en_fr_texts.xliff" --outputFormat xliff
+   charon DATA I18N EXPORT --dataBase "gamedata.json" --sourceLanguage en --targetLanguage fr --output "en_fr_texts.xliff" --outputFormat xliff
 
 Key parameters:
 
@@ -75,7 +75,7 @@ To import translated spreadsheet data:
 
 .. code-block:: bash
 
-   dotnet charon DATA IMPORT --dataBase "gamedata.json" --input "text_all_languages.xlsx" --inputFormat xlsx --mode safeUpdate
+   charon DATA IMPORT --dataBase "gamedata.json" --input "text_all_languages.xlsx" --inputFormat xlsx --mode safeUpdate
 
 Key parameters:
 
@@ -89,7 +89,7 @@ To import translated XLIFF content:
 
 .. code-block:: bash
 
-   dotnet charon DATA I18N IMPORT --dataBase "gamedata.json" --input "en_fr_texts.xliff"
+   charon DATA I18N IMPORT --dataBase "gamedata.json" --input "en_fr_texts.xliff"
 
 Best Practices
 ==============

@@ -14,10 +14,10 @@ Add translation languages to specified game data.
 .. code-block:: bash
 
   # local game data (windows)
-  dotnet charon DATA I18N ADDLANGUAGE --dataBase "c:\my app\gamedata.json" --languages "es-ES" "en-GB"
+  charon DATA I18N ADDLANGUAGE --dataBase "c:\my app\gamedata.json" --languages "es-ES" "en-GB"
   
   # remote game data
-  dotnet charon DATA I18N ADDLANGUAGE --dataBase "https://charon.live/view/data/My_Game/develop/" --languages "es-ES" "en-GB" --credentials "<API-Key>"
+  charon DATA I18N ADDLANGUAGE --dataBase "https://charon.live/view/data/My_Game/develop/" --languages "es-ES" "en-GB" --credentials "<API-Key>"
 
   
 ---------------

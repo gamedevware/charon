@@ -27,7 +27,7 @@ Exported data is available in formats such as JSON, BSON, MsgPack, and XLSX. JSO
 
 .. code-block:: bash
 
-   dotnet charon DATA EXPORT --dataBase gamedata.json --schemas Item --output items.json --outputFormat json
+   charon DATA EXPORT --dataBase gamedata.json --schemas Item --output items.json --outputFormat json
 
 **Example output (JSON):**
 
@@ -78,7 +78,7 @@ Data can be imported through both the GUI and CLI. Several import modes are avai
 
 .. code-block:: bash
 
-   dotnet charon DATA IMPORT --dataBase gamedata.json --schemas Item --input items.json --mode safeUpdate
+   charon DATA IMPORT --dataBase gamedata.json --schemas Item --input items.json --mode safeUpdate
 
 For full CLI options, refer to :doc:`Import via CLI <commands/data_import>`.
 
@@ -113,7 +113,7 @@ It is recommended to use dry run functionality to preview changes before committ
 
 .. code-block:: bash
 
-   dotnet charon DATA IMPORT --dataBase gamedata.json --schemas Item --input items.json --mode update --dryRun
+   charon DATA IMPORT --dataBase gamedata.json --schemas Item --input items.json --mode update --dryRun
 
 Validation Options
 ------------------
@@ -125,7 +125,7 @@ Validation may be disabled to import incomplete or prototype data:
 
 .. code-block:: bash
 
-   dotnet charon DATA IMPORT --dataBase gamedata.json --schemas Item --input items.json --mode createAndUpdate --validationOptions None
+   charon DATA IMPORT --dataBase gamedata.json --schemas Item --input items.json --mode createAndUpdate --validationOptions None
 
 .. note::
    When importing schema definitions, validation is always enforced and must pass successfully.

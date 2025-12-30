@@ -14,5 +14,5 @@ CLI Example:
 
 .. code-block:: bash
 
-  dotnet charon SERVER START ./gamedata.json --launchDefaultBrowser --resetPreferences
+   charon SERVER START ./gamedata.json --launchDefaultBrowser --resetPreferences
 

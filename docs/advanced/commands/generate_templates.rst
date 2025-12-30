@@ -16,7 +16,7 @@ These templates can be used with Visual Studio, Rider, Visual Studio Code with p
 .. code-block:: bash
 
   # Windows
-  dotnet charon GENERATE TEMPLATES --outputDirectory "c:\templates"
+   charon GENERATE TEMPLATES --outputDirectory "c:\templates"
   
 
 ---------------
