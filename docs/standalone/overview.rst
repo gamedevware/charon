@@ -68,8 +68,11 @@ dotnet tool (recommended)
   # update global tool
   dotnet tool update -g dotnet-charon
   
-  # run tool
+  # make empty game data file
    charon INIT ./gamedata.json
+
+  # run editor
+   charon ./gamedata.json
 
 Bootstrap Script
 ----------------
