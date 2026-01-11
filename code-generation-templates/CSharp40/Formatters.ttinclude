@@ -1,0 +1,3586 @@
+<#+
+
+#region Serialization
+#region Serialization: Common Types
+private static readonly IFormatProvider FormatProvider = CultureInfo.InvariantCulture;
+private static readonly string[] DateTimeFormats = new string[] { "yyyy-MM-ddTHH:mm:ss.fffZ", "o" };
+
+public enum Format
+{
+	Json,
+	Bson,
+	Xml,
+	MessagePack
+}
+
+public sealed class MetadataStructure
+{
+	public List<Schema> Schemas;
+	public List<ProjectSettings> Settings;
+	public Version ToolsVersion;
+	public int ChangeNumber;
+}
+
+private abstract class Reader
+{
+	public abstract ReaderNode Node { get; }
+
+	public abstract int LineNumber { get; }
+	public abstract int ColumnNumber { get; }
+
+	public abstract bool NextToken();
+
+	private void ReadArrayBegin(bool nextToken = true)
+	{
+		if (this.Node.Token != ReaderToken.BeginArray)
+		{
+			throw ReaderException.UnexpectedToken(this, ReaderToken.BeginArray);
+		}
+		if (this.IsEndOfStream())
+		{
+			throw ReaderException.UnexpectedToken(this, ReaderToken.EndOfArray);
+		}
+
+		if (nextToken)
+			this.NextToken();
+	}
+	private void ReadArrayEnd(bool nextToken = true)
+	{
+		if (this.Node.Token != ReaderToken.EndOfArray)
+		{
+			throw ReaderException.UnexpectedToken(this, ReaderToken.EndOfArray);
+		}
+
+		if (!this.IsEndOfStream() && nextToken)
+		{
+			this.NextToken();
+		}
+	}
+	private void ReadObjectBegin(bool nextToken = true)
+	{
+		if (this.Node.Token != ReaderToken.BeginObject)
+		{
+			throw ReaderException.UnexpectedToken(this, ReaderToken.BeginObject);
+		}
+
+		if (this.IsEndOfStream())
+		{
+			throw ReaderException.UnexpectedToken(this, ReaderToken.EndOfObject);
+		}
+
+		if (nextToken)
+		{
+			this.NextToken();
+		}
+	}
+	private void ReadObjectEnd(bool nextToken = true)
+	{
+		if (this.Node.Token != ReaderToken.EndOfObject)
+		{
+			throw ReaderException.UnexpectedToken(this, ReaderToken.EndOfObject);
+		}
+
+		if (!this.IsEndOfStream() && nextToken)
+		{
+			this.NextToken();
+		}
+	}
+	private string ReadMember(bool nextToken = true)
+	{
+		if (this.Node.Token != ReaderToken.Member && this.Node.Token != ReaderToken.Value)
+		{
+			throw ReaderException.UnexpectedToken(this, ReaderToken.Member, ReaderToken.Value);
+		}
+
+		var memberName = this.Node.AsString;
+
+		if (!this.IsEndOfStream() && nextToken)
+		{
+			this.NextToken();
+		}
+
+		return memberName;
+	}
+
+	public object ReadAny(bool nextToken = true)
+	{
+		switch(this.Node.Token)
+		{
+			case ReaderToken.BeginArray: return this.ReadArray(nextToken);
+			case ReaderToken.BeginObject: return this.ReadObject(nextToken);
+			case ReaderToken.Null: if (nextToken) this.NextToken(); return null;
+			case ReaderToken.Value: var value = this.Node.AsObject; if (nextToken) this.NextToken(); return value;
+			default: throw ReaderException.UnexpectedToken(this, ReaderToken.BeginArray, ReaderToken.BeginObject, ReaderToken.Null, ReaderToken.Value);
+		}
+	}
+	private List<object> ReadArray(bool nextToken = true)
+	{
+		var list = new List<object>();
+		this.ReadArrayBegin();
+		while(this.Node.Token != ReaderToken.EndOfArray)
+		{
+			var value = this.ReadAny();
+			list.Add(value);
+		}
+		this.ReadArrayEnd( nextToken);
+		return list;
+	}
+	private Dictionary<string, object> ReadObject(bool nextToken = true)
+	{
+		var dictionary = new Dictionary<string, object>();
+		this.ReadObjectBegin();
+		while(this.Node.Token != ReaderToken.EndOfObject)
+		{
+			var key = this.ReadMember();
+			var value = this.ReadAny();
+			dictionary[key] = value;
+		}
+		this.ReadObjectEnd(nextToken);
+		return dictionary;
+	}
+
+	private bool IsEndOfStream()
+	{
+		return this.Node.Token == ReaderToken.EndOfStream;
+	}
+	private bool IsNull()
+	{
+		return this.Node.Token == ReaderToken.Null;
+	}
+
+	public override string ToString()
+	{
+		return this.Node.ToString();
+	}
+}
+
+private struct ReaderNode
+{
+	private readonly object value;
+
+	public readonly ReaderToken Token;
+	public readonly Type ValueType;
+
+	public bool HasValue { get { return this.ValueType != typeof(void); } }
+
+	public ReaderNode(ReaderToken token)
+	{
+		this.Token = token;
+		this.value = null;
+		this.ValueType = typeof(void);
+	}
+	public ReaderNode(ReaderToken token, object value)
+	{
+		if (value == null) throw new ArgumentNullException("value");
+
+		this.Token = token;
+		this.value = value;
+		this.ValueType = value is IStrongBox ? ((IStrongBox)value).ValueType : value.GetType();
+	}
+
+	public bool AsBoolean
+	{
+		get
+		{
+			if (this.value is IStrongBox) return (this.value as IStrongBox).AsBoolean;
+			return Convert.ToBoolean(this.value, FormatProvider);
+		}
+	}
+	public byte AsByte
+	{
+		get
+		{
+			if (this.value is IStrongBox) return (this.value as IStrongBox).AsByte;
+			return Convert.ToByte(this.value, FormatProvider);
+		}
+	}
+	public short AsInt16
+	{
+		get
+		{
+			if (this.value is IStrongBox) return (this.value as IStrongBox).AsInt16;
+			return Convert.ToInt16(this.value, FormatProvider);
+		}
+	}
+	public int AsInt32
+	{
+		get
+		{
+			if (this.value is IStrongBox) return (this.value as IStrongBox).AsInt32;
+			return Convert.ToInt32(this.value, FormatProvider);
+		}
+	}
+	public long AsInt64
+	{
+		get
+		{
+			if (this.value is IStrongBox) return (this.value as IStrongBox).AsInt64;
+			return Convert.ToInt64(this.value, FormatProvider);
+		}
+	}
+	public sbyte AsSByte
+	{
+		get
+		{
+			if (this.value is IStrongBox) return (this.value as IStrongBox).AsSByte;
+			return Convert.ToSByte(this.value, FormatProvider);
+		}
+	}
+	public ushort AsUInt16
+	{
+		get
+		{
+			if (this.value is IStrongBox) return (this.value as IStrongBox).AsUInt16;
+			return Convert.ToUInt16(this.value, FormatProvider);
+		}
+	}
+	public uint AsUInt32
+	{
+		get
+		{
+			if (this.value is IStrongBox) return (this.value as IStrongBox).AsUInt32;
+			return Convert.ToUInt32(this.value, FormatProvider);
+		}
+	}
+	public ulong AsUInt64
+	{
+		get
+		{
+			if (this.value is IStrongBox) return (this.value as IStrongBox).AsUInt64;
+			return Convert.ToUInt64(this.value, FormatProvider);
+		}
+	}
+	public float AsSingle
+	{
+		get
+		{
+			if (this.value is IStrongBox) return (this.value as IStrongBox).AsSingle;
+			return Convert.ToSingle(this.value, FormatProvider);
+		}
+	}
+	public double AsDouble
+	{
+		get
+		{
+			if (this.value is IStrongBox) return (this.value as IStrongBox).AsDouble;
+			return Convert.ToDouble(this.value, FormatProvider);
+		}
+	}
+	public decimal AsDecimal
+	{
+		get
+		{
+			if (this.value is IStrongBox) return (this.value as IStrongBox).AsDecimal;
+			return Convert.ToDecimal(this.value, FormatProvider);
+		}
+	}
+	public string AsString
+	{
+		get
+		{
+			var value = this.value;
+			if (this.value is IStrongBox) value = (this.value as IStrongBox).AsObject;
+			return Convert.ToString(value, FormatProvider);
+		}
+	}
+	public DateTime AsDateTime
+	{
+		get
+		{
+			var dateTimeStr = this.AsString;
+			var date = DateTime.ParseExact(dateTimeStr, DateTimeFormats, FormatProvider, System.Globalization.DateTimeStyles.RoundtripKind);
+			return date;
+		}
+	}
+	public TimeSpan AsTimeSpan
+	{
+		get
+		{
+			var timeSpanStr = this.AsString;
+			var timeSpan = TimeSpan.Parse(timeSpanStr);
+			return timeSpan;
+		}
+	}
+	public object AsObject
+	{
+		get
+		{
+			if (this.value is IStrongBox) return (this.value as IStrongBox).AsObject;
+			return this.value;
+		}
+	}
+
+	public override string ToString()
+	{
+		return string.Format(FormatProvider, "{0}:{1}", this.Token, this.value);
+	}
+}
+
+private interface IStrongBox
+{
+	bool AsBoolean { get; }
+	byte AsByte { get; }
+	short AsInt16 { get; }
+	int AsInt32 { get; }
+	long AsInt64 { get; }
+	sbyte AsSByte { get; }
+	ushort AsUInt16 { get; }
+	uint AsUInt32 { get; }
+	ulong AsUInt64 { get; }
+	float AsSingle { get; }
+	double AsDouble { get; }
+	decimal AsDecimal { get; }
+	Type ValueType { get; }
+	object AsObject { get; }
+
+	void Store<T>(T value);
+}
+
+private sealed class StrongBox<ValueT> : IStrongBox
+{
+	private static readonly Type ValueType = typeof(ValueT);
+
+	private readonly IFormatProvider formatProvider;
+
+	public ValueT Value;
+
+	public StrongBox(ValueT value, IFormatProvider formatProvider)
+		: this(formatProvider)
+	{
+		this.Value = value;
+	}
+	public StrongBox(IFormatProvider formatProvider)
+	{
+		if (formatProvider == null) throw new ArgumentNullException("formatProvider");
+
+		this.formatProvider = formatProvider;
+	}
+
+	Type IStrongBox.ValueType { get { return ValueType; } }
+	public bool AsBoolean { get	{ return Convert.ToBoolean((object)Value, this.formatProvider);	} }
+	public byte AsByte { get { return Convert.ToByte((object)Value, this.formatProvider); } }
+	public short AsInt16 { get { return Convert.ToInt16((object)Value, this.formatProvider); } }
+	public int AsInt32 { get { return Convert.ToInt32((object)Value, this.formatProvider); } }
+	public long AsInt64 { get { return Convert.ToInt64((object)Value, this.formatProvider); } }
+	public sbyte AsSByte { get { return Convert.ToSByte((object)Value, this.formatProvider); } }
+	public ushort AsUInt16 { get { return Convert.ToUInt16((object)Value, this.formatProvider); } }
+	public uint AsUInt32 { get { return Convert.ToUInt32((object)Value, this.formatProvider); } }
+	public ulong AsUInt64 { get { return Convert.ToUInt64((object)Value, this.formatProvider); } }
+	public float AsSingle { get { return Convert.ToSingle((object)Value, this.formatProvider); } }
+	public double AsDouble { get { return Convert.ToDouble((object)Value, this.formatProvider); } }
+	public decimal AsDecimal { get { return Convert.ToDecimal((object)Value, this.formatProvider); } }
+	public object AsObject { get { return this.Value; } }
+
+	public void Store<T>(T value)
+	{
+		var type = typeof(T);
+		if (type != ValueType)
+		{
+			throw new ArgumentException(string.Format("Unable to store value of type '{0}' in container of type '{1}'", typeof(ValueT), type));
+		}
+		this.Value = (ValueT)(object)value;
+	}
+
+	public override string ToString()
+	{
+		return Convert.ToString(this.Value, this.formatProvider);
+	}
+}
+
+private enum ReaderToken
+{
+	None = 0,
+	BeginArray,
+	EndOfArray,
+	BeginObject,
+	EndOfObject,
+	Member,
+	Null,
+	Value,
+	Comment,
+	EndOfStream
+}
+
+[Serializable]
+private class ReaderException : SerializationException
+{
+	public int Code { get; set; }
+	public int LineNumber { get; set; }
+	public int ColumnNumber { get; set; }
+
+	private ReaderException(string message, Reader reader)
+		: base(message)
+	{
+		if (message == null) throw new ArgumentNullException("message");
+
+		if (reader != null)
+			this.Update(reader);
+	}
+
+	private void Update(Reader reader)
+	{
+		if (reader == null) throw new ArgumentNullException("reader");
+
+		this.LineNumber = reader.LineNumber;
+		this.ColumnNumber = reader.ColumnNumber;
+	}
+
+	public static Exception UnexpectedEndOfStream(Reader reader)
+	{
+		if (reader == null) throw new ArgumentNullException("reader");
+
+		return new ReaderException(string.Format("Unexpected end of stream."), reader);
+	}
+	public static Exception UnexpectedToken(Reader reader, params ReaderToken[] expectedTokens)
+	{
+		if (reader == null) throw new ArgumentNullException("reader");
+		if (expectedTokens == null) throw new ArgumentNullException("expectedTokens");
+
+		var tokensStr = default(string);
+		if (expectedTokens.Length == 0)
+		{
+			tokensStr = "<no tokens>";
+		}
+		else
+		{
+			var tokens = Array.ConvertAll(expectedTokens, c => c.ToString());
+			tokensStr = String.Join(", ", tokens);
+		}
+
+		return new ReaderException(string.Format("Expected one of there '{2}' but found '{0}'({1}).", reader.Node.Token, reader.Node.ValueType.Name, tokensStr), reader);
+	}
+	public static Exception UnknownEscapeSequence(string escape, Reader reader)
+	{
+		if (escape == null) throw new ArgumentNullException("escape");
+		if (reader == null) throw new ArgumentNullException("reader");
+
+		return new ReaderException(string.Format("An unknown escape sequence '{0}'.", escape),reader);
+	}
+	public static Exception UnterminatedStringLiteral(Reader reader)
+	{
+		if (reader == null) throw new ArgumentNullException("reader");
+
+		return new ReaderException(string.Format("An unterminated string literal."), reader);
+	}
+	public static Exception UnknownNotation(Reader reader, string notation)
+	{
+		if (reader == null) throw new ArgumentNullException("reader");
+
+		return new ReaderException(string.Format("An unknown notation '{0}'.", notation), reader);
+	}
+	public static Exception StringLiteralIsTooLong(Reader reader, int size, int maxSize)
+	{
+		if (reader == null) throw new ArgumentNullException("reader");
+
+		return new ReaderException(string.Format("String literal is too long '{0}'. Maximum size is {1}.", size, maxSize), reader);
+	}
+	public static Exception BinaryDataIsTooLong(Reader reader, int size, int maxSize)
+	{
+		if (reader == null) throw new ArgumentNullException("reader");
+
+		return new ReaderException(string.Format("Binary data is too long '{0}'. Maximum size is {1}.", size, maxSize), reader);
+	}
+	public static Exception ReadingBrokenDocument(Reader reader, string additionalInformation)
+	{
+		if (reader == null) throw new ArgumentNullException("reader");
+
+		return new ReaderException(string.Format("Failed to continue deserialize because document's structure is invalid. Additional information: {0}", additionalInformation), reader);
+	}
+	public static Exception UnknownMessagePackType(string type, Reader reader)
+	{
+		if (reader == null) throw new ArgumentNullException("reader");
+
+		return new ReaderException(string.Format("An unknown Message Pack type '{0}'.", type), reader);
+	}
+}
+#region EndianBitConverter by Jon Skeet and Marc Gravell
+/* "Miscellaneous Utility Library" Software Licence
+
+Version 1.0
+
+Copyright (c) 2004-2008 Jon Skeet and Marc Gravell.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+1. Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+3. The end-user documentation included with the redistribution, if
+any, must include the following acknowledgment:
+
+"This product includes software developed by Jon Skeet
+and Marc Gravell. Contact skeet@pobox.com, or see
+http://www.pobox.com/~skeet/)."
+
+Alternately, this acknowledgment may appear in the software itself,
+if and wherever such third-party acknowledgments normally appear.
+
+4. The name "Miscellaneous Utility Library" must not be used to endorse
+or promote products derived from this software without prior written
+permission. For written permission, please contact skeet@pobox.com.
+
+5. Products derived from this software may not be called
+"Miscellaneous Utility Library", nor may "Miscellaneous Utility Library"
+appear in their name, without prior written permission of Jon Skeet.
+
+THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESSED OR IMPLIED
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL JON SKEET BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+*/
+
+internal enum Endianness
+{
+	LittleEndian,
+
+	BigEndian
+}
+
+private abstract class EndianBitConverter
+{
+	#region Endianness of this converter
+
+	public abstract bool IsLittleEndian();
+
+	public abstract Endianness Endianness { get; }
+
+	#endregion
+
+	#region Factory properties
+
+	private static readonly LittleEndianBitConverter little = new LittleEndianBitConverter();
+
+	public static LittleEndianBitConverter Little
+	{
+		get { return little; }
+	}
+
+	private static readonly BigEndianBitConverter big = new BigEndianBitConverter();
+
+	public static BigEndianBitConverter Big
+	{
+		get { return big; }
+	}
+
+	#endregion
+
+	#region Double/primitive conversions
+
+	public long DoubleToInt64Bits(double value)
+	{
+		return BitConverter.DoubleToInt64Bits(value);
+	}
+
+	public double Int64BitsToDouble(long value)
+	{
+		return BitConverter.Int64BitsToDouble(value);
+	}
+
+	public int SingleToInt32Bits(float value)
+	{
+		return new Int32SingleUnion(value).AsInt32;
+	}
+
+	public float Int32BitsToSingle(int value)
+	{
+		return new Int32SingleUnion(value).AsSingle;
+	}
+
+	#endregion
+
+	#region To(PrimitiveType) conversions
+
+	public bool ToBoolean(byte[] value, int startIndex)
+	{
+		CheckByteArgument(value, startIndex, 1);
+		return BitConverter.ToBoolean(value, startIndex);
+	}
+
+	public char ToChar(byte[] value, int startIndex)
+	{
+		return unchecked((char)(CheckedFromBytes(value, startIndex, 2)));
+	}
+
+	public double ToDouble(byte[] value, int startIndex)
+	{
+		return Int64BitsToDouble(ToInt64(value, startIndex));
+	}
+
+	public float ToSingle(byte[] value, int startIndex)
+	{
+		return Int32BitsToSingle(ToInt32(value, startIndex));
+	}
+
+	public short ToInt16(byte[] value, int startIndex)
+	{
+		return unchecked((short)(CheckedFromBytes(value, startIndex, 2)));
+	}
+
+	public int ToInt32(byte[] value, int startIndex)
+	{
+		return unchecked((int)(CheckedFromBytes(value, startIndex, 4)));
+	}
+
+	public long ToInt64(byte[] value, int startIndex)
+	{
+		return CheckedFromBytes(value, startIndex, 8);
+	}
+
+	public ushort ToUInt16(byte[] value, int startIndex)
+	{
+		return unchecked((ushort)(CheckedFromBytes(value, startIndex, 2)));
+	}
+
+	public uint ToUInt32(byte[] value, int startIndex)
+	{
+		return unchecked((uint)(CheckedFromBytes(value, startIndex, 4)));
+	}
+
+	public ulong ToUInt64(byte[] value, int startIndex)
+	{
+		return unchecked((ulong)(CheckedFromBytes(value, startIndex, 8)));
+	}
+
+	private static void CheckByteArgument(byte[] value, int startIndex, int bytesRequired)
+	{
+		if (value == null)
+		{
+			throw new ArgumentNullException("value");
+		}
+		if (startIndex < 0 || startIndex > value.Length - bytesRequired)
+		{
+			throw new ArgumentOutOfRangeException("startIndex");
+		}
+	}
+
+	private long CheckedFromBytes(byte[] value, int startIndex, int bytesToConvert)
+	{
+		CheckByteArgument(value, startIndex, bytesToConvert);
+		return FromBytes(value, startIndex, bytesToConvert);
+	}
+
+	protected abstract long FromBytes(byte[] value, int startIndex, int bytesToConvert);
+
+	#endregion
+
+	#region ToString conversions
+
+	public static string ToString(byte[] value)
+	{
+		return BitConverter.ToString(value);
+	}
+
+	public static string ToString(byte[] value, int startIndex)
+	{
+		return BitConverter.ToString(value, startIndex);
+	}
+
+	public static string ToString(byte[] value, int startIndex, int length)
+	{
+		return BitConverter.ToString(value, startIndex, length);
+	}
+
+	#endregion
+
+	#region	Decimal conversions
+
+	public decimal ToDecimal(byte[] value, int startIndex)
+	{
+		// HACK: This always assumes four parts, each in their own endianness,
+		// starting with the first part at the start of the byte array.
+		// On the other hand, there's no real format specified...
+		var parts = new int[4];
+		for (var p = 0; p < 4; p++)
+		{
+			parts[p] = ToInt32(value, startIndex + p * 4);
+		}
+		return new decimal(parts);
+	}
+
+	public byte[] GetBytes(decimal value)
+	{
+		var bytes = new byte[16];
+		var parts = decimal.GetBits(value);
+		for (var p = 0; p < 4; p++)
+		{
+			CopyBytesImpl(parts[p], 4, bytes, p * 4);
+		}
+		return bytes;
+	}
+
+	public void CopyBytes(decimal value, byte[] buffer, int index)
+	{
+		var parts = decimal.GetBits(value);
+		for (var i = 0; i < 4; i++)
+		{
+			CopyBytesImpl(parts[i], 4, buffer, i * 4 + index);
+		}
+	}
+
+	#endregion
+
+	#region GetBytes conversions
+
+	private byte[] GetBytes(long value, int bytes)
+	{
+		var buffer = new byte[bytes];
+		CopyBytes(value, bytes, buffer, 0);
+		return buffer;
+	}
+
+	public byte[] GetBytes(bool value)
+	{
+		return BitConverter.GetBytes(value);
+	}
+
+	public byte[] GetBytes(char value)
+	{
+		return GetBytes(value, 2);
+	}
+
+	public byte[] GetBytes(double value)
+	{
+		return GetBytes(DoubleToInt64Bits(value), 8);
+	}
+
+	public byte[] GetBytes(short value)
+	{
+		return GetBytes(value, 2);
+	}
+
+	public byte[] GetBytes(int value)
+	{
+		return GetBytes(value, 4);
+	}
+
+	public byte[] GetBytes(long value)
+	{
+		return GetBytes(value, 8);
+	}
+
+	public byte[] GetBytes(float value)
+	{
+		return GetBytes(SingleToInt32Bits(value), 4);
+	}
+
+	public byte[] GetBytes(ushort value)
+	{
+		return GetBytes(value, 2);
+	}
+
+	public byte[] GetBytes(uint value)
+	{
+		return GetBytes(value, 4);
+	}
+
+	public byte[] GetBytes(ulong value)
+	{
+		return GetBytes(unchecked((long)value), 8);
+	}
+
+	#endregion
+
+	#region CopyBytes conversions
+
+	private void CopyBytes(long value, int bytes, byte[] buffer, int index)
+	{
+		if (buffer == null)
+		{
+			throw new ArgumentNullException("buffer", "Byte array must not be null");
+		}
+		if (buffer.Length < index + bytes)
+		{
+			throw new ArgumentOutOfRangeException("Buffer not big enough for value");
+		}
+		CopyBytesImpl(value, bytes, buffer, index);
+	}
+
+	protected abstract void CopyBytesImpl(long value, int bytes, byte[] buffer, int index);
+
+	public void CopyBytes(bool value, byte[] buffer, int index)
+	{
+		CopyBytes(value ? 1 : 0, 1, buffer, index);
+	}
+
+	public void CopyBytes(char value, byte[] buffer, int index)
+	{
+		CopyBytes(value, 2, buffer, index);
+	}
+
+	public void CopyBytes(double value, byte[] buffer, int index)
+	{
+		CopyBytes(DoubleToInt64Bits(value), 8, buffer, index);
+	}
+
+	public void CopyBytes(short value, byte[] buffer, int index)
+	{
+		CopyBytes(value, 2, buffer, index);
+	}
+
+	public void CopyBytes(int value, byte[] buffer, int index)
+	{
+		CopyBytes(value, 4, buffer, index);
+	}
+
+	public void CopyBytes(long value, byte[] buffer, int index)
+	{
+		CopyBytes(value, 8, buffer, index);
+	}
+
+	public void CopyBytes(float value, byte[] buffer, int index)
+	{
+		CopyBytes(SingleToInt32Bits(value), 4, buffer, index);
+	}
+
+	public void CopyBytes(ushort value, byte[] buffer, int index)
+	{
+		CopyBytes(value, 2, buffer, index);
+	}
+
+	public void CopyBytes(uint value, byte[] buffer, int index)
+	{
+		CopyBytes(value, 4, buffer, index);
+	}
+
+	public void CopyBytes(ulong value, byte[] buffer, int index)
+	{
+		CopyBytes(unchecked((long)value), 8, buffer, index);
+	}
+
+	#endregion
+
+	#region Private struct used for Single/Int32 conversions
+
+	[StructLayout(LayoutKind.Explicit)]
+	private struct Int32SingleUnion
+	{
+		[FieldOffset(0)]
+		private readonly int i;
+
+		[FieldOffset(0)]
+		private readonly float f;
+
+		internal Int32SingleUnion(int i)
+		{
+			this.f = 0; // Just to keep the compiler happy
+			this.i = i;
+		}
+
+		internal Int32SingleUnion(float f)
+		{
+			this.i = 0; // Just to keep the compiler happy
+			this.f = f;
+		}
+
+		internal int AsInt32
+		{
+			get { return i; }
+		}
+
+		internal float AsSingle
+		{
+			get { return f; }
+		}
+	}
+
+	#endregion
+}
+
+private sealed class BigEndianBitConverter : EndianBitConverter
+{
+	public sealed override bool IsLittleEndian()
+	{
+		return false;
+	}
+
+	public sealed override Endianness Endianness
+	{
+		get { return Endianness.BigEndian; }
+	}
+
+	protected override void CopyBytesImpl(long value, int bytes, byte[] buffer, int index)
+	{
+		var endOffset = index + bytes - 1;
+		for (var i = 0; i < bytes; i++)
+		{
+			buffer[endOffset - i] = unchecked((byte)(value & 0xff));
+			value = value >> 8;
+		}
+	}
+
+	protected override long FromBytes(byte[] buffer, int startIndex, int bytesToConvert)
+	{
+		long ret = 0;
+		for (var i = 0; i < bytesToConvert; i++)
+		{
+			ret = unchecked((ret << 8) | buffer[startIndex + i]);
+		}
+		return ret;
+	}
+}
+
+private sealed class LittleEndianBitConverter : EndianBitConverter
+{
+	public sealed override bool IsLittleEndian()
+	{
+		return true;
+	}
+
+	public sealed override Endianness Endianness
+	{
+		get { return Endianness.LittleEndian; }
+	}
+
+	protected override void CopyBytesImpl(long value, int bytes, byte[] buffer, int index)
+	{
+		for (var i = 0; i < bytes; i++)
+		{
+			buffer[i + index] = unchecked((byte)(value & 0xff));
+			value = value >> 8;
+		}
+	}
+
+	protected override long FromBytes(byte[] buffer, int startIndex, int bytesToConvert)
+	{
+		long ret = 0;
+		for (var i = 0; i < bytesToConvert; i++)
+		{
+			ret = unchecked((ret << 8) | buffer[startIndex + bytesToConvert - 1 - i]);
+		}
+		return ret;
+	}
+}
+
+/* end of Jon Skeet and Marc Gravell code */
+#endregion
+
+#endregion
+
+#region Serialization: JSON
+public static object ReadGameDataJson(Stream stream, Encoding encoding, bool leaveOpen)
+{
+	if (stream == null) throw new ArgumentNullException("stream");
+	if (encoding == null) throw new ArgumentNullException("encoding");
+
+	var textReader = new StreamReader(stream, encoding);
+	using (var jsonReader = new JsonReader(textReader, leaveOpen))
+		return jsonReader.ReadAny();
+}
+
+private sealed partial class JsonReader : Reader, IDisposable
+{
+	private const int DefaultBufferSize = 1024;
+
+	const int LEXER_STATE_COMPLETE = -1;
+	const int LEXER_STATE_START = 0;
+	const int LEXER_STATE_LEXEME = 1;
+	const int LEXER_STATE_QUOTED = 2;
+	const int LEXER_STATE_QUOTED_ESCAPE = 3;
+	const int LEXER_STATE_COMMENT_BEGINING = 4;
+	const int LEXER_STATE_COMMENT_SINGLELINE = 5;
+	const int LEXER_STATE_COMMENT_MULTILINE = 6;
+	const int LEXER_STATE_COMMENT_MULTILINE_ENDING = 7;
+
+	private readonly ArraySegment<char> LexemeTrue = new ArraySegment<char>(JsonNotation.True.ToCharArray(), 0, 4);
+	private readonly ArraySegment<char> LexemeFalse = new ArraySegment<char>(JsonNotation.False.ToCharArray(), 0, 5);
+	private readonly ArraySegment<char> LexemeNull = new ArraySegment<char>(JsonNotation.Null.ToCharArray(), 0, 4);
+
+	private const int NumberNot = -1;
+	private const int NumberInteger = 0;
+	private const int NumberFloat = 1;
+	private const int NumberFloatWithExp = 2;
+
+	private readonly bool leaveOpen;
+	private readonly TextReader textReader;
+
+	// tokenizing
+	private ArraySegment<char> buffer;
+	private int lineNum = 1;
+	private int colNum = 1;
+
+	// parsing
+	private ReaderNode node;
+	private ArraySegment<char> rawJson;
+
+	private StrongBox<bool> trueBox;
+	private StrongBox<bool> falseBox;
+	private StrongBox<int> intBox;
+	private StrongBox<DateTime> dateBox;
+	private JsonValueBox jsonValueBox;
+
+	public override ReaderNode Node { get { if (this.node.Token == ReaderToken.None) this.NextToken(); return this.node; } }
+
+	// statistics
+	public override int LineNumber { get { return this.lineNum; } }
+	public override int ColumnNumber { get { return this.colNum; } }
+
+	public JsonReader(TextReader textReader, bool leaveOpen = false, int bufferSize = DefaultBufferSize)
+	{
+		if (textReader == null) throw new ArgumentNullException("textReader");
+		if (bufferSize <= 0) throw new ArgumentOutOfRangeException("bufferSize");
+
+		this.buffer = new ArraySegment<char>(new char[bufferSize], 0, 0);
+		this.textReader = textReader;
+		this.leaveOpen = leaveOpen;
+	}
+
+	public override bool NextToken()
+	{
+		this.rawJson = default(ArraySegment<char>);
+		this.node = default(ReaderNode);
+
+		var fragments = default(ArraySegment<char>[]);
+		var state = LEXER_STATE_COMPLETE;
+		var lexemeSize = 0;
+
+		var lexeme = this.NextLexeme(ref state);
+		if (lexeme.Count == 0)
+		{
+			this.node = new ReaderNode(ReaderToken.EndOfStream);
+			return false;
+		}
+		if (state != LEXER_STATE_COMPLETE)
+		{
+			var firstFragment = lexeme;
+			var secondFragment = this.NextLexeme(ref state);
+
+			if (state == LEXER_STATE_COMPLETE)
+			{
+				if (secondFragment.Count == 0)
+				{
+					lexeme = firstFragment;
+					lexemeSize = lexeme.Count;
+				}
+				else
+				{
+					fragments = new ArraySegment<char>[2] { firstFragment, secondFragment };
+					lexemeSize = firstFragment.Count + secondFragment.Count;
+				}
+			}
+			else
+			{
+				var f = 0;
+				fragments = new ArraySegment<char>[8];
+				fragments[f++] = firstFragment;
+				fragments[f++] = secondFragment;
+				lexemeSize = firstFragment.Count + secondFragment.Count;
+
+				do
+				{
+					lexeme = this.NextLexeme(ref state);
+
+					if (lexeme.Count == 0) break;
+					if (f == fragments.Length) Array.Resize(ref fragments, fragments.Length * 2);
+
+					fragments[f++] = lexeme;
+					lexemeSize += lexeme.Count;
+
+				} while (state != LEXER_STATE_COMPLETE);
+			}
+		}
+		else
+		{
+			lexemeSize = lexeme.Count;
+		}
+
+		if (lexemeSize == 1)
+		{
+			this.rawJson = fragments != null ? fragments[0] : lexeme;
+			switch (rawJson.Array[rawJson.Offset])
+			{
+				case JsonNotation.Const0: this.node = new ReaderNode(ReaderToken.Value, this.Box(0)); return true;
+				case JsonNotation.Const1: this.node = new ReaderNode(ReaderToken.Value, this.Box(1)); return true;
+				case JsonNotation.Const2: this.node = new ReaderNode(ReaderToken.Value, this.Box(2)); return true;
+				case JsonNotation.Const3: this.node = new ReaderNode(ReaderToken.Value, this.Box(3)); return true;
+				case JsonNotation.Const4: this.node = new ReaderNode(ReaderToken.Value, this.Box(4)); return true;
+				case JsonNotation.Const5: this.node = new ReaderNode(ReaderToken.Value, this.Box(5)); return true;
+				case JsonNotation.Const6: this.node = new ReaderNode(ReaderToken.Value, this.Box(6)); return true;
+				case JsonNotation.Const7: this.node = new ReaderNode(ReaderToken.Value, this.Box(7)); return true;
+				case JsonNotation.Const8: this.node = new ReaderNode(ReaderToken.Value, this.Box(8)); return true;
+				case JsonNotation.Const9: this.node = new ReaderNode(ReaderToken.Value, this.Box(9)); return true;
+				case JsonNotation.BeginArray: this.node = new ReaderNode(ReaderToken.BeginArray); return true;
+				case JsonNotation.BeginObject: this.node = new ReaderNode(ReaderToken.BeginObject); return true;
+				case JsonNotation.EndArray: this.node = new ReaderNode(ReaderToken.EndOfArray); return true;
+				case JsonNotation.EndObject: this.node = new ReaderNode(ReaderToken.EndOfObject); return true;
+				default: throw ReaderException.UnknownNotation(this, new string(this.rawJson.Array, this.rawJson.Offset, this.rawJson.Count));
+			}
+		}
+		if (lexemeSize == 4)
+		{
+			if (this.Match(lexeme, fragments, 0, LexemeTrue))
+			{
+				this.rawJson = LexemeTrue;
+				this.node = new ReaderNode(ReaderToken.Value, this.Box(true));
+				return true;
+			}
+			if (this.Match(lexeme, fragments, 0, LexemeNull))
+			{
+				this.rawJson = LexemeNull;
+				this.node = new ReaderNode(ReaderToken.Null);
+				return true;
+			}
+		}
+		if (lexemeSize == 5 && this.Match(lexeme, fragments, 0, LexemeFalse))
+		{
+			this.rawJson = LexemeFalse;
+			this.node = new ReaderNode(ReaderToken.Value, this.Box(false));
+			return true;
+		}
+
+		// combine fragments into one lexeme
+		if (fragments != null)
+		{
+			var combined = new char[lexemeSize];
+			var offset = 0;
+			foreach (var fragment in fragments)
+			{
+				if (fragment.Array == null) break;
+				Buffer.BlockCopy(fragment.Array, fragment.Offset * 2, combined, offset * 2, fragment.Count * 2);
+				offset += fragment.Count;
+			}
+			lexeme = new ArraySegment<char>(combined, 0, offset);
+			//fragments = null;
+		}
+
+		this.rawJson = lexeme;
+		if (lexeme.Array[lexeme.Offset] == JsonNotation.Quote) // start with quote
+		{
+			if (lexeme.Array[lexeme.Offset + lexeme.Count - 1] != JsonNotation.Quote) // not ending with quote
+				throw ReaderException.UnterminatedStringLiteral(this);
+
+			if (lexemeSize == 2)
+			{
+				this.node = new ReaderNode(ReaderToken.Value, string.Empty);
+				return true;
+			}
+
+			this.node = new ReaderNode(ReaderToken.Value, this.Box(lexeme));
+			return true;
+		}
+
+		switch (this.GetNumberType(lexeme))
+		{
+			case NumberInteger:
+				this.node = new ReaderNode(ReaderToken.Value, this.Box(lexeme, typeof(long)));
+				return true;
+			case NumberFloat:
+			case NumberFloatWithExp:
+				this.node = new ReaderNode(ReaderToken.Value, this.Box(lexeme, typeof(double)));
+				return true;
+		}
+
+		throw ReaderException.UnknownNotation(this, new string(this.rawJson.Array, this.rawJson.Offset, this.rawJson.Count));
+	}
+
+	private object Box(ArraySegment<char> lexeme)
+	{
+		if (this.jsonValueBox == null)
+			this.jsonValueBox = new JsonValueBox(FormatProvider);
+
+		this.jsonValueBox.Store(lexeme, typeof(string));
+
+		return this.jsonValueBox;
+	}
+	private object Box(ArraySegment<char> lexeme, Type type)
+	{
+		if (type == null) throw new ArgumentNullException("type");
+
+		if (this.jsonValueBox == null)
+			this.jsonValueBox = new JsonValueBox(FormatProvider);
+
+		this.jsonValueBox.Store(lexeme, type);
+		return this.jsonValueBox;
+	}
+	private object Box(int value)
+	{
+		if (this.intBox == null)
+			this.intBox = new StrongBox<int>(FormatProvider);
+
+		this.intBox.Store(value);
+		return this.intBox;
+	}
+	private object Box(DateTime value)
+	{
+		if (this.dateBox == null)
+			this.dateBox = new StrongBox<DateTime>(FormatProvider);
+
+		this.dateBox.Store(value);
+
+		return this.intBox;
+	}
+	private object Box(bool value)
+	{
+		if (value)
+		{
+			if (this.trueBox == null)
+				this.trueBox = new StrongBox<bool>(true, FormatProvider);
+			return trueBox;
+		}
+		if (this.falseBox == null)
+			this.falseBox = new StrongBox<bool>(false, FormatProvider);
+		return falseBox;
+	}
+
+	private bool Match(ArraySegment<char> lexeme, ArraySegment<char>[] fragments, int offset, ArraySegment<char> matchTo)
+	{
+		var count = matchTo.Count;
+		if (fragments == null)
+		{
+			for (int i = 0; i < count; i++)
+			{
+				if (lexeme.Array[lexeme.Offset + i] != matchTo.Array[matchTo.Offset + i])
+					return false;
+			}
+
+			return true;
+		}
+		var mo = 0;
+		foreach (var fg in fragments)
+		{
+			if (fg.Array == null) break;
+
+			for (int i = 0; i < fg.Count; i++)
+			{
+				if (fg.Array[fg.Offset + i] != matchTo.Array[mo])
+					return false;
+
+				mo++;
+			}
+		}
+
+		return true;
+	}
+	private int GetNumberType(ArraySegment<char> lexeme)
+	{
+		const int INT_PART = 0;
+		const int FRAC_PART = 1;
+		const int EXP_PART = 2;
+
+		const char POINT = '.';
+		const char EXP = 'E';
+		const char PLUS = '+';
+		const char MINUS = '-';
+
+		var buffer = lexeme.Array;
+		var offset = lexeme.Offset;
+		var count = lexeme.Offset + lexeme.Count;
+
+		var part = INT_PART;
+
+		for (int i = offset; i < count; i++)
+		{
+			var ch = buffer[i];
+
+			switch (part)
+			{
+				case INT_PART:
+					if (ch == MINUS)
+					{
+						if (i != offset)
+							return NumberNot;
+					}
+					else if (ch == POINT)
+					{
+						if (i == offset)
+							return NumberNot; // decimal point as first character
+						part = FRAC_PART;
+					}
+					else if (char.ToUpper(ch) == EXP)
+					{
+						if (i == offset)
+							return NumberNot; // exp at first character
+						part = EXP_PART;
+					}
+					else if (!char.IsDigit(ch))
+						return NumberNot; // non digit character in int part
+					break;
+				case FRAC_PART:
+					if (char.ToUpperInvariant(ch) == EXP)
+					{
+						if (i == offset)
+							return NumberNot; // exp at first character
+						part = EXP_PART;
+					}
+					else if (!Char.IsDigit(ch))
+						return NumberNot; // non digit character in frac part
+					break;
+				case EXP_PART:
+					if ((ch == PLUS || ch == MINUS))
+					{
+						if (char.ToUpperInvariant(buffer[i - 1]) != EXP)
+							return NumberNot; // sign not at start of exp part
+					}
+					else if (!char.IsDigit(ch))
+						return NumberNot; // non digit character in exp part
+					break;
+			}
+		}
+		return part;
+	}
+	private ArraySegment<char> NextLexeme(ref int state)
+	{
+	start:
+		if (this.buffer.Count == 0 && this.EnsureBuffer() == 0)
+		{
+			state = LEXER_STATE_COMPLETE;
+			return this.buffer; // end of stream
+		}
+
+		var array = this.buffer.Array;
+		var offset = this.buffer.Offset;
+		var length = offset + this.buffer.Count;
+
+		if (state == LEXER_STATE_COMPLETE)
+			state = LEXER_STATE_START;
+
+		for (var i = offset; i < length; i++)
+		{
+			this.colNum++;
+			switch (state)
+			{
+				case LEXER_STATE_START:
+					switch (array[i])
+					{
+						case JsonNotation.Newline: this.lineNum++; this.colNum = 1; goto case JsonNotation.Space;
+						case JsonNotation.Space:
+						case JsonNotation.Return:
+						case JsonNotation.Tab:
+						case JsonNotation.IdentifierSeparator:
+						case JsonNotation.ValueSeparator:
+							continue; // insignificant whitespaces
+						case JsonNotation.Comment:
+							state = LEXER_STATE_COMMENT_BEGINING;
+							continue;
+						case JsonNotation.EndArray:
+						case JsonNotation.EndObject:
+						case JsonNotation.BeginObject:
+						case JsonNotation.BeginArray:
+							state = LEXER_STATE_COMPLETE;
+							this.buffer = new ArraySegment<char>(array, i + 1, length - i - 1);
+							return new ArraySegment<char>(array, i, 1);
+						case JsonNotation.Quote:
+							offset = i;
+							state = LEXER_STATE_QUOTED;
+							continue;
+						default:
+							if (Char.IsWhiteSpace(array[i]))
+								goto case JsonNotation.Space;
+							offset = i;
+							state = LEXER_STATE_LEXEME;
+							continue;
+					}
+				case LEXER_STATE_LEXEME:
+					switch (array[i])
+					{
+						// lexeme terminators
+						case JsonNotation.Space:
+						case JsonNotation.Newline:
+						case JsonNotation.Return:
+						case JsonNotation.Tab:
+						case JsonNotation.IdentifierSeparator:
+						case JsonNotation.ValueSeparator:
+						case JsonNotation.EndArray:
+						case JsonNotation.EndObject:
+						case JsonNotation.BeginObject:
+						case JsonNotation.BeginArray:
+							state = LEXER_STATE_COMPLETE;
+							this.buffer = new ArraySegment<char>(array, i, length - i);
+							return new ArraySegment<char>(array, offset, i - offset);
+						default:
+							if (Char.IsWhiteSpace(array[i]))
+								goto case JsonNotation.Space;
+							continue;
+					}
+				case LEXER_STATE_QUOTED:
+				case LEXER_STATE_QUOTED_ESCAPE:
+					switch (array[i])
+					{
+						case JsonNotation.Newline:
+						case JsonNotation.Return:
+							throw ReaderException.UnterminatedStringLiteral(this);
+						case JsonNotation.Quote:
+							if (state == LEXER_STATE_QUOTED_ESCAPE)
+							{
+								state = LEXER_STATE_QUOTED;
+								continue;
+							}
+
+							state = LEXER_STATE_COMPLETE;
+							this.buffer = new ArraySegment<char>(array, i + 1, length - i - 1);
+							return new ArraySegment<char>(array, offset, i - offset + 1);
+						case JsonNotation.Escape:
+							state = LEXER_STATE_QUOTED_ESCAPE; // skips escaped quotes - \"
+							continue;
+						default:
+							if (state == LEXER_STATE_QUOTED_ESCAPE)
+								state = LEXER_STATE_QUOTED;
+							continue;
+					}
+				case LEXER_STATE_COMMENT_BEGINING:
+					switch (array[i])
+					{
+						case JsonNotation.Comment:
+							state = LEXER_STATE_COMMENT_SINGLELINE;
+							continue;
+						case JsonNotation.CommentMultiline:
+							state = LEXER_STATE_COMMENT_MULTILINE;
+							continue;
+						default:
+							throw ReaderException.UnknownNotation(this, JsonNotation.Comment + array[i].ToString());
+					}
+				case LEXER_STATE_COMMENT_SINGLELINE:
+					switch (array[i])
+					{
+						case JsonNotation.Newline:
+						case JsonNotation.Return:
+							state = LEXER_STATE_START;
+							continue;
+						default: continue;
+					}
+				case LEXER_STATE_COMMENT_MULTILINE_ENDING:
+				case LEXER_STATE_COMMENT_MULTILINE:
+					switch (array[i])
+					{
+						case JsonNotation.CommentMultiline:
+							state = LEXER_STATE_COMMENT_MULTILINE_ENDING;
+							continue;
+						case JsonNotation.Comment:
+							if (state == LEXER_STATE_COMMENT_MULTILINE_ENDING)
+								state = LEXER_STATE_START;
+							continue;
+						default: continue;
+					}
+
+			}
+		}
+
+		if (state == LEXER_STATE_START || state == LEXER_STATE_COMMENT_BEGINING || state == LEXER_STATE_COMMENT_MULTILINE || state == LEXER_STATE_COMMENT_MULTILINE_ENDING || state == LEXER_STATE_COMMENT_SINGLELINE)
+		{
+			// no lexemes found in current buffer
+			this.buffer = new ArraySegment<char>(array, 0, 0); // empty buffer
+			goto start; // restart
+		}
+
+		// allocate new buffer for next fragment
+		this.buffer = new ArraySegment<char>(new char[array.Length], 0, 0);
+
+		return new ArraySegment<char>(array, offset, length - offset);
+	}
+	private int EnsureBuffer()
+	{
+		var chars = this.buffer.Array;
+		var offset = this.buffer.Offset;
+		var count = this.buffer.Count;
+
+		if (count == 0)
+		{
+			offset = 0;
+			count = this.FillBuffer(chars, 0);
+		}
+		else if (offset >= chars.Length / 2)
+		{
+			Buffer.BlockCopy(chars, offset * 2, chars, 0, count);
+			offset = 0;
+			count += this.FillBuffer(chars, offset + count);
+		}
+		else
+		{
+			count += this.FillBuffer(chars, offset + count);
+		}
+
+		this.buffer = new ArraySegment<char>(chars, offset, count);
+		return count;
+	}
+
+	private int FillBuffer(char[] buffer, int offset)
+	{
+		var count = buffer.Length - offset;
+		if (count <= 0)
+			return offset;
+
+		var read = this.textReader.Read(buffer, offset, count);
+		return offset + read;
+	}
+
+
+	public void Dispose()
+	{
+		if (this.leaveOpen == false)
+			this.textReader.Dispose();
+	}
+
+	private sealed class JsonValueBox : IStrongBox
+	{
+		private readonly IFormatProvider formatProvider;
+		private ArraySegment<char> value;
+		private Type valueType;
+
+		public Type ValueType { get { return this.valueType; } }
+
+		public bool AsBoolean { get { return Convert.ToBoolean(this.LoadString(), FormatProvider); } }
+		public byte AsByte { get { return checked((byte)this.LoadUInt32()); } }
+		public short AsInt16 { get { return checked((short)this.LoadInt32()); } }
+		public int AsInt32 { get { return this.LoadInt32(); } }
+		public long AsInt64 { get { return this.LoadInt64(); } }
+		public sbyte AsSByte { get { return checked((sbyte)this.LoadInt32()); } }
+		public ushort AsUInt16 { get { return checked((ushort)this.LoadUInt32()); } }
+		public uint AsUInt32 { get { return this.LoadUInt32(); } }
+		public ulong AsUInt64 { get { return this.LoadUInt64(); } }
+		public float AsSingle { get { return Convert.ToSingle(this.LoadString(), FormatProvider); } }
+		public double AsDouble { get { return Convert.ToDouble(this.LoadString(), FormatProvider); } }
+		public decimal AsDecimal { get { return Convert.ToDecimal(this.LoadString(), FormatProvider); } }
+		public object AsObject { get { return this.LoadString(); } }
+
+		public JsonValueBox(IFormatProvider formatProvider)
+		{
+			if (formatProvider == null) throw new ArgumentNullException("formatProvider");
+
+			this.formatProvider = formatProvider;
+		}
+
+		private uint LoadUInt32()
+		{
+			var array = this.value.Array;
+			var offset = this.value.Offset;
+			var count = this.value.Count;
+
+			if (array[offset] == JsonNotation.Quote && array[offset + count - 1] == JsonNotation.Quote) // quoted
+			{
+				offset++;
+				count -= 2;
+			}
+
+			return JsonUtils.StringToUInt32(array, offset, count, this.formatProvider);
+		}
+		private ulong LoadUInt64()
+		{
+			var array = this.value.Array;
+			var offset = this.value.Offset;
+			var count = this.value.Count;
+
+			if (array[offset] == JsonNotation.Quote && array[offset + count - 1] == JsonNotation.Quote) // quoted
+			{
+				offset++;
+				count -= 2;
+			}
+
+			return JsonUtils.StringToUInt64(array, offset, count, this.formatProvider);
+		}
+		private int LoadInt32()
+		{
+			var array = this.value.Array;
+			var offset = this.value.Offset;
+			var count = this.value.Count;
+
+			if (array[offset] == JsonNotation.Quote && array[offset + count - 1] == JsonNotation.Quote) // quoted
+			{
+				offset++;
+				count -= 2;
+			}
+
+			return JsonUtils.StringToInt32(array, offset, count, this.formatProvider);
+		}
+		private long LoadInt64()
+		{
+			var array = this.value.Array;
+			var offset = this.value.Offset;
+			var count = this.value.Count;
+
+			if (array[offset] == JsonNotation.Quote && array[offset + count - 1] == JsonNotation.Quote) // quoted
+			{
+				offset++;
+				count -= 2;
+			}
+
+			return JsonUtils.StringToInt64(array, offset, count, this.formatProvider);
+		}
+		private string LoadString()
+		{
+			var array = this.value.Array;
+			var offset = this.value.Offset;
+			var count = this.value.Count;
+
+			if (array[offset] == JsonNotation.Quote && array[offset + count - 1] == JsonNotation.Quote) // quoted
+			{
+				offset++;
+				count -= 2;
+			}
+
+			return JsonUtils.UnEscapeBuffer(array, offset, count, false);
+		}
+
+		public void Store<T>(T value)
+		{
+			this.value = (ArraySegment<char>)(object)value;
+			this.valueType = typeof(string);
+		}
+
+		public void Store(ArraySegment<char> value, Type valueType)
+		{
+			if (valueType == null) throw new ArgumentNullException("valueType");
+
+			this.value = value;
+			this.valueType = valueType;
+		}
+
+		public override string ToString()
+		{
+			return this.LoadString();
+		}
+	}
+
+	public static class JsonUtils
+	{
+		public static string Escape(string value, bool isUnicodeEncoding = false)
+		{
+			if (value == null) throw new ArgumentNullException("value");
+
+			var newSize = 0;
+			for (var offset = 0; offset < value.Length; offset++)
+			{
+				var charCode = value[offset];
+				var previousCharCode = offset > 0 ? value[offset - 1] : '\0';
+				if (ShouldBeEscaped(charCode, previousCharCode, isUnicodeEncoding))
+				{
+					newSize += 6; // \x0000
+				}
+				else
+				{
+					newSize++;
+				}
+			}
+
+			if (newSize == value.Length)
+			{
+				return value;
+			}
+
+			var newStringValue = new StringBuilder(newSize);
+			var hexBuff = new char[12]; // 4 for zeroes and 8 for number
+
+			for (var offset = 0; offset < value.Length; offset++)
+			{
+				var charCode = value[offset];
+				var previousCharCode = offset > 0 ? value[offset - 1] : '\0';
+				if (ShouldBeEscaped(charCode, previousCharCode, isUnicodeEncoding))
+				{
+					newStringValue.Append("\\u");
+					var length = UInt16ToPaddedHexBuffer(charCode, hexBuff, 0);
+					newStringValue.Append(hexBuff, 0, length);
+				}
+				else newStringValue.Append(charCode);
+			}
+			return newStringValue.ToString();
+		}
+		private static bool ShouldBeEscaped(ushort charCode, char prevCharCode, bool isUnicodeEncoding)
+		{
+			return
+
+				// quote symbol
+				charCode == '"' || charCode == '\\' ||
+
+				// non-latin symbol
+				isUnicodeEncoding == false && charCode > '~' ||
+
+				// control symbol
+				charCode < ' ' ||
+
+				// surrogates
+				(charCode >= '\uD800' && charCode <= '\uDBFF') ||
+				(charCode >= '\uDC00' && charCode <= '\uDFFF') ||
+
+				// JavaScript escape
+				charCode == '\u2028' || charCode == '\u2029' ||
+				charCode == '/' && prevCharCode == '<';
+		}
+		public static int UInt16ToPaddedHexBuffer(ushort value, char[] buffer, int offset)
+		{
+			if (buffer == null) throw new ArgumentNullException("buffer");
+			if (offset < 0) throw new ArgumentOutOfRangeException("offset");
+
+			const int LENGTH = 4;
+			const string HEX = "0123456789ABCDEF";
+
+			var end = offset + LENGTH;
+			if (value == 0)
+			{
+				for (var i = offset; i < end; i++) buffer[i] = '0';
+
+				return LENGTH;
+			}
+
+			for (var i = 0; i < LENGTH; i++)
+			{
+				var c = HEX[(int)((value >> (i * 4)) & 15u)];
+				buffer[end - i - 1] = c;
+			}
+
+			return LENGTH;
+		}
+
+				public static string UnEscapeBuffer(char[] charsToUnEscape, int offset, int count, bool strict)
+		{
+			if (charsToUnEscape == null) throw new ArgumentNullException("charsToUnEscape");
+			if (offset < 0) throw new ArgumentOutOfRangeException("offset");
+			if (count < 0) throw new ArgumentOutOfRangeException("count");
+			if (offset + count > charsToUnEscape.Length) throw new ArgumentOutOfRangeException("offset");
+
+			var unEscapedCount = GetUnEscapedCount(charsToUnEscape, offset, count);
+			if (unEscapedCount == count)
+			{
+				return new string(charsToUnEscape, offset, count);
+			}
+
+			var resultBuilder = new StringBuilder(unEscapedCount);
+			var plainStart = offset;
+			var plainLen = 0;
+			var end = offset + count;
+			for (var i = offset; i < end; i++)
+			{
+				var ch = charsToUnEscape[i];
+				if (ch != '\\')
+				{
+					plainLen++;
+					continue;
+				}
+
+				if (i + 1 >= end)
+				{
+					if (strict)
+					{
+						throw ReaderException.UnknownEscapeSequence("\\\0", null);
+					}
+					else
+					{
+						plainLen++;
+						break; // u
+					}
+				}
+
+				var sequenceLength = 1;
+				// append unencoded chunk
+				if (plainLen != 0)
+				{
+					resultBuilder.Append(charsToUnEscape, plainStart, plainLen);
+					plainLen = 0;
+				}
+
+				var sequenceKind = charsToUnEscape[i + 1];
+				switch (sequenceKind)
+				{
+					case 'n':
+						resultBuilder.Append('\n');
+						break;
+					case 'r':
+						resultBuilder.Append('\r');
+						break;
+					case 'b':
+						resultBuilder.Append('\b');
+						break;
+					case 'f':
+						resultBuilder.Append('\f');
+						break;
+					case 't':
+						resultBuilder.Append('\t');
+						break;
+					case '\\':
+						resultBuilder.Append('\\');
+						break;
+					case '/':
+						resultBuilder.Append('/');
+						break;
+					case '\'':
+						resultBuilder.Append('\'');
+						break;
+					case '\"':
+						resultBuilder.Append('\"');
+						break;
+
+					// unicode symbol
+					case 'u':
+						resultBuilder.Append((char)HexStringToUInt32(charsToUnEscape, i + 2, 4));
+						sequenceLength = 5;
+						break;
+
+					// latin hex encoded symbol
+					case 'x':
+						resultBuilder.Append((char)HexStringToUInt32(charsToUnEscape, i + 2, 2));
+						sequenceLength = 3;
+						break;
+
+					// latin dec encoded symbol
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+					case '0':
+						resultBuilder.Append((char)StringToInt32(charsToUnEscape, i + 1, 3));
+						sequenceLength = 3;
+						break;
+					default:
+						if (!strict)
+						{
+							resultBuilder.Append(sequenceKind);
+							break;
+						}
+						else
+						{
+							throw ReaderException.UnknownEscapeSequence("\\" + sequenceKind, null);
+						}
+				}
+
+				// set next chunk start right after this escape
+				plainStart = i + sequenceLength + 1;
+				i += sequenceLength;
+			}
+
+			// append last unencoded chunk
+			if (plainLen != 0)
+			{
+				resultBuilder.Append(charsToUnEscape, plainStart, plainLen);
+			}
+
+			return resultBuilder.ToString();
+		}
+		private static int GetUnEscapedCount(char[] charsToUnEscape, int offset, int count)
+		{
+			if (charsToUnEscape == null) throw new ArgumentNullException("charsToUnEscape");
+			if (offset < 0) throw new ArgumentOutOfRangeException("offset");
+			if (count < 0) throw new ArgumentOutOfRangeException("count");
+			if (offset + count > charsToUnEscape.Length) throw new ArgumentOutOfRangeException("offset");
+
+			var newCount = 0;
+			var end = offset + count;
+			for (var i = offset; i < end; i++)
+			{
+				var ch = charsToUnEscape[i];
+				newCount++;
+				if (ch != '\\')
+				{
+					continue;
+				}
+
+				var toSkip = 1;
+				var sequenceKind = charsToUnEscape[i + 1];
+				switch (sequenceKind)
+				{
+					// unicode symbol
+					case 'u':
+						toSkip = 5;
+						break;
+
+					// latin hex encoded symbol
+					case 'x':
+						toSkip = 3;
+						break;
+					// latin dec encoded symbol
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+					case '0':
+						toSkip = 3;
+						break;
+					default:
+						toSkip = 1;
+						break;
+				}
+				i += toSkip;
+			}
+			return newCount;
+		}
+
+		public static uint HexStringToUInt32(char[] buffer, int offset, int count)
+		{
+			const uint ZERO = (ushort)'0';
+			const uint a = (ushort)'a';
+			const uint A = (ushort)'A';
+
+			var result = 0u;
+			for (var i = 0; i < count; i++)
+			{
+				var c = buffer[offset + i];
+				var d = 0u;
+				if (c >= '0' && c <= '9')
+					d = (c - ZERO);
+				else if (c >= 'a' && c <= 'f')
+					d = 10u + (c - a);
+				else if (c >= 'A' && c <= 'F')
+					d = 10u + (c - A);
+				else
+					throw new FormatException();
+
+				result = 16u * result + d;
+			}
+
+			return result;
+		}
+
+		public static long StringToInt64(char[] buffer, int offset, int count, IFormatProvider formatProvider = null)
+		{
+			const ulong ZERO = (ushort)'0';
+
+			var result = 0UL;
+			var neg = false;
+			for (var i = 0; i < count; i++)
+			{
+				var c = buffer[offset + i];
+				if (i == 0 && c == '-')
+				{
+					neg = true;
+					continue;
+				}
+				if (c < '0' || c > '9')
+					throw new FormatException();
+
+				result = checked(10UL * result + (c - ZERO));
+			}
+
+			if (neg)
+				return -(long)(result);
+			return (long)result;
+		}
+		public static int StringToInt32(char[] buffer, int offset, int count, IFormatProvider formatProvider = null)
+		{
+			const uint ZERO = (ushort)'0';
+
+			var result = 0u;
+			var neg = false;
+			for (var i = 0; i < count; i++)
+			{
+				var c = buffer[offset + i];
+				if (i == 0 && c == '-')
+				{
+					neg = true;
+					continue;
+				}
+				if (c < '0' || c > '9')
+					throw new FormatException();
+
+				result = checked(10u * result + (c - ZERO));
+			}
+
+			if (neg)
+				return -(int)(result);
+			return (int)result;
+		}
+		public static ulong StringToUInt64(char[] buffer, int offset, int count, IFormatProvider formatProvider = null)
+		{
+			const ulong ZERO = (ushort)'0';
+
+			var result = 0UL;
+			for (var i = 0; i < count; i++)
+			{
+				var c = buffer[offset + i];
+				if (c < '0' || c > '9')
+					throw new FormatException();
+
+				result = checked(10UL * result + (c - ZERO));
+			}
+
+			return result;
+		}
+		public static uint StringToUInt32(char[] buffer, int offset, int count, IFormatProvider formatProvider = null)
+		{
+			const uint ZERO = (ushort)'0';
+
+			var result = 0U;
+			for (var i = 0; i < count; i++)
+			{
+				var c = buffer[offset + i];
+				if (c < '0' || c > '9')
+					throw new FormatException();
+
+				result = checked(10 * result + (c - ZERO));
+			}
+
+			return result;
+		}
+	}
+
+	private static class JsonNotation
+	{
+		public const char Tab = '\t';
+		public const char Space = ' ';
+		public const char Newline = '\n';
+		public const char Return = '\r';
+		public const char IdentifierSeparator = ':';
+		public const char ValueSeparator = ',';
+		public const char BeginArray = '[';
+		public const char EndArray = ']';
+		public const char BeginObject = '{';
+		public const char EndObject = '}';
+		public const char Escape = '\\';
+		public const char Comment = '/';
+		public const char CommentMultiline = '*';
+		public const char Quote = '\"';
+		public const char Const0 = '0';
+		public const char Const1 = '1';
+		public const char Const2 = '2';
+		public const char Const3 = '3';
+		public const char Const4 = '4';
+		public const char Const5 = '5';
+		public const char Const6 = '6';
+		public const char Const7 = '7';
+		public const char Const8 = '8';
+		public const char Const9 = '9';
+		public const string True = "true";
+		public const string False = "false";
+		public const string Null = "null";
+	}
+}
+#endregion
+#region Serialization: Message Pack
+public static object ReadGameDataMessagePack(Stream stream, Encoding encoding, bool leaveOpen)
+{
+	if (stream == null) throw new ArgumentNullException("stream");
+	if (encoding == null) throw new ArgumentNullException("encoding");
+
+	using (var msgPackReader = new MessagePackReader(stream, leaveOpen))
+		return msgPackReader.ReadAny();
+}
+
+private sealed class MessagePackReader : Reader, IDisposable
+{
+	private const int DEFAULT_BUFFER_SIZE = 8 * 1024;
+	private const int MAX_BINARY_LENGTH = 16 * 1024 * 1024;
+	private const int MAX_STRING_LENGTH = 16 * 1024 * 1024;
+
+	internal struct Map
+	{
+		public ReaderToken Token;
+		public long Counter;
+	}
+
+	private readonly Stream inputStream;
+	private readonly bool leaveOpen;
+	private readonly byte[] buffer;
+	private readonly EndianBitConverter bitConverter;
+	private readonly Stack<Map> maps;
+	private ReaderNode node;
+	private int bufferOffset;
+	private int bufferReaded;
+	private int bufferAvailable;
+	private int totalBytesReaded;
+
+	private StrongBox<int> int32Box;
+	private StrongBox<uint> uInt32Box;
+	private StrongBox<long> int64Box;
+	private StrongBox<ulong> uInt64Box;
+	private StrongBox<float> singleBox;
+	private StrongBox<double> doubleBox;
+	private StrongBox<decimal> decimalBox;
+	private StrongBox<DateTime> dateBox;
+	private StrongBox<DateTimeOffset> dateOffsetBox;
+	private StrongBox<TimeSpan> timeSpanBox;
+	private StrongBox<Guid> guidBox;
+	private StrongBox<bool> trueBox;
+	private StrongBox<bool> falseBox;
+
+	public override int LineNumber { get { return 0; } }
+	public override int ColumnNumber { get { return this.totalBytesReaded; } }
+	public override ReaderNode Node { get { if (this.node.Token == ReaderToken.None) this.NextToken(); return this.node; } }
+
+	public MessagePackReader(Stream stream, bool leaveOpen = false, int bufferSize = DEFAULT_BUFFER_SIZE)
+	{
+		if (stream == null) throw new ArgumentNullException("stream");
+
+		if (bufferSize < DEFAULT_BUFFER_SIZE)
+			bufferSize = DEFAULT_BUFFER_SIZE;
+
+		this.inputStream = stream;
+		this.leaveOpen = leaveOpen;
+		this.buffer = new byte[bufferSize];
+		this.bufferOffset = 0;
+		this.bufferReaded = 0;
+		this.bufferAvailable = 0;
+		this.bitConverter = EndianBitConverter.Big;
+		this.maps = new Stack<Map>();
+	}
+
+	public override bool NextToken()
+	{
+		if (this.maps.Count > 0 && this.maps.Peek().Counter == 0)
+		{
+			var closingToken = this.maps.Pop();
+			this.node = new ReaderNode(closingToken.Token);
+
+			this.DecrementClosingTokenCounter();
+			return true;
+		}
+
+		if (!this.ReadToBuffer(1, throwOnEos: false))
+		{
+			this.node = new ReaderNode(ReaderToken.EndOfStream);
+			return false;
+		}
+
+		var formatValue = this.buffer[this.bufferOffset];
+		if (formatValue >= (byte)MessagePackType.FixArrayStart && formatValue <= (byte)MessagePackType.FixArrayEnd)
+		{
+			var arrayCount = formatValue - (byte)MessagePackType.FixArrayStart;
+
+			this.maps.Push(new Map { Token = ReaderToken.EndOfArray, Counter = arrayCount + 1 });
+			this.node = new ReaderNode(ReaderToken.BeginArray);
+		}
+		else if (formatValue >= (byte)MessagePackType.FixStrStart && formatValue <= (byte)MessagePackType.FixStrEnd)
+		{
+			var strCount = formatValue - (byte)MessagePackType.FixStrStart;
+			var strBytes = this.ReadBytes(strCount);
+			var strValue = Encoding.UTF8.GetString(strBytes.Array, strBytes.Offset, strBytes.Count);
+
+			var token = ReaderToken.Value;
+			if (this.maps.Count > 0)
+			{
+				var closingToken = this.maps.Peek();
+				if (closingToken.Token == ReaderToken.EndOfObject && closingToken.Counter > 0 && closingToken.Counter % 2 == 0)
+					token = ReaderToken.Member;
+			}
+			this.node = new ReaderNode(token, strValue);
+		}
+		else if (formatValue >= (byte)MessagePackType.FixMapStart && formatValue <= (byte)MessagePackType.FixMapEnd)
+		{
+			var mapCount = formatValue - (byte)MessagePackType.FixMapStart;
+			this.maps.Push(new Map { Token = ReaderToken.EndOfObject, Counter = mapCount * 2 + 1 });
+			this.node = new ReaderNode(ReaderToken.BeginObject);
+		}
+		else if (formatValue >= (byte)MessagePackType.NegativeFixIntStart)
+		{
+			var value = unchecked((sbyte)formatValue);
+			this.node = new ReaderNode(ReaderToken.Value, this.Box(value));
+		}
+		else if (formatValue <= (byte)MessagePackType.PositiveFixIntEnd)
+		{
+			var value = unchecked((byte)formatValue);
+			this.node = new ReaderNode(ReaderToken.Value, this.Box(value));
+		}
+		else
+		{
+			switch ((MessagePackType)formatValue)
+			{
+				case MessagePackType.Nil:
+					this.node = new ReaderNode(ReaderToken.Null);
+					break;
+				case MessagePackType.Array16:
+				case MessagePackType.Array32:
+					var arrayCount = 0L;
+					if (formatValue == (int)MessagePackType.Array16)
+					{
+						this.ReadToBuffer(2, throwOnEos: true);
+						arrayCount = this.bitConverter.ToUInt16(this.buffer, this.bufferOffset);
+					}
+					else if (formatValue == (int)MessagePackType.Array32)
+					{
+						this.ReadToBuffer(4, throwOnEos: true);
+						arrayCount = this.bitConverter.ToUInt32(this.buffer, this.bufferOffset);
+					}
+
+					if (arrayCount < 0) throw ReaderException.ReadingBrokenDocument(this, "negative size of array");
+					this.maps.Push(new Map { Token = ReaderToken.EndOfArray, Counter = arrayCount + 1 });
+					this.node = new ReaderNode(ReaderToken.BeginArray);
+					break;
+				case MessagePackType.Map16:
+				case MessagePackType.Map32:
+					var mapCount = 0L;
+					if (formatValue == (int)MessagePackType.Map16)
+					{
+						this.ReadToBuffer(2, throwOnEos: true);
+						mapCount = this.bitConverter.ToUInt16(this.buffer, this.bufferOffset);
+					}
+					else if (formatValue == (int)MessagePackType.Map32)
+					{
+						this.ReadToBuffer(4, throwOnEos: true);
+						mapCount = this.bitConverter.ToUInt32(this.buffer, this.bufferOffset);
+					}
+
+					if (mapCount < 0) throw ReaderException.ReadingBrokenDocument(this, "negative size of map");
+					this.maps.Push(new Map { Token = ReaderToken.EndOfObject, Counter = mapCount * 2 + 1 });
+					this.node = new ReaderNode(ReaderToken.BeginObject);
+					break;
+				case MessagePackType.Str16:
+				case MessagePackType.Str32:
+				case MessagePackType.Str8:
+					var strBytesCount = 0L;
+					if (formatValue == (int)MessagePackType.Str8)
+					{
+						this.ReadToBuffer(1, throwOnEos: true);
+						strBytesCount = this.buffer[this.bufferOffset];
+					}
+					else if (formatValue == (int)MessagePackType.Str16)
+					{
+						this.ReadToBuffer(2, throwOnEos: true);
+						strBytesCount = this.bitConverter.ToUInt16(this.buffer, this.bufferOffset);
+					}
+					else if (formatValue == (int)MessagePackType.Str32)
+					{
+						this.ReadToBuffer(4, throwOnEos: true);
+						strBytesCount = this.bitConverter.ToUInt32(this.buffer, this.bufferOffset);
+					}
+
+					var token = ReaderToken.Value;
+					if (this.maps.Count > 0)
+					{
+						var closingToken = this.maps.Peek();
+						if (closingToken.Token == ReaderToken.EndOfObject && closingToken.Counter > 0 && closingToken.Counter % 2 == 0)
+							token = ReaderToken.Member;
+					}
+
+					if (strBytesCount > MAX_STRING_LENGTH) throw ReaderException.StringLiteralIsTooLong(this, (int)strBytesCount, MAX_STRING_LENGTH);
+					if (strBytesCount < 0) throw ReaderException.ReadingBrokenDocument(this, "negative size of string");
+
+					var strBytes = this.ReadBytes(strBytesCount);
+					var strValue = Encoding.UTF8.GetString(strBytes.Array, strBytes.Offset, strBytes.Count);
+
+					this.node = new ReaderNode(token, strValue);
+					break;
+				case MessagePackType.Bin32:
+				case MessagePackType.Bin16:
+				case MessagePackType.Bin8:
+					var bytesCount = 0L;
+					if (formatValue == (int)MessagePackType.Bin8)
+					{
+						this.ReadToBuffer(1, throwOnEos: true);
+						bytesCount = this.buffer[this.bufferOffset];
+					}
+					else if (formatValue == (int)MessagePackType.Bin16)
+					{
+						this.ReadToBuffer(2, throwOnEos: true);
+						bytesCount = this.bitConverter.ToUInt16(this.buffer, this.bufferOffset);
+					}
+					else if (formatValue == (int)MessagePackType.Bin32)
+					{
+						this.ReadToBuffer(4, throwOnEos: true);
+						bytesCount = this.bitConverter.ToUInt32(this.buffer, this.bufferOffset);
+					}
+
+					if (bytesCount > MAX_BINARY_LENGTH) throw ReaderException.BinaryDataIsTooLong(this, (int)bytesCount, MAX_BINARY_LENGTH);
+					if (bytesCount < 0) throw ReaderException.ReadingBrokenDocument(this, "negative size of binary data");
+					var bytes = this.ReadBytes(bytesCount, forceNewBuffer: true);
+					this.node = new ReaderNode(ReaderToken.Value, bytes.Array);
+					break;
+				case MessagePackType.FixExt1:
+				case MessagePackType.FixExt16:
+				case MessagePackType.FixExt2:
+				case MessagePackType.FixExt4:
+				case MessagePackType.FixExt8:
+				case MessagePackType.Ext32:
+				case MessagePackType.Ext16:
+				case MessagePackType.Ext8:
+					var extLength = 0L;
+					if (formatValue == (int)MessagePackType.FixExt1)
+						extLength = 1;
+					else if (formatValue == (int)MessagePackType.FixExt2)
+						extLength = 2;
+					else if (formatValue == (int)MessagePackType.FixExt4)
+						extLength = 4;
+					else if (formatValue == (int)MessagePackType.FixExt8)
+						extLength = 8;
+					else if (formatValue == (int)MessagePackType.FixExt16)
+						extLength = 16;
+					if (formatValue == (int)MessagePackType.Ext8)
+					{
+						this.ReadToBuffer(1, throwOnEos: true);
+						extLength = this.buffer[this.bufferOffset];
+					}
+					else if (formatValue == (int)MessagePackType.Ext16)
+					{
+						this.ReadToBuffer(2, throwOnEos: true);
+						extLength = this.bitConverter.ToUInt16(this.buffer, this.bufferOffset);
+					}
+					else if (formatValue == (int)MessagePackType.Ext32)
+					{
+						this.ReadToBuffer(4, throwOnEos: true);
+						extLength = this.bitConverter.ToUInt32(this.buffer, this.bufferOffset);
+					}
+
+					this.ReadToBuffer(1, throwOnEos: true);
+					var extType = this.buffer[this.bufferOffset];
+
+					if (extLength > MAX_BINARY_LENGTH) throw ReaderException.BinaryDataIsTooLong(this, (int)extLength, MAX_BINARY_LENGTH);
+					if (extLength < 0) throw ReaderException.ReadingBrokenDocument(this, "negative size of binary data");
+
+					var data = this.ReadBytes(extLength, forceNewBuffer: true);
+					if (!this.TryReadExtType(extType, data, out this.node))
+						this.node = new ReaderNode(ReaderToken.Value, data.Array);
+					break;
+				case MessagePackType.False:
+					this.node = new ReaderNode(ReaderToken.Value, this.Box(false));
+					break;
+				case MessagePackType.True:
+					this.node = new ReaderNode(ReaderToken.Value, this.Box(true));
+					break;
+				case MessagePackType.Float32:
+					this.ReadToBuffer(4, throwOnEos: true);
+					this.node = new ReaderNode(ReaderToken.Value, this.Box(this.bitConverter.ToSingle(this.buffer, this.bufferOffset)));
+					break;
+				case MessagePackType.Float64:
+					this.ReadToBuffer(8, throwOnEos: true);
+					this.node = new ReaderNode(ReaderToken.Value, this.Box(this.bitConverter.ToDouble(this.buffer, this.bufferOffset)));
+					break;
+				case MessagePackType.Int16:
+					this.ReadToBuffer(2, throwOnEos: true);
+					this.node = new ReaderNode(ReaderToken.Value, this.Box(this.bitConverter.ToInt16(this.buffer, this.bufferOffset)));
+					break;
+				case MessagePackType.Int32:
+					this.ReadToBuffer(4, throwOnEos: true);
+					this.node = new ReaderNode(ReaderToken.Value, this.Box(this.bitConverter.ToInt32(this.buffer, this.bufferOffset)));
+					break;
+				case MessagePackType.Int64:
+					this.ReadToBuffer(8, throwOnEos: true);
+					this.node = new ReaderNode(ReaderToken.Value, this.Box(this.bitConverter.ToInt64(this.buffer, this.bufferOffset)));
+					break;
+				case MessagePackType.Int8:
+					this.ReadToBuffer(1, throwOnEos: true);
+					this.node = new ReaderNode(ReaderToken.Value, this.Box(unchecked((sbyte)this.buffer[this.bufferOffset])));
+					break;
+				case MessagePackType.UInt16:
+					this.ReadToBuffer(2, throwOnEos: true);
+					this.node = new ReaderNode(ReaderToken.Value, this.Box((uint)this.bitConverter.ToUInt16(this.buffer, this.bufferOffset)));
+					break;
+				case MessagePackType.UInt32:
+					this.ReadToBuffer(4, throwOnEos: true);
+					this.node = new ReaderNode(ReaderToken.Value, this.Box(this.bitConverter.ToUInt32(this.buffer, this.bufferOffset)));
+					break;
+				case MessagePackType.UInt64:
+					this.ReadToBuffer(8, throwOnEos: true);
+					this.node = new ReaderNode(ReaderToken.Value, this.Box(this.bitConverter.ToUInt64(this.buffer, this.bufferOffset)));
+					break;
+				case MessagePackType.UInt8:
+					this.ReadToBuffer(1, throwOnEos: true);
+					this.node = new ReaderNode(ReaderToken.Value, this.Box((uint)this.buffer[this.bufferOffset]));
+					break;
+				case MessagePackType.PositiveFixIntStart:
+				case MessagePackType.PositiveFixIntEnd:
+				case MessagePackType.FixMapStart:
+				case MessagePackType.FixMapEnd:
+				case MessagePackType.FixArrayStart:
+				case MessagePackType.FixArrayEnd:
+				case MessagePackType.FixStrStart:
+				case MessagePackType.FixStrEnd:
+				case MessagePackType.Unused:
+				case MessagePackType.NegativeFixIntStart:
+				case MessagePackType.NegativeFixIntEnd:
+				default: throw ReaderException.UnknownMessagePackType(((MessagePackType)formatValue).ToString(), this);
+			}
+		}
+
+		this.DecrementClosingTokenCounter();
+
+		return true;
+	}
+
+	private bool ReadToBuffer(int bytesRequired, bool throwOnEos)
+	{
+		this.bufferAvailable -= this.bufferReaded;
+		this.bufferOffset += this.bufferReaded;
+		this.bufferReaded = 0;
+
+		if (this.bufferAvailable < bytesRequired)
+		{
+			if (this.bufferAvailable > 0)
+				Buffer.BlockCopy(this.buffer, this.bufferOffset, this.buffer, 0, this.bufferAvailable);
+
+			this.bufferOffset = 0;
+			while (this.bufferAvailable < bytesRequired)
+			{
+				var read = this.inputStream.Read(this.buffer, this.bufferAvailable, this.buffer.Length - this.bufferAvailable);
+				this.bufferAvailable += read;
+
+				if (read != 0 || this.bufferAvailable >= bytesRequired)
+					continue;
+
+				if (throwOnEos)
+					throw ReaderException.UnexpectedEndOfStream(this);
+				else
+					return false;
+			}
+		}
+
+		this.bufferReaded = bytesRequired;
+		this.totalBytesReaded += bytesRequired;
+		return true;
+	}
+	private ArraySegment<byte> ReadBytes(long bytesRequired, bool forceNewBuffer = false)
+	{
+		if (bytesRequired > int.MaxValue) throw new ArgumentOutOfRangeException("bytesRequired");
+
+		this.bufferAvailable -= this.bufferReaded;
+		this.bufferOffset += this.bufferReaded;
+		this.bufferReaded = 0;
+
+		if (this.bufferAvailable >= bytesRequired && !forceNewBuffer)
+		{
+			var bytes = new ArraySegment<byte>(this.buffer, this.bufferOffset, (int)bytesRequired);
+
+			this.bufferAvailable -= (int)bytesRequired;
+			this.bufferOffset += (int)bytesRequired;
+			this.totalBytesReaded += (int)bytesRequired;
+
+			return bytes;
+		}
+		else
+		{
+			var bytes = new byte[bytesRequired];
+			var bytesOffset = 0;
+			if (this.bufferAvailable > 0 && bytesOffset < bytes.Length)
+			{
+				var bytesToCopy = Math.Min(bytes.Length - bytesOffset, this.bufferAvailable);
+				Buffer.BlockCopy(this.buffer, this.bufferOffset, bytes, bytesOffset, bytesToCopy);
+
+				bytesOffset += bytesToCopy;
+				this.bufferOffset += bytesToCopy;
+
+				this.bufferAvailable -= bytesToCopy;
+				this.totalBytesReaded += bytesToCopy;
+			}
+
+			if (this.bufferAvailable == 0)
+				this.bufferOffset = 0;
+
+			while (bytesOffset < bytes.Length)
+			{
+				var read = this.inputStream.Read(bytes, bytesOffset, bytes.Length - bytesOffset);
+
+				bytesOffset += read;
+				this.totalBytesReaded += read;
+
+				if (read == 0 && bytesOffset < bytes.Length)
+					throw ReaderException.UnexpectedEndOfStream(this);
+			}
+
+			return new ArraySegment<byte>(bytes, 0, bytes.Length);
+		}
+	}
+	private bool TryReadExtType(byte extType, ArraySegment<byte> data, out ReaderNode node)
+	{
+		const byte EXTENSION_TYPE_TIMESTAMP = 255;
+		const byte EXTENSION_TYPE_DATE_TIME = 40;
+		const byte EXTENSION_TYPE_DATE_TIME_OFFSET = 41;
+		const byte EXTENSION_TYPE_DECIMAL = 42;
+		const byte EXTENSION_TYPE_GUID = 43;
+		const byte GUID_SIZE = 16;
+		const byte DECIMAL_SIZE = 16;
+		const byte DATE_TIME_SIZE = 16;
+		const byte DATE_TIME_OFFSET_SIZE = 16;
+
+		node = default(ReaderNode);
+		switch (extType)
+		{
+			case EXTENSION_TYPE_TIMESTAMP:
+				unchecked
+				{
+					var seconds = 0L;
+					var nanoSeconds = 0u;
+					switch (data.Count)
+					{
+						case 4:
+							seconds = this.bitConverter.ToInt32(data.Array, data.Offset);
+							break;
+						case 8:
+							var data64 = this.bitConverter.ToUInt64(data.Array, data.Offset);
+							seconds = (int) (data64 & 0x00000003ffffffffL);
+							nanoSeconds = (uint) (data64 >> 34 & uint.MaxValue);
+							break;
+						case 12:
+							nanoSeconds = this.bitConverter.ToUInt32(data.Array, data.Offset);
+							seconds = this.bitConverter.ToInt64(data.Array, data.Offset + 4);
+							break;
+						default:
+							return false;
+					}
+					node = new ReaderNode(ReaderToken.Value, this.Box(TimeSpan.FromSeconds(seconds).Add(TimeSpan.FromTicks(nanoSeconds / 100))));
+					return true;
+				}
+			case EXTENSION_TYPE_DATE_TIME:
+				if (data.Count != DATE_TIME_SIZE)
+					return false;
+					var dateTime = new DateTime(this.bitConverter.ToInt64(data.Array, data.Offset + 1), (DateTimeKind)data.Array[data.Offset]);
+					node = new ReaderNode(ReaderToken.Value, this.Box(dateTime));
+				return true;
+			case EXTENSION_TYPE_DATE_TIME_OFFSET:
+				if (data.Count != DATE_TIME_OFFSET_SIZE)
+					return false;
+				var offset = new TimeSpan(this.bitConverter.ToInt64(data.Array, data.Offset + 8));
+				var ticks = this.bitConverter.ToInt64(data.Array, data.Offset);
+				var dateTimeOffset = new DateTimeOffset(ticks, offset);
+				node = new ReaderNode(ReaderToken.Value, this.Box(dateTimeOffset));
+				return true;
+			case EXTENSION_TYPE_DECIMAL:
+				if (data.Count != DECIMAL_SIZE)
+					return false;
+				var decimalValue = this.bitConverter.ToDecimal(data.Array, data.Offset);
+				node = new ReaderNode(ReaderToken.Value, this.Box(decimalValue));
+				return true;
+			case EXTENSION_TYPE_GUID:
+				if (data.Count != GUID_SIZE)
+					return false;
+
+				var buffer = data.Array;
+				unchecked
+				{
+					var guidValue = new Guid
+					(
+							(uint)(buffer[data.Offset + 3] << 24 | buffer[data.Offset + 2] << 16 | buffer[data.Offset + 1] << 8 | buffer[data.Offset + 0]),
+							(ushort)(buffer[data.Offset + 5] << 8 | buffer[data.Offset + 4]),
+							(ushort)(buffer[data.Offset + 7] << 8 | buffer[data.Offset + 6]),
+							buffer[data.Offset + 8],
+							buffer[data.Offset + 9],
+							buffer[data.Offset + 10],
+							buffer[data.Offset + 11],
+							buffer[data.Offset + 12],
+							buffer[data.Offset + 13],
+							buffer[data.Offset + 14],
+							buffer[data.Offset + 15]
+					);
+
+					node = new ReaderNode(ReaderToken.Value, this.Box(guidValue));
+					return true;
+				}
+			default:
+				return false;
+		}
+	}
+
+	private object Box(int value)
+	{
+		if (this.int32Box == null)
+			this.int32Box = new StrongBox<int>(FormatProvider);
+
+		this.int32Box.Store(value);
+
+		return this.int32Box;
+	}
+	private object Box(uint value)
+	{
+		if (this.uInt32Box == null)
+			this.uInt32Box = new StrongBox<uint>(FormatProvider);
+
+		this.uInt32Box.Store(value);
+
+		return this.uInt32Box;
+	}
+	private object Box(long value)
+	{
+		if (this.int64Box == null)
+			this.int64Box = new StrongBox<long>(FormatProvider);
+
+		this.int64Box.Store(value);
+
+		return this.int64Box;
+	}
+	private object Box(ulong value)
+	{
+		if (this.uInt64Box == null)
+			this.uInt64Box = new StrongBox<ulong>(FormatProvider);
+
+		this.uInt64Box.Store(value);
+
+		return this.uInt64Box;
+	}
+	private object Box(float value)
+	{
+		if (this.singleBox == null)
+			this.singleBox = new StrongBox<float>(FormatProvider);
+
+		this.singleBox.Store(value);
+
+		return this.singleBox;
+	}
+	private object Box(double value)
+	{
+		if (this.doubleBox == null)
+			this.doubleBox = new StrongBox<double>(FormatProvider);
+
+		this.doubleBox.Store(value);
+
+		return this.doubleBox;
+	}
+	private object Box(decimal value)
+	{
+		if (this.decimalBox == null)
+			this.decimalBox = new StrongBox<decimal>(FormatProvider);
+
+		this.decimalBox.Store(value);
+
+		return this.decimalBox;
+	}
+	private object Box(DateTime value)
+	{
+		if (this.dateBox == null)
+			this.dateBox = new StrongBox<DateTime>(FormatProvider);
+
+		this.dateBox.Store(value);
+		return this.dateBox;
+	}
+	private object Box(DateTimeOffset value)
+	{
+		if (this.dateOffsetBox == null)
+			this.dateOffsetBox = new StrongBox<DateTimeOffset>(FormatProvider);
+
+		this.dateOffsetBox.Store(value);
+		return this.dateOffsetBox;
+	}
+	private object Box(TimeSpan value)
+	{
+		if (this.timeSpanBox == null)
+			this.timeSpanBox = new StrongBox<TimeSpan>(FormatProvider);
+
+		this.timeSpanBox.Store(value);
+		return this.timeSpanBox;
+	}
+	private object Box(Guid value)
+	{
+		if (this.guidBox == null)
+			this.guidBox = new StrongBox<Guid>(FormatProvider);
+
+		this.guidBox.Store(value);
+		return this.guidBox;
+	}
+	private object Box(bool value)
+	{
+		if (value)
+		{
+			if (this.trueBox == null)
+				this.trueBox = new StrongBox<bool>(true, FormatProvider);
+			return this.trueBox;
+		}
+		else
+		{
+			if (this.falseBox == null)
+				this.falseBox = new StrongBox<bool>(false, FormatProvider);
+			return this.falseBox;
+		}
+	}
+
+	private void DecrementClosingTokenCounter()
+	{
+		if (this.maps.Count > 0)
+		{
+			var closingToken = this.maps.Pop();
+			closingToken.Counter--;
+			this.maps.Push(closingToken);
+		}
+	}
+
+	public void Dispose()
+	{
+		if (this.leaveOpen == false)
+			this.inputStream.Dispose();
+	}
+
+
+	private enum MessagePackType : byte
+	{
+		PositiveFixIntStart = 0x00,
+		PositiveFixIntEnd = 0x7f,
+		FixMapStart = 0x80,
+		FixMapEnd = 0x8f,
+		FixArrayStart = 0x90,
+		FixArrayEnd = 0x9f,
+		FixStrStart = 0xa0,
+		FixStrEnd = 0xbf,
+		Nil = 0xc0,
+		Unused = 0xc1,
+		False = 0xc2,
+		True = 0xc3,
+		Bin8 = 0xc4,
+		Bin16 = 0xc5,
+		Bin32 = 0xc6,
+		Ext8 = 0xc7,
+		Ext16 = 0xc8,
+		Ext32 = 0xc9,
+		Float32 = 0xca,
+		Float64 = 0xcb,
+		UInt8 = 0xcc,
+		UInt16 = 0xcd,
+		UInt32 = 0xce,
+		UInt64 = 0xcf,
+		Int8 = 0xd0,
+		Int16 = 0xd1,
+		Int32 = 0xd2,
+		Int64 = 0xd3,
+		FixExt1 = 0xd4,
+		FixExt2 = 0xd5,
+		FixExt4 = 0xd6,
+		FixExt8 = 0xd7,
+		FixExt16 = 0xd8,
+		Str8 = 0xd9,
+		Str16 = 0xda,
+		Str32 = 0xdb,
+		Array16 = 0xdc,
+		Array32 = 0xdd,
+		Map16 = 0xde,
+		Map32 = 0xdf,
+		NegativeFixIntStart = 0xe0,
+		NegativeFixIntEnd = 0xff
+	}
+
+	private enum MessagePackExtentionType : byte
+	{
+		None = 0,
+		DateTime = 40,
+		DateTimeOffset = 41,
+		Decimal = 42
+	}
+}
+#endregion
+#region Serialization: BSON
+public static object ReadGameDataBson(Stream stream, Encoding encoding, bool leaveOpen)
+{
+	if (stream == null) throw new ArgumentNullException("stream");
+	if (encoding == null) throw new ArgumentNullException("encoding");
+
+	using (var bsonReader = new BsonReader(stream, leaveOpen))
+		return bsonReader.ReadAny();
+}
+
+private class BsonReader : Reader, IDisposable
+{
+	private const int DEFAULT_BUFFER_SIZE = ushort.MaxValue;
+	private const int MAX_BINARY_LENGTH = 16 * 1024 * 1024;
+	private const int MAX_STRING_LENGTH = 16 * 1024 * 1024;
+
+	private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+	private struct Document
+	{
+		public readonly int Length;
+		public readonly BsonType Type;
+		public readonly int End;
+
+		public Document(BsonType docType, int length, int end)
+		{
+			this.Type = docType;
+			this.Length = length;
+			this.End = end;
+		}
+	}
+
+	private readonly Stream inputStream;
+	private readonly bool leaveOpen;
+	private readonly byte[] buffer;
+	private readonly byte[] literalBuffer;
+	private readonly EndianBitConverter bitConverter;
+	private readonly Stack<Document> documents;
+	private ReaderNode node;
+	private int bufferOffset;
+	private int bufferRead;
+	private int bufferAvailable;
+	private int totalBytesReaded;
+	private BsonType memberType;
+
+	private StrongBox<int> int32Box;
+	private StrongBox<long> int64Box;
+	private StrongBox<double> doubleBox;
+	private StrongBox<decimal> decimalBox;
+	private StrongBox<DateTime> dateBox;
+	private StrongBox<DateTimeOffset> dateOffsetBox;
+	private StrongBox<TimeSpan> timeSpanBox;
+	private StrongBox<Guid> guidBox;
+	private StrongBox<bool> trueBox;
+	private StrongBox<bool> falseBox;
+
+	public override int LineNumber { get { return 0; } }
+	public override int ColumnNumber { get { return this.totalBytesReaded; } }
+	public override ReaderNode Node { get { if (this.node.Token == ReaderToken.None) this.NextToken(); return this.node; } }
+
+	public BsonReader(Stream stream, bool leaveOpen = false, int bufferSize = DEFAULT_BUFFER_SIZE)
+	{
+		if (stream == null) throw new ArgumentNullException("stream");
+
+		if (bufferSize < DEFAULT_BUFFER_SIZE)
+			bufferSize = DEFAULT_BUFFER_SIZE;
+
+		this.inputStream = stream;
+		this.leaveOpen = leaveOpen;
+		this.buffer = new byte[bufferSize];
+		this.literalBuffer = new byte[bufferSize];
+		this.bufferOffset = 0;
+		this.bufferRead = 0;
+		this.bufferAvailable = 0;
+		this.bitConverter = EndianBitConverter.Little;
+		this.documents = new Stack<Document>();
+	}
+
+	public override bool NextToken()
+	{
+		var length = 0;
+		var end = 0;
+		if (this.documents.Count == 0)
+		{
+			if (!this.ReadToBuffer(4, throwOnEos: false))
+			{
+				this.node = new ReaderNode(ReaderToken.EndOfStream);
+				return false;
+			}
+			length = this.bitConverter.ToInt32(this.buffer, this.bufferOffset);
+			end = length <= 0 ? 0 : this.totalBytesReaded - this.bufferRead + length;
+			var newDocument = new Document(BsonType.Document, length, end);
+			this.documents.Push(newDocument);
+			this.node = new ReaderNode(ReaderToken.BeginObject);
+			return true;
+		}
+
+		var document = this.documents.Peek();
+		if (this.memberType == BsonType.None)
+		{
+			this.ReadToBuffer(1, throwOnEos: true);
+			memberType = (BsonType)this.buffer[this.bufferOffset];
+			if (memberType != BsonType.None && document.Type == BsonType.Document)
+			{
+				var memberName = this.ReadCString();
+				this.node = new ReaderNode(ReaderToken.Member, memberName);
+				return true;
+			}
+			else if (memberType != BsonType.None)
+			{
+				this.SkipCString();
+			}
+		}
+
+		var type = this.memberType;
+		this.memberType = BsonType.None;
+		switch (type)
+		{
+			case BsonType.Double:
+				this.ReadToBuffer(8, throwOnEos: true);
+				var doubleValue = this.bitConverter.ToDouble(this.buffer, this.bufferOffset);
+				this.node = new ReaderNode(ReaderToken.Value, this.Box(doubleValue));
+				return true;
+			case BsonType.String:
+				var stringValue = this.ReadUtf8String();
+				this.node = new ReaderNode(ReaderToken.Value, stringValue);
+				return true;
+			case BsonType.Array:
+			case BsonType.Document:
+				this.ReadToBuffer(4, throwOnEos: true);
+				length = this.bitConverter.ToInt32(this.buffer, this.bufferOffset);
+				end = length <= 0 ? 0 : this.totalBytesReaded - this.bufferRead + length;
+				var newDocument = new Document(type, length, end);
+				this.documents.Push(newDocument);
+				this.node = new ReaderNode(type == BsonType.Document ? ReaderToken.BeginObject : ReaderToken.BeginArray);
+				return true;
+			case BsonType.Binary:
+				const int GUID_SIZE = 16;
+				const int DECIMAL_SIZE = 16;
+				const int DATE_TIME_SIZE = 16;
+				const int DATE_TIME_OFFSET_SIZE = 16;
+
+				this.ReadToBuffer(5, throwOnEos: true);
+				length = this.bitConverter.ToInt32(this.buffer, this.bufferOffset);
+
+				if (length > MAX_BINARY_LENGTH) throw ReaderException.BinaryDataIsTooLong(this, length, MAX_BINARY_LENGTH);
+				if (length < 0) throw ReaderException.ReadingBrokenDocument(this, "negative size of binary data");
+
+				var binaryType = (BsonBinaryType)this.buffer[this.bufferOffset + 4];
+				switch (binaryType)
+				{
+					case BsonBinaryType.Decimal:
+						if (length < DECIMAL_SIZE)
+							throw ReaderException.ReadingBrokenDocument(this, "wrong size of binary data");
+						var decimalValue = this.bitConverter.ToDecimal(this.buffer, this.bufferOffset);
+						this.node = new ReaderNode(ReaderToken.Value, this.Box(decimalValue));
+						return true;
+					case BsonBinaryType.DateTime:
+						if (length < DATE_TIME_SIZE)
+							throw ReaderException.ReadingBrokenDocument(this, "wrong size of binary data");
+						var dateTime = new DateTime(this.bitConverter.ToInt64(this.buffer, this.bufferOffset + 1), (DateTimeKind)this.buffer[this.bufferOffset]);
+						this.node = new ReaderNode(ReaderToken.Value, this.Box(dateTime));
+						return true;
+					case BsonBinaryType.DateTimeOffset:
+						if (length < DATE_TIME_OFFSET_SIZE)
+							throw ReaderException.ReadingBrokenDocument(this, "wrong size of binary data");
+						var ticks = this.bitConverter.ToInt64(this.buffer, this.bufferOffset);
+						var offsetTicks = this.bitConverter.ToInt64(this.buffer, this.bufferOffset + 8);
+						var dateTimeOffset = new DateTimeOffset(ticks, new TimeSpan(offsetTicks));
+						this.node = new ReaderNode(ReaderToken.Value, this.Box(dateTimeOffset));
+						return true;
+					case BsonBinaryType.UUID:
+						if (length != GUID_SIZE)
+							throw ReaderException.ReadingBrokenDocument(this, "wrong size of binary data");
+
+						unchecked
+						{
+							var guidValue = new Guid
+							(
+								(uint)(this.buffer[this.bufferOffset + 3] << 24 | this.buffer[this.bufferOffset + 2] << 16 | this.buffer[this.bufferOffset + 1] << 8 | this.buffer[this.bufferOffset + 0]),
+								(ushort)(this.buffer[this.bufferOffset + 5] << 8 | this.buffer[this.bufferOffset + 4]),
+								(ushort)(this.buffer[this.bufferOffset + 7] << 8 | this.buffer[this.bufferOffset + 6]),
+								this.buffer[this.bufferOffset + 8],
+								this.buffer[this.bufferOffset + 9],
+								this.buffer[this.bufferOffset + 10],
+								this.buffer[this.bufferOffset + 11],
+								this.buffer[this.bufferOffset + 12],
+								this.buffer[this.bufferOffset + 13],
+								this.buffer[this.bufferOffset + 14],
+								this.buffer[this.bufferOffset + 15]
+							);
+
+							this.node = new ReaderNode(ReaderToken.Value, this.Box(guidValue));
+						}
+						return true;
+					case BsonBinaryType.Bytes:
+					case BsonBinaryType.Function:
+					case BsonBinaryType.BytesOld:
+					case BsonBinaryType.UUIDOld:
+					case BsonBinaryType.MD5:
+					case BsonBinaryType.UserDefined:
+					default:
+						var bytes = this.ReadBytes(length, forceNewBuffer: true);
+						this.node = new ReaderNode(ReaderToken.Value, bytes.Array);
+						return true;
+				}
+			case BsonType.Undefined:
+				this.node = new ReaderNode(ReaderToken.Null);
+				return true;
+			case BsonType.ObjectId:
+				var objectIdStr = this.ReadObjectId();
+				this.node = new ReaderNode(ReaderToken.Value, objectIdStr);
+				return true;
+			case BsonType.Boolean:
+				this.ReadToBuffer(1, throwOnEos: true);
+				var boolValue = this.buffer[this.bufferOffset] > 0;
+				this.node = new ReaderNode(ReaderToken.Value, this.Box(boolValue));
+				return true;
+			case BsonType.DateTime:
+				this.ReadToBuffer(8, throwOnEos: true);
+				var dateTimeMilliseconds = this.bitConverter.ToInt64(this.buffer, this.bufferOffset);
+				this.node = new ReaderNode(ReaderToken.Value, this.Box(Epoch.AddTicks(checked(dateTimeMilliseconds * TimeSpan.TicksPerMillisecond))));
+				return true;
+			case BsonType.Null:
+				this.node = new ReaderNode(ReaderToken.Null);
+				return true;
+			case BsonType.Regex:
+				var regexPattern = this.ReadCString();
+				var regexOptions = this.ReadCString();
+				this.node = new ReaderNode(ReaderToken.Value, string.Concat("/", regexPattern, "/", regexOptions));
+				return true;
+			case BsonType.Reference:
+				var reference = this.ReadUtf8String();
+				var referenceId = this.ReadObjectId();
+				this.node = new ReaderNode(ReaderToken.Value, reference + " -> " + referenceId);
+				return true;
+			case BsonType.JavaScript:
+				var javascriptCode = this.ReadUtf8String();
+				this.node = new ReaderNode(ReaderToken.Value, javascriptCode);
+				return true;
+			case BsonType.JavaScriptWithScope:
+				this.ReadToBuffer(4, throwOnEos: true);
+				var javascriptScopedCode = this.ReadUtf8String();
+				this.memberType = BsonType.Document;
+				this.ReadAny(nextToken: false); // scope
+				this.node = new ReaderNode(ReaderToken.Value, javascriptScopedCode);
+				return true;
+			case BsonType.Symbol:
+				var symbolString = this.ReadUtf8String();
+				this.node = new ReaderNode(ReaderToken.Value, symbolString);
+				return true;
+			case BsonType.Int32:
+				this.ReadToBuffer(4, throwOnEos: true);
+				var intValue = this.bitConverter.ToInt32(this.buffer, this.bufferOffset);
+				this.node = new ReaderNode(ReaderToken.Value, this.Box(intValue));
+				return true;
+			case BsonType.Timestamp:
+				this.ReadToBuffer(8, throwOnEos: true);
+				var timestampSeconds = (this.bitConverter.ToInt64(this.buffer, this.bufferOffset) & uint.MaxValue);
+				this.node = new ReaderNode(ReaderToken.Value, this.Box(Epoch.AddTicks(checked(timestampSeconds * TimeSpan.TicksPerSecond))));
+				return true;
+			case BsonType.Int64:
+				this.ReadToBuffer(8, throwOnEos: true);
+				var longValue = this.bitConverter.ToInt64(this.buffer, this.bufferOffset);
+				this.node = new ReaderNode(ReaderToken.Value, this.Box(longValue));
+				return true;
+			case BsonType.MinKey:
+				this.node = new ReaderNode(ReaderToken.Value, "min");
+				return true;
+			case BsonType.MaxKey:
+				this.node = new ReaderNode(ReaderToken.Value, "max");
+				return true;
+			case BsonType.None:
+				if (this.documents.Count == 0)
+					goto default;
+
+				document = this.documents.Pop();
+				if (document.End != 0 && document.End != this.totalBytesReaded)
+				{
+					throw ReaderException.ReadingBrokenDocument(this, string.Format("invalid BSON document length '{0:##,###}' read, while actual size is '{1:##,###}'",
+						document.Length, document.Length + (this.totalBytesReaded - document.End)));
+				}
+				this.node = new ReaderNode(document.Type == BsonType.Document ? ReaderToken.EndOfObject : ReaderToken.EndOfArray);
+				return true;
+			default:
+				throw ReaderException.UnknownNotation(this, type.ToString());
+		}
+	}
+
+	private void SkipCString()
+	{
+		this.bufferAvailable -= this.bufferRead;
+		this.bufferOffset += this.bufferRead;
+		this.bufferRead = 0;
+
+		var length = 0;
+		var originalColumnNumber = this.totalBytesReaded;
+
+		while (true)
+		{
+			while (this.bufferAvailable > 0)
+			{
+				var isTerminated = this.buffer[this.bufferOffset] == 0;
+
+				length++;
+				this.bufferOffset++;
+				this.bufferAvailable--;
+
+				if (isTerminated)
+				{
+					this.totalBytesReaded = originalColumnNumber + length; // length includes trailing zero
+					return;
+				}
+			}
+
+			this.bufferOffset = 0;
+			this.bufferAvailable = 0;
+			this.ReadToBuffer(this.buffer.Length, false);
+			this.bufferRead = 0;
+			if (this.bufferAvailable == 0)
+				throw ReaderException.UnterminatedStringLiteral(this);
+		}
+	}
+	private string ReadCString()
+	{
+		this.bufferAvailable -= this.bufferRead;
+		this.bufferOffset += this.bufferRead;
+		this.bufferRead = 0;
+
+		var literalBuffer = this.literalBuffer;
+		var literalLength = 0;
+		var literalOffset = 0;
+		var originalColumnNumber = this.totalBytesReaded;
+		while (true)
+		{
+			while (this.bufferAvailable > 0)
+			{
+				var isTerminated = this.buffer[this.bufferOffset] == 0;
+				literalBuffer[literalOffset] = this.buffer[this.bufferOffset];
+
+				literalOffset++;
+				literalLength++;
+				this.bufferOffset++;
+				this.bufferAvailable--;
+
+				if (isTerminated)
+				{
+					this.totalBytesReaded = originalColumnNumber + literalLength; // length includes trailing zero
+					return Encoding.UTF8.GetString(literalBuffer, 0, literalLength - 1);
+				}
+				else if (literalOffset >= literalBuffer.Length)
+				{
+					Array.Resize(ref literalBuffer, (int)(literalBuffer.Length * 1.5));
+				}
+			}
+
+			this.bufferOffset = 0;
+			this.bufferAvailable = 0;
+			this.ReadToBuffer(this.buffer.Length, false);
+			this.bufferRead = 0;
+
+			if (this.bufferAvailable == 0)
+			{
+				throw ReaderException.UnterminatedStringLiteral(this);
+			}
+		}
+	}
+	private string ReadUtf8String()
+	{
+		this.ReadToBuffer(4, throwOnEos: true);
+		var length = this.bitConverter.ToInt32(this.buffer, this.bufferOffset);
+
+		if (length > MAX_STRING_LENGTH) throw ReaderException.StringLiteralIsTooLong(this, length, MAX_STRING_LENGTH);
+		if (length < 0) throw ReaderException.ReadingBrokenDocument(this, "negative size of string literal");
+
+		var bytes = this.ReadBytes(length);
+		return Encoding.UTF8.GetString(bytes.Array, bytes.Offset, bytes.Count - 1);
+	}
+	private string ReadObjectId()
+	{
+		this.ReadToBuffer(12, throwOnEos: true);
+
+		var timeStamp = this.bitConverter.ToUInt32(this.buffer, this.bufferOffset);
+		var machineAndPid = this.bitConverter.ToUInt32(this.buffer, this.bufferOffset + 4);
+		var pidAndIncrement = this.bitConverter.ToUInt32(this.buffer, this.bufferOffset + 8);
+		var objectIdStr = string.Concat(timeStamp.ToString("X8"), machineAndPid.ToString("X8"), pidAndIncrement.ToString("X8"));
+
+		return objectIdStr;
+	}
+	private bool ReadToBuffer(int bytesRequired, bool throwOnEos)
+	{
+		this.bufferAvailable -= this.bufferRead;
+		this.bufferOffset += this.bufferRead;
+		this.bufferRead = 0;
+
+		if (this.bufferAvailable < bytesRequired)
+		{
+			if (this.bufferAvailable > 0)
+				Buffer.BlockCopy(this.buffer, this.bufferOffset, this.buffer, 0, this.bufferAvailable);
+
+			this.bufferOffset = 0;
+			while (this.bufferAvailable < bytesRequired)
+			{
+				var read = this.inputStream.Read(this.buffer, this.bufferAvailable, this.buffer.Length - this.bufferAvailable);
+				this.bufferAvailable += read;
+
+				if (read != 0 || this.bufferAvailable >= bytesRequired)
+					continue;
+
+				if (throwOnEos)
+					throw ReaderException.UnexpectedEndOfStream(this);
+				else
+					return false;
+			}
+		}
+
+		this.bufferRead = bytesRequired;
+		this.totalBytesReaded += bytesRequired;
+		return true;
+	}
+	private ArraySegment<byte> ReadBytes(long bytesRequired, bool forceNewBuffer = false)
+	{
+		if (bytesRequired > int.MaxValue) throw new ArgumentOutOfRangeException("bytesRequired");
+
+		this.bufferAvailable -= this.bufferRead;
+		this.bufferOffset += this.bufferRead;
+		this.bufferRead = 0;
+
+		if (this.bufferAvailable >= bytesRequired && !forceNewBuffer)
+		{
+			var bytes = new ArraySegment<byte>(this.buffer, this.bufferOffset, (int)bytesRequired);
+
+			this.bufferAvailable -= (int)bytesRequired;
+			this.bufferOffset += (int)bytesRequired;
+			this.totalBytesReaded += (int)bytesRequired;
+
+			return bytes;
+		}
+		else
+		{
+			var bytes = new byte[bytesRequired];
+			var bytesOffset = 0;
+			if (this.bufferAvailable > 0 && bytesOffset < bytes.Length)
+			{
+				var bytesToCopy = Math.Min(bytes.Length - bytesOffset, this.bufferAvailable);
+				Buffer.BlockCopy(this.buffer, this.bufferOffset, bytes, bytesOffset, bytesToCopy);
+
+				bytesOffset += bytesToCopy;
+				this.bufferOffset += bytesToCopy;
+
+				this.bufferAvailable -= bytesToCopy;
+				this.totalBytesReaded += bytesToCopy;
+			}
+
+			if (this.bufferAvailable == 0)
+				this.bufferOffset = 0;
+
+			while (bytesOffset < bytes.Length)
+			{
+				var read = this.inputStream.Read(bytes, bytesOffset, bytes.Length - bytesOffset);
+
+				bytesOffset += read;
+				this.totalBytesReaded += read;
+
+				if (read == 0 && bytesOffset < bytes.Length)
+					throw ReaderException.UnexpectedEndOfStream(this);
+			}
+
+			return new ArraySegment<byte>(bytes, 0, bytes.Length);
+		}
+	}
+
+	private object Box(DateTime value)
+	{
+		if (this.dateBox == null)
+			this.dateBox = new StrongBox<DateTime>(FormatProvider);
+
+		this.dateBox.Store(value);
+		return this.dateBox;
+	}
+	private object Box(DateTimeOffset value)
+	{
+		if (this.dateOffsetBox == null)
+			this.dateOffsetBox = new StrongBox<DateTimeOffset>(FormatProvider);
+
+		this.dateOffsetBox.Store(value);
+		return this.dateOffsetBox;
+	}
+	private object Box(TimeSpan value)
+	{
+		if (this.timeSpanBox == null)
+			this.timeSpanBox = new StrongBox<TimeSpan>(FormatProvider);
+
+		this.timeSpanBox.Store(value);
+		return this.timeSpanBox;
+	}
+	private object Box(Guid value)
+	{
+		if (this.guidBox == null)
+			this.guidBox = new StrongBox<Guid>(FormatProvider);
+
+		this.guidBox.Store(value);
+		return this.guidBox;
+	}
+	private object Box(int value)
+	{
+		if (this.int32Box == null)
+			this.int32Box = new StrongBox<int>(FormatProvider);
+
+		this.int32Box.Store(value);
+
+		return this.int32Box;
+	}
+	private object Box(long value)
+	{
+		if (this.int64Box == null)
+			this.int64Box = new StrongBox<long>(FormatProvider);
+
+		this.int64Box.Store(value);
+
+		return this.int64Box;
+	}
+	private object Box(double value)
+	{
+		if (this.doubleBox == null)
+			this.doubleBox = new StrongBox<double>(FormatProvider);
+
+		this.doubleBox.Store(value);
+
+		return this.doubleBox;
+	}
+	private object Box(decimal value)
+	{
+		if (this.decimalBox == null)
+			this.decimalBox = new StrongBox<decimal>(FormatProvider);
+
+		this.decimalBox.Store(value);
+
+		return this.decimalBox;
+	}
+	private object Box(bool value)
+	{
+		if (value)
+		{
+			if (this.trueBox == null)
+				this.trueBox = new StrongBox<bool>(true, FormatProvider);
+			return trueBox;
+		}
+		else
+		{
+			if (this.falseBox == null)
+				this.falseBox = new StrongBox<bool>(false, FormatProvider);
+			return falseBox;
+		}
+	}
+
+	public void Dispose()
+	{
+		if (this.leaveOpen == false)
+			this.inputStream.Dispose();
+	}
+
+	public enum BsonBinaryType
+	{
+		Bytes = 0,
+		Function = 1,
+		BytesOld = 2,
+		UUIDOld = 3,
+		UUID = 4,
+		MD5 = 5,
+		UserDefined = 80,
+
+		// 16 bytes
+		Decimal = 120,
+		// 16 bytes
+		DateTime = 121,
+		// 16 bytes
+		DateTimeOffset = 122,
+	}
+
+	public enum BsonType : byte
+	{
+		None = 0,
+		Double = 1,
+		String = 2,
+		Document = 3,
+		Array = 4,
+		Binary = 5,
+		Undefined = 6,
+		ObjectId = 7,
+		Boolean = 8,
+		DateTime = 9,
+		Null = 10,
+		Regex = 11,
+		Reference = 12,
+		JavaScript = 13,
+		Symbol = 14,
+		JavaScriptWithScope = 15,
+		Int32 = 16,
+		Timestamp = 17,
+		Int64 = 18,
+		MinKey = 255,
+		MaxKey = 127
+	}
+}
+#endregion
+#region Serialization: XML
+public static object ReadGameDataXml(Stream stream, Encoding encoding, bool leaveOpen)
+{
+	if (stream == null) throw new ArgumentNullException("stream");
+	if (encoding == null) throw new ArgumentNullException("encoding");
+
+	var textReader = new StreamReader(stream, encoding);
+	using (var xmlReader = new XmlFormattingReader(textReader, leaveOpen))
+		return xmlReader.ReadAny();
+}
+
+private class XmlFormattingReader : Reader, IDisposable
+{
+	private const int STATE_INITIAL = 0;
+	private const int STATE_ARRAY = 1;
+	private const int STATE_OBJECT = 2;
+	private const int STATE_MEMBER = 3;
+	private const int STATE_VALUE = 4;
+	private const int STATE_PROPERTY_MEMBER = 5;
+	private const int STATE_PROPERTY_VALUE = 6;
+	private const int STATE_EMPTY = 7;
+
+	private readonly XmlReader innerReader;
+	private readonly bool leaveOpen;
+	private readonly Stack<int> states;
+	private string memberName;
+	private ReaderNode node;
+
+	public override ReaderNode Node { get { if (this.node.Token == ReaderToken.None) this.NextToken(); return this.node; } }
+	public override int LineNumber { get { return this.innerReader is IXmlLineInfo ? ((IXmlLineInfo)this.innerReader).LineNumber : 0; } }
+	public override int ColumnNumber { get { return this.innerReader is IXmlLineInfo ? ((IXmlLineInfo)this.innerReader).LinePosition : 0; } }
+
+	public XmlFormattingReader(TextReader reader, bool leaveOpen = false)
+	{
+		if (reader == null) throw new ArgumentNullException("reader");
+
+		this.innerReader = new XmlTextReader(reader);
+		this.leaveOpen = leaveOpen;
+		this.states = new Stack<int>();
+	}
+
+	public override bool NextToken()
+	{
+		this.node = this.ReadNext();
+		return this.node.Token != ReaderToken.EndOfStream;
+	}
+
+	private ReaderNode ReadNext()
+	{
+		var state = this.states.Count == 0 ? STATE_INITIAL : this.states.Peek();
+
+		if (state == STATE_EMPTY)
+			return this.ReadEmptyElement();
+
+		if (state == STATE_PROPERTY_MEMBER || state == STATE_PROPERTY_VALUE)
+			return this.ReadProperties();
+
+		while (this.innerReader.Read())
+		{
+			switch (this.innerReader.NodeType)
+			{
+				case XmlNodeType.Element:
+					switch (this.innerReader.Name)
+					{
+						case XmlNotation.ValueElementName:
+							if (state == STATE_OBJECT)
+								goto default;
+							if (state != STATE_INITIAL && state != STATE_ARRAY)
+								throw this.NewUnknownNotationException();
+
+							this.states.Push(STATE_VALUE);
+							if (this.innerReader.IsEmptyElement)
+								this.states.Push(STATE_EMPTY);
+
+							return ReadNext();
+						case XmlNotation.ArrayElementName:
+							if (state == STATE_OBJECT)
+								goto default;
+
+							this.states.Push(STATE_ARRAY);
+
+							if (this.innerReader.IsEmptyElement)
+								this.states.Push(STATE_EMPTY);
+
+							return new ReaderNode(ReaderToken.BeginArray);
+						case XmlNotation.ObjectElementName:
+							if (state == STATE_OBJECT)
+								goto default;
+							this.states.Push(STATE_OBJECT);
+
+							if (this.innerReader.IsEmptyElement)
+								this.states.Push(STATE_EMPTY);
+
+							if (this.innerReader.HasAttributes)
+								this.states.Push(STATE_PROPERTY_MEMBER);
+
+							return new ReaderNode(ReaderToken.BeginObject);
+						default:
+							if (state != STATE_OBJECT)
+								throw this.NewUnknownNotationException();
+
+							this.memberName = XmlConvert.DecodeName(this.innerReader.Name);
+							this.states.Push(STATE_MEMBER);
+
+							if (this.innerReader.IsEmptyElement)
+								this.states.Push(STATE_EMPTY);
+
+							return new ReaderNode(ReaderToken.Member, this.memberName);
+					}
+				case XmlNodeType.EndElement:
+					switch (state)
+					{
+						case STATE_VALUE:
+							if (this.innerReader.Name != XmlNotation.ValueElementName)
+								throw this.NewUnknownNotationException();
+							this.states.Pop(); // pop VALUE
+							return this.ReadNext();
+						case STATE_MEMBER:
+							this.states.Pop(); // pop MEMBER
+							return this.ReadNext();
+						case STATE_ARRAY:
+							if (this.innerReader.Name != XmlNotation.ArrayElementName)
+								throw this.NewUnknownNotationException();
+							this.states.Pop(); // pop ARRAY
+							return new ReaderNode(ReaderToken.EndOfArray);
+						case STATE_OBJECT:
+							if (this.innerReader.Name != XmlNotation.ObjectElementName)
+								throw this.NewUnknownNotationException();
+							this.states.Pop(); // pop OBJECT
+							return new ReaderNode(ReaderToken.EndOfObject);
+					}
+					throw this.NewUnknownNotationException();
+				case XmlNodeType.Text:
+				case XmlNodeType.CDATA:
+					if (state == STATE_VALUE || state == STATE_MEMBER)
+						return new ReaderNode(ReaderToken.Value, this.innerReader.Value);
+					throw this.NewUnknownNotationException();
+				case XmlNodeType.SignificantWhitespace:
+				case XmlNodeType.Whitespace:
+				case XmlNodeType.Comment:
+				case XmlNodeType.XmlDeclaration:
+				case XmlNodeType.DocumentType:
+				case XmlNodeType.Document:
+					continue;
+				case XmlNodeType.None:
+				case XmlNodeType.EntityReference:
+				case XmlNodeType.Entity:
+				case XmlNodeType.EndEntity:
+				case XmlNodeType.ProcessingInstruction:
+				case XmlNodeType.DocumentFragment:
+				case XmlNodeType.Notation:
+				default:
+					throw this.NewUnknownNotationException();
+			}
+		}
+
+		return new ReaderNode(ReaderToken.EndOfStream);
+	}
+
+	private ReaderNode ReadEmptyElement()
+	{
+		this.states.Pop(); // pop EMPTY
+		var state = this.states.Count > 0 ? this.states.Peek() : STATE_INITIAL;
+		switch (state)
+		{
+			case STATE_MEMBER:
+				this.states.Pop(); // pop MEMBER
+				this.memberName = null;
+				if (this.innerReader["nil", XmlNotation.XmlSchemaInstanceUrl] == XmlNotation.NullEntityTrue)
+					return new ReaderNode(ReaderToken.Null);
+				else
+					return new ReaderNode(ReaderToken.Value, "");
+			case STATE_VALUE:
+				this.states.Pop(); // pop VALUE
+				return new ReaderNode(ReaderToken.Null);
+			case STATE_OBJECT:
+				this.states.Pop(); // pop OBJECT
+				return new ReaderNode(ReaderToken.EndOfObject);
+			case STATE_ARRAY:
+				this.states.Pop(); // pop ARRAY
+				return new ReaderNode(ReaderToken.EndOfArray);
+		}
+		return this.ReadNext();
+	}
+	private ReaderNode ReadProperties()
+	{
+		switch (this.states.Pop())
+		{
+			case STATE_PROPERTY_MEMBER:
+				while (this.innerReader.MoveToNextAttribute())
+				{
+					if (this.innerReader.Prefix == "xmlns" || this.innerReader.Prefix == "xsi")
+						continue;
+
+					this.states.Push(STATE_PROPERTY_VALUE);
+					return new ReaderNode(ReaderToken.Member, this.innerReader.Name);
+				}
+				break;
+			case STATE_PROPERTY_VALUE:
+				this.states.Push(STATE_PROPERTY_MEMBER);
+				return new ReaderNode(ReaderToken.Value, this.innerReader.Value);
+		}
+		return this.ReadNext();
+	}
+
+	private Exception NewUnknownNotationException()
+	{
+		throw ReaderException.UnknownNotation(this, this.innerReader.NodeType.ToString() + "[" + this.innerReader.Name + "]");
+	}
+
+	public void Dispose()
+	{
+		if (this.leaveOpen == false)
+			this.innerReader.Close();
+	}
+
+	private class XmlNotation
+	{
+		public const string ObjectElementName = "Object";
+		public const string ArrayElementName = "Array";
+		public const string ValueElementName = "Value";
+
+		public const string XmlSchemaInstanceUrl = "http://www.w3.org/2001/XMLSchema-instance";
+		public const string NullEntityTrue = "true";
+	}
+}
+#endregion
+#endregion
+
+#>

@@ -1,0 +1,73 @@
+﻿<#+
+	private void WriteEnum(EnumDefinition enumDef, CodeGenerationContext context)
+	{
+		if (enumDef.IsPickList)
+		{
+#>	/// <summary>
+	/// <#= enumDef.Description #>
+	/// </summary>
+<#+
+			if (enumDef.IsFlags)
+			{
+#>	[Flags]
+<#+
+			}
+#>	[GeneratedCode(<#= context.TargetLanguage.GameDataClassName #>.GeneratorName, <#= context.TargetLanguage.GameDataClassName #>.GeneratorVersion)]
+	public enum <#= enumDef #>: <#= enumDef.BaseType #>
+	{
+<#+
+			foreach (var kv in enumDef.Values)
+			{
+#>
+		<#= kv.Key #> = <#= Convert.ToString(kv.Value, CultureInfo.InvariantCulture) #>,
+<#+
+			}
+#>
+	}
+<#+
+		}
+		else
+		{
+#>	[GeneratedCode(<#= context.TargetLanguage.GameDataClassName #>.GeneratorName, <#= context.TargetLanguage.GameDataClassName #>.GeneratorVersion)]
+	public static class <#= enumDef #>
+	{
+<#+
+			foreach (var kv in enumDef.Values)
+			{
+				var enumName = kv.Key;
+				var enumValue = kv.Value;
+				var enumValueStr = Convert.ToString(enumValue, CultureInfo.InvariantCulture) ?? string.Empty;
+
+				switch (enumDef.BaseTypeCode)
+				{
+					case EnumBaseTypeCode.Int32:
+						break;
+					case EnumBaseTypeCode.Int64:
+						enumValueStr = enumValueStr + "L"; break;
+					case EnumBaseTypeCode.Float32:
+						enumValueStr = enumValueStr + "F"; break;
+					case EnumBaseTypeCode.Float64:
+						enumValueStr = enumValueStr + "D"; break;
+					case EnumBaseTypeCode.String:
+						enumValueStr = "\"" + JsonGameDataReader.EscapeString(enumValueStr, forUnicodeEncoding: false) + "\""; break;
+					case EnumBaseTypeCode.TimeSpan:
+						enumValueStr = string.Format("System.TimeSpan.Parse(\"{0}\")", JsonGameDataReader.EscapeString(enumValueStr, forUnicodeEncoding: false)); break;
+					case EnumBaseTypeCode.Bool:
+						enumValueStr = (((bool?)enumValue ?? false) ? "true" : "false"); break;
+					case EnumBaseTypeCode.DateTime:
+						var dateTimeString = enumValue is IFormattable formattable
+							? formattable.ToString("o", CultureInfo.InvariantCulture) : enumValueStr;
+						enumValueStr = string.Format("System.DateTime.Parse(\"{0}\", null, System.Globalization.DateTimeStyles.RoundtripKind)", JsonGameDataReader.EscapeString(dateTimeString, forUnicodeEncoding: false));
+						break;
+					default: throw new InvalidOperationException($"Unknown enum base type: {enumDef.BaseType}.");
+				}
+#>
+		public static readonly <#= enumDef.BaseType #> <#= enumName #> = <#= enumValueStr #>;
+<#+
+			}
+#>
+	}
+<#+
+		}
+	}
+#>

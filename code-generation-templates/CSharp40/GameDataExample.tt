@@ -1,0 +1,59 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" linePragmas="false" #>
+<#@ output extension=".cs" encoding="utf-8" #>
+<#
+	//
+	// Code Generation and T4 Text Templates
+	// https://msdn.microsoft.com/en-us/library/bb126445.aspx
+	//
+
+	// ReSharper disable All
+	this.GameDataClassName = "GameData";
+	this.DocumentClassName = "Document";
+	this.Namespace = "MyGame.GameParameters";
+	// this.PathToMetaData = this.Host.ResolvePath(this.PathToMetadata ?? @"./relative_path/gamedata.json"); // Relative to .tt file location
+	// this.PathToMetaData = this.PathToMetadata ?? @"c:\dev\mygame\gamedata.json"; // Absolute path
+	this.PathToMetaData = this.Host.ResolvePath(this.PathToMetaData ?? @"../GameData.json");
+
+	this.Options = CodeGenerationOptions.Default;
+#>
+<#@ include file="CSharpGameData.ttinclude" once="true"#>
+<#+
+	public string GameDataPath { get; set; }
+	public string ToolsVersion { get; set; }
+	public string ToolsName { get; set; }
+
+	public string Namespace { get; set; }
+	public string GameDataClassName { get; set; }
+	public string DocumentClassName { get; set; }
+	public string LocalizedStringClassName { get; set; }
+	public string ReferenceClassName { get; set; }
+	public string UnboundExpressionClassName { get; set; }
+	public string ReadOnlyListClassName { get; set; }
+	public string ReadOnlyDictionaryClassName { get; set; }
+	public CodeGenerationOptions Options { get; set; }
+
+	[Flags]
+	public enum CodeGenerationOptions
+	{
+		None = 0,
+		Default = HideReferences | HideLocalizedStrings,
+		LazyReferences = 0x1 << 0,
+		HideReferences = 0x1 << 1,
+		HideLocalizedStrings = 0x1 << 2,
+		Unused1 = 0x1 << 3,
+		SuppressDocumentClass = 0x1 << 4,
+		SuppressGameDataClass = 0x1 << 5,
+		SuppressCollectionClass = 0x1 << 6,
+		SuppressLocalizedStringClass = 0x1 << 7,
+		SuppressReferenceClass = 0x1 << 8,
+		DisableStringPooling = 0x1 << 9,
+		[Obsolete]
+		DisableExpressions = 0x1 << 10,
+		DisableFormulas = 0x1 << 10,
+		DisableJsonSerialization = 0x1 << 11,
+		DisableMessagePackSerialization = 0x1 << 12,
+		DisableBsonSerialization = 0x1 << 13,
+		DisableXmlSerialization = 0x1 << 14,
+		DisablePatching = 0x1 << 15,
+	}
+#>

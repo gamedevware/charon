@@ -1,0 +1,65 @@
+﻿<#+
+	private void WriteEnum(EnumDefinition enumDef, CodeGenerationContext context)
+	{
+#>
+/**
+	<#= enumDef.Description #>
+**/
+abstract <#= enumDef #> (<#= enumDef.BaseType #>) from <#= enumDef.BaseType #> to <#= enumDef.BaseType #>
+{
+<#+
+		foreach (var kv in enumDef.Values)
+		{
+			var enumValue = kv.Value;
+			var enumValueLiteral = Convert.ToString(kv.Value, CultureInfo.InvariantCulture);
+			switch (enumDef.BaseTypeCode)
+			{
+				case EnumBaseTypeCode.Float32:
+				case EnumBaseTypeCode.Float64:
+				case EnumBaseTypeCode.Int32:
+					break;
+				case EnumBaseTypeCode.Int64:
+					enumValueLiteral = enumValueLiteral + "i64";
+					break;
+				case EnumBaseTypeCode.String:
+					enumValueLiteral = "\"" + JsonGameDataReader.EscapeString(enumValueLiteral, forUnicodeEncoding: false) + "\""; break;
+				case EnumBaseTypeCode.TimeSpan:
+					enumValueLiteral = string.Format("TimeSpan.fromString(\"{0}\")", JsonGameDataReader.EscapeString(Convert.ToString(enumValue, CultureInfo.InvariantCulture), forUnicodeEncoding: false)); break;
+				case EnumBaseTypeCode.Bool:
+					enumValueLiteral = (((bool?)enumValue ?? false) ? "true" : "false"); break;
+				case EnumBaseTypeCode.DateTime:
+					var dateTimeString = DateTime.Parse(Convert.ToString(enumValue, CultureInfo.InvariantCulture), CultureInfo.InvariantCulture).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+					enumValueLiteral = string.Format("Date.fromString(\"{0}\")", JsonGameDataReader.EscapeString(dateTimeString, forUnicodeEncoding: false));
+					break;
+				default: throw new InvalidOperationException($"Unknown enum base type: {enumDef.BaseType}.");
+			}
+#>
+	public static var <#= kv.Key #>: <#= enumDef #> = new <#= enumDef #>(<#= enumValueLiteral #>);
+<#+
+		}
+#>
+
+	public function new(value:<#= enumDef.BaseType #>) {
+		this = value;
+	}
+
+	public function toString() {
+<#+
+		if (enumDef.BaseTypeCode == EnumBaseTypeCode.Int64)
+		{
+#>
+		return haxe.Int64.toStr(this);
+<#+
+		}
+		else
+		{
+#>
+        return Std.string(this);
+<#+
+        }
+#>
+	}
+}
+<#+
+	}
+#>

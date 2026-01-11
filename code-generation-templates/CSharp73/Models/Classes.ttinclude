@@ -1,0 +1,354 @@
+﻿<#+
+	private void WriteClass(TypeDefinition typeDef, CodeGenerationContext context)
+	{
+		var customClassAttributes = typeDef.CustomAttributes?.Count > 0 ?
+			"[" + string.Join(", ", typeDef.CustomAttributes) + "]" : string.Empty;
+		var baseTypeAndInterfaces = typeDef.BaseTypeAndInterfaces?.Count > 0 ?
+			string.Join(", ", typeDef.BaseTypeAndInterfaces) : context.TargetLanguage.DocumentClassName;
+
+		if (!string.IsNullOrEmpty(typeDef.Description))
+		{
+#>	/// <summary>
+	/// <#= typeDef.Description #>
+	/// </summary>
+<#+
+		}
+		if (!string.IsNullOrEmpty(customClassAttributes))
+		{
+#>	<#= customClassAttributes #>
+<#+
+		}
+#>
+	[GeneratedCode(<#= context.TargetLanguage.GameDataClassName #>.GeneratorName, <#= context.TargetLanguage.GameDataClassName #>.GeneratorVersion)]
+	public sealed partial class <#= typeDef #> : <#= baseTypeAndInterfaces #>, IEquatable<<#= typeDef #>>, IComparable, IComparable<<#= typeDef #>>
+	{
+		public static readonly string SchemaId = "<#= typeDef.Schema.Id #>";
+		public static readonly string SchemaName = "<#= typeDef.Schema.Name #>";
+
+		private readonly int hashCode;
+
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			var customPropertyAttributes = propertyDef.CustomAttributes?.Count > 0 ?
+				"[" + string.Join(", ", propertyDef.CustomAttributes) + "]" : string.Empty;
+
+			if (!string.IsNullOrEmpty(propertyDef.Description))
+			{
+#>		/// <summary>
+		/// <#= propertyDef.Description #>
+		/// </summary>
+<#+
+			}
+			if (!string.IsNullOrEmpty(customPropertyAttributes))
+			{
+#>		<#= customPropertyAttributes #>
+<#+
+			}
+			if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.Reference)
+			{
+#>		public <#= propertyDef.Type #> <#= propertyDef.Name #> => this.<#= propertyDef.RawProperty.Name #>?.Dereference();
+		public <#= propertyDef.RawProperty.Type #> <#= propertyDef.RawProperty.Name #> { get; }
+<#+
+			}
+			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.ReferenceCollection)
+			{
+#>		public <#= propertyDef.Type #> <#= propertyDef.Name #> => this.<#= propertyDef.RawProperty.Name #>.Dereference(document => document.Id);
+		public <#= propertyDef.RawProperty.Type #> <#= propertyDef.RawProperty.Name #> { get; }
+<#+
+			}
+			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.LocalizedText)
+			{
+#>		public string <#= propertyDef.Name #> => this.<#= propertyDef.RawProperty.Name #>.Value;
+		public <#= propertyDef.RawProperty.Type #> <#= propertyDef.RawProperty.Name #> { get; }
+<#+
+			}
+			else
+			{
+#>		public <#= propertyDef.Type #> <#= propertyDef.Name #> { get; }
+<#+
+			}
+		}
+		if (typeDef.IsUnion)
+		{
+#>		/// <summary>
+		/// The name of the selected property in a tagged union.
+		/// </summary>
+		public string Tag { get; }
+<#+
+		}
+
+		var constructorArguments = string.Join(", ", typeDef.Properties.Select(p => p.RawProperty ?? p).Select(p => p.ConstructorParameter.Type + " " + p.ConstructorParameter.Name));
+		if (typeDef.IsUnion)
+		{
+			constructorArguments += ", string tag";
+		}
+#>
+		/// <summary>
+		/// Constructor for <#= typeDef #>.
+		/// </summary>
+		public <#= typeDef #>(<#= constructorArguments #>)
+		{
+			this.OnBeforeInitialize();
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+#>			this.<#= propertyDef.RawName #> = <#= propertyDef.ConstructorParameter.Name #>;
+<#+
+		}
+
+		if (typeDef.IsUnion)
+		{
+#>			this.Tag = tag;
+<#+
+		}
+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if (propertyDef.DataType == DataType.Document)
+			{
+#>			SetParent(this.<#= propertyDef.Name #>, this);
+<#+
+			}
+			else if (propertyDef.DataType == DataType.DocumentCollection)
+			{
+#>			foreach (var document in this.<#= propertyDef.Name #>.AsList) { SetParent(document, this); }
+<#+
+			}
+		}
+#>
+			this.hashCode = this.ComputeHashCode();
+			this.OnInitialize();
+		}
+
+		partial void OnBeforeInitialize();
+		partial void OnInitialize();
+
+<#+
+		if (typeDef.IsUnion)
+		{
+#>
+		/// <summary>
+		/// Executes one of the provided action handlers based on the active variant of this tagged union.
+		/// </summary>
+		/// <exception cref="InvalidOperationException">
+		/// Thrown when the Tag property contains an unrecognized value, indicating the tagged union is in an invalid state.
+		/// </exception>
+		public void Match
+		(
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.SchemaProperty.Name == "Id") continue;
+
+#>			Action<<#= context.TargetLanguage.MakeRequiredTypeRef(propertyDef.Type) #>> <#= propertyDef.ConstructorParameter.Name #>Case,
+<#+
+			}
+#>			Action<string> unknownTag = null
+		)
+		{
+			switch (this.Tag)
+			{
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.SchemaProperty.Name == "Id") continue;
+				var notNullPropertyType = context.TargetLanguage.MakeRequiredTypeRef(propertyDef.Type);
+
+#>				case "<#= propertyDef.SchemaProperty.Name #>":
+					if (this.<#= propertyDef.Name #> == null) {
+						throw new InvalidOperationException("Invalid <#= typeDef #>: tag is \"<#= propertyDef.SchemaProperty.Name #>\" but \"<#= propertyDef.Name #>\" is null.");
+					}
+					<#= propertyDef.ConstructorParameter.Name #>Case?.Invoke((<#= notNullPropertyType #>) this.<#= propertyDef.Name #>);
+					break;
+<#+
+			}
+#>
+
+				default:
+					if (unknownTag != null)
+					{
+						unknownTag.Invoke(this.Tag);
+					}
+					else
+					{
+						throw new InvalidOperationException
+						(
+							$"Invalid tagged union state: Tag '{this.Tag}' is not recognized. " +
+							"Expected <#= string.Join(", ", typeDef.Properties.Where(p => p.SchemaProperty.Name != "Id").Select(p => p.SchemaProperty.Name)) #>."
+						);
+					}
+					break;
+			}
+		}
+
+		/// <summary>
+		/// Applies a visitor to this tagged union, executing the appropriate visit method based on the active variant.
+		/// </summary>
+		public TResult Apply<TUnionVisitor, TResult>(TUnionVisitor visitor) where TUnionVisitor : IUnionVisitor<TResult>
+		{
+			if (visitor == null)
+				throw new ArgumentNullException(nameof(visitor));
+
+			switch (this.Tag)
+			{
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.SchemaProperty.Name == "Id") continue;
+				var notNullPropertyType = context.TargetLanguage.MakeRequiredTypeRef(propertyDef.Type);
+
+#>				case "<#= propertyDef.SchemaProperty.Name #>":
+					if (this.<#= propertyDef.Name #> == null) {
+						throw new InvalidOperationException("Invalid <#= typeDef #>: tag is \"<#= propertyDef.SchemaProperty.Name #>\" but \"<#= propertyDef.Name #>\" is null.");
+					}
+					return visitor.Visit<#= propertyDef.SchemaProperty.Name #>((<#= notNullPropertyType #>) this.<#= propertyDef.Name #>);
+<#+
+			}
+#>				default: return visitor.UnknownTag(this.Tag);
+			}
+		}
+<#+
+		}
+#>
+
+		/// <inheritdoc />
+		public bool Equals(<#= typeDef #> other)
+		{
+			return this.Equals((object)other);
+		}
+		/// <inheritdoc />
+		public override bool Equals(object value)
+		{
+			if (value is <#= typeDef #> == false)
+			{
+				return false;
+			}
+			else if (ReferenceEquals(this, value))
+			{
+				return true;
+			}
+			else if (ReferenceEquals(value, null))
+			{
+				return false;
+			}
+
+			var other = (<#= typeDef #>)value;
+			return (this.GetHashCode() == other.GetHashCode()
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+#>				&& AreEquals(this.<#= propertyDef.RawName #>, other.<#= propertyDef.RawName #>)
+<#+
+		}
+#>			);
+		}
+		/// <inheritdoc />
+		public override int GetHashCode()
+		{
+			return this.hashCode;
+		}
+
+		/// <inheritdoc />
+		int IComparable.CompareTo(object obj)
+		{
+			return this.CompareTo(obj as <#= typeDef #>);
+		}
+		/// <inheritdoc />
+		public int CompareTo(<#= typeDef #> other)
+		{
+			if (ReferenceEquals(other, null))
+			{
+				return 1;
+			}
+<#+
+		if (typeDef.IdMember.DataType == DataType.Text)
+		{
+#>
+			return string.Compare(this.Id, other.Id, StringComparison.Ordinal);
+<#+
+		}
+		else
+		{
+#>
+			return this.Id.CompareTo(other.Id);
+<#+
+		}
+#>
+		}
+
+		public static bool operator ==(<#= typeDef #> value1, <#= typeDef #> value2)
+		{
+			return Equals(value1, value2);
+		}
+		public static bool operator !=(<#= typeDef #> value1, <#= typeDef #> value2)
+		{
+			return Equals(value1, value2) == false;
+		}
+
+		private int ComputeHashCode()
+		{
+			return unchecked(this.GetType().Name.GetHashCode()
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+#>				+ GetHashCodeFor(this.<#= propertyDef.RawName #>)
+<#+
+		}
+#>
+			);
+		}
+
+		/// <inheritdoc />
+		public override string ToString()
+		{
+			var sb = new System.Text.StringBuilder();
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			var propertyDisplayName = propertyDef.DisplayName.Replace("\"", "\\\"").Replace("\\", "\\\\");
+#>				sb.Append("<#= propertyDisplayName #>: ").Append(this.<#= propertyDef.RawName #>).Append(", ");
+<#+
+		}
+#>
+
+			if (sb.Length > 2)
+			{
+				sb.Length -= 2;
+			}
+			return sb.ToString();
+		}
+<#+
+		if (typeDef.IsUnion)
+		{
+#>
+		/// <summary>
+		/// Visitor interface for processing tagged union variants in a type-safe manner.
+		/// </summary>
+		public interface IUnionVisitor<out TResult>
+		{
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.SchemaProperty.Name == "Id") continue;
+
+#>			/// <summary>
+			/// Visits the <#= propertyDef.SchemaProperty.Name #> variant.
+			/// </summary>
+			/// <returns>The result of processing this variant.</returns>
+			TResult Visit<#= propertyDef.SchemaProperty.Name #>(<#= context.TargetLanguage.MakeRequiredTypeRef(propertyDef.Type) #> <#= propertyDef.ConstructorParameter.Name #>);
+<#+
+			}
+#>
+			/// <summary>
+			/// Visits the empty union or unknown tag.
+			/// </summary>
+			TResult UnknownTag(string tag);
+		}
+<#+
+		}
+#>
+	}
+<#+
+	}
+#>

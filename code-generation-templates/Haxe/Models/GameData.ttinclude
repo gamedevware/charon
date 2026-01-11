@@ -1,0 +1,401 @@
+﻿<#@ include file="GameData.Visitor.ttinclude" once="true" #>
+<#@ include file="GameData.ReadGameData.ttinclude" once="true" #>
+<#@ include file="GameData.MergeGameData.ttinclude" once="true" #>
+
+<#+
+	private void WriteGameDataClass(CodeGenerationContext context)
+	{
+#>
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, "Formatters.GameDataReader") #>; */
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, "Formatters.MessagePackGameDataReader") #>; */
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, "Formatters.JsonGameDataReader") #>; */
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, "Formatters.GameDataObjectReader") #>; */
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, "Formatters.ReaderToken") #>; */
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, "Formatters.GameDataLoadOptions") #>; */
+
+class <#= context.TargetLanguage.GameDataClassName #> {
+	public static var GeneratorName(default, null) =  "<#= context.ToolsName #>";
+	public static var GeneratorVersion(default, null) = "<#= context.ToolsVersion #>";
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			var idProperty = typeDef.IdMember.Type;
+#>
+	private static var Empty<#= typeDef #>CollectionById = new <#= context.TargetLanguage.DocumentCollectionClassName #><<#= idProperty #>, <#= typeDef #>>([], 'Id', document -> document.id);
+	private static var Empty<#= typeDef #>ReferenceCollection = new <#= context.TargetLanguage.DocumentReferenceCollectionClassName #><<#= typeDef #>>([]);
+<#+
+		}
+#>
+
+	private var languageSwitcher:LanguageSwitcher;
+	private var allDocuments:Null<Array<<#= context.TargetLanguage.DocumentClassName #>>>;
+	private var rootDocuments:Null<Array<<#= context.TargetLanguage.DocumentClassName #>>>;
+
+	public var changeNumber(default, null):Int;
+	public var revisionHash(default, null):Null<String>;
+	public var supportedLanguages(default, null):ReadOnlyArray<String>;
+
+	public var findDocument:(schemaIdOrName:String, documentId:ReaderValue) -> <#= context.TargetLanguage.DocumentClassName #>;
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			if (typeDef.IsSettings)
+			{
+#>
+	private var <#= typeDef.CollectionName #>(default, null): <#= typeDef.CollectionType #> = Empty<#= typeDef #>CollectionById;
+	private var <#= typeDef.CollectionName #>All(default, null): <#= typeDef.CollectionType #> = Empty<#= typeDef #>CollectionById;
+	public var <#= typeDef.SettingsName #>(get, never): <#= typeDef #>;
+	private function get_<#= typeDef.SettingsName #>() {
+		return getOne(this.<#= typeDef.CollectionName #>.list, '<#= typeDef.Schema.Name #>');
+	}
+<#+
+			}
+			else
+			{
+#>
+	public var <#= typeDef.CollectionName #>(default, null): <#= typeDef.CollectionType #> = Empty<#= typeDef #>CollectionById;
+	public var <#= typeDef.CollectionName #>All(default, null): <#= typeDef.CollectionType #> = Empty<#= typeDef #>CollectionById;
+<#+
+			}
+		}
+#>
+
+	public function new(gameData:Input, options:GameDataLoadOptions) {
+		if (gameData == null)
+			throw 'gameData cannot be null';
+		if (options == null)
+			throw 'options cannot be null';
+
+		this.supportedLanguages = ["<#= context.Metadata.ProjectSettings.PrimaryLanguage #>"];
+		this.changeNumber = 0;
+		this.revisionHash = null;
+		this.languageSwitcher = new LanguageSwitcher();
+		this.setLanguage("<#= context.Metadata.ProjectSettings.PrimaryLanguage #>");
+		this.findDocument = this.findDocumentInternal;
+
+		var reader = this.createReader(gameData, options);
+		reader.nextToken();
+
+		var patches = options.patches ?? [];
+<#+
+		if (context.DisablePatching)
+		{
+#>
+		if (patches.length > 0) {
+			throw "Patching is not supported. Please enable patching during code generation.";
+		}
+<#+
+		}
+		else
+		{
+#>
+		if (patches.length > 0) {
+			var gameDataDocument = reader.readObject(false);
+			reader.close();
+			for (patch in patches) {
+				var patchReader = this.createReader(patch, options);
+				patchReader.nextToken();
+
+				var patchDocument = patchReader.readObject(false);
+
+				gameDataDocument = this.mergeGameData(gameDataDocument, patchDocument);
+			}
+			reader = new GameDataObjectReader(gameDataDocument);
+			reader.nextToken();
+		}
+<#+
+		}
+#>
+
+		this.readGameData(reader);
+		reader.close();
+
+		this.findAllDocuments();
+		this.updateLanguageList();
+
+<#+
+		if (context.EagerReferenceResolution)
+		{
+#>
+		this.resolveAllReferences();
+<#+
+		}
+#>
+	}
+
+	public function applyVisitor(visitor:<#= context.TargetLanguage.GameDataClassName #>Visitor) {
+		if (visitor == null)
+			throw 'visitor cannot be null';
+
+		for (document in this.getRootDocuments()) {
+			visitor.visit(document);
+		}
+	}
+
+	public function setLanguage(languageId:String, fallbackLanguageId = "<#= context.Metadata.ProjectSettings.PrimaryLanguage #>", fallbackOption = LanguageFallbackOption.OnNull) {
+		if (languageId == null)
+			throw 'languageId cannot be null';
+
+		this.languageSwitcher.currentLanguageId = languageId;
+		this.languageSwitcher.fallbackLanguageId = fallbackLanguageId ?? languageId;
+		this.languageSwitcher.fallbackOption = fallbackOption;
+	}
+
+	public function getAllDocuments():ReadOnlyArray<<#= context.TargetLanguage.DocumentClassName #>> {
+		if (this.allDocuments != null) {
+			return this.allDocuments;
+		}
+		var documents:Array<<#= context.TargetLanguage.DocumentClassName #>> = [];
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		var <#= typeDef.CollectionFieldName #>List = this.<#= typeDef.CollectionName #>All.list;
+		for (document in <#= typeDef.CollectionFieldName #>List) {
+			documents.push(document);
+		}
+<#+
+		}
+#>
+
+		return this.allDocuments = documents;
+	}
+	public function getRootDocuments():ReadOnlyArray<<#= context.TargetLanguage.DocumentClassName #>> {
+		if (this.rootDocuments != null) {
+			return this.rootDocuments;
+		}
+		var documents:Array<<#= context.TargetLanguage.DocumentClassName #>> = [];
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		var <#= typeDef.CollectionFieldName #>List = this.<#= typeDef.CollectionName #>.list;
+		for (document in <#= typeDef.CollectionFieldName #>List) {
+			documents.push(document);
+		}
+<#+
+		}
+#>
+
+		return this.rootDocuments = documents;
+	}
+
+	private function findAllDocuments() {
+		var findingVisitor = new <#= context.TargetLanguage.GameDataClassName #>FindingVisitor();
+		this.applyVisitor(findingVisitor);
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		if (findingVisitor.<#= typeDef.CollectionName #>?.length > 0) {
+			this.<#= typeDef.CollectionName #>All = new <#= typeDef.CollectionType #>(findingVisitor.<#= typeDef.CollectionName #>, 'Id', document -> document.id);
+		}
+<#+
+		}
+#>
+	}
+
+	private function resolveAllReferences() {
+		var dereferencingVisitor = new <#= context.TargetLanguage.GameDataClassName #>DereferencingVisitor();
+		this.applyVisitor(dereferencingVisitor);
+	}
+
+	private function getOne<DocumentT:<#= context.TargetLanguage.DocumentClassName #>>(documents:Iterable<DocumentT>, typeName:String) {
+		var iterator = documents.iterator();
+		if (!iterator.hasNext()) {
+			throw 'Unable to find "${typeName}" document. Please create at least one "${typeName}" document before using this property.';
+		}
+		var document = iterator.next();
+		if (iterator.hasNext()) {
+			throw 'There are multiple variants of the "${typeName}" document. Please remove the excess before using this property.';
+		}
+		return document;
+	}
+
+	private function findDocumentInternal(schemaIdOrName:String, documentId:ReaderValue):<#= context.TargetLanguage.DocumentClassName #> {
+		if (schemaIdOrName == null)
+			throw 'schemaIdOrName cannot be null';
+
+		switch (schemaIdOrName) {
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			var idType = typeDef.IdMember.Type;
+#>
+			case "<#= typeDef.Schema.Name #>", "<#= typeDef.Schema.Id #>":
+				return this.<#= typeDef.CollectionName #>All.get(this.convertTo<#= idType #>(documentId));
+<#+
+		}
+#>
+			default:
+				throw 'Unable find Schema with id "${schemaIdOrName}".';
+		}
+	}
+
+<#+
+		this.WriteReadGameDataCode(context);
+		this.WriteReadGameDataMergeCode(context);
+#>
+
+<#+
+		foreach (var enumDef in context.ObjectModel.Enums)
+		{
+			if (!enumDef.IsPickList)
+			{
+				continue;
+			}
+#>
+	private function convertTo<#= enumDef #>(v:ReaderValue):<#= enumDef #> {
+		switch (v) {
+			case String(value):
+				switch (value) {
+<#+
+			foreach (var kv in enumDef.Values)
+			{
+#>
+					case '<#= kv.Key #>': return <#= enumDef #>.<#= kv.Key #>;
+<#+
+			}
+#>
+					default: throw 'Unknown value "${Std.string(v)}" for "<#= enumDef #>" enum.';
+				}
+<#+
+			if (enumDef.IsInt64)
+			{
+#>
+			case Int(value):
+				return new <#= enumDef #>(haxe.Int64.ofInt(value));
+			case Int64(value):
+				return new <#= enumDef #>(value);
+<#+
+			}
+			else
+			{
+#>
+			case Int(value):
+				return new <#= enumDef #>(value);
+			case Int64(value):
+				return new <#= enumDef #>(haxe.Int64.toInt(value));
+<#+
+			}
+#>
+
+			default:
+				throw 'Unexpected type of value "${Std.string(v)}" while String is expected.';
+		}
+	}
+<#+
+		}
+#>
+	private function convertToTimeSpan(v:ReaderValue):TimeSpan {
+		switch (v) {
+			case String(value):
+				return TimeSpan.fromString(value);
+			case Int(value):
+				return TimeSpan.fromSeconds(value);
+			case Int64(value):
+				return TimeSpan.fromTicks(value);
+			default:
+				throw 'Unexpected type of value "${Std.string(v)}" while String is expected.';
+		}
+	}
+
+	private function convertToDate(v:ReaderValue):Date {
+		switch (v) {
+			case String(value):
+				if (value.indexOf('T') > 0) {
+					return Date.fromString(value.substr(0, value.indexOf('T')));
+				} else {
+					return Date.fromString(value);
+				}
+			default:
+				throw 'Unexpected type of value "${Std.string(v)}" while String is expected.';
+		}
+	}
+
+	private function convertToString(v:ReaderValue):String {
+		switch (v) {
+			case String(value):
+				return value;
+			case Int(value):
+				return Std.string(value);
+			case Float(value):
+				return Std.string(value);
+			case Int64(value):
+				return haxe.Int64.toStr(value);
+			default:
+				throw 'Unexpected type of value "${Std.string(v)}" while String is expected.';
+		}
+	}
+
+	private function convertToStringOrNull(v:ReaderValue):Null<String> {
+		if (v == ReaderValue.Null) {
+			return null;
+		} else {
+			return this.convertToString(v);
+		}
+	}
+
+	private function convertToInt(v:ReaderValue):Int {
+		switch (v) {
+			case Int(value):
+				return value;
+			case Int64(value):
+				return haxe.Int64.toInt(value);
+			case Float(value):
+				return Std.int(value);
+			case String(value):
+				return Std.parseInt(value);
+			default:
+				throw 'Unexpected type of value "${Std.string(v)}" while Int is expected.';
+		}
+	}
+
+	private function convertToInt64(v:ReaderValue):haxe.Int64 {
+		switch (v) {
+			case Int(value):
+				return haxe.Int64.ofInt(value);
+			case Float(value):
+				return haxe.Int64.fromFloat(value);
+			case Int64(value):
+				return value;
+			case String(value):
+				return haxe.Int64.parseString(value);
+			default:
+				throw 'Unexpected type of value "${Std.string(v)}" while Int64 is expected.';
+		}
+	}
+
+	private function convertToFloat(v:ReaderValue):Float {
+		switch (v) {
+			case Float(value):
+				return value;
+			case Int(value):
+				return value + 0.0;
+			case Int64(value):
+				return value.high * 4294967296. + (value.low >>> 0);
+			case String(value):
+				return Std.parseFloat(value);
+			default:
+				throw 'Unexpected type of value "${Std.string(v)}" while Float is expected.';
+		}
+	}
+
+	private function convertToBool(v:ReaderValue):Bool {
+		switch (v) {
+			case Bool(value):
+				return value;
+			case String(value):
+				return value.toLowerCase() == "true";
+			default:
+				throw 'Unexpected type of value "${Std.string(v)}" while Bool is expected.';
+		}
+	}
+}
+<#+
+		this.WriteGameDataVisitor(context);
+	}
+#>

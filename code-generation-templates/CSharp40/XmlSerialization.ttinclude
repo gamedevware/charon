@@ -1,0 +1,242 @@
+		#region Serialization: XML
+		private void ReadXml(<#= this.GameDataClassName #> gameData, Stream data, Stream[] patches, Encoding encoding, bool leaveOpen)
+		{
+			if (gameData == null) throw new ArgumentNullException("gameData");
+			if (data == null) throw new ArgumentNullException("data");
+			if (encoding == null) throw new ArgumentNullException("encoding");
+
+			var gameDataPatch = default(Dictionary<string, object>);
+			if (patches != null)
+			{
+				foreach (var patchStream in patches)
+				{
+					using (var patchXmlReader = new XmlFormattingReader(new StreamReader(patchStream, encoding), leaveOpen))
+					{
+						gameDataPatch = MergeDocuments(gameDataPatch, patchXmlReader.ReadDocument());
+					}
+				}
+			}
+
+			using (var xmlReader = new XmlFormattingReader(new StreamReader(data, encoding), leaveOpen))
+			{
+				xmlReader.ReadGameData(gameData, gameDataPatch);
+			}
+		}
+
+		private class XmlFormattingReader : Reader, IDisposable
+		{
+			private const int STATE_INITIAL = 0;
+			private const int STATE_ARRAY = 1;
+			private const int STATE_OBJECT = 2;
+			private const int STATE_MEMBER = 3;
+			private const int STATE_VALUE = 4;
+			private const int STATE_PROPERTY_MEMBER = 5;
+			private const int STATE_PROPERTY_VALUE = 6;
+			private const int STATE_EMPTY = 7;
+
+			private readonly XmlReader innerReader;
+			private readonly bool leaveOpen;
+			private readonly Stack<int> states;
+			private string memberName;
+			private ReaderNode node;
+
+			public override ReaderNode Node { get { if (this.node.Token == ReaderToken.None) this.NextToken(); return this.node; } }
+			public override int LineNumber { get { return this.innerReader is IXmlLineInfo ? ((IXmlLineInfo)this.innerReader).LineNumber : 0; } }
+			public override int ColumnNumber { get { return this.innerReader is IXmlLineInfo ? ((IXmlLineInfo)this.innerReader).LinePosition : 0; } }
+
+			public XmlFormattingReader(TextReader reader, bool leaveOpen = false)
+			{
+				if (reader == null) throw new ArgumentNullException("reader");
+
+				this.innerReader = new XmlTextReader(reader);
+				this.leaveOpen = leaveOpen;
+				this.states = new Stack<int>();
+			}
+
+			public override bool NextToken()
+			{
+				this.node = this.ReadNext();
+				return this.node.Token != ReaderToken.EndOfStream;
+			}
+
+			private ReaderNode ReadNext()
+			{
+				var state = this.states.Count == 0 ? STATE_INITIAL : this.states.Peek();
+
+				if (state == STATE_EMPTY)
+					return this.ReadEmptyElement();
+
+				if (state == STATE_PROPERTY_MEMBER || state == STATE_PROPERTY_VALUE)
+					return this.ReadAttributes();
+
+				while (this.innerReader.Read())
+				{
+					switch (this.innerReader.NodeType)
+					{
+						case XmlNodeType.Element:
+							switch (this.innerReader.Name)
+							{
+								case XmlNotation.ValueElementName:
+									if (state == STATE_OBJECT)
+										goto default;
+									if (state != STATE_INITIAL && state != STATE_ARRAY)
+										throw this.NewUnknownNotationException();
+
+									this.states.Push(STATE_VALUE);
+									if (this.innerReader.IsEmptyElement)
+										this.states.Push(STATE_EMPTY);
+
+									return ReadNext();
+								case XmlNotation.ArrayElementName:
+									if (state == STATE_OBJECT)
+										goto default;
+
+									this.states.Push(STATE_ARRAY);
+
+									if (this.innerReader.IsEmptyElement)
+										this.states.Push(STATE_EMPTY);
+
+									return new ReaderNode(ReaderToken.BeginArray);
+								case XmlNotation.ObjectElementName:
+									if (state == STATE_OBJECT)
+										goto default;
+									this.states.Push(STATE_OBJECT);
+
+									if (this.innerReader.IsEmptyElement)
+										this.states.Push(STATE_EMPTY);
+
+									if (this.innerReader.HasAttributes)
+										this.states.Push(STATE_PROPERTY_MEMBER);
+
+									return new ReaderNode(ReaderToken.BeginObject);
+								default:
+									if (state != STATE_OBJECT)
+										throw this.NewUnknownNotationException();
+
+									this.memberName = XmlConvert.DecodeName(this.innerReader.Name);
+
+									this.states.Push(STATE_MEMBER);
+
+									if (this.innerReader.IsEmptyElement)
+										this.states.Push(STATE_EMPTY);
+
+									return new ReaderNode(ReaderToken.Member, this.memberName);
+							}
+						case XmlNodeType.EndElement:
+							switch (state)
+							{
+								case STATE_VALUE:
+									if (this.innerReader.Name != XmlNotation.ValueElementName)
+										throw this.NewUnknownNotationException();
+									this.states.Pop(); // pop VALUE
+									return this.ReadNext();
+								case STATE_MEMBER:
+									this.states.Pop(); // pop MEMBER
+									return this.ReadNext();
+								case STATE_ARRAY:
+									if (this.innerReader.Name != XmlNotation.ArrayElementName)
+										throw this.NewUnknownNotationException();
+									this.states.Pop(); // pop ARRAY
+									return new ReaderNode(ReaderToken.EndOfArray);
+								case STATE_OBJECT:
+									if (this.innerReader.Name != XmlNotation.ObjectElementName)
+										throw this.NewUnknownNotationException();
+									this.states.Pop(); // pop OBJECT
+									return new ReaderNode(ReaderToken.EndOfObject);
+							}
+							throw this.NewUnknownNotationException();
+						case XmlNodeType.Text:
+						case XmlNodeType.CDATA:
+							if (state == STATE_VALUE || state == STATE_MEMBER)
+								return new ReaderNode(ReaderToken.Value, this.innerReader.Value);
+							throw this.NewUnknownNotationException();
+						case XmlNodeType.SignificantWhitespace:
+						case XmlNodeType.Whitespace:
+						case XmlNodeType.Comment:
+						case XmlNodeType.XmlDeclaration:
+						case XmlNodeType.DocumentType:
+						case XmlNodeType.Document:
+							continue;
+						case XmlNodeType.None:
+						case XmlNodeType.EntityReference:
+						case XmlNodeType.Entity:
+						case XmlNodeType.EndEntity:
+						case XmlNodeType.ProcessingInstruction:
+						case XmlNodeType.DocumentFragment:
+						case XmlNodeType.Notation:
+						default:
+							throw this.NewUnknownNotationException();
+					}
+				}
+
+				return new ReaderNode(ReaderToken.EndOfStream);
+			}
+
+			private ReaderNode ReadEmptyElement()
+			{
+				this.states.Pop(); // pop EMPTY
+				var state = this.states.Count > 0 ? this.states.Peek() : STATE_INITIAL;
+				switch (state)
+				{
+					case STATE_MEMBER:
+						this.states.Pop(); // pop MEMBER
+						this.memberName = null;
+						if (this.innerReader["nil", XmlNotation.XmlSchemaInstanceUrl] == XmlNotation.NullEntityTrue)
+							return new ReaderNode(ReaderToken.Null);
+						else
+							return new ReaderNode(ReaderToken.Value, "");
+					case STATE_VALUE:
+						this.states.Pop(); // pop VALUE
+						return new ReaderNode(ReaderToken.Null);
+					case STATE_OBJECT:
+						this.states.Pop(); // pop OBJECT
+						return new ReaderNode(ReaderToken.EndOfObject);
+					case STATE_ARRAY:
+						this.states.Pop(); // pop ARRAY
+						return new ReaderNode(ReaderToken.EndOfArray);
+				}
+				return this.ReadNext();
+			}
+			private ReaderNode ReadAttributes()
+			{
+				switch (this.states.Pop())
+				{
+					case STATE_PROPERTY_MEMBER:
+						while (this.innerReader.MoveToNextAttribute())
+						{
+							if (this.innerReader.Prefix == "xmlns" || this.innerReader.Prefix == "xsi")
+								continue;
+
+							this.states.Push(STATE_PROPERTY_VALUE);
+							return new ReaderNode(ReaderToken.Member, this.innerReader.Name);
+						}
+						break;
+					case STATE_PROPERTY_VALUE:
+						this.states.Push(STATE_PROPERTY_MEMBER);
+						return new ReaderNode(ReaderToken.Value, this.innerReader.Value);
+				}
+				return this.ReadNext();
+			}
+
+			private Exception NewUnknownNotationException()
+			{
+				throw ReaderException.UnknownNotation(this, this.innerReader.NodeType.ToString() + "[" + this.innerReader.Name + "]");
+			}
+
+			public void Dispose()
+			{
+				if (this.leaveOpen == false)
+					this.innerReader.Close();
+			}
+
+			private class XmlNotation
+			{
+				public const string ObjectElementName = "Object";
+				public const string ArrayElementName = "Array";
+				public const string ValueElementName = "Value";
+
+				public const string XmlSchemaInstanceUrl = "http://www.w3.org/2001/XMLSchema-instance";
+				public const string NullEntityTrue = "true";
+			}
+		}
+		#endregion

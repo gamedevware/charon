@@ -1,0 +1,29 @@
+﻿<#+
+	private void WriteFormula(FormulaDefinition formulaDef, CodeGenerationContext context)
+	{
+		var expressionGenericArguments = new string[formulaDef.ParameterTypes.Length + 1];
+		for (var parameterIndex = 0; parameterIndex < formulaDef.ParameterTypes.Length; parameterIndex++)
+		{
+			expressionGenericArguments[parameterIndex] = formulaDef.ParameterTypes[parameterIndex].TypeName;
+		}
+		expressionGenericArguments[expressionGenericArguments.Length - 1] = formulaDef.ReturnType.TypeName;
+		var functionType = "Func<" + string.Join(", ", expressionGenericArguments) + ">";
+		var invokeParameters = string.Join(", ", formulaDef.ParameterNames.Select((n, i) => n + ": " + formulaDef.ParameterTypes[i]).ToArray());
+#>/**
+	<#= formulaDef.Description #>
+**/
+class <#= formulaDef #>
+{
+	public function new(expressionTree: Map<String, ReaderValue>)
+	{
+
+	}
+
+	public function invoke(<#= invokeParameters #>): <#= formulaDef.ReturnType #>
+	{
+		throw new haxe.exceptions.NotImplementedException();
+	}
+}
+<#+
+	}
+#>

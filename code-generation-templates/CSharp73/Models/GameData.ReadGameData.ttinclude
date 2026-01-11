@@ -1,0 +1,507 @@
+﻿<#+
+	private void WriteReadGameDataCode(CodeGenerationContext context)
+	{
+		var projectSettingsTypeDef = context.ObjectModel.Types.First(type => type.Schema.Name == "ProjectSettings");
+#>
+
+		#region Read Game Data
+
+		public Formatters.GameDataReader CreateReader(Stream gameDataStream, Formatters.GameDataLoadOptions options)
+		{
+			if (gameDataStream == null) throw new ArgumentNullException(nameof(gameDataStream));
+			if (options == null) throw new ArgumentNullException(nameof(options));
+
+			switch(options.Format)
+			{
+<#+
+		if (context.DisableJsonSerialization == false)
+		{
+#>				case Formatters.GameDataFormat.Json: return new Formatters.JsonGameDataReader(gameDataStream, leaveOpen: options.LeaveStreamsOpen, useStringPooling: <#= context.DisableStringPooling ? "false" : "true" #>);
+<#+
+		}
+		if (context.DisableMessagePackSerialization == false)
+		{
+#>				case Formatters.GameDataFormat.MessagePack: return new Formatters.MessagePackGameDataReader(gameDataStream, leaveOpen: options.LeaveStreamsOpen, useStringPooling: <#= context.DisableStringPooling ? "false" : "true" #>);
+<#+
+		}
+#>
+				default: throw new ArgumentException($"Unknown/Unsupported data format specified '{options.Format}'.", nameof(options));
+			}
+		}
+
+		public void ReadGameData(Formatters.GameDataReader reader)
+		{
+			if (reader == null) throw new ArgumentNullException(nameof(reader));
+
+			reader.ReadObjectBegin();
+			while(reader.Token != Formatters.ReaderToken.EndOfObject)
+			{
+				var memberName = reader.ReadMember();
+				switch(memberName)
+				{
+					case "ChangeNumber":
+						this.changeNumber = (Int32)reader.ValueAsInt32;
+						reader.NextToken();
+						break;
+					case "RevisionHash":
+						this.revisionHash = (string)reader.ValueAsString;
+						reader.NextToken();
+						break;
+					case "Collections":
+						reader.ReadObjectBegin();
+						while(reader.Token != Formatters.ReaderToken.EndOfObject)
+						{
+							var collectionName = reader.ReadMember();
+							switch (collectionName.Length)
+							{
+<#+
+		foreach (var typeDefinitionsByNameLength in context.ObjectModel.Types.ToLookup(t => t.Schema.Name.Length).OrderBy(l => l.Key))
+		{
+#>
+								case <#= typeDefinitionsByNameLength.Key #>:
+									switch(collectionName)
+									{
+<#+
+			foreach (var typeDef in typeDefinitionsByNameLength)
+			{
+				var rootDocsCount = 100;
+
+				if (context.Statistics.RootDocumentCount.TryGetValue(typeDef.Schema, out rootDocsCount) == false)
+				{
+					rootDocsCount = 100;
+				}
+#>
+										case "<#= typeDef.Schema.Id #>":
+										case "<#= typeDef.Schema.Name #>":
+										{
+											if (reader.IsNull())
+											{
+												reader.NextToken();
+												break;
+											}
+
+											this.rootDocuments.<#= typeDef.CollectionName #> = this.Read<#= typeDef.Schema.Name #>Collection(reader, <#= rootDocsCount #>);
+											break;
+										}
+<#+
+			}
+#>
+										default:
+											reader.SkipAny();
+											break;
+									}
+									break;
+<#+
+		}
+#>
+								default:
+									reader.SkipAny();
+									break;
+							}
+						}
+						reader.ReadObjectEnd();
+						break;
+					default:
+						reader.SkipAny();
+						break;
+				}
+			}
+
+			reader.ReadObjectEnd();
+		}
+
+		private void ReadProjectSettings()
+		{
+			var projectSettings = System.Linq.Enumerable.FirstOrDefault(this.rootDocuments.<#= projectSettingsTypeDef.CollectionName #>.AsList);
+			if (projectSettings == null)
+			{
+				return;
+			}
+
+			this.gameDataVersion = projectSettings?.Version ?? string.Empty;
+
+			if (string.IsNullOrEmpty(projectSettings.Languages))
+			{
+				return;
+			}
+
+			var languages = new List<String>(projectSettings.Languages.Split(";,| ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
+			if (string.IsNullOrEmpty(projectSettings.PrimaryLanguage) == false)
+			{
+				this.languageSwitcher.PrimaryLanguageId = projectSettings.PrimaryLanguage;
+			}
+			else if (languages.Count > 0)
+			{
+				this.languageSwitcher.PrimaryLanguageId = languages[0];
+			}
+			else
+			{
+				this.languageSwitcher.PrimaryLanguageId = "<#= context.Metadata.ProjectSettings.PrimaryLanguage #>";
+			}
+
+			this.languageSwitcher.CurrentLanguageId = this.languageSwitcher.FallbackLanguageId = this.languageSwitcher.PrimaryLanguageId;
+			if (!languages.Contains(this.languageSwitcher.PrimaryLanguageId)) {
+				languages.Add(this.languageSwitcher.PrimaryLanguageId);
+			}
+			languages.Sort(StringComparer.OrdinalIgnoreCase);
+
+			this.languages = new ReadOnlyCollection<String>(languages);
+		}
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			var propertiesByNameLength = typeDef.Properties.ToLookup(propDef => propDef.SchemaProperty.Name.Length);
+#>
+
+		private <#= typeDef.CollectionType #> Read<#= typeDef.Schema.Name #>Collection(Formatters.GameDataReader reader, int capacity = 0)
+		{
+			if (reader.IsNull())
+			{
+				return <#= typeDef.CollectionType #>.Empty;
+			}
+
+			var isByIdCollection = reader.Token == Formatters.ReaderToken.BeginObject;
+			var collection = default(List<<#= typeDef #>>);
+
+			if (isByIdCollection)
+			{
+				reader.ReadObjectBegin();
+			}
+			else
+			{
+				reader.ReadArrayBegin();
+			}
+			while (reader.Token != Formatters.ReaderToken.EndOfArray &&
+					reader.Token != Formatters.ReaderToken.EndOfObject)
+			{
+				if (isByIdCollection)
+				{
+					var _ = reader.ReadMember(); // skip id
+				}
+
+				if (reader.IsNull())
+				{
+					reader.NextToken();
+					continue;
+				}
+
+				var document = this.Read<#= typeDef.Schema.Name #>(reader);
+				if (collection == null)
+				{
+					collection = new List<<#= typeDef #>>(capacity > 0 ? capacity : 10);
+				}
+
+				collection.Add(document);
+			}
+			if (isByIdCollection)
+			{
+				reader.ReadObjectEnd();
+			}
+			else
+			{
+				reader.ReadArrayEnd();
+			}
+
+			if (collection == null)
+			{
+				return <#= typeDef.CollectionType #>.Empty;
+			}
+			else
+			{
+				return new <#= typeDef.CollectionType #>(collection, document => document.Id);
+			}
+		}
+
+		private <#= typeDef.TypeName #> Read<#= typeDef.Schema.Name #>(Formatters.GameDataReader reader)
+		{
+#pragma warning disable 0168 // The variable is declared but never used
+<#+
+			foreach (var propertyDef in typeDef.Properties.Select(p => p.RawProperty ?? p))
+			{
+				if (propertyDef.DataType == DataType.DocumentCollection || propertyDef.DataType == DataType.ReferenceCollection || propertyDef.DataType == DataType.LocalizedText)
+				{
+#>			var <#= propertyDef.BackingField.Name + "__" #> = <#= propertyDef.ConstructorParameter.Type #>.Empty;
+<#+
+				}
+				else
+				{
+#>			var <#= propertyDef.BackingField.Name + "__" #> = default(<#= propertyDef.ConstructorParameter.Type #>);
+<#+
+				}
+			}
+
+			var tagVariableName = default(string);
+			if (typeDef.IsUnion)
+			{
+				tagVariableName = "__tag";
+
+#>			var <#= tagVariableName #> = default(string);
+<#+
+			}
+#>
+#pragma warning restore 0168
+			reader.ReadObjectBegin();
+			while (reader.Token != Formatters.ReaderToken.EndOfObject)
+			{
+				var propertyName = reader.ReadMember();
+<#+
+			if (typeDef.IsUnion)
+			{
+#>				if (propertyName != "Id" && reader.Token != Formatters.ReaderToken.Null)
+				{
+					if (!string.IsNullOrEmpty(<#= tagVariableName #>))
+					{
+						throw new InvalidOperationException($"Tagged Union has multiple conflicting options. Conflicting Options: {<#= tagVariableName #>}, {propertyName}.");
+					}
+					<#= tagVariableName #> = propertyName;
+				}
+<#+
+			}
+#>				switch (propertyName.Length)
+				{
+<#+
+			foreach (var length in propertiesByNameLength.OrderBy(a => a.Key))
+			{
+#>					case <#= length.Key #>:
+					{
+						switch (propertyName)
+						{
+<#+
+				foreach (var propertyDef in length.Select(p => p.RawProperty ?? p))
+				{
+					var localVariableName = propertyDef.BackingField.Name + "__";
+
+#>							case "<#= propertyDef.SchemaProperty.Name #>":
+							{
+<#+
+					if (propertyDef.Requirement == Requirement.None)
+					{
+#>								if (reader.IsNull())
+								{
+									reader.NextToken();
+									continue;
+								}
+<#+
+					}
+					else
+					{
+#>								reader.ThrowIfNull("value of <#= propertyDef.DataType #> type", "<#= propertyDef.SchemaProperty.Name #>", "<#= typeDef.Schema.Name #>");
+<#+
+					}
+
+					if (propertyDef.DataType == DataType.Document)
+					{
+#>									<#= localVariableName #> = this.Read<#= propertyDef.SchemaProperty.ReferenceType.Schema.Name #>(reader);
+<#+
+					}
+					else if (propertyDef.DataType == DataType.DocumentCollection)
+					{
+#>								<#= localVariableName #> = this.Read<#= propertyDef.SchemaProperty.ReferenceType.Schema.Name #>Collection(reader);
+<#+
+					}
+					else if (propertyDef.DataType == DataType.Reference)
+					{
+#>								<#= localVariableName #> = this.ReadDocumentReference<<#= propertyDef.DocumentOrReferenceType #>>(reader, "<#= propertyDef.SchemaProperty.ReferenceType.Schema.Name #>");
+<#+
+					}
+					else if (propertyDef.DataType == DataType.ReferenceCollection)
+					{
+#>								<#= localVariableName #> = this.ReadDocumentReferenceCollection<<#= propertyDef.DocumentOrReferenceType #>>(reader, "<#= propertyDef.SchemaProperty.ReferenceType.Schema.Name #>");
+<#+
+					}
+					else if (propertyDef.DataType == DataType.Formula)
+					{
+						if (propertyDef.SchemaProperty.IsRawFormulaType)
+						{
+#>								<#= localVariableName #> = reader.ReadObject();
+<#+
+						}
+						else
+						{
+#>								<#= localVariableName #> = new <#= propertyDef.Type #>(reader.ReadObject());
+<#+
+						}
+					}
+					else if (propertyDef.DataType == DataType.LocalizedText)
+					{
+#>								<#= localVariableName #> = this.ReadLocalizedText(reader);
+<#+
+					}
+					else
+					{
+#>								reader.ThrowIfNotValue();
+
+								<#= localVariableName #> = (<#= propertyDef.ConstructorParameter.Type #>)reader.ValueAs<#= propertyDef.SchemaProperty.GetPropertyValueType().Name #>;
+								reader.NextToken();
+<#+
+					}
+#>								break;
+							}
+<#+
+				}
+#>							default:
+							{
+								reader.SkipAny();
+								break;
+							}
+						}
+						break;
+					}
+<#+
+			}
+#>
+					default:
+					{
+						reader.SkipAny();
+						break;
+					}
+				}
+			}
+			reader.ReadObjectEnd();
+<#+
+			if (typeDef.IsUnion)
+			{
+#>
+			if (string.IsNullOrEmpty(<#= tagVariableName #>))
+			{
+				throw new InvalidOperationException("Tagged Union has no selected option.");
+			}
+<#+
+			}
+#>
+			var __<#= typeDef #> = new <#= typeDef.TypeName #>(<#= string.Join(", ", typeDef.Properties.Select(p => p.RawProperty ?? p).Select(p => p.BackingField.Name + "__").ToArray()) + (tagVariableName != null ? (", " + tagVariableName) : "") #>);
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.Formula && !propertyDef.SchemaProperty.IsRawFormulaType)
+				{
+#>			if (__<#= typeDef #>.<#= propertyDef.Name #> != null) {
+				__<#= typeDef #>.<#= propertyDef.Name #>.Context.@this = __<#= typeDef #>;
+			}
+<#+
+				}
+			}
+#>
+			return __<#= typeDef #>;
+		}
+<#+
+		}
+#>
+		private <#= context.TargetLanguage.LocalizedTextClassName #> ReadLocalizedText(Formatters.GameDataReader reader)
+		{
+			var locStringDictionary = default(List<KeyValuePair<string, string>>);
+			reader.ReadObjectBegin();
+			while(reader.Token != Formatters.ReaderToken.EndOfObject)
+			{
+				var key = reader.ReadMember();
+				var value = reader.ReadAny()?.ToString();
+				if (string.IsNullOrEmpty(key) ||
+					string.IsNullOrEmpty(value) ||
+					string.Equals(key, "notes", StringComparison.Ordinal))
+				{
+					continue;
+				}
+
+				if (locStringDictionary == null)
+				{
+					locStringDictionary = new List<KeyValuePair<string, string>>(10);
+				}
+				locStringDictionary.Add(new KeyValuePair<string, string>(key, value));
+			}
+			reader.ReadObjectEnd();
+
+			if (locStringDictionary == null)
+			{
+				return <#= context.TargetLanguage.LocalizedTextClassName #>.Empty;
+			}
+			else
+			{
+				return new <#= context.TargetLanguage.LocalizedTextClassName #>(locStringDictionary, this.languageSwitcher);
+			}
+		}
+		private <#= context.TargetLanguage.DocumentReferenceCollectionClassName #><DocumentT> ReadDocumentReferenceCollection<DocumentT>(Formatters.GameDataReader reader, string schemaIdOrName) where DocumentT : <#= context.TargetLanguage.DocumentClassName #>
+		{
+			if (reader.IsNull())
+			{
+				return <#= context.TargetLanguage.DocumentReferenceCollectionClassName #><DocumentT>.Empty;
+			}
+
+			var referenceCollection = default(List<<#= context.TargetLanguage.DocumentReferenceClassName #><DocumentT>>);
+			var isByIdCollection = reader.Token == Formatters.ReaderToken.BeginObject;
+
+			if (isByIdCollection)
+			{
+				reader.ReadObjectBegin();
+			}
+			else
+			{
+				reader.ReadArrayBegin();
+			}
+			while (reader.Token != Formatters.ReaderToken.EndOfArray &&
+					reader.Token != Formatters.ReaderToken.EndOfObject)
+			{
+				if (isByIdCollection)
+				{
+					var _ = reader.ReadMember(); // skip id
+				}
+
+				if (reader.IsNull())
+				{
+					reader.NextToken();
+					continue;
+				}
+
+				var documentReference = this.ReadDocumentReference<DocumentT>(reader, schemaIdOrName);
+				if (documentReference == null)
+				{
+					continue;
+				}
+
+				if (referenceCollection == null) { referenceCollection = new List<<#= context.TargetLanguage.DocumentReferenceClassName #><DocumentT>>(5); }
+				referenceCollection.Add(documentReference);
+			}
+			if (isByIdCollection)
+			{
+				reader.ReadObjectEnd();
+			}
+			else
+			{
+				reader.ReadArrayEnd();
+			}
+			if (referenceCollection == null)
+			{
+				return <#= context.TargetLanguage.DocumentReferenceCollectionClassName #><DocumentT>.Empty;
+			}
+			else
+			{
+				return new <#= context.TargetLanguage.DocumentReferenceCollectionClassName #><DocumentT>(referenceCollection);
+			}
+		}
+		private <#= context.TargetLanguage.DocumentReferenceClassName #><DocumentT> ReadDocumentReference<DocumentT>(Formatters.GameDataReader reader, string schemaIdOrName) where DocumentT : <#= context.TargetLanguage.DocumentClassName #>
+		{
+			var reference = default(<#= context.TargetLanguage.DocumentReferenceClassName #><DocumentT>);
+			reader.ReadObjectBegin();
+			while (reader.Token != Formatters.ReaderToken.EndOfObject)
+			{
+				var key = reader.ReadMember();
+				if (key == "Id")
+				{
+					reference = new <#= context.TargetLanguage.DocumentReferenceClassName #><DocumentT>(reader.ReadAny(), schemaIdOrName, this.FindDocument);
+				}
+				else
+				{
+					reader.SkipAny();
+				}
+			}
+
+			 // TODO maybe throw exception if reference is null (broken)?
+
+			reader.ReadObjectEnd();
+			return reference;
+		}
+
+		#endregion // Read Game Data
+<#+
+	}
+#>

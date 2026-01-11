@@ -1,0 +1,28 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" encoding="utf-8" #>
+<#
+	//
+	// If you exported these templates from the application and want to customize them,
+	// then uncomment the code below.
+	// User dotnet-t4 tool to run this template:
+	// dotnet tool install dotnet-t4 --local --create-manifest-if-needed
+	// dotnet t4 "--parameter=GameDataPath=./gamedata.gdjs" ./CSharp73GameDataGenerator.tt
+	//
+	/*
+
+	this.GameDataPath = Session != null && Session.TryGetValue("GameDataPath", out var gameDataPathObj) ? (string)gameDataPathObj : "<PATH-TO-GDJS-FILE>";
+	this.Namespace = "MyGameDataNamespace";
+	this.GameDataClassName = "GameData";
+	this.DocumentClassName = "Document";
+	this.Optimizations = new[] { "EagerReferenceResolution" };
+
+	 */
+#>
+<#@ include file="./CSharpGameData.ttinclude" once="true" #>
+<#+
+	public string GameDataPath { get; set; }
+	public string Namespace { get; set; }
+	public string GameDataClassName { get; set; }
+	public string DocumentClassName { get; set; }
+	public string[] Optimizations { get; set; }
+#>

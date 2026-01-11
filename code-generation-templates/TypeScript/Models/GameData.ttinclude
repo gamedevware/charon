@@ -1,0 +1,237 @@
+﻿<#@ include file="GameData.Visitor.ttinclude" once="true" #>
+<#@ include file="GameData.ReadGameData.ttinclude" once="true" #>
+<#@ include file="GameData.MergeGameData.ttinclude" once="true" #>
+<#+
+	private void WriteGameDataClass(CodeGenerationContext context)
+	{
+#>
+class DocumentCollections
+{
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>	public <#= typeDef.CollectionName #>:<#= typeDef.CollectionType #> = <#= context.TargetLanguage.DocumentCollectionClassName #>.empty;
+<#+
+		}
+#>
+}
+
+/**
+  * <#= context.TargetLanguage.GameDataClassName #>.
+  */
+export class <#= context.TargetLanguage.GameDataClassName #>
+{
+	private readonly rootDocuments: DocumentCollections;
+	private readonly allDocuments: DocumentCollections;
+	private languages: readonly string[];
+	private languageSwitcher: <#= context.TargetLanguage.LocalizedTextClassName #>.LanguageSwitcher;
+	private changeNumber: number;
+	private revisionHash: string;
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			if (typeDef.IsSettings)
+			{
+#>
+	public get <#= typeDef.SettingsName #>() { return this.getOne<<#= typeDef #>>(this.rootDocuments.<#= typeDef.CollectionName #>.asList, '<#= typeDef.Schema.Name #>'); }
+<#+
+			}
+			else
+			{
+#>
+	public get <#= typeDef.CollectionName #>All() { return this.allDocuments.<#= typeDef.CollectionName #> };
+	public get <#= typeDef.CollectionName #>() { return this.rootDocuments.<#= typeDef.CollectionName #> };
+<#+
+			}
+		}
+#>
+	public get supportedLanguages(): readonly string[] { return this.languages; }
+
+	public readonly findDocument: (schemaNameOrId: string, id: any) => <#= context.TargetLanguage.DocumentClassName #>;
+
+	constructor(gameDataStream: BufferSource | ArrayLike<number>, options: Readonly<Partial<Formatters.GameDataLoadOptions>>)
+	{
+		check(gameDataStream, 'gameDataStream').is.not.nullOrUndefined();
+		check(options, 'options').is.not.nullOrUndefined();
+
+		this.changeNumber = 0;
+		this.revisionHash = '';
+		this.languages = ['<#= context.Metadata.ProjectSettings.PrimaryLanguage #>'];
+		this.rootDocuments = new DocumentCollections();
+		this.allDocuments = new DocumentCollections();
+		this.languageSwitcher = new <#= context.TargetLanguage.LocalizedTextClassName #>.LanguageSwitcher(
+			'<#= context.Metadata.ProjectSettings.PrimaryLanguage #>',
+			'<#= context.Metadata.ProjectSettings.PrimaryLanguage #>',
+			'<#= context.Metadata.ProjectSettings.PrimaryLanguage #>',
+			<#= context.TargetLanguage.LocalizedTextClassName #>.FallbackOption.OnNull,
+		);
+		this.findDocument = this.findDocumentInternal.bind(this);
+
+		const reader = this.createReader(gameDataStream, options);
+		let gameDataDocument = reader.readObject();
+		reader.close();
+<#+
+		if (context.DisablePatching)
+		{
+#>
+		if (options.patches && options.patches.length > 0)
+		{
+			throw new Error('Patching is not supported. Please enable patching during code generation.');
+		}
+<#+
+		}
+		else
+		{
+#>
+		for (const patchStream of (options.patches ?? []))
+		{
+			const patchReader = this.createReader(patchStream, options);
+			const patchDocument = patchReader.readObject();
+			patchReader.close();
+			gameDataDocument = this.mergeGameData(gameDataDocument, patchDocument);
+		}
+<#+
+		}
+#>
+		this.readGameData(gameDataDocument);
+
+		this.findAllDocuments();
+		this.updateLanguageSettings();
+<#+
+		if (context.EagerReferenceResolution)
+		{
+#>
+		this.resolveAllReferences();
+<#+
+		}
+#>
+	}
+
+	public getAllDocuments(): IterableIterator<<#= context.TargetLanguage.DocumentClassName #>>
+	{
+		return this.enumerateAll();
+	}
+
+	public setLanguage (
+		languageId: string,
+		fallbackLanguageId: string = '<#= context.Metadata.ProjectSettings.PrimaryLanguage #>',
+		fallbackOption: <#= context.TargetLanguage.LocalizedTextClassName #>.FallbackOption = <#= context.TargetLanguage.LocalizedTextClassName #>.FallbackOption.OnNull)
+	{
+		check(languageId, 'languageId').is.string().not.nullOrUndefined();
+		check(fallbackLanguageId, 'fallbackLanguageId').is.string().not.nullOrUndefined();
+
+		this.languageSwitcher.currentLanguageId = languageId;
+		this.languageSwitcher.fallbackLanguageId = fallbackLanguageId ?? languageId;
+		this.languageSwitcher.fallbackOption = fallbackOption ?? <#= context.TargetLanguage.LocalizedTextClassName #>.FallbackOption.OnNull;
+	}
+
+	private getOne<DocumentT extends <#= context.TargetLanguage.DocumentClassName #>>(documents: readonly DocumentT[], type: string): DocumentT
+	{
+		switch (documents.length)
+		{
+			case 0: throw Error(`Unable to find '${type}' document. Please create '${type}' document before using this property.`);
+			case 1: return documents[0];
+			default: throw new Error(`There are multiple variants of the '${type}' document. Please remove the excess before using this property.`);
+		}
+	}
+
+	private findDocumentInternal(schemaNameOrId: string, id: any): <#= context.TargetLanguage.DocumentClassName #>
+	{
+		check(schemaNameOrId, 'schemaNameOrId').is.string().not.nullOrUndefined();
+
+		switch (schemaNameOrId)
+		{
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			var idType = typeDef.IdMember.Type;
+#>
+			case '<#= typeDef.Schema.Name #>':
+			case '<#= typeDef.Schema.Id #>': return this.allDocuments.<#= typeDef.CollectionName #>.get(coerceTo(id, '<#= idType #>'));
+<#+
+		}
+#>
+			default: throw new Error(`Unable find Schema with id '${schemaNameOrId}'.`);
+		}
+	}
+
+	private *enumerateAll(): IterableIterator<<#= context.TargetLanguage.DocumentClassName #>>
+	{
+		let i = 0;
+		let end = 0;
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		const <#= typeDef.CollectionFieldName #>List = this.allDocuments.<#= typeDef.CollectionName #>.asList;
+		for (i = 0, end = <#= typeDef.CollectionFieldName #>List.length; i < end; i++)
+		{
+			yield <#= typeDef.CollectionFieldName #>List[i];
+		}
+<#+
+		}
+#>
+	}
+
+	private *enumerateRoots(): IterableIterator<<#= context.TargetLanguage.DocumentClassName #>>
+	{
+		let i = 0;
+		let end = 0;
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		const <#= typeDef.CollectionFieldName #>List = this.rootDocuments.<#= typeDef.CollectionName #>.asList;
+		for (i = 0, end = <#= typeDef.CollectionFieldName #>List.length; i < end; i++)
+		{
+			yield <#= typeDef.CollectionFieldName #>List[i];
+		}
+<#+
+		}
+#>
+	}
+	public applyVisitor(visitor: GameDataVisitor)
+	{
+		check(visitor, 'visitor').is.not.nullOrUndefined();
+
+		for (const document of this.enumerateRoots())
+		{
+			visitor.visit(document);
+		}
+	}
+
+	private resolveAllReferences(): void
+	{
+		const dereferencingVisitor = new DereferencingVisitor();
+		this.applyVisitor(dereferencingVisitor);
+	}
+
+	private findAllDocuments(): void
+	{
+		const findingVisitor = new DocumentCollectorGameDataVisitor();
+		this.applyVisitor(findingVisitor);
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		this.allDocuments.<#= typeDef.CollectionName #> = new <#= context.TargetLanguage.DocumentCollectionClassName #>(findingVisitor.all<#= typeDef.Schema.Name #>, 'id');
+<#+
+		}
+#>
+	}
+<#+
+
+#>
+<#+
+		this.WriteReadGameDataCode(context);
+		this.WriteReadGameDataMergeCode(context);
+#>
+}
+<#+
+		this.WriteGameDataVisitor(context);
+#>
+<#+
+	}
+#>

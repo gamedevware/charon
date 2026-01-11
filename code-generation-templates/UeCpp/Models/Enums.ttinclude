@@ -1,0 +1,83 @@
+﻿<#+
+	private void WriteEnumHeader(EnumDefinition enumDef, CodeGenerationContext context)
+	{
+		if (!enumDef.IsPickList)
+		{
+			return;
+		}
+#>/* # move to Public/<#= enumDef #>.h */
+#pragma once
+<#+
+		WriteFileHeader();
+#>
+// ReSharper disable All
+
+#include "Misc/TVariant.h"
+
+/**
+  * <#= enumDef.Description ?? string.Empty #>
+  */
+<#+
+		if (!enumDef.IsFlags)
+		{
+#>
+UENUM(BlueprintType)
+enum class <#= enumDef #> : uint8 {
+<#+
+			var uInt8MaxValue = byte.MaxValue;
+			foreach (var kv in enumDef.Values)
+			{
+				if (Convert.ToInt64(kv.Value) > uInt8MaxValue)
+				{
+#>
+	/* Unable to generated label - <#= enumDef #>.<#= kv.Key #>, because value - <#= kv.Value #> is greater than UE max supported - <#= uInt8MaxValue #> */
+<#+
+				}
+				else
+				{
+#>
+	<#= kv.Key #> = <#= kv.Value #>  UMETA(DisplayName = "<#= kv.Key #>"),
+<#+
+				}
+			}
+#>
+};
+<#+
+		}
+		else
+		{
+#>
+UENUM(BlueprintType, meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
+enum class <#= enumDef #> : uint8 {
+<#+
+			var uInt8MaxValue = byte.MaxValue;
+			foreach (var kv in enumDef.Values)
+			{
+				if (Convert.ToInt64(kv.Value) > uInt8MaxValue)
+				{
+#>
+		/* Unable to generated label - <#= enumDef #>.<#= kv.Key #>, because value - <#= kv.Value #> is greater than UE max supported - <#= uInt8MaxValue #> */
+<#+
+				}
+				else
+				{
+#>
+		<#= kv.Key #> = <#= kv.Value #>  UMETA(DisplayName = "<#= kv.Key #>"),
+<#+
+				}
+			}
+#>
+};
+ENUM_CLASS_FLAGS(<#= enumDef #>);
+<#+
+		}
+#>
+
+/** Implements variant type traits for enumeration type. */
+template<> struct TVariantTraits<<#= enumDef #>>
+{
+	static constexpr EVariantTypes GetType() { return EVariantTypes::Enum; }
+};
+<#+
+	}
+#>

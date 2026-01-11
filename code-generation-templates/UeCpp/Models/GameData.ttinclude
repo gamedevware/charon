@@ -1,0 +1,580 @@
+﻿<#@ include file="GameData.Visitor.ttinclude" once="true" #>
+<#@ include file="GameData.ReadGameData.ttinclude" once="true" #>
+<#@ include file="GameData.MergeGameData.ttinclude" once="true" #>
+
+<#+
+	private void WriteGameDataClassHeader(CodeGenerationContext context)
+	{
+#>/* # move to Public/<#= context.TargetLanguage.GameDataClassName #>.h */
+#pragma once
+<#+
+	WriteFileHeader();
+#>
+// ReSharper disable All
+
+#include <type_traits>
+
+#include "GameData/<#= context.TargetLanguage.DocumentClassName #>.h"
+#include "GameData/FLocalizedText.h"
+#include "GameData/ULanguageSwitcher.h"
+#include "GameData/EGameDataFormat.h"
+#include "GameData/UGameDataBase.h"
+#include "GameData/FGameDataLoadOptions.h"
+#include "GameData/FGameDataDocumentIdConvert.h"
+#include "GameData/Formatters/FGameDataReaderFactory.h"
+#include "GameData/Formatters/IGameDataReader.h"
+
+#include "Serialization/JsonReader.h"
+#include "Serialization/JsonTypes.h"
+#include "Serialization/Archive.h"
+#include "Runtime/Launch/Resources/Version.h"
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>#include "<#= typeDef #>.h"
+<#+
+		}
+		foreach (var enumDef in context.ObjectModel.Enums)
+		{
+#>#include "<#= enumDef #>.h"
+<#+
+		}
+		foreach (var formulaDef in context.ObjectModel.Formulas)
+		{
+#>#include "<#= formulaDef #>.h"
+<#+
+		}
+#>
+#include "<#= context.TargetLanguage.GameDataClassName #>.generated.h"
+
+DECLARE_LOG_CATEGORY_EXTERN(Log<#= context.TargetLanguage.GameDataClassName #>, Log, All);
+
+/**
+  * Main class used to access game data.
+  */
+UCLASS(BlueprintType)
+class <#= context.CppLanguage.ApiName #> <#= context.TargetLanguage.GameDataClassName #> : public UGameDataBase
+{
+	GENERATED_BODY()
+
+public:
+	inline static const FString GeneratorName = TEXT("<#= context.ToolsName #>");
+	inline static const FString GeneratorVersion = TEXT("<#= context.ToolsVersion #>");
+
+private:
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			if (typeDef.IsSettings)
+			{
+#>
+	UPROPERTY()
+	<#= typeDef.CollectionType #> All<#= typeDef.CollectionName #>;
+	UPROPERTY()
+	<#= typeDef.CollectionType #> <#= typeDef.CollectionName #>;
+<#+
+			}
+		}
+#>
+
+	TSharedPtr<TArray<<#= context.TargetLanguage.DocumentClassName #>*>> RootDocuments;
+	TSharedPtr<TArray<<#= context.TargetLanguage.DocumentClassName #>*>> AllDocuments;
+	TSharedPtr<TMap<FString, UObject*>> NameLookupDuringLoading;
+
+	UPROPERTY()
+	ULanguageSwitcher* LanguageSwitcher;
+
+public:
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	int32 ChangeNumber;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	FString RevisionHash;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	FString GameDataVersion;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	TArray<FString> SupportedLanguages;
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			if (typeDef.IsSettings)
+			{
+#>
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	<#= typeDef #>* <#= typeDef.SettingsName #>;
+<#+
+			}
+			else
+			{
+#>
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	<#= typeDef.CollectionType #> All<#= typeDef.CollectionName #>;
+	UPROPERTY(BlueprintReadOnly)
+	<#= typeDef.CollectionType #> <#= typeDef.CollectionName #>;
+<#+
+			}
+		}
+#>
+
+	virtual bool TryLoad(FArchive* const GameDataStream, EGameDataFormat Format) override;
+	bool TryLoad(FArchive* const GameDataStream, FGameDataLoadOptions Options);
+
+	const TArray<<#= context.TargetLanguage.DocumentClassName #>*>& GetAllDocuments() const;
+	const TArray<<#= context.TargetLanguage.DocumentClassName #>*>& GetRootDocuments() const;
+
+	virtual <#= context.TargetLanguage.DocumentClassName #>* FindGameDataDocumentById(const FString& SchemaNameOrId, const FString& DocumentId) override;
+	virtual UClass* FindDocumentSchemaClass(const FString& SchemaNameOrId) override;
+	virtual void GetDocumentIds(const FString& SchemaNameOrId, TArray<FString>& OutAllIds) override;
+	virtual void GetDocumentSchemaNames(TArray<FString>& OutAllSchemaNames) override;
+	virtual void SetSupportedLanguages(const TArray<FString>& LanguageIds) override;
+
+#if defined(CHARON_PLUGIN_MAJOR_VERSION) && defined(CHARON_PLUGIN_MINOR_VERSION)
+	#if (CHARON_PLUGIN_MAJOR_VERSION > 2025 || (CHARON_PLUGIN_MAJOR_VERSION == 2025 && CHARON_PLUGIN_MINOR_VERSION >= 3))
+	virtual FStringView GetRevisionHash() override
+	{
+		return this->RevisionHash;
+	}
+	#endif
+#endif
+
+	UFUNCTION(BlueprintCallable)
+	void SetLanguage(
+		FString LanguageId,
+		FString FallbackLanguageId = TEXT("<#= context.Metadata.ProjectSettings.PrimaryLanguage #>"),
+		ELocalizedTextFallbackOption FallbackOption = ELocalizedTextFallbackOption::OnNull)
+	{
+		if (LanguageSwitcher == nullptr)
+		{
+			return;
+		}
+
+		LanguageSwitcher->CurrentLanguageId = LanguageId;
+		LanguageSwitcher->FallbackLanguageId = FallbackLanguageId;
+		LanguageSwitcher->FallbackOption = FallbackOption;
+	}
+
+private:
+	void Empty();
+	void UpdateProjectSettings();
+	void UpdateSettings();
+	void ParseLanguageList(const FString& InLanguages, TArray<FString>& OutLanguageList);
+
+	template <typename IdType, typename DocumentType>
+	DocumentType* GetOne(const TMap<IdType, DocumentType*>& Documents) const;
+	template <typename IdType, typename DocumentType>
+	void ToMapById(TMap<IdType, DocumentType*>& DocumentsById, TArray<DocumentType*>& Documents);
+<#+
+		this.WriteReadGameDataCodeHeader(context);
+		this.WriteReadGameDataMergeCodeHeader(context);
+		this.WriteGameDataVisitorHeader(context);
+#>
+};
+<#+
+	}
+
+	private void WriteGameDataClassImplementation(CodeGenerationContext context)
+	{
+		var projectSettingsTypeDef = context.ObjectModel.Types.First(type => type.Schema.Name == "ProjectSettings");
+#>/* # move to Private/<#= context.TargetLanguage.GameDataClassName #>.cpp */
+<#+
+	WriteFileHeader();
+#>
+
+// ReSharper disable All
+
+#include "<#= context.TargetLanguage.GameDataClassName #>.h"
+<#+
+		foreach (var typeRef in context.ObjectModel.Types.Cast<ITypeReference>().Concat(
+			context.ObjectModel.Formulas.Cast<ITypeReference>()))
+		{
+#>#include "<#= typeRef #>.h"
+<#+
+		}
+#>
+
+DEFINE_LOG_CATEGORY(Log<#= context.TargetLanguage.GameDataClassName #>);
+
+void <#= context.TargetLanguage.GameDataClassName #>::Empty()
+{
+	if (LanguageSwitcher)
+	{
+		LanguageSwitcher->CurrentLanguageId = TEXT("<#= context.Metadata.ProjectSettings.PrimaryLanguage #>");
+		LanguageSwitcher->FallbackLanguageId = TEXT("<#= context.Metadata.ProjectSettings.PrimaryLanguage #>");
+		LanguageSwitcher->PrimaryLanguageId = TEXT("<#= context.Metadata.ProjectSettings.PrimaryLanguage #>");
+	}
+
+	RootDocuments = nullptr;
+	AllDocuments = nullptr;
+
+	ChangeNumber = 0;
+	RevisionHash.Empty();
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			if (typeDef.IsSettings)
+			{
+#>
+	<#= typeDef.SettingsName #> = nullptr;
+<#+
+			}
+
+#>
+	All<#= typeDef.CollectionName #>.Reset();
+	<#= typeDef.CollectionName #>.Reset();
+<#+
+		}
+#>
+
+	SupportedLanguages.Reset();
+
+#if defined(<#= context.CppLanguage.ConstantPrefix #>CLEAN_GAME_DATA_LOAD) && <#= context.CppLanguage.ConstantPrefix #>CLEAN_GAME_DATA_LOAD
+	// Array to temporarily hold objects to be destroyed.
+    // We cannot destroy them while iterating through the collection.
+    TArray<UObject*> ChildrenToDestroy;
+
+    ForEachObjectWithOuter(this, [&](UObject* Child)
+    {
+		// skip already deleted or non-document objects
+        if (Child->HasAnyFlags(EObjectFlags::RF_MirroredGarbage) ||
+			!Cast<<#= context.TargetLanguage.DocumentClassName #>>(Child))
+        {
+            return;
+        }
+		ChildrenToDestroy.Add(Child);
+    },
+    /* bIncludeNested */ false);
+
+	for (UObject* Child : ChildrenToDestroy)
+    {
+        Child->MarkAsGarbage();
+        Child->Rename(nullptr, GetTransientPackage(), REN_DontCreateRedirectors | REN_NonTransactional | REN_ForceNoResetLoaders);
+    }
+#endif
+}
+
+bool <#= context.TargetLanguage.GameDataClassName #>::TryLoad(FArchive* const GameDataStream, EGameDataFormat Format)
+{
+	auto Options = FGameDataLoadOptions();
+	Options.Format = Format;
+	return TryLoad(GameDataStream, Options);
+}
+bool <#= context.TargetLanguage.GameDataClassName #>::TryLoad(FArchive* const GameDataStream, FGameDataLoadOptions Options)
+{
+	Empty(); // Reset current state
+
+	SupportedLanguages.Add(TEXT("<#= context.Metadata.ProjectSettings.PrimaryLanguage #>"));
+
+	if (LanguageSwitcher == nullptr)
+	{
+		LanguageSwitcher = NewObject<ULanguageSwitcher>(this);
+	}
+	LanguageSwitcher->CurrentLanguageId = TEXT("<#= context.Metadata.ProjectSettings.PrimaryLanguage #>");
+	LanguageSwitcher->FallbackLanguageId = TEXT("<#= context.Metadata.ProjectSettings.PrimaryLanguage #>");
+	LanguageSwitcher->PrimaryLanguageId = TEXT("<#= context.Metadata.ProjectSettings.PrimaryLanguage #>");
+
+	auto GameDataReader = CreateReader(GameDataStream, Options);
+	GameDataReader->ReadNext(); // initialize reader and move to first token
+
+<#+
+		if (context.DisablePatching)
+		{
+#>
+	if (Options.Patches.Num() > 0)
+	{
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Patching was disabled during source code generation."));
+		return false;
+	}
+<#+
+		}
+		else
+		{
+#>
+	if (Options.Patches.Num() > 0)
+	{
+		TSharedPtr<FJsonObject> GameDataDocument = nullptr;
+		if (!GameDataReader->ReadObject(GameDataDocument, /* NextToken */  false))
+		{
+			GameDataDocument = nullptr;
+			UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Failed to read Game Data from file. Probably file format is wrong or file is broken."));
+			return false;
+		}
+		for (const auto GameDataPatchStream : Options.Patches)
+		{
+			const auto GameDataPatchReader = CreateReader(GameDataPatchStream, Options);
+			GameDataPatchReader->ReadNext(); // initialize reader and move to first token
+
+			TSharedPtr<FJsonObject> GameDataPatchDocument;
+			if (!GameDataPatchReader->ReadObject(GameDataPatchDocument, /* NextToken */  false))
+			{
+				GameDataPatchDocument = nullptr;
+				UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Failed to read Game Data patch from file. Probably file format is wrong or file is broken."));
+				return false;
+			}
+
+			GameDataDocument = MergeGameData(GameDataDocument, GameDataPatchDocument);
+		}
+
+		if (GameDataDocument == nullptr)
+		{
+			UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Failed to apply Game Data patch."));
+			return false;
+		}
+
+		GameDataReader = FGameDataReaderFactory::CreateJsonObjectReader(GameDataDocument);
+		GameDataReader->ReadNext(); // initialize reader and move to first token
+	}
+<#+
+		}
+#>
+
+	if (!ReadGameData(GameDataReader))
+	{
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Failed to parse Game Data from file."));
+		return false;
+	}
+
+	FindAllDocuments();
+<#+
+		if (context.EagerReferenceResolution)
+		{
+#>
+	ResolveAllReferences();
+<#+
+		}
+#>
+	UpdateProjectSettings();
+	UpdateSettings();
+
+	return true;
+}
+
+void <#= context.TargetLanguage.GameDataClassName #>::UpdateProjectSettings()
+{
+	const auto _ProjectSettings = GetOne(this-><#= projectSettingsTypeDef.CollectionName #>);
+	if (_ProjectSettings == nullptr)
+	{
+		return;
+	}
+	GameDataVersion = _ProjectSettings->Version;
+
+	const auto _ProjectSettingsLanguages = _ProjectSettings->Languages;
+	if (_ProjectSettingsLanguages.IsEmpty())
+	{
+		return;
+	}
+
+	SupportedLanguages.Empty();
+
+	ParseLanguageList(_ProjectSettingsLanguages, SupportedLanguages);
+
+	const auto _ProjectSettingsPrimaryLanguage = _ProjectSettings->PrimaryLanguage;
+	if (!_ProjectSettingsPrimaryLanguage.IsEmpty())
+	{
+		LanguageSwitcher->PrimaryLanguageId = _ProjectSettingsPrimaryLanguage;
+	}
+	else if (SupportedLanguages.Num() > 0)
+	{
+		LanguageSwitcher->PrimaryLanguageId = SupportedLanguages[0];
+	}
+	else
+	{
+		LanguageSwitcher->PrimaryLanguageId = TEXT("<#= context.Metadata.ProjectSettings.PrimaryLanguage #>");
+	}
+
+	LanguageSwitcher->CurrentLanguageId = LanguageSwitcher->FallbackLanguageId = LanguageSwitcher->PrimaryLanguageId;
+	if (!SupportedLanguages.Contains(LanguageSwitcher->PrimaryLanguageId))
+	{
+		SupportedLanguages.Add(LanguageSwitcher->PrimaryLanguageId);
+	}
+	SupportedLanguages.Sort();
+}
+
+void <#= context.TargetLanguage.GameDataClassName #>::ParseLanguageList(const FString& InLanguages, TArray<FString>& OutLanguageList)
+{
+	auto Languages = FString(InLanguages);
+	Languages.ReplaceCharInline(TEXT(','), TEXT(';'));
+	Languages.ReplaceCharInline(TEXT('|'), TEXT(';'));
+	Languages.ReplaceCharInline(TEXT(' '), TEXT(';'));
+	Languages.ParseIntoArray(OutLanguageList, TEXT(";"), /* inCullEmpty */ true);
+}
+
+void <#= context.TargetLanguage.GameDataClassName #>::UpdateSettings()
+{
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			if (typeDef.IsSettings)
+			{
+#>
+	this-><#= typeDef.SettingsName #> = GetOne(this-><#= typeDef.CollectionName #>);
+<#+
+			}
+		}
+#>
+}
+
+const TArray<<#= context.TargetLanguage.DocumentClassName #>*>& <#= context.TargetLanguage.GameDataClassName #>::GetAllDocuments() const
+{
+	if (AllDocuments != nullptr)
+	{
+		return AllDocuments.ToSharedRef().Get();
+	}
+
+	const auto FoundDocuments = MakeShared<TArray<<#= context.TargetLanguage.DocumentClassName #>*>>();
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	for (const auto DocumentById : All<#= typeDef.CollectionName #>)
+	{
+		FoundDocuments->Add(DocumentById.Value);
+	}
+<#+
+		}
+#>
+	const_cast<<#= context.TargetLanguage.GameDataClassName #>*>(this)->AllDocuments = FoundDocuments;
+	return FoundDocuments.Get();
+}
+
+const TArray<<#= context.TargetLanguage.DocumentClassName #>*>& <#= context.TargetLanguage.GameDataClassName #>::GetRootDocuments() const
+{
+	if (RootDocuments != nullptr)
+	{
+		return RootDocuments.ToSharedRef().Get();
+	}
+
+	const auto FoundDocuments = MakeShared<TArray<<#= context.TargetLanguage.DocumentClassName #>*>>();
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	for (const auto DocumentById : <#= typeDef.CollectionName #>)
+	{
+		FoundDocuments->Add(DocumentById.Value);
+	}
+<#+
+		}
+#>
+	const_cast<<#= context.TargetLanguage.GameDataClassName #>*>(this)->RootDocuments = FoundDocuments;
+	return FoundDocuments.Get();
+}
+
+template <typename IdType, typename DocumentType>
+DocumentType* <#= context.TargetLanguage.GameDataClassName #>::GetOne(const TMap<IdType, DocumentType*>& Documents) const
+{
+	if (Documents.Num() == 1)
+	{
+        auto Iterator = Documents.CreateConstIterator();
+        return Iterator->Value;
+	}
+	return nullptr;
+}
+
+template <typename IdType, typename DocumentType>
+void <#= context.TargetLanguage.GameDataClassName #>::ToMapById(TMap<IdType, DocumentType*>& DocumentsById, TArray<DocumentType*>& Documents)
+{
+	for (auto Document : Documents)
+	{
+		DocumentsById.FindOrAdd(Document->Id, Document);
+	}
+}
+
+<#= context.TargetLanguage.DocumentClassName #>* <#= context.TargetLanguage.GameDataClassName #>::FindGameDataDocumentById(const FString& SchemaNameOrId, const FString& DocumentId)
+{
+	if (SchemaNameOrId.IsEmpty() || DocumentId.IsEmpty())
+	{
+		return nullptr;
+	}
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			var idType = typeDef.IdMember.Type;
+#>
+	else if (SchemaNameOrId == TEXT("<#= typeDef.Schema.Name #>") || SchemaNameOrId == TEXT("<#= typeDef.Schema.Id #>"))
+	{
+		<#= idType #> Id;
+		FGameDataDocumentIdConvert::ConvertToType(DocumentId, Id);
+		const auto FoundDocument = this->All<#= typeDef.CollectionName #>.Find(Id);
+		if (FoundDocument != nullptr)
+		{
+			return *FoundDocument;
+		}
+	}
+<#+
+		}
+#>
+	return nullptr;
+}
+
+UClass* <#= context.TargetLanguage.GameDataClassName #>::FindDocumentSchemaClass(const FString& SchemaNameOrId)
+{
+	if (SchemaNameOrId.IsEmpty())
+	{
+		return nullptr;
+	}
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	else if (SchemaNameOrId == TEXT("<#= typeDef.Schema.Name #>") || SchemaNameOrId == TEXT("<#= typeDef.Schema.Id #>"))
+	{
+		return <#= typeDef #>::StaticClass();
+	}
+<#+
+		}
+#>
+	return nullptr;
+}
+
+void <#= context.TargetLanguage.GameDataClassName #>::GetDocumentIds(const FString& SchemaNameOrId, TArray<FString>& AllIds)
+{
+	if (SchemaNameOrId.IsEmpty())
+	{
+		return;
+	}
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	else if (SchemaNameOrId == TEXT("<#= typeDef.Schema.Name #>") || SchemaNameOrId == TEXT("<#= typeDef.Schema.Id #>"))
+	{
+		for (auto DocumentById : All<#= typeDef.CollectionName #>)
+		{
+			FString IdString;
+			FGameDataDocumentIdConvert::ConvertToString(DocumentById.Key, IdString);
+			AllIds.Add(IdString);
+		}
+	}
+<#+
+		}
+#>
+}
+
+void <#= context.TargetLanguage.GameDataClassName #>::GetDocumentSchemaNames(TArray<FString>& AllSchemaNames)
+{
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	AllSchemaNames.Add(TEXT("<#= typeDef.Schema.Name #>"));
+<#+
+		}
+#>
+}
+
+void <#= context.TargetLanguage.GameDataClassName #>::SetSupportedLanguages(const TArray<FString>& LanguageIds)
+{
+	auto LanguagesUpdateVisitor = <#= context.TargetLanguage.GameDataClassName #>::FLanguagesUpdateVisitor(LanguageIds);
+	ApplyVisitor(LanguagesUpdateVisitor);
+}
+
+<#+
+		this.WriteReadGameDataCodeImplementation(context);
+		this.WriteReadGameDataMergeCodeImplementation(context);
+		this.WriteGameDataVisitorImplementation(context);
+	}
+#>

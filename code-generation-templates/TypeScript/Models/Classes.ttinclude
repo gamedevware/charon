@@ -1,0 +1,207 @@
+﻿<#+
+	private void WriteClass(TypeDefinition typeDef, CodeGenerationContext context)
+	{
+		var customClassAttributes = typeDef.CustomAttributes?.Count > 0 ?
+			string.Join("\r\n", typeDef.CustomAttributes.Select(attribute => "@" + attribute)) : string.Empty;
+		var baseTypeAndInterfaces = typeDef.BaseTypeAndInterfaces?.Count > 0 ?
+			string.Join(", ", typeDef.BaseTypeAndInterfaces) : context.TargetLanguage.DocumentClassName;
+
+		if (!string.IsNullOrEmpty(typeDef.Description))
+		{
+#>/**
+  * <#= typeDef.Description #>
+  */
+<#+
+		}
+		if (!string.IsNullOrEmpty(customClassAttributes))
+		{
+#><#= customClassAttributes #>
+<#+
+		}
+#>
+export class <#= typeDef #> extends <#= baseTypeAndInterfaces #> {
+
+	public static readonly SchemaId: string = '<#= typeDef.Schema.Id #>';
+	public static readonly SchemaName: string = '<#= typeDef.Schema.Name #>';
+
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.ReferenceCollection)
+			{
+#>	/**
+	  * Document collection referenced in '<#= propertyDef.RawName #>'.
+	  */
+	public get <#= propertyDef.Name #>() : <#= propertyDef.Type #> {
+		return this.<#= propertyDef.RawName #>.dereference();
+	}
+<#+
+			}
+			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.Reference)
+			{
+#>	/**
+	  * Document referenced in '<#= propertyDef.RawName #>'.
+	  */
+	public get <#= propertyDef.Name #>() : <#= propertyDef.Type #> {
+		return (this.<#= propertyDef.RawName #>?.dereference() ?? null) as <#= propertyDef.Type #>;
+	}
+<#+
+			}
+			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.LocalizedText)
+			{
+#>
+	/**
+	  * Translation for '<#= propertyDef.RawName #>' in current selected language.
+	  */
+	public get <#= propertyDef.Name #>() : string {
+		return this.<#= propertyDef.RawName #>.value;
+	}
+<#+
+			}
+		}
+#>
+
+	constructor(
+<#+
+		foreach (var propertyDef in typeDef.Properties.Select(p => p.RawProperty ?? p))
+		{
+			var customPropertyAttributes = propertyDef.CustomAttributes?.Count > 0 ?
+				string.Join("\r\n\t\t", propertyDef.CustomAttributes.Select(attribute => "@" + attribute)) : string.Empty;
+
+			if (!string.IsNullOrEmpty(propertyDef.Description))
+			{
+#>		/**
+		 * <#= propertyDef.Description #>
+		 */
+<#+
+			}
+			if (!string.IsNullOrEmpty(customPropertyAttributes))
+			{
+#>		<#= customPropertyAttributes #>
+<#+
+			}
+#>		public readonly <#= propertyDef.Name #>: <#= propertyDef.Type #>,
+<#+
+		}
+
+		var allTags = typeDef.Properties.Where(p => p.SchemaProperty.Name != "Id").Select(p => p.SchemaProperty.Name);
+		if (typeDef.IsUnion)
+		{
+#>		/**
+		 * The name of the selected property in a tagged union.
+		 */
+		public readonly tag: '<#= string.Join("' | '", allTags) #>',
+<#+
+		}
+#>
+	)
+	{
+		super();
+
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if (propertyDef.DataType == DataType.Document)
+			{
+#>		<#= context.TargetLanguage.DocumentClassName #>.setParent(this.<#= propertyDef.Name #>, this);
+<#+
+			}
+			else if (propertyDef.DataType == DataType.DocumentCollection)
+			{
+#>		this.<#= propertyDef.Name #>.asList.forEach(document => <#= context.TargetLanguage.DocumentClassName #>.setParent(document, this));
+<#+
+			}
+		}
+#>
+	}
+
+<#+
+		if (typeDef.IsUnion)
+		{
+#>
+	/**
+	 * Executes one of the provided action handlers based on the active variant of this tagged union.
+	 */
+	public match<ResultT>(cases: {
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if (propertyDef.SchemaProperty.Name == "Id") continue;
+
+#>		<#= propertyDef.Name #>?: (<#= propertyDef.ConstructorParameter.Name #>: <#= context.TargetLanguage.MakeRequiredTypeRef(propertyDef.Type) #>) => ResultT;
+<#+
+		}
+#>
+		unknownTag?: (tag: string) => ResultT;
+	}): ResultT | undefined {
+
+		/* eslint-disable max-len */
+		switch (this.tag) {
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if (propertyDef.SchemaProperty.Name == "Id") continue;
+
+#>			case '<#= propertyDef.SchemaProperty.Name #>':
+				if (this.<#= propertyDef.Name #> === null || this.<#= propertyDef.Name #> === undefined) {
+					throw new Error(`Invalid <#= typeDef #>: tag is "<#= propertyDef.SchemaProperty.Name #>" but "<#= propertyDef.Name #>" is null.`);
+				}
+				return this.<#= propertyDef.Name #> && cases.<#= propertyDef.Name #> ? cases.<#= propertyDef.Name #>(this.<#= propertyDef.Name #>) : undefined;
+<#+
+		}
+#>
+			default:
+				if (cases.unknownTag) {
+					return cases.unknownTag(this.tag);
+				} else {
+					throw new Error(`Invalid tagged union state: Tag '${this.tag}' is not recognized. Expected <#= string.Join(", ", typeDef.Properties.Where(p => p.SchemaProperty.Name != "Id").Select(p => p.SchemaProperty.Name)) #>.`);
+				}
+		}
+		/* eslint-enable max-len */
+	}
+
+	public asUnion()
+	{
+		return this as <#= typeDef #>Union;
+	}
+
+<#+
+		}
+#>
+	public toString()
+	{
+		let result = '';
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			var propertyDisplayName = propertyDef.DisplayName.Replace("\"", "\\\"").Replace("\\", "\\\\");
+#>			result += '<#= propertyDisplayName #>: ' + this.<#= propertyDef.RawName #> + ', ';
+<#+
+		}
+#>
+
+		if (result.length > 2)
+		{
+			result = result.substring(0, result.length - 2);
+		}
+		return result;
+	}
+}
+<#+
+		if (typeDef.IsUnion)
+		{
+#>
+type <#= typeDef #>Union =
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.SchemaProperty.Name == "Id") continue;
+
+#>	| { readonly tag: '<#= propertyDef.SchemaProperty.Name #>'; readonly id: number; readonly <#= propertyDef.Name #>: <#= context.TargetLanguage.MakeRequiredTypeRef(propertyDef.Type) #> }
+<#+
+			}
+#>	;
+<#+
+		}
+	}
+#>

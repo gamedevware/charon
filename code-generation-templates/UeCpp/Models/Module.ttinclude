@@ -1,0 +1,98 @@
+﻿<#+
+	private void WriteModuleHeader(CodeGenerationContext context)
+	{
+#>/* # move to Public/F<#= context.CppLanguage.ModuleName #>Module.h */
+#pragma once
+<#+
+	WriteFileHeader();
+#>
+// ReSharper disable All
+
+#include "CoreMinimal.h"
+#include "Modules/ModuleManager.h"
+
+class F<#= context.CppLanguage.ModuleName #>Module : public IModuleInterface
+{
+public:
+
+	/** IModuleInterface implementation */
+	virtual void StartupModule() override;
+	virtual void ShutdownModule() override;
+};
+
+<#+
+	}
+
+	private void WriteModuleImplementation(CodeGenerationContext context)
+	{
+#>/* # move to Private/F<#= context.CppLanguage.ModuleName #>Module.cpp */
+<#+
+	WriteFileHeader();
+#>
+// ReSharper disable All
+
+#include "F<#= context.CppLanguage.ModuleName #>Module.h"
+
+#define LOCTEXT_NAMESPACE "F<#= context.CppLanguage.ModuleName #>Module"
+
+void F<#= context.CppLanguage.ModuleName #>Module::StartupModule()
+{
+	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
+}
+
+void F<#= context.CppLanguage.ModuleName #>Module::ShutdownModule()
+{
+	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
+	// we call this function before unloading the module.
+}
+
+#undef LOCTEXT_NAMESPACE
+
+IMPLEMENT_MODULE(F<#= context.CppLanguage.ModuleName #>Module, <#= context.CppLanguage.ModuleName #>)
+<#+
+	}
+
+	private void WriteModuleBuildScript(CodeGenerationContext context)
+	{
+#>/* # move to <#= context.CppLanguage.ModuleName #>.Build.cs */
+<#+
+	WriteFileHeader();
+#>
+using UnrealBuildTool;
+
+public class <#= context.CppLanguage.ModuleName #> : ModuleRules
+{
+	public <#= context.CppLanguage.ModuleName #>(ReadOnlyTargetRules Target) : base(Target)
+	{
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+<#+
+		if (Version.TryParse(context.ToolsVersion, out var toolsVersion))
+		{
+#>
+		this.PublicDefinitions.Add("<#= context.CppLanguage.ConstantPrefix #>CODEGEN_MAJOR_VERSION=<#= toolsVersion.Major #>");
+		this.PublicDefinitions.Add("<#= context.CppLanguage.ConstantPrefix #>CODEGEN_MINOR_VERSION=<#= toolsVersion.Minor #>");
+		this.PublicDefinitions.Add("<#= context.CppLanguage.ConstantPrefix #>CODEGEN_PATCH_VERSION=<#= toolsVersion.Build #>");
+<#+
+		}
+
+		foreach(var definedConstant in this.DefineConstants)
+		{
+			if (string.IsNullOrEmpty(definedConstant))
+			{
+				continue;
+			}
+#>
+		this.PublicDefinitions.Add("<#= definedConstant.Replace("\"", "\\\"") #>");
+<#+
+		}
+#>
+
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+
+		PrivateDependencyModuleNames.AddRange(new string[] { "Charon", "JsonUtilities", "Json", });
+	}
+}
+<#+
+	}
+#>

@@ -1,0 +1,147 @@
+<#+
+	private void WriteGameDataVisitor(CodeGenerationContext context)
+	{
+#>
+class <#= context.TargetLanguage.GameDataClassName #>Visitor {
+	public function new() {}
+
+	public function visit(document:<#= context.TargetLanguage.DocumentClassName #>) {
+		if (document == null)
+			throw 'document cannot be null';
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		if (Std.isOfType(document, <#= typeDef #>)) {
+			this.visit<#= typeDef #>(Std.downcast(document, <#= typeDef #>));
+		} else
+<#+
+		}
+#>
+		{
+			throw 'Unknown document type "${Type.getClassName(Type.getClass(document))}".';
+		}
+	}
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	public function visit<#= typeDef #>(document:<#= typeDef #>) {
+		if (document == null)
+			throw 'document cannot be null';
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.Document)
+				{
+#>
+		if (document.<#= propertyDef.Name #> != null)
+		{
+			this.visit(document.<#= propertyDef.Name #>);
+		}
+<#+
+				}
+				else if (propertyDef.DataType == DataType.DocumentCollection)
+				{
+#>
+		if (document.<#= propertyDef.Name #> != null)
+		{
+			for (subDocument in document.<#= propertyDef.Name #>.list)
+			{
+				this.visit(subDocument);
+			}
+		}
+<#+
+				}
+			}
+#>
+	}
+<#+
+		}
+#>
+}
+
+class <#= context.TargetLanguage.GameDataClassName #>FindingVisitor extends <#= context.TargetLanguage.GameDataClassName #>Visitor {
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>			public var <#= typeDef.CollectionName #>:Array<<#= typeDef #>>;
+<#+
+		}
+#>
+
+
+	public function new() {
+		super();
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		this.<#= typeDef.CollectionName #> = [];
+<#+
+		}
+#>
+	}
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	public override function visit<#= typeDef #>(document: <#= typeDef #>)
+	{
+		this.<#= typeDef.CollectionName #>.push(document);
+
+		super.visit<#= typeDef #>(document);
+	}
+<#+
+		}
+#>
+}
+
+class <#= context.TargetLanguage.GameDataClassName #>DereferencingVisitor extends <#= context.TargetLanguage.GameDataClassName #>Visitor {
+
+	public function new() {
+		super();
+	}
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	public override function visit<#= typeDef #>(document: <#= typeDef #>)
+	{
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.Reference)
+				{
+#>
+		if (document.<#= propertyDef.RawName #> != null)
+		{
+			document.<#= propertyDef.RawName #>.dereference();
+		}
+<#+
+				}
+				else if (propertyDef.DataType == DataType.ReferenceCollection)
+				{
+#>
+		if (document.<#= propertyDef.RawName #> != null)
+		{
+			document.<#= propertyDef.RawName #>.dereference();
+		}
+<#+
+				}
+			}
+#>
+		super.visit<#= typeDef #>(document);
+	}
+<#+
+		}
+#>
+}
+<#+
+	}
+#>

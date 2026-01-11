@@ -1,0 +1,2742 @@
+<#@ assembly name="System.Core, Culture=neutral, PublicKeyToken=b77a5c561934e089" #>
+<#@ output extension=".cs" encoding="utf-8" #>
+<#@ import namespace="System.Security" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.IO.Compression" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Runtime.Serialization" #>
+<#@ import namespace="System.Xml" #>
+<#@ include file="Formatters.ttinclude" once="true"#>
+<#@ include file="Metadata.ttinclude" once="true"#>
+<#@ include file="Pluralizer.english.ttinclude" once="true"#>
+<#
+	if (this.ToolsVersion == null) this.ToolsVersion = this.GetType().Assembly.GetName().Version.ToString();
+	if (this.ToolsName == null) this.ToolsName = this.GetType().Assembly.GetName().Name;
+	if(this.GameDataPath == null) throw new InvalidOperationException("Path to game data file is not set. Set full path to 'GameDataPath' variable inside your .tt file.");
+
+	this.Load(this.GameDataPath);
+#>
+<#
+	foreach (var typeDef in this.Types)
+	{
+#>
+/* # move to <#= typeDef #>.cs */
+<# WriteFileHeader(); #>
+
+namespace <#= this.Namespace #>
+{
+<# WriteFileUsings(); #>
+
+<#
+		if(!string.IsNullOrEmpty(typeDef.Description))
+		{
+#>	/// <summary>
+	/// <#= typeDef.Description #>.
+	/// </summary>
+<#
+		}
+#>
+	[GeneratedCode(<#= this.GameDataClassName #>.GeneratorName, <#= this.GameDataClassName #>.GeneratorVersion)]
+	public sealed partial class <#= typeDef #> : <#= this.DocumentClassName #>, IEquatable<<#= typeDef #>>, IComparable, IComparable<<#= typeDef #>>
+	{
+		private readonly int hashCode;
+<#
+		foreach (var propertyDef in typeDef.Properties)
+		{
+#>		private readonly <#= propertyDef.BackingField.Type #> <#= propertyDef.BackingField.Name #>;
+<#
+			if (this.HideReferences && propertyDef.DataType == DataType.ReferenceCollection)
+			{
+#>		private <#= propertyDef.DeReferencedType #> <#= propertyDef.BackingField.Name #>_Dereferenced;
+<#
+			}
+		}
+#>
+
+<#
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if(!string.IsNullOrEmpty(propertyDef.Description))
+			{
+#>		/// <summary>
+		/// <#= propertyDef.Description #>.
+		/// </summary>
+<#
+			}
+
+			if (this.HideReferences && propertyDef.DataType == DataType.ReferenceCollection)
+			{
+#>		public <#= propertyDef.DeReferencedType #> <#= propertyDef.Name #> { get { return DereferenceCollection(this.<#= propertyDef.BackingField.Name #>, ref this.<#= propertyDef.BackingField.Name #>_Dereferenced); } }
+<#
+			}
+			else if (this.HideReferences && propertyDef.DataType == DataType.Reference)
+			{
+#>		public <#= propertyDef.ReferencedType #> <#= propertyDef.Name #> { get { return this.<#= propertyDef.BackingField.Name #> != null ? this.<#= propertyDef.BackingField.Name #>.Value : null; } }
+<#
+			}
+			else if (this.HideLocalizedStrings && propertyDef.DataType == DataType.LocalizedText)
+			{
+#>		public string <#= propertyDef.Name #> {	get { return this.<#= propertyDef.BackingField.Name #> != null ? this.<#= propertyDef.BackingField.Name #>.Value : null; } }
+<#
+			}
+			else
+			{
+#>		public <#= propertyDef.Type #> <#= propertyDef.Name #> { get { return this.<#= propertyDef.BackingField.Name #>; } }
+<#
+			}
+		}
+#>
+
+		public <#= typeDef #>(<#= string.Join(", ", typeDef.Properties.Select(p => p.ConstructorParameter.Type + " " + p.ConstructorParameter.Name)) #>)
+		{
+<#
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if (propertyDef.DataType == DataType.Formula)
+			{
+
+				if (this.DisableFormulas)
+				{
+#>
+			this.<#= propertyDef.BackingField.Name #> = <#= propertyDef.BackingField.Type #>.Create(<#= propertyDef.ConstructorParameter.Name #>);
+<#
+				}
+				else if (propertyDef.Specification.GetFormulaResultType() == null)
+				{
+#>
+			this.<#= propertyDef.BackingField.Name #> = <#= propertyDef.ConstructorParameter.Name #> != null ? new <#= this.UnboundExpressionClassName #>(new SyntaxTreeNode(<#= propertyDef.ConstructorParameter.Name #>)) : null;
+<#
+				}
+				else
+				{
+#>
+			this.<#= propertyDef.BackingField.Name #> = CreateFormula(<#= propertyDef.ConstructorParameter.Name #>, n => new <#= propertyDef.BackingField.Type #>(n), "<#= typeDef.Schema.Name #>", "<#= propertyDef.Name #>", this.<#= typeDef.IdMember.BackingField.Name #>);
+<#
+				}
+
+			}
+			else
+			{
+#>			this.<#= propertyDef.BackingField.Name #> = <#= propertyDef.ConstructorParameter.Name #>;
+<#
+			}
+			if (propertyDef.DataType == DataType.ReferenceCollection || propertyDef.DataType == DataType.DocumentCollection)
+			{
+#>			EmptyIfNull(ref this.<#= propertyDef.BackingField.Name #>);
+<#			}
+		}
+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if(propertyDef.DataType == DataType.Document)
+			{
+#>			SetParent(this.<#= propertyDef.BackingField.Name #>, this);
+<#
+				} else if(propertyDef.DataType == DataType.DocumentCollection)
+				{
+#>			foreach (var document in this.<#= propertyDef.BackingField.Name #>) { SetParent(document, this); }
+<#
+			}
+		}
+#>
+			this.hashCode = this.ComputeHashCode();
+		}
+
+		protected internal override void Init(<#= this.GameDataClassName #> gameData, string languageId, string fallbackLanguageId)
+		{
+			if (gameData == null) throw new ArgumentNullException("gameData");
+			if (languageId == null) throw new ArgumentNullException("languageId");
+
+			this.OnBeforeInitialize();
+
+			this.SetLanguage(languageId, fallbackLanguageId);
+<#
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if(propertyDef.DataType == DataType.Reference)
+				{
+#>			if (this.<#= propertyDef.BackingField.Name #> != null) { this.<#= propertyDef.BackingField.Name #>.Resolve(gameData.FindDocument); }
+<#
+				} else if(propertyDef.DataType == DataType.ReferenceCollection)
+				{
+#>			foreach (var reference in this.<#= propertyDef.BackingField.Name #>) { reference.Resolve(gameData.FindDocument); }
+<#
+				} else if(propertyDef.DataType == DataType.Formula && this.DisableFormulas == false && propertyDef.Specification.GetFormulaResultType() != null)
+				{
+#>			if (this.<#= propertyDef.BackingField.Name #> != null) { this.<#= propertyDef.BackingField.Name #>.Context.@this = this; }
+<#
+				}
+			}
+#>
+
+			this.OnInitialize();
+		}
+
+		protected internal override void SetLanguage(string languageId, string fallbackLanguageId)
+		{
+			if (languageId == null) throw new ArgumentNullException("languageId");
+<#
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if(propertyDef.DataType == DataType.LocalizedText)
+				{
+#>
+			if (this.<#= propertyDef.BackingField.Name #> != null)
+				this.<#= propertyDef.BackingField.Name #>.SetLanguage(languageId, fallbackLanguageId);
+<#
+				}
+			}
+#>
+			this.OnSetLanguage(languageId);
+		}
+
+		protected internal override void Apply(<#= this.GameDataClassName #>.Visitor visitor)
+		{
+			if (visitor == null) throw new ArgumentNullException("visitor");
+
+			visitor.Visit(this);
+
+<#
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.Document)
+				{
+#>
+			if (this.<#= propertyDef.BackingField.Name #> != null)
+			{
+				this.<#= propertyDef.BackingField.Name #>.Apply(visitor);
+			}
+<#
+				}
+				if (propertyDef.DataType == DataType.DocumentCollection)
+				{
+#>
+			for(var i = 0; i < this.<#= propertyDef.BackingField.Name #>.Count; i++)
+			{
+				this.<#= propertyDef.BackingField.Name #>[i].Apply(visitor);
+			}
+<#
+				}
+			}
+#>
+		}
+
+		partial void OnBeforeInitialize();
+		partial void OnInitialize();
+		partial void OnSetLanguage(string languageId);
+
+		public bool Equals(<#= typeDef #> other)
+		{
+			return this.Equals((object)other);
+		}
+
+		public override bool Equals(object value)
+		{
+			if (value is <#= typeDef #> == false)
+				return false;
+			else if (Object.ReferenceEquals(this, value))
+				return true;
+			else if (Object.ReferenceEquals(value, null))
+				return false;
+
+			var other = (<#= typeDef #>)value;
+			return (this.GetHashCode() == other.GetHashCode()
+<#
+			foreach (var propertyDef in typeDef.Properties)
+			{
+#>
+				&& AreEquals(this.<#= propertyDef.BackingField.Name #>, other.<#= propertyDef.BackingField.Name #>)
+<#
+			}
+#>			);
+		}
+
+		public override int GetHashCode()
+		{
+			return this.hashCode;
+		}
+
+		int IComparable.CompareTo(object obj)
+		{
+			return this.CompareTo(obj as <#= typeDef #>);
+		}
+
+		public int CompareTo(<#= typeDef #> other)
+		{
+			if (other == null)
+				return 1;
+<#
+			if (typeDef.IdMember.DataType == DataType.Text)
+			{
+#>
+			return string.Compare(this.Id, other.Id, StringComparison.Ordinal);
+<#
+			}
+			else
+			{
+#>
+			return this.Id.CompareTo(other.Id);
+<#
+			}
+#>
+		}
+
+		public static bool operator ==(<#= typeDef #> value1, <#= typeDef #> value2)
+		{
+			return Object.Equals(value1, value2);
+		}
+		public static bool operator !=(<#= typeDef #> value1, <#= typeDef #> value2)
+		{
+			return Object.Equals(value1, value2) == false;
+		}
+
+		private int ComputeHashCode()
+		{
+			return unchecked(this.GetType().Name.GetHashCode()
+<#
+			foreach (var propertyDef in typeDef.Properties)
+			{
+#>
+				+ GetHashCodeFor(this.<#= propertyDef.BackingField.Name#>)
+<#
+			}
+#>
+			);
+		}
+
+		public override string ToString()
+		{
+			var sb = new System.Text.StringBuilder();
+<#
+			foreach (var propertyDef in typeDef.Properties)
+			{
+#>
+				sb.Append("<#= propertyDef.DisplayName #>: ").Append(this.<#= propertyDef.BackingField.Name #>).Append(", ");
+<#
+			}
+#>
+			if (sb.Length > 2)
+				sb.Length -= 2;
+
+			return sb.ToString();
+		}
+	}
+}
+<#
+	}
+#>
+<#
+	//
+	// Generate enums
+	//
+	foreach (var enumDef in this.Enums)
+	{
+#>
+/* # move to <#= enumDef #>.cs */
+<# WriteFileHeader(); #>
+
+namespace <#= this.Namespace #>
+{
+<# WriteFileUsings(); #>
+
+<#
+		if (enumDef.IsFlags)
+		{
+#>	[Flags]
+<#
+		}
+#>	[GeneratedCode(<#= this.GameDataClassName #>.GeneratorName, <#= this.GameDataClassName #>.GeneratorVersion)]
+	public enum <#= enumDef #>: <#= enumDef.BaseType #>
+	{
+<#
+		foreach(var kv in enumDef.Values)
+		{
+#>
+		<#= kv.Key #> = <#= Convert.ToString(kv.Value, CultureInfo.InvariantCulture) #>,
+<#
+		}
+#>
+	}
+}
+<#
+	}
+
+#>
+<#
+	//
+	// Generate Expressions
+	//
+	foreach(var formula in this.Formulas)
+	{
+		if (this.DisableFormulas)
+		{
+			break;
+		}
+#>
+/* # move to <#= formula #>.cs */
+<# WriteFileHeader(); #>
+
+namespace <#= this.Namespace #>
+{
+<# WriteFileUsings(); #>
+
+<#
+
+		var expressionGenericArguments = new string[formula.ParameterTypes.Length + 1];
+		for(var parameterIndex = 0; parameterIndex < formula.ParameterTypes.Length; parameterIndex++)
+		{
+			expressionGenericArguments[parameterIndex] = formula.ParameterTypes[parameterIndex].TypeName;
+		}
+		expressionGenericArguments[expressionGenericArguments.Length - 1] = formula.ReturnType.TypeName;
+		var functionType = "Func<" + string.Join(", ", expressionGenericArguments) + ">";
+		var lambdaExpressionType = "Expression<" + functionType + ">";
+#>
+
+	[GeneratedCode(<#= this.GameDataClassName #>.GeneratorName, <#= this.GameDataClassName #>.GeneratorVersion)]
+	public partial class <#= formula #>
+	{
+		private static readonly ITypeResolver TypeResolver;
+		private static readonly Binder ExpressionBinder;
+
+		public partial class <#= formula.ContextType #>
+		{
+			public <#= formula.ContextThisType #> @this;
+		}
+
+		private readonly <#= lambdaExpressionType #> expression;
+		private <#= functionType #> compiledExpression;
+
+		public <#= formula.ContextType #> Context { get; private set; }
+
+		static <#= formula #>()
+		{
+			// AOT
+			if (typeof(object).Name == string.Empty)
+			{
+				new System.Runtime.CompilerServices.StrongBox<<#= formula.ContextType #>>(default(<#= formula.ContextType #>));
+<#
+		foreach(var knownType in formula.Specification.GetKnownTypes())
+		{
+#>
+				new System.Runtime.CompilerServices.StrongBox<<#= knownType #>>(default(<#= knownType #>));
+<#
+		}
+#>
+			}
+
+			var parameters = new ParameterExpression[]
+			{
+<#
+		for(var p = 0; p < formula.ParameterNames.Length; p++)
+		{
+#>
+				Expression.Parameter(typeof(<#= formula.ParameterTypes[p] #>), "<#= formula.ParameterNames[p] #>"),
+<#
+		}
+#>
+			};
+
+			TypeResolver = new KnownTypeResolver(new Type[]
+			{
+<#
+		for(var p = 0; p < formula.ParameterNames.Length; p++)
+		{
+#>
+				typeof(<#= formula.ParameterTypes[p] #>),
+<#
+		}
+#>
+<#
+		foreach(var knownType in formula.Specification.GetKnownTypes())
+		{
+#>
+				typeof(<#= knownType #>),
+<#
+		}
+#>
+				typeof(<#= formula.ReturnType #>),
+				typeof(<#= formula.ContextType #>)
+			}, <#= this.GameDataClassName #>.TypeResolver);
+
+			ExpressionBinder = new Binder(parameters, typeof(<#= formula.ReturnType #>), TypeResolver);
+
+			AotCompilation.RegisterFunc<<#= string.Join(", ", expressionGenericArguments) #>>();
+		}
+		public <#= formula #>(SyntaxTreeNode syntaxTree)
+		{
+			if (syntaxTree == null) throw new ArgumentNullException("syntaxTree");
+
+			this.Context = new <#= formula.ContextType #>();
+			this.expression = (<#=lambdaExpressionType#>)ExpressionBinder.Bind(syntaxTree, Expression.Constant(this.Context));
+		}
+
+		public <#= formula.ReturnType #> Invoke(<#= string.Join(", ", formula.ParameterNames.Select((n, i) => formula.ParameterTypes[i] + " " + n).ToArray()) #>)
+		{
+			var fn = this.CompileAot();
+			return fn.Invoke(<#= string.Join(", ", formula.ParameterNames) #>);
+		}
+
+		public <#= functionType #> CompileAot()
+		{
+			try
+			{
+				if (this.compiledExpression == null)
+					this.compiledExpression = this.expression.CompileAot();
+				return this.compiledExpression;
+			}
+			catch (Exception compilationError)
+			{
+				throw new InvalidOperationException(string.Format("Failed to compile expression '{0}' due errors: {1}{2}", this.ToString(), Environment.NewLine, compilationError.Message), compilationError);
+			}
+		}
+		public <#= functionType #> Compile()
+		{
+			try
+			{
+				if (this.compiledExpression == null)
+					this.compiledExpression = this.expression.Compile();
+				return this.compiledExpression;
+			}
+			catch (Exception compilationError)
+			{
+				throw new InvalidOperationException(string.Format("Failed to compile expression '{0}' due errors: {1}{2}", this.ToString(), Environment.NewLine, compilationError.Message), compilationError);
+			}
+		}
+
+		public Expression<<#= functionType #>> GetExpression()
+		{
+			return this.expression;
+		}
+
+		public override string ToString()
+		{
+			return this.expression.ToString();
+		}
+	}
+}
+<#
+	}
+#>
+
+
+<#
+	if (!this.SuppressGameDataClass)
+	{
+#>
+/* # move to <#= this.GameDataClassName #>.cs */
+<# WriteFileHeader(); #>
+
+namespace <#= this.Namespace #>
+{
+<# WriteFileUsings(); #>
+	using System.Xml;
+
+<# if (this.DisableFormulas == false) { #>
+	using GameDevWare.Dynamic.Expressions;
+<# } #>
+
+	[GeneratedCode(<#= this.GameDataClassName #>.GeneratorName, <#= this.GameDataClassName #>.GeneratorVersion)]
+	public partial class <#= this.GameDataClassName #>
+	{
+		public const string GeneratorName = "<#= this.ToolsName #>";
+		public const string GeneratorVersion = "<#= this.ToolsVersion #>";
+<#
+		if (this.DisableFormulas == false)
+		{
+#>
+		public static readonly ITypeResolver TypeResolver = new KnownTypeResolver(new Type[]
+		{
+				typeof(<#= this.GameDataClassName #>),
+<#
+			foreach (var schemaTypeName in this.Types.Select(v => v.TypeName))
+			{
+				#>
+				typeof(<#= schemaTypeName #>),
+<#
+			}
+#>
+<#
+		foreach (var expressionTypeName in this.Formulas.Select(f => f.TypeName))
+			{
+				#>
+				typeof(<#= expressionTypeName #>),
+<#
+			}
+#>
+<#
+		foreach (var enumTypeName in this.Enums.Select(f => f.TypeName))
+			{
+				#>
+				typeof(<#= enumTypeName #>),
+<#
+			}
+#>
+		});
+<#
+		}
+#>
+
+		#region Storage fields
+<#
+		foreach(var typeDef in this.Types)
+		{
+#>
+		private <#= typeDef.ReadOnlyListType #> <#= typeDef.GameDataRootListName #>;
+		private <#= typeDef.ReadOnlyListType #> <#= typeDef.GameDataAllListName #>;
+<#
+			foreach(var propertyDef in typeDef.UniqueMembers)
+			{
+				var dictionaryType = this.ReadOnlyDictionaryClassName + "<" + (propertyDef.ReferencedType ?? propertyDef.Type) + ", " + typeDef + ">";
+
+#>
+		private <#= dictionaryType #> <#= typeDef.GameDataAllListName #>By<#= propertyDef.Name #>;
+<#
+			}
+
+		}
+#>
+		#endregion
+
+		private ReadOnlyCollection<String> languages = new ReadOnlyCollection<String>(new String[] { "<#= string.Join("\", \"", this.MetaData.ProjectSettings.GetLanguageIds()) #>" });
+#pragma warning disable 0414 // The variable `primaryLanguage, changeNumber' is declared but never used
+		private string primaryLanguage = "<#= this.MetaData.ProjectSettings.PrimaryLanguage #>";
+		private int changeNumber = 0;
+#pragma warning restore 0414
+
+		public ReadOnlyCollection<string> SupportedLanguages { get { return this.languages; } }
+		public Func<string, object, <#= this.DocumentClassName #>> FindDocument { get; private set;}
+
+
+		public <#= this.GameDataClassName #>(Stream data, Format format, Stream[] patches = null, Encoding encoding = null, bool leaveOpen = false)
+		{
+			if (data == null) throw new ArgumentNullException("data");
+
+			if (encoding == null) encoding = Encoding.UTF8;
+
+<# if (this.DisablePatching) { #>
+				if (patches != null && patches.Length > 0) {
+					throw new NotSupportedException("Patching is not supported. Please enable patching during code generation.");
+				}
+<# } #>
+
+			this.FindDocument = this.FindDocumentInternal;
+
+			switch(format)
+			{
+<# if (this.DisableJsonSerialization == false) { #>
+				case Format.Json: this.ReadJson(this, data, patches, encoding, leaveOpen); break;
+<# } #>
+<# if (this.DisableBsonSerialization == false) { #>
+				case Format.Bson: this.ReadBson(this, data, patches, encoding, leaveOpen); break;
+<# } #>
+<# if (this.DisableXmlSerialization == false) { #>
+				case Format.Xml: this.ReadXml(this, data, patches, encoding, leaveOpen); break;
+<# } #>
+<# if (this.DisableMessagePackSerialization == false) { #>
+				case Format.MessagePack: this.ReadMessagePack(this, data, patches, encoding, leaveOpen); break;
+<# } #>
+				default: throw new ArgumentException(string.Format("Unknown/Unsupported data format specified '{0}'.", format), "format");
+			}
+
+#pragma warning disable 0162 // Unreachable code detected
+			this.Initialize();
+#pragma warning restore 0162
+		}
+
+		private void Initialize()
+		{
+<#
+		foreach(var typeDef in this.Types)
+		{
+#>
+			if (this.<#= typeDef.GameDataRootListName #> == null) this.<#= typeDef.GameDataRootListName #> = <#= typeDef.ReadOnlyListType #>.Empty;
+<#
+		}
+#>
+
+			this.FindAllDocuments();
+
+<#
+		foreach(var typeDef in this.Types)
+		{
+			foreach(var propertyDef in typeDef.UniqueMembers)
+			{
+#>			this.<#= typeDef.GameDataAllListName #>By<#= propertyDef.Name #> = ToDictionarySkippingNullKeys(this.<#= typeDef.GameDataAllListName #>, document => document.<#= propertyDef.Name #>);
+<#
+			}
+		}
+#>
+
+			this.BeforeInitialize();
+
+			foreach(var document in this.EnumerateAll())
+			{
+				document.Init(this, this.primaryLanguage, this.primaryLanguage);
+			}
+
+			this.OnInitialize();
+		}
+
+		partial void BeforeInitialize();
+		partial void OnInitialize();
+
+		#region Accessors
+<#
+		foreach(var typeDef in this.Types)
+		{
+			var pluralName = Pluralizer.Pluralize(typeDef.Schema.Name);
+
+			foreach (var propertyDef in typeDef.UniqueMembers)
+			{
+				var propertyType = (propertyDef.ReferencedType ?? propertyDef.Type);
+				var schemaProperty = propertyDef.SchemaProperty;
+				var parameterName = MakePascalCaseIdentifier(propertyDef.Name);
+				var dictionaryFieldName = typeDef.GameDataAllListName + "By" + propertyDef.Name;
+#>
+		// <#= propertyDef.SchemaProperty.DeclaredSchema.Name #> -> <#= propertyDef.SchemaProperty.Name #>
+		public <#= typeDef #> Get<#= typeDef.TypeName #><#= propertyDef.Name != "Id" ? "By" + propertyDef.Name : "" #>(<#= propertyType #> <#= parameterName #>)
+		{
+			ThrowIfNull(<#= parameterName #>, "<#= parameterName #>");
+
+			var value = default(<#= typeDef #>);
+			if (this.<#= dictionaryFieldName #>.TryGetValue(<#= parameterName #>, out value) == false)
+				throw new System.ArgumentException(string.Format("Unable find <#= typeDef.Schema.Name #> with <#= schemaProperty.Name #> '{0}'.", <#= parameterName #>) ,"<#= parameterName #>");
+			return value;
+		}
+		public bool Has<#= typeDef.TypeName #><#= propertyDef.Name != "Id" ? "With" + propertyDef.Name : "" #>(<#= propertyType #> <#= parameterName #>)
+		{
+			ThrowIfNull(<#= parameterName #>, "<#= parameterName #>");
+
+			return this.<#= dictionaryFieldName #>.ContainsKey(<#= parameterName #>);
+		}
+		public <#= typeDef #> Find<#= typeDef.TypeName #><#= propertyDef.Name != "Id" ? "By" + propertyDef.Name : "" #>(<#= propertyType #> <#= parameterName #>)
+		{
+			ThrowIfNull(<#= parameterName #>, "<#= parameterName #>");
+
+			var value = default(<#= typeDef #>);
+			this.<#= dictionaryFieldName #>.TryGetValue(<#= parameterName #>, out value);
+			return value;
+		}
+		public bool TryGet<#= typeDef.TypeName #><#= propertyDef.Name != "Id" ? "By" + propertyDef.Name : "" #>(<#= propertyType #> <#= parameterName #>, out <#= typeDef #> value)
+		{
+			ThrowIfNull(<#= parameterName #>, "<#= parameterName #>");
+
+			return this.<#= dictionaryFieldName #>.TryGetValue(<#= parameterName #>, out value);
+		}
+<#
+			}
+#>
+		public <#= this.ReadOnlyListClassName #><<#= typeDef #>> Get<#= MakeDromedaryCaseName(pluralName) #>(bool onlyRoot = false)
+		{
+			if(onlyRoot)
+				return this.<#= typeDef.GameDataRootListName #>;
+			else
+				return this.<#= typeDef.GameDataAllListName #>;
+		}
+<#
+			if (typeDef.IsSettings)
+			{
+#>
+		// <#= typeDef.Schema.Name #> -> Instance
+		private <#= typeDef #> the<#= typeDef.Schema.Name #>;
+		public <#= typeDef #> <#= MakeDromedaryCaseName(typeDef.Schema.Name) #>
+		{
+			get
+			{
+				if (this.the<#= typeDef.Schema.Name #> != null)
+					return this.the<#= typeDef.Schema.Name #>;
+
+				switch(this.<#= typeDef.GameDataRootListName #>.Count)
+				{
+					case 0: throw new InvalidOperationException("Unable to find <#= typeDef.Schema.Name #> document. Please create <#= typeDef.Schema.Name #> document before using this property.");
+					case 1: return this.the<#= typeDef.Schema.Name #> = this.<#= typeDef.GameDataRootListName #>[0];
+					default: throw new InvalidOperationException("There is a multiple variants of <#= typeDef.Schema.Name #> document. Please remove the excess before using this property.");
+				}
+			}
+		}
+<#
+			}
+		}
+#>
+		#endregion
+
+		public IEnumerable<<#= this.DocumentClassName #>> GetAll<#= Pluralizer.Pluralize(this.DocumentClassName) #>()
+		{
+			return this.EnumerateAll();
+		}
+
+		public void SetLanguage(string languageId)
+		{
+			this.SetLanguage(languageId, languageId);
+		}
+		public void SetLanguage(string languageId, string fallbackLanguageId)
+		{
+			if (languageId == null) throw new ArgumentNullException("languageId");
+			if (fallbackLanguageId == null) throw new ArgumentNullException("fallbackLanguageId");
+
+			foreach(var document in this.EnumerateAll())
+				document.SetLanguage(languageId, fallbackLanguageId);
+		}
+
+		private <#= this.DocumentClassName #> FindDocumentInternal(string schemaId, object id)
+		{
+			if (schemaId == null) throw new ArgumentNullException("schemaId");
+
+#pragma warning disable 1522 // Empty switch block
+			switch (schemaId)
+			{
+<#
+		foreach (var typeDef in this.Types)
+		{
+			var idType = typeDef.IdMember.Type;
+#>
+				case "<#= typeDef.Schema.Name #>":
+				case "<#= typeDef.Schema.Id #>": return this.Get<#= typeDef.TypeName #>((<#= idType #>)(id is <#= idType #> ? id : ChangeType(id, typeof(<#= idType #>), System.Globalization.CultureInfo.InvariantCulture)));
+<#
+		}
+#>
+			}
+#pragma warning restore 1522
+			throw new System.ArgumentException(string.Format("Unable find Schema with id '{0}'.", schemaId) ,"schemaId");
+		}
+
+		private IEnumerable<<#= this.DocumentClassName #>> EnumerateAll()
+		{
+			var i = 0;
+			var end = 0;
+<#
+		foreach (var typeDef in this.Types)
+		{
+#>
+			for (i = 0, end = this.<#= typeDef.GameDataAllListName #>.Count; i < end; i++)
+			{
+				yield return this.<#= typeDef.GameDataAllListName #>[i];
+			}
+<#
+		}
+#>
+			yield break;
+		}
+
+		private IEnumerable<<#= this.DocumentClassName #>> EnumerateRoots()
+		{
+			var i = 0;
+			var end = 0;
+<#
+		foreach (var typeDef in this.Types)
+		{
+#>
+			for (i = 0, end = this.<#= typeDef.GameDataRootListName #>.Count; i < end; i++)
+			{
+				yield return this.<#= typeDef.GameDataRootListName #>[i];
+			}
+<#
+		}
+#>
+
+			yield break;
+		}
+
+		private static void ThrowIfNull<T>(T value, string paramName)
+		{
+			if (value == null) throw new ArgumentNullException(paramName);
+		}
+
+		private static object ChangeType(object value, Type toType, IFormatProvider format)
+		{
+			if (toType.IsEnum && Enum.GetUnderlyingType(toType) == typeof(ulong))
+				return Enum.ToObject(toType, Convert.ToUInt64(value, format));
+			else if (toType.IsEnum)
+				return Enum.ToObject(toType, Convert.ToInt64(value, format));
+			else
+				return System.Convert.ChangeType(value, toType, format);
+		}
+		private static <#= this.ReadOnlyDictionaryClassName #><KeyT, ValueT> ToDictionarySkippingNullKeys<KeyT, ValueT>(<#= this.ReadOnlyListClassName #><ValueT> list, Func<ValueT, KeyT> keySelector)
+			where ValueT : <#= this.DocumentClassName #>
+		{
+			if (list == null) throw new ArgumentNullException("list");
+			if (keySelector == null) throw new ArgumentNullException("keySelector");
+
+			if (list.Count == 0)
+				return <#= this.ReadOnlyDictionaryClassName #><KeyT, ValueT>.Empty;
+
+			var dictionary = new Dictionary<KeyT, ValueT>(list.Count);
+			if (typeof(KeyT).IsValueType)
+			{
+				for (var i = 0; i < list.Count; i++)
+				{
+					var value = list[i];
+					var key = keySelector(value);
+					dictionary[key] = value;
+				}
+			}
+			else
+			{
+				for (var i = 0; i < list.Count; i++)
+				{
+					var value = list[i];
+					var key = keySelector(value);
+					if (Object.ReferenceEquals(key, default(KeyT))) continue;
+					dictionary[key] = value;
+				}
+			}
+			return new <#= this.ReadOnlyDictionaryClassName #><KeyT, ValueT>(dictionary);
+		}
+
+<#@ include file="CSharpGameData.Visitor.ttinclude" once="true" #>
+		#region Serialization
+<#@ include file="CommonSerialization.ttinclude" once="true"#>
+<#		if(!this.DisableJsonSerialization) { #>
+<#@ include file="JsonSerialization.ttinclude" once="true"#>
+<#		} if (!this.DisableMessagePackSerialization) { #>
+<#@ include file="MessagePackSerialization.ttinclude" once="true"#>
+<#		} if (!this.DisableBsonSerialization) { #>
+<#@ include file="BsonSerialization.ttinclude" once="true"#>
+<#		} if (!this.DisableXmlSerialization) { #>
+<#@ include file="XmlSerialization.ttinclude" once="true"#>
+<#		}
+#>
+		#endregion
+	}
+}
+<#
+	}
+#>
+
+<#
+	if(!this.SuppressDocumentClass)
+	{
+#>
+/* # move to <#= this.DocumentClassName #>.cs */
+<# WriteFileHeader(); #>
+
+#pragma warning disable 0660, 0661
+namespace <#= this.Namespace #>
+{
+<# WriteFileUsings(); #>
+
+	[GeneratedCode(<#= this.GameDataClassName #>.GeneratorName, <#= this.GameDataClassName #>.GeneratorVersion)]
+	public abstract partial class <#= this.DocumentClassName #>
+	{
+		private <#= this.DocumentClassName #> parent;
+
+		public <#= this.DocumentClassName #> Parent { get { return this.parent; } }
+
+#pragma warning restore 0660, 0661
+		public static bool operator ==(<#= this.DocumentClassName #> value1, <#= this.DocumentClassName #> value2)
+		{
+			if (Object.ReferenceEquals(value1, value2)) return true;
+			if (Object.ReferenceEquals(value1, null) || Object.ReferenceEquals(value2,null)) return false;
+
+			return Object.Equals(value1, value2);
+		}
+		public static bool operator !=(<#= this.DocumentClassName #> value1, <#= this.DocumentClassName #> value2)
+		{
+			if (Object.ReferenceEquals(value1, value2)) return false;
+			if (Object.ReferenceEquals(value1, null) || Object.ReferenceEquals(value2,null)) return true;
+
+			return Object.Equals(value1, value2) == false;
+		}
+
+		protected internal abstract void Apply(<#= this.GameDataClassName #>.Visitor visitor);
+
+		protected internal abstract void Init(<#= this.GameDataClassName #> gameData, string languageId, string fallbackLanguageId);
+
+		protected internal virtual void SetLanguage(string languageId)
+		{
+			this.SetLanguage(languageId, languageId);
+		}
+		protected internal abstract void SetLanguage(string languageId, string fallbackLanguageId);
+
+		protected static void SetParent(<#= this.DocumentClassName #> document, <#= this.DocumentClassName #> parent)
+		{
+			if (document == null) return;
+			document.parent = parent;
+		}
+		protected static bool AreEquals<T>(T value1, T value2)
+		{
+			if (value1 == null) return value2 == null;
+
+			return value1.Equals(value2);
+		}
+		protected static bool AreEquals<T>(<#= this.ReadOnlyListClassName #><T> value1, <#= this.ReadOnlyListClassName #><T> value2)
+		{
+			if (Object.ReferenceEquals(value1, value2))
+				return true;
+			else if (value1 == null || value2 == null)
+				return false;
+
+			if (value1.Equals(value2))
+				return true;
+
+			return Enumerable.SequenceEqual(value1, value2);
+		}
+
+		protected static void EmptyIfNull<T>(ref <#= this.ReadOnlyListClassName #><T> list)
+		{
+			if (list == null || list.Count == 0)
+				list = <#= this.ReadOnlyListClassName #><T>.Empty;
+		}
+
+		protected static <#= this.ReadOnlyListClassName #><T> DereferenceCollection<T>(<#= this.ReadOnlyListClassName #><<#= this.ReferenceClassName #><T>> collection, ref <#= this.ReadOnlyListClassName #><T> dereferencedCollection) where T : <#= this.DocumentClassName #>
+		{
+			if (dereferencedCollection != null) {
+				return dereferencedCollection;
+			}
+
+			if (collection.Count == 0) {
+				dereferencedCollection = <#= this.ReadOnlyListClassName #><T>.Empty;
+				return dereferencedCollection;
+			}
+
+			var list = new List<T>(collection.Count);
+			for(var i = 0; i < collection.Count; i++)
+				list.Add(collection[i].Value);
+
+			dereferencedCollection = new <#= this.ReadOnlyListClassName #><T>(list);
+			return dereferencedCollection;
+		}
+
+<# if (this.DisableFormulas == false) { #>
+		protected static T CreateFormula<T>(IDictionary<string, object> expression, Func<SyntaxTreeNode, T> ctr, string schemaName, string propertyName, object id)
+		{
+			if (ctr == null) throw new ArgumentNullException("ctr");
+			if (propertyName == null) throw new ArgumentNullException("propertyName");
+			if (id == null) throw new ArgumentNullException("id");
+
+			if (expression == null)
+			{
+				return default(T);
+			}
+
+			var syntaxTree = default(SyntaxTreeNode);
+			try
+			{
+				syntaxTree = new SyntaxTreeNode(expression);
+				return ctr(syntaxTree);
+			}
+			catch (Exception createError)
+			{
+				var expressionError = createError;
+				while (expressionError is System.Reflection.TargetInvocationException)
+				{
+					expressionError = createError.InnerException;
+				}
+
+				var expressionText = "<none>";
+				try
+				{
+					if(syntaxTree != null)
+					{
+						expressionText = syntaxTree.ToString();
+					}
+				}
+				catch
+				{
+					expressionText = "<expression rendering failed>";
+				}
+
+				throw new InvalidOperationException(string.Format("An error occurred while trying to create {0} Expression '{1}' for {2} with id '{3}':\r\n{4}", propertyName,
+					expressionText, schemaName, id, expressionError.Message), expressionError);
+			}
+		}
+<# } #>
+
+		protected static int GetHashCodeFor<T>(T value)
+		{
+			if (value == null) return 0;
+			return value.GetHashCode();
+		}
+		protected static int GetHashCodeFor<T>(<#= this.ReadOnlyListClassName #><T> value)
+		{
+			if (value == null)
+				return 0;
+
+			if (value.Count == 0)
+				return value.GetHashCode();
+
+			var hashCode = 0;
+			foreach (var item in value)
+				hashCode = unchecked(hashCode + item.GetHashCode());
+			return hashCode;
+		}
+	}
+}
+<#
+	}
+	if(!this.SuppressReferenceClass)
+	{
+#>
+/* # move to <#= this.ReferenceClassName #>.cs */
+<# WriteFileHeader(); #>
+
+namespace <#= this.Namespace #>
+{
+<# WriteFileUsings(); #>
+
+	[GeneratedCode(<#= this.GameDataClassName #>.GeneratorName, <#= this.GameDataClassName #>.GeneratorVersion)]
+	public sealed partial class <#= this.ReferenceClassName #><T> where T : <#= this.DocumentClassName #>
+	{
+		[NonSerialized]
+		private T value;
+		[NonSerialized]
+		private Func<string, object, <#= this.DocumentClassName #>> valueResolver;
+
+		public object Id { get; set; }
+
+		public T Value
+		{
+			get
+			{
+				if (this.value != null)
+					return value;
+
+				if (this.valueResolver != null)
+					return this.value = (T)this.valueResolver(typeof(T).Name, this.Id);
+				else
+					throw new InvalidOperationException(string.Format("Broken {0} reference with id {1}. Consider calling Resolve() before using Value.", typeof(T).Name, this.Id));
+			}
+		}
+
+		public static implicit operator T(<#= this.ReferenceClassName #><T> reference)
+		{
+			return reference.Value;
+		}
+
+		internal void Resolve(Func<string, object, <#= this.DocumentClassName #>> resolver)
+		{
+			if (resolver == null) throw new ArgumentNullException("resolver");
+
+#pragma warning disable 0162 // C# Unreachable code detected
+			this.value = null;
+			// ReSharper disable once ConditionIsAlwaysTrueOrFalse
+			if (<#= this.LazyReferences.ToString().ToLowerInvariant() #>)
+				this.valueResolver = resolver;
+			else
+				this.value = (T)resolver(typeof(T).Name, this.Id);
+#pragma warning restore 0162
+		}
+
+		public override bool Equals(object value)
+		{
+			var other = value as <#= this.ReferenceClassName #><T>;
+			if (other == null)
+				return false;
+			else if (Object.ReferenceEquals(this, value))
+				return true;
+
+			return Object.Equals(this.Id, other.Id);
+		}
+
+		public override int GetHashCode()
+		{
+			var hashCode = (this.Id != null ? this.Id.GetHashCode() : 0);
+			return hashCode;
+		}
+
+		public static <#= this.ReferenceClassName #><T> Create(Dictionary<string, object> values)
+		{
+			if (values == null)
+			{
+				return null;
+			}
+
+			var idValue = default(object);
+			if (values.TryGetValue("Id", out idValue) == false || idValue == null)
+			{
+				return null;
+			}
+
+			return new <#= this.ReferenceClassName #><T> { Id = idValue };
+		}
+
+		public override string ToString()
+		{
+			return string.Format("id: {0}, schema: {1}", this.Id, typeof(T).Name);
+		}
+	}
+}
+<#
+	}
+	if(!this.SuppressLocalizedStringClass)
+	{
+		var languageIds = this.MetaData.ProjectSettings.GetLanguageIds();
+		Array.Sort(languageIds, StringComparer.OrdinalIgnoreCase);
+#>
+/* # move to <#= this.LocalizedStringClassName #>.cs */
+<# WriteFileHeader(); #>
+
+namespace <#= this.Namespace #>
+{
+<# WriteFileUsings(); #>
+
+	[GeneratedCode(<#= this.GameDataClassName #>.GeneratorName, <#= this.GameDataClassName #>.GeneratorVersion)]
+	public sealed partial class <#= this.LocalizedStringClassName #> : IDictionary<string, string>
+	{
+		private static readonly string[] DefaultLanguageIds = new string[] { "<#= string.Join("\", \"", languageIds) #>" };
+		private static readonly StringComparer KeyComparer = StringComparer.OrdinalIgnoreCase;
+
+		private string[] keys;
+		private string[] values;
+		private string currentValue;
+		private string currentLanguageId;
+		private bool isReadOnly;
+
+		public string Value { get { return this.currentValue ?? this.values.FirstOrDefault(v => v != null); } }
+		public string CurrentLanguageId { get { return this.currentLanguageId; } }
+		public string this[string key]
+		{
+			get
+			{
+				var languageIndex = Array.BinarySearch(this.keys, 0, this.keys.Length, key, KeyComparer);
+				return languageIndex < 0 ? null : this.values[languageIndex];
+			}
+			set
+			{
+				this.ThrowIfReadOnly();
+				var languageIndex = Array.BinarySearch(this.keys, 0, this.keys.Length, key, KeyComparer);
+				if (languageIndex >= 0)
+				{
+					this.values[languageIndex] = value;
+					return;
+				}
+
+				Array.Resize(ref this.keys, this.keys.Length + 1);
+				Array.Resize(ref this.values, this.values.Length + 1);
+				this.keys[this.keys.Length - 1] = key;
+				this.values[this.keys.Length - 1] = value;
+				Array.Sort(this.keys, this.values, KeyComparer);
+			}
+		}
+
+		public <#= this.LocalizedStringClassName #>()
+		{
+			this.keys = DefaultLanguageIds;
+			this.values = new string[DefaultLanguageIds.Length];
+		}
+
+		public void SetLanguage(string languageId, string fallbackLanguageId)
+		{
+			if (languageId == null) throw new ArgumentNullException("languageId");
+
+			var languageIndex = Array.BinarySearch(this.keys, 0, this.keys.Length, languageId, KeyComparer);
+			if (languageIndex < 0)
+			{
+#if DEBUG
+				System.Diagnostics.Debug.WriteLine(string.Format("Localized string '{0}' doesn't contains text for '{1}' language.", string.Join(", ", this.values), languageId));
+#endif
+				this.currentValue = string.Empty;
+
+				// fallback to default language
+				if (languageId != fallbackLanguageId) {
+					this.SetLanguage(fallbackLanguageId, fallbackLanguageId);
+				}
+				return;
+			}
+			else
+			{
+				this.currentValue = this.values[languageIndex];
+			}
+
+			this.currentLanguageId = languageId;
+		}
+		public void SetReadOnly()
+		{
+			this.isReadOnly = true;
+		}
+
+		public static implicit operator string(<#= this.LocalizedStringClassName #> str)
+		{
+			if (str == null) return null;
+			return str.Value;
+		}
+
+		public override bool Equals(object value)
+		{
+			var other = value as <#= this.LocalizedStringClassName #>;
+			if (other == null)
+				return false;
+			else if (object.ReferenceEquals(this, value))
+				return true;
+			else if (this.keys.Length != other.keys.Length)
+				return false;
+
+			for (var i = 0; i < this.keys.Length; i++)
+			{
+				if (KeyComparer.Equals(this.keys[i], other.keys[i]) == false)
+				{
+					return false;
+				}
+
+				if (string.Equals(this.values[i], other.values[i], StringComparison.OrdinalIgnoreCase) == false)
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		public override int GetHashCode()
+		{
+			var hashCode = 0;
+			foreach (var value in this.values)
+				hashCode += unchecked((value ?? "").GetHashCode());
+			return hashCode;
+		}
+
+		ICollection<string> IDictionary<string, string>.Keys { get { return this.keys; } }
+		ICollection<string> IDictionary<string, string>.Values { get { return this.values; } }
+		int ICollection<KeyValuePair<string, string>>.Count { get { return this.keys.Length; } }
+		bool ICollection<KeyValuePair<string, string>>.IsReadOnly { get { return this.isReadOnly; } }
+
+		void IDictionary<string, string>.Add(string key, string value)
+		{
+			((IDictionary<string, string>)this)[key] = value;
+		}
+		bool IDictionary<string, string>.ContainsKey(string key)
+		{
+			return Array.BinarySearch(this.keys, 0, this.keys.Length, key, KeyComparer) >= 0;
+		}
+		bool IDictionary<string, string>.Remove(string key)
+		{
+			if (((IDictionary<string, string>)this).ContainsKey(key))
+			{
+				((IDictionary<string, string>)this)[key] = null;
+				return true;
+			}
+			return false;
+		}
+		bool IDictionary<string, string>.TryGetValue(string key, out string value)
+		{
+			var languageIndex = Array.BinarySearch(this.keys, 0, this.keys.Length, key, KeyComparer);
+			if (languageIndex >= 0)
+			{
+				value = this.values[languageIndex];
+				return value != null;
+			}
+			else
+			{
+				value = null;
+				return false;
+			}
+		}
+
+		void ICollection<KeyValuePair<string, string>>.Add(KeyValuePair<string, string> item)
+		{
+			((IDictionary<string, string>)this)[item.Key] = item.Value;
+		}
+		void ICollection<KeyValuePair<string, string>>.Clear()
+		{
+			this.ThrowIfReadOnly();
+
+			Array.Clear(this.values, 0, this.values.Length);
+		}
+		bool ICollection<KeyValuePair<string, string>>.Contains(KeyValuePair<string, string> item)
+		{
+			return string.Equals(((IDictionary<string, string>)this)[item.Key], item.Value, StringComparison.Ordinal);
+		}
+		void ICollection<KeyValuePair<string, string>>.CopyTo(KeyValuePair<string, string>[] array, int arrayIndex)
+		{
+			var offset = 0;
+			for (var i = arrayIndex; i < array.Length; i++)
+			{
+				array[i] = new KeyValuePair<string, string>(this.keys[offset], this.values[offset]);
+				offset++;
+			}
+		}
+		bool ICollection<KeyValuePair<string, string>>.Remove(KeyValuePair<string, string> item)
+		{
+			this.ThrowIfReadOnly();
+			if (((ICollection<KeyValuePair<string, string>>)this).Contains(item))
+			{
+				return ((IDictionary<string, string>)this).Remove(item.Key);
+			}
+
+			return false;
+		}
+		IEnumerator<KeyValuePair<string, string>> IEnumerable<KeyValuePair<string, string>>.GetEnumerator()
+		{
+			for (var i = 0; i < this.keys.Length; i++)
+			{
+				yield return new KeyValuePair<string, string>(this.keys[i], this.values[i]);
+			}
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			for (var i = 0; i < this.keys.Length; i++)
+			{
+				yield return new KeyValuePair<string, string>(this.keys[i], this.values[i]);
+			}
+		}
+
+		private void ThrowIfReadOnly()
+		{
+			if (this.isReadOnly)
+				throw new InvalidOperationException("This <#= this.LocalizedStringClassName #> is read-only and can't be changed.");
+		}
+
+		public static bool operator ==(<#= this.LocalizedStringClassName #> value1, <#= this.LocalizedStringClassName #> value2)
+		{
+			return object.Equals(value1, value2);
+		}
+		public static bool operator !=(<#= this.LocalizedStringClassName #> value1, <#= this.LocalizedStringClassName #> value2)
+		{
+			return object.Equals(value1, value2) == false;
+		}
+
+		public static <#= this.LocalizedStringClassName #> Create(Dictionary<string, object> values)
+		{
+			if (values == null)
+			{
+				return null;
+			}
+
+			var value = new <#= this.LocalizedStringClassName #>();
+			foreach(var kv in values)
+			{
+				if (kv.Key == "notes")
+				{
+					continue;
+				}
+
+				value[kv.Key] = kv.Value != null ? kv.Value.ToString() : null;
+			}
+			return value;
+		}
+
+		public override string ToString()
+		{
+			return this.Value;
+		}
+	}
+}
+<#
+	}
+	if (!this.SuppressCollectionClass)
+	{
+#>
+/* # move to <#= this.ReadOnlyListClassName #>.cs */
+<# WriteFileHeader(); #>
+
+namespace <#= this.Namespace #>
+{
+<# WriteFileUsings(); #>
+
+	[GeneratedCode(<#= this.GameDataClassName #>.GeneratorName, <#= this.GameDataClassName #>.GeneratorVersion)]
+	public class <#= this.ReadOnlyListClassName #><T> : IList<T>
+	{
+		public static readonly <#= this.ReadOnlyListClassName #><T> Empty = new <#= this.ReadOnlyListClassName #><T>();
+
+		private static readonly List<T> EmptyList = new List<T>();
+
+		private readonly List<T> list;
+
+		private List<T> InnerList { get { return this.list ?? EmptyList; } }
+
+		/// <inheritdoc />
+		public int Count { get { return this.InnerList.Count; } }
+		/// <inheritdoc />
+		public bool IsReadOnly { get { return true; } }
+		/// <inheritdoc />
+		public T this[int index] { get { return this.InnerList[index]; } set { throw new NotSupportedException(); } }
+
+		public <#= this.ReadOnlyListClassName #>()
+		{
+			this.list = null;
+		}
+
+		public <#= this.ReadOnlyListClassName #>(List<T> list)
+		{
+			this.list = list;
+		}
+
+		public bool Contains(T item) { return this.InnerList.Contains(item); }
+		/// <inheritdoc />
+		public void CopyTo(T[] array, int arrayIndex) { this.InnerList.CopyTo(array, arrayIndex); }
+		public void ForEach(Action<T> action) { this.InnerList.ForEach(action); }
+		public T Find(Predicate<T> match) { return this.InnerList.Find(match); }
+		public bool Exists(Predicate<T> match) { return this.InnerList.Exists(match); }
+		public int FindIndex(Predicate<T> match) { return this.InnerList.FindIndex(match); }
+		public int FindIndex(int startIndex, Predicate<T> match) { return this.InnerList.FindIndex(startIndex, match); }
+		public int FindIndex(int startIndex, int count, Predicate<T> match) { return this.InnerList.FindIndex(startIndex, count, match); }
+		public T FindLast(Predicate<T> match) { return this.InnerList.FindLast(match); }
+		public int FindLastIndex(Predicate<T> match) { return this.InnerList.FindLastIndex(match); }
+		public int FindLastIndex(int startIndex, Predicate<T> match) { return this.InnerList.FindLastIndex(startIndex, match); }
+		public int FindLastIndex(int startIndex, int count, Predicate<T> match) { return this.InnerList.FindLastIndex(startIndex, count, match); }
+		public int IndexOf(T item) { return this.InnerList.IndexOf(item); }
+		public int IndexOf(T item, int index) { return this.InnerList.IndexOf(item, index); }
+		public int IndexOf(T item, int index, int count) { return this.InnerList.IndexOf(item, index, count); }
+		public int LastIndexOf(T item) { return this.InnerList.LastIndexOf(item); }
+		public int LastIndexOf(T item, int index) { return this.InnerList.LastIndexOf(item, index); }
+		public int LastIndexOf(T item, int index, int count) { return this.InnerList.LastIndexOf(item, index, count); }
+		public bool TrueForAll(Predicate<T> match) { return this.InnerList.TrueForAll(match); }
+		public List<T> GetRange(int index, int count) { return this.InnerList.GetRange(index, count); }
+		public List<T> FindAll(Predicate<T> match) { return this.InnerList.FindAll(match); }
+		public T[] ToArray() { return this.InnerList.ToArray(); }
+		public List<T> ToList() { return new List<T>(this.InnerList); }
+		public List<TOutput> ConvertAll<TOutput>(Converter<T, TOutput> converter) { return this.InnerList.ConvertAll(converter); }
+
+		public List<T>.Enumerator GetEnumerator()
+		{
+			return this.InnerList.GetEnumerator();
+		}
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			// ReSharper disable once HeapView.BoxingAllocation
+			return this.InnerList.GetEnumerator();
+		}
+		IEnumerator<T> IEnumerable<T>.GetEnumerator()
+		{
+			// ReSharper disable once HeapView.BoxingAllocation
+			return this.InnerList.GetEnumerator();
+		}
+
+		public override bool Equals(object obj)
+		{
+			var otherList = obj as <#= this.ReadOnlyListClassName #><T>;
+			if (Object.ReferenceEquals(this, obj))
+				return true;
+			else if (otherList != null && this.Count == otherList.Count)
+				return Enumerable.SequenceEqual(this.list, otherList.list);
+			else
+				return Object.Equals(this.list, obj);
+		}
+		public override int GetHashCode()
+		{
+			return this.InnerList.GetHashCode();
+		}
+
+		public static bool operator ==(<#= this.ReadOnlyListClassName #><T> value1, <#= this.ReadOnlyListClassName #><T> value2)
+		{
+			if (Object.ReferenceEquals(value1, value2)) return true;
+			if (Object.ReferenceEquals(value1, null) || Object.ReferenceEquals(value2, null)) return false;
+
+			return value1.Equals(value2);
+		}
+		public static bool operator !=(<#= this.ReadOnlyListClassName #><T> value1, <#= this.ReadOnlyListClassName #><T> value2)
+		{
+			if (Object.ReferenceEquals(value1, value2)) return false;
+			if (Object.ReferenceEquals(value1, null) || Object.ReferenceEquals(value2, null)) return true;
+
+			return value1.Equals(value2) == false;
+		}
+
+		#region NotSupported
+		/// <inheritdoc />
+		public void Insert(int index, T item)
+		{
+			throw new NotSupportedException();
+		}
+		/// <inheritdoc />
+		public void RemoveAt(int index)
+		{
+			throw new NotSupportedException();
+		}
+		/// <inheritdoc />
+		public bool Remove(T item)
+		{
+			throw new NotSupportedException();
+		}
+		/// <inheritdoc />
+		public void Add(T item)
+		{
+			throw new NotSupportedException();
+		}
+		/// <inheritdoc />
+		public void Clear()
+		{
+			throw new NotSupportedException();
+		}
+		#endregion
+
+		public static <#= this.ReadOnlyListClassName #><T> Create(List<T> list)
+		{
+			if (list == null)
+			{
+				return Empty;
+			}
+			else
+			{
+				return new <#= this.ReadOnlyListClassName #><T>(list);
+			}
+		}
+
+		public override string ToString()
+		{
+			return this.InnerList.Count.ToString();
+		}
+	}
+}
+/* # move to <#= this.ReadOnlyDictionaryClassName #>.cs */
+<# WriteFileHeader(); #>
+
+namespace <#= this.Namespace #>
+{
+<# WriteFileUsings(); #>
+
+	[GeneratedCode(<#= this.GameDataClassName #>.GeneratorName, <#= this.GameDataClassName #>.GeneratorVersion)]
+	public class <#= this.ReadOnlyDictionaryClassName #><KeyT, ValueT> : IDictionary<KeyT, ValueT>
+	{
+		public static readonly <#= this.ReadOnlyDictionaryClassName #><KeyT, ValueT> Empty = new <#= this.ReadOnlyDictionaryClassName #><KeyT, ValueT>();
+
+		private static readonly Dictionary<KeyT, ValueT> EmptyDictionary = new Dictionary<KeyT, ValueT>();
+
+		private readonly Dictionary<KeyT, ValueT> dictionary;
+
+		private Dictionary<KeyT, ValueT> InnerDictionary { get { return this.dictionary ?? EmptyDictionary; } }
+		/// <inheritdoc />
+		public int Count { get { return this.InnerDictionary.Count; } }
+		/// <inheritdoc />
+		public bool IsReadOnly { get { return true; } }
+		public ValueT this[KeyT key] { get { return this.dictionary[key]; } set { throw new NotSupportedException();} }
+		public Dictionary<KeyT, ValueT>.KeyCollection Keys { get { return this.InnerDictionary.Keys; } }
+		public Dictionary<KeyT, ValueT>.ValueCollection Values { get { return this.InnerDictionary.Values; } }
+		/// <inheritdoc />
+		ICollection<ValueT> IDictionary<KeyT, ValueT>.Values { get { return this.Values; } }
+		/// <inheritdoc />
+		ICollection<KeyT> IDictionary<KeyT, ValueT>.Keys { get { return this.Keys; } }
+		public IEqualityComparer<KeyT> Comparer { get { return this.InnerDictionary.Comparer; } }
+
+		public <#= this.ReadOnlyDictionaryClassName #>()
+		{
+			this.dictionary = null;
+		}
+
+		public <#= this.ReadOnlyDictionaryClassName #>(Dictionary<KeyT, ValueT> dictionary)
+		{
+			this.dictionary = dictionary;
+		}
+		/// <inheritdoc />
+		public bool Contains(KeyValuePair<KeyT, ValueT> item)
+		{
+			return ((ICollection<KeyValuePair<KeyT, ValueT>>)this.InnerDictionary).Contains(item);
+		}
+		public void CopyTo(KeyValuePair<KeyT, ValueT>[] array, int arrayIndex)
+		{
+			((ICollection<KeyValuePair<KeyT, ValueT>>)this.InnerDictionary).CopyTo(array, arrayIndex);
+		}
+		public bool ContainsKey(KeyT key)
+		{
+			return this.InnerDictionary.ContainsKey(key);
+		}
+		public bool ContainsValue(ValueT value)
+		{
+			return this.InnerDictionary.ContainsValue(value);
+		}
+		public Dictionary<KeyT, ValueT> ToDictionary()
+		{
+			return new Dictionary<KeyT, ValueT>(this.InnerDictionary);
+		}
+		public bool TryGetValue(KeyT key, out ValueT value)
+		{
+			return this.InnerDictionary.TryGetValue(key, out value);
+		}
+
+		IEnumerator<KeyValuePair<KeyT, ValueT>> IEnumerable<KeyValuePair<KeyT, ValueT>>.GetEnumerator()
+		{
+			// ReSharper disable once HeapView.BoxingAllocation
+			return this.InnerDictionary.GetEnumerator();
+		}
+		public Dictionary<KeyT, ValueT>.Enumerator GetEnumerator()
+		{
+			return this.InnerDictionary.GetEnumerator();
+		}
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			// ReSharper disable once HeapView.BoxingAllocation
+			return this.InnerDictionary.GetEnumerator();
+		}
+
+		public override bool Equals(object obj)
+		{
+			var otherReadOnlyDictionary = obj as <#= this.ReadOnlyDictionaryClassName #><KeyT, ValueT>;
+			var otherDictionary = obj as Dictionary<KeyT, ValueT>;
+			if (Object.ReferenceEquals(this, obj))
+				return true;
+			else if (otherReadOnlyDictionary != null && this.Count == otherReadOnlyDictionary.Count)
+				return Enumerable.SequenceEqual(this.dictionary, otherReadOnlyDictionary.dictionary);
+			else if (otherDictionary != null && this.Count == otherDictionary.Count)
+				return Enumerable.SequenceEqual(this.dictionary, otherDictionary);
+			else
+				return Object.Equals(this.dictionary, obj);
+		}
+		public override int GetHashCode()
+		{
+			return this.InnerDictionary.GetHashCode();
+		}
+
+		public static bool operator ==(<#= this.ReadOnlyDictionaryClassName #><KeyT, ValueT> value1, <#= this.ReadOnlyDictionaryClassName #><KeyT, ValueT> value2)
+		{
+			if (Object.ReferenceEquals(value1, value2)) return true;
+			if (Object.ReferenceEquals(value1, null) || Object.ReferenceEquals(value2, null)) return false;
+
+			return value1.Equals(value2);
+		}
+		public static bool operator !=(<#= this.ReadOnlyDictionaryClassName #><KeyT, ValueT> value1, <#= this.ReadOnlyDictionaryClassName #><KeyT, ValueT> value2)
+		{
+			if (Object.ReferenceEquals(value1, value2)) return false;
+			if (Object.ReferenceEquals(value1, null) || Object.ReferenceEquals(value2, null)) return true;
+
+			return value1.Equals(value2) == false;
+		}
+
+		#region NotSupported
+
+		/// <inheritdoc />
+		void ICollection<KeyValuePair<KeyT, ValueT>>.Add(KeyValuePair<KeyT, ValueT> item)
+		{
+			throw new NotSupportedException();
+		}
+		/// <inheritdoc />
+		bool ICollection<KeyValuePair<KeyT, ValueT>>.Remove(KeyValuePair<KeyT, ValueT> item)
+		{
+			throw new NotSupportedException();
+		}
+		void ICollection<KeyValuePair<KeyT, ValueT>>.Clear()
+		{
+			throw new NotSupportedException();
+		}
+
+		/// <inheritdoc />
+		void IDictionary<KeyT, ValueT>.Add(KeyT key, ValueT value)
+		{
+			throw new NotSupportedException();
+		}
+		/// <inheritdoc />
+		bool IDictionary<KeyT, ValueT>.Remove(KeyT key)
+		{
+			throw new NotSupportedException();
+		}
+
+		#endregion
+
+		public static <#= this.ReadOnlyDictionaryClassName #><KeyT, ValueT> Create(Dictionary<KeyT, ValueT> dictionary)
+		{
+			if (dictionary == null)
+			{
+				return Empty;
+			}
+			else
+			{
+				return new  <#= this.ReadOnlyDictionaryClassName #><KeyT, ValueT>(dictionary);
+			}
+		}
+
+		public override string ToString()
+		{
+			return this.InnerDictionary.Count.ToString();
+		}
+	}
+}
+<#
+	}
+#>
+<#+
+	public void WriteFileHeader()
+	{
+#>
+//
+// The source code was generated by the Charon, GameDevWare, 2024
+// License: MIT
+//
+//------------------------------------------------------------------------------
+// <auto-generated>
+//	 This code was generated by a tool.
+//	 Changes to this file may cause incorrect behavior and will be lost if
+//	 the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+// ReSharper disable All
+
+<#+
+	}
+#>
+<#+
+	public void WriteFileUsings()
+	{
+#>
+	using System;
+	using System.Linq;
+	using System.IO;
+	using System.Text;
+	using System.Globalization;
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.Collections.ObjectModel;
+	using System.CodeDom.Compiler;
+	using System.Runtime.InteropServices;
+	using System.Runtime.Serialization;
+	using System.Linq.Expressions;
+
+<#+ if (this.DisableFormulas == false) { #>
+	using GameDevWare.Dynamic.Expressions;
+<#+ } #>
+
+<#+
+	}
+#>
+<#+
+	public const string FORMULA_SUFFIX = "Expression";
+	public const string FORMULA_SCOPE_SUFFIX = "Scope";
+	public const string KNOWN_TYPE_LOCALIZED_STRING = "__LocalizedString__";
+	public const string KNOWN_TYPE_REFERENCE = "__Reference__";
+	public const string KNOWN_TYPE_UNBOUND_EXPRESSION = "__UnboundExpression__";
+	public const string KNOWN_TYPE_READ_ONLY_LIST = "__ReadOnlyList__";
+	public const string KNOWN_TYPE_READ_ONLY_DICTIONARY = "__ReadOnlyDictionary__";
+	public const string KNOWN_SCHEMA_PROJECT_SETTINGS = "ProjectSettings";
+	public const string KNOWN_SCHEMA_PROPERTY_ID = "Id";
+
+	public static Dictionary<Type, string> AliasByType = GetTypeAliases();
+	public static Dictionary<string, Type> TypeByAlias = GetTypeAliases().ToDictionary(kv => kv.Value, kv => kv.Key);
+	public static DataType[] NotNullableDataTypes = new DataType[] { DataType.Date, DataType.Number, DataType.Integer, DataType.Logical, DataType.Time, DataType.MultiPickList, DataType.PickList };
+	public static string[] Keywords = new string[] { "abstract", "as", "base", "bool", "break",
+		"byte", "case", "catch", "char", "checked",
+		"class", "const", "continue", "decimal", "default",
+		"delegate", "do", "double", "else", "enum",
+		"event", "explicit", "extern", "false", "finally",
+		"fixed", "float", "for", "foreach", "goto",
+		"if", "implicit", "in", "int", "interface",
+		"internal", "is", "lock", "long", "namespace",
+		"new", "null", "object", "operator", "out",
+		"override", "params", "private", "protected", "public",
+		"readonly", "ref", "return", "sbyte", "sealed",
+		"short", "sizeof", "stackalloc", "static", "string",
+		"struct", "switch", "this", "throw", "true",
+		"try", "typeof", "uint", "ulong", "unchecked",
+		"unsafe", "ushort", "using", "virtual", "void",
+		"volatile", "while", "add", "alias", "ascending", "async", "await",
+		"by", "descending", "dynamic", "equals", "from",
+		"get", "global", "group", "into", "join",
+		"let", "on", "orderby", "partial", "remove",
+		"select", "set", "value", "var", "where" };
+
+	public Metadata MetaData;
+	public Dictionary<string, object> GameData;
+
+	public List<TypeDefinition> Types;
+	public Dictionary<string, TypeDefinition> TypeById;
+	public List<EnumDefinition> Enums;
+	public Dictionary<string, EnumDefinition> EnumById;
+	public List<FormulaDefinition> Formulas;
+	public Dictionary<string, FormulaDefinition> FormulaById;
+
+	public Dictionary<string, NativeTypeReference> NativeTypes;
+	public StatisticsVisitor Statistics;
+
+	public bool SuppressGameDataClass { get { return (this.Options & CodeGenerationOptions.SuppressGameDataClass) == CodeGenerationOptions.SuppressGameDataClass; } }
+	public bool SuppressDocumentClass { get { return (this.Options & CodeGenerationOptions.SuppressDocumentClass) == CodeGenerationOptions.SuppressDocumentClass; } }
+	public bool SuppressReferenceClass { get { return (this.Options & CodeGenerationOptions.SuppressReferenceClass) == CodeGenerationOptions.SuppressReferenceClass; } }
+	public bool SuppressLocalizedStringClass { get { return (this.Options & CodeGenerationOptions.SuppressLocalizedStringClass) == CodeGenerationOptions.SuppressLocalizedStringClass; } }
+	public bool SuppressCollectionClass { get { return (this.Options & CodeGenerationOptions.SuppressCollectionClass) == CodeGenerationOptions.SuppressCollectionClass; } }
+	public bool DisableStringPooling { get { return (this.Options & CodeGenerationOptions.DisableStringPooling) == CodeGenerationOptions.DisableStringPooling; } }
+	public bool DisableFormulas { get { return (this.Options & CodeGenerationOptions.DisableFormulas) == CodeGenerationOptions.DisableFormulas; } }
+	public bool DisableJsonSerialization { get { return (this.Options & CodeGenerationOptions.DisableJsonSerialization) == CodeGenerationOptions.DisableJsonSerialization; } }
+	public bool DisableMessagePackSerialization { get { return (this.Options & CodeGenerationOptions.DisableMessagePackSerialization) == CodeGenerationOptions.DisableMessagePackSerialization; } }
+	public bool DisableBsonSerialization { get { return (this.Options & CodeGenerationOptions.DisableBsonSerialization) == CodeGenerationOptions.DisableBsonSerialization; } }
+	public bool DisableXmlSerialization { get { return (this.Options & CodeGenerationOptions.DisableXmlSerialization) == CodeGenerationOptions.DisableXmlSerialization; } }
+	public bool DisablePatching { get { return (this.Options & CodeGenerationOptions.DisablePatching) == CodeGenerationOptions.DisablePatching; } }
+	public bool LazyReferences { get { return (this.Options & CodeGenerationOptions.LazyReferences) == CodeGenerationOptions.LazyReferences; } }
+	public bool HideReferences { get { return (this.Options & CodeGenerationOptions.HideReferences) == CodeGenerationOptions.HideReferences; } }
+	public bool HideLocalizedStrings { get { return (this.Options & CodeGenerationOptions.HideLocalizedStrings) == CodeGenerationOptions.HideLocalizedStrings; } }
+
+	public void Load(string gameDataPath)
+	{
+		if (gameDataPath == null)
+		{
+			throw new ArgumentException("gameDataPath");
+		}
+
+		var encoding = Encoding.UTF8;
+		var isGzipped = gameDataPath.EndsWith(".gz", StringComparison.OrdinalIgnoreCase);
+		var extension = isGzipped ? Path.GetExtension(gameDataPath.Substring(0, gameDataPath.Length - 3)) : Path.GetExtension(gameDataPath);
+
+		using (var gameDataFile = new FileStream(gameDataPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan))
+		using(var unGzipStream = isGzipped ? (Stream)new GZipStream(gameDataFile, CompressionMode.Decompress, leaveOpen: true) : gameDataFile)
+		{
+			switch (extension.Trim('.'))
+			{
+				case "gdjs":
+				case "json":
+					this.GameData = (Dictionary<string, object>)ReadGameDataJson(unGzipStream, encoding, false);
+					break;
+				case "gdbs":
+				case "bson":
+					this.GameData = (Dictionary<string, object>)ReadGameDataBson(unGzipStream, encoding, false);
+					break;
+				case "gdmp":
+				case "msgpack":
+				case "msgpck":
+					this.GameData = (Dictionary<string, object>)ReadGameDataMessagePack(unGzipStream, encoding, false);
+					break;
+				case "gdml":
+				case "xml":
+					this.GameData = (Dictionary<string, object>)ReadGameDataXml(unGzipStream, encoding, false);
+					break;
+				default:
+					throw new InvalidOperationException(string.Format("Unknown file extension '{0}'. Unable to determine file format by extension.",
+						extension));
+			}
+		}
+		this.MetaData = new Metadata(this.GameData);
+
+		this.Statistics = new StatisticsVisitor();
+		this.Statistics.Visit(this.GameData, this.MetaData);
+
+		this.NativeTypes = InitializeNativeTypes();
+		this.TypeById = FindSchemas(this.MetaData, this.LazyResolveType);
+		this.Types = this.TypeById.Values.Distinct().ToList();
+		this.EnumById = FindPickLists(this.MetaData, this.TypeById.Keys, this.LazyResolveType);
+		this.Enums = this.EnumById.Values.Distinct().ToList();
+		this.FormulaById = FindFormulas(this.MetaData, this.TypeById.Keys,this.LazyResolveType);
+		this.Formulas = this.FormulaById.Values.Distinct().ToList();
+
+		this.ResolveNameCollisions();
+
+		if (this.DisableFormulas)
+		{
+			this.FindAndDisableFormulas();
+		}
+	}
+
+	private void FindAndDisableFormulas()
+	{
+		this.Formulas.Clear();
+		this.FormulaById.Clear();
+
+		foreach (var typeDef in this.Types)
+		{
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType != DataType.Formula)
+				{
+					continue;
+				}
+
+				propertyDef.Type = new GenericTypeReference(this.LazyResolveType(KNOWN_TYPE_READ_ONLY_DICTIONARY), this.ResolveType("string"), this.ResolveType("object"));
+				propertyDef.BackingField.Type = propertyDef.Type;
+			}
+		}
+	}
+
+	private void ResolveNameCollisions()
+	{
+		if (string.IsNullOrEmpty(this.DocumentClassName)) { this.DocumentClassName = "Document"; }
+		if (string.IsNullOrEmpty(this.GameDataClassName)) { this.GameDataClassName = "GameData"; }
+		if (string.IsNullOrEmpty(this.LocalizedStringClassName)) { this.LocalizedStringClassName = "LocalizedString"; }
+		if (string.IsNullOrEmpty(this.ReferenceClassName)) { this.ReferenceClassName = this.DocumentClassName + "Reference"; }
+		if (string.IsNullOrEmpty(this.UnboundExpressionClassName)) { this.UnboundExpressionClassName = "UnboundExpression"; }
+		if (string.IsNullOrEmpty(this.ReadOnlyListClassName)) { this.ReadOnlyListClassName = "ReadOnlyList"; }
+		if (string.IsNullOrEmpty(this.ReadOnlyDictionaryClassName)) { this.ReadOnlyDictionaryClassName = "ReadOnlyDictionary"; }
+
+		var takenNames = new HashSet<string>(new string[] {this.DocumentClassName, this.GameDataClassName, this.LocalizedStringClassName, this.ReferenceClassName, this.UnboundExpressionClassName,
+			this.ReadOnlyListClassName, this.ReadOnlyDictionaryClassName}, StringComparer.Ordinal);
+
+		// check name collisions in types
+		foreach (var typeDef in this.Types)
+		{
+			var typeName = typeDef.TypeName;
+			var counter = 0;
+			while (takenNames.Contains(typeName))
+			{
+				counter++;
+				typeName = typeDef.TypeName + counter;
+			}
+
+			typeDef.TypeName = typeName;
+			takenNames.Add(typeName);
+		}
+
+		// check name collisions in enums
+		foreach (var enumDef in this.Enums)
+		{
+			var typeName = enumDef.TypeName;
+			var counter = 0;
+			while (takenNames.Contains(typeName))
+			{
+				counter++;
+				typeName = enumDef.TypeName + counter;
+			}
+			enumDef.TypeName = typeName;
+			takenNames.Add(typeName);
+		}
+
+		// check name collisions in formulas
+		foreach (var formulaDef in this.Formulas)
+		{
+			var typeName = formulaDef.TypeName;
+			var counter = 0;
+			while (takenNames.Contains(typeName))
+			{
+				counter++;
+				typeName = formulaDef.TypeName + counter;
+			}
+			formulaDef.TypeName = MakeDromedaryCaseName(typeName);
+			takenNames.Add(typeName);
+		}
+	}
+
+	private static  Dictionary<string, NativeTypeReference> InitializeNativeTypes()
+	{
+		var types = new Type[] {
+			typeof(string), typeof(char), typeof(bool), typeof(void), typeof(object), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort),
+			typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal), typeof(TimeSpan), typeof(DateTime)
+		};
+		var nativeTypes = new Dictionary<string, NativeTypeReference>();
+		foreach (var type in types)
+		{
+			var alias = default(string);
+			AliasByType.TryGetValue(type, out alias);
+
+			var nativeType = new NativeTypeReference(alias ?? type.FullName);
+			nativeTypes.Add(type.Name, nativeType);
+			if (string.IsNullOrEmpty(type.FullName) == false)
+			{
+				nativeTypes.Add(type.FullName, nativeType);
+			}
+			if (string.IsNullOrEmpty(alias) == false)
+			{
+				nativeTypes.Add(alias, nativeType);
+			}
+
+		}
+		return nativeTypes;
+	}
+
+	private static Dictionary<Type, string> GetTypeAliases()
+	{
+		return new Dictionary<Type, string> {
+			{ typeof(string), "string" },
+			{ typeof(char),	  "char" },
+			{ typeof(bool),	  "bool" },
+			{ typeof(void),	  "void" },
+			{ typeof(object), "object" },
+			{ typeof(byte),	  "byte" },
+			{ typeof(sbyte),  "sbyte" },
+			{ typeof(short),  "short" },
+			{ typeof(ushort), "ushort" },
+			{ typeof(int),	  "int" },
+			{ typeof(uint),	  "uint" },
+			{ typeof(long),	  "long" },
+			{ typeof(ulong),  "ulong" },
+			{ typeof(float),  "float" },
+			{ typeof(double), "double" },
+			{ typeof(decimal), "decimal" },
+		};
+	}
+
+	private static Dictionary<string, FormulaDefinition> FindFormulas(Metadata metadata, ICollection<string> schemaIds, TypeResolveFn typeResolve)
+	{
+		var formulas = new Dictionary<string, FormulaDefinition>();
+		foreach (var schema in metadata.GetSchemas())
+		{
+			foreach (var schemaProperty in schema.Properties)
+			{
+				if (schemaIds.Contains(schema.Id) == false)
+				{
+					continue;
+				}
+
+				if (schemaProperty.DataType != DataType.Formula)
+				{
+					continue;
+				}
+
+				if (schemaProperty.GetSpecification().GetFormulaResultType() == null)
+				{
+					continue;
+				}
+
+				var definition = new FormulaDefinition(schemaProperty, typeResolve);
+				formulas.Add(schemaProperty.Id, definition);
+			}
+		}
+		return formulas;
+	}
+	private static  Dictionary<string, EnumDefinition> FindPickLists(Metadata metadata, ICollection<string> schemaIds, TypeResolveFn typeResolve)
+	{
+		var enums = new Dictionary<string, EnumDefinition>();
+		foreach (var schema in metadata.GetSchemas())
+		{
+			if (schemaIds.Contains(schema.Id) == false)
+			{
+				continue;
+			}
+
+			foreach (var schemaProperty in schema.Properties)
+			{
+				if (schemaProperty.DataType != DataType.PickList && schemaProperty.DataType != DataType.MultiPickList)
+				{
+					continue;
+				}
+
+				var definition = new EnumDefinition(schemaProperty, typeResolve);
+				var otherDefinition = default(EnumDefinition);
+				if (enums.TryGetValue(definition.Name, out otherDefinition))
+				{
+					otherDefinition.MergeWith(definition, typeResolve);
+					enums.Add(schemaProperty.Id, otherDefinition);
+				}
+				else
+				{
+					enums.Add(MakeDromedaryCaseName(definition.Name), definition);
+					enums.Add(schemaProperty.Id, definition);
+				}
+			}
+		}
+		return enums;
+	}
+
+	private static Dictionary<string, TypeDefinition> FindSchemas(Metadata metadata, TypeResolveFn typeResolve)
+	{
+		// determine all non-skipped schemas
+		var referencedSchemaIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+		var referencedSchemasCount = 0;
+		do
+		{
+			referencedSchemasCount = referencedSchemaIds.Count;
+
+			foreach (var schema in metadata.GetSchemas())
+			{
+				var isSkipped = schema.GetSpecification().GetValues("classgen").Contains("skip") && schema.Name != KNOWN_SCHEMA_PROJECT_SETTINGS;
+				if (isSkipped && referencedSchemaIds.Contains(schema.Id) == false)
+				{
+					continue;
+				}
+
+				referencedSchemaIds.Add(schema.Id);
+
+				foreach (var schemaProperty in schema.Properties)
+				{
+					if (schemaProperty.ReferenceType == null)
+					{
+						continue;
+					}
+
+					referencedSchemaIds.Add(schemaProperty.ReferenceType.Id);
+				}
+			}
+		} while (referencedSchemasCount != referencedSchemaIds.Count);
+
+		var types = new Dictionary<string, TypeDefinition>();
+		foreach (var schema in metadata.GetSchemas())
+		{
+			if (referencedSchemaIds.Contains(schema.Id) == false)
+			{
+				continue;
+			}
+
+			var definition = new TypeDefinition(schema, typeResolve);
+			types.Add(MakeDromedaryCaseName(schema.Name), definition);
+			types.Add(schema.Id, definition);
+		}
+		return types;
+	}
+
+	public static string MakePascalCaseIdentifier(string value)
+	{
+		if (string.IsNullOrEmpty(value)) throw new ArgumentException("Type name can't be null or empty string.", "value");
+
+		var sb = new StringBuilder(value);
+		var nextToLower = true;
+		var nextToUpper = false;
+		for (var i = 0; i < sb.Length; i++)
+		{
+			if (sb[i] == '_')
+			{
+				sb.Remove(i, 1);
+				i--;
+				nextToUpper = !nextToLower;
+				continue;
+			}
+
+			if (char.IsLetterOrDigit(sb[i]) == false)
+			{
+				sb[i] = '_';
+			}
+			else if(char.IsLetter(sb[i]) && nextToLower)
+			{
+				sb[i] = char.ToLowerInvariant(sb[i]);
+				nextToLower = false;
+			}
+			else if (char.IsLetter(sb[i]) && nextToUpper)
+			{
+				sb[i] = char.ToUpperInvariant(sb[i]);
+				nextToUpper = false;
+			}
+		}
+
+		if (sb.Length == 0 || char.IsDigit(sb[0]))
+		{
+			sb.Insert(0, '_');
+		}
+		var name = sb.ToString();
+		if (Array.IndexOf(Keywords, name) >= 0)
+		{
+			return "@" + name;
+		}
+		else
+		{
+			return name;
+		}
+	}
+
+	public static string MakeDromedaryCaseName(string value)
+	{
+		if (string.IsNullOrEmpty(value)) throw new ArgumentException("Type name can't be null or empty string.", "value");
+
+		var sb = new StringBuilder(value);
+		var index = 0;
+		var nextToUpper = true;
+		while (index < sb.Length && char.IsLetter(sb[index]) == false) { index++; }
+		for (; index < sb.Length; index++)
+		{
+			if (sb[index] == '_')
+			{
+				sb.Remove(index, 1);
+				index--;
+				nextToUpper = true;
+				continue;
+			}
+
+			if (char.IsLetterOrDigit(sb[index]) == false)
+			{
+				sb[index] = '_';
+			}
+			else if (char.IsLetter(sb[index]) && nextToUpper)
+			{
+				sb[index] = char.ToUpperInvariant(sb[index]);
+				nextToUpper = false;
+			}
+		}
+		if (sb.Length == 0 || char.IsDigit(sb[0]))
+		{
+			sb.Insert(0, '_');
+		}
+		var name = sb.ToString();
+		if (Array.IndexOf(Keywords, name) >= 0)
+		{
+			return "_" + name;
+		}
+		else
+		{
+			return name;
+		}
+	}
+
+	public static string PrepareDescription(string summary)
+	{
+		if (string.IsNullOrWhiteSpace(summary))
+		{
+			return null;
+		}
+
+		return SecurityElement.Escape(summary)?.Trim('.').Replace("\r", "").Replace("\n", "<para />") ?? "";
+	}
+
+	private ITypeReference ResolveType(string typeName)
+	{
+		if (string.IsNullOrEmpty(typeName)) throw new ArgumentException("Type name can't be null or empty string.", "typeName");
+
+		switch (typeName)
+		{
+			case KNOWN_TYPE_LOCALIZED_STRING: typeName = this.LocalizedStringClassName; break;
+			case KNOWN_TYPE_REFERENCE: typeName = this.ReferenceClassName; break;
+			case KNOWN_TYPE_UNBOUND_EXPRESSION: typeName = this.UnboundExpressionClassName; break;
+			case KNOWN_TYPE_READ_ONLY_LIST: typeName = this.ReadOnlyListClassName; break;
+			case KNOWN_TYPE_READ_ONLY_DICTIONARY: typeName = this.ReadOnlyDictionaryClassName; break;
+		}
+
+		var typeDefinition = default(TypeDefinition);
+		var enumDefinition = default(EnumDefinition);
+		var formulaDefinition = default(FormulaDefinition);
+		var nativeType = default(NativeTypeReference);
+		if (this.TypeById.TryGetValue(typeName, out typeDefinition))
+		{
+			return typeDefinition;
+		} else if (this.EnumById.TryGetValue(typeName, out enumDefinition))
+		{
+			return enumDefinition;
+		} else if (this.FormulaById.TryGetValue(typeName, out formulaDefinition))
+		{
+			return formulaDefinition;
+		} else if (this.NativeTypes.TryGetValue(typeName, out nativeType))
+		{
+			return nativeType;
+		}
+		else
+		{
+			nativeType = new NativeTypeReference(typeName);
+			this.NativeTypes.Add(nativeType.TypeName, nativeType);
+			return nativeType;
+		}
+	}
+
+	private ITypeReference LazyResolveType(string typeName)
+	{
+		var nativeType = default(NativeTypeReference);
+		if (this.NativeTypes.TryGetValue(typeName, out nativeType))
+		{
+			return nativeType;
+		}
+		else
+		{
+			return new LazyTypeReference(typeName, this.ResolveType);
+		}
+	}
+
+	public interface ITypeReference
+	{
+		string TypeName { get; }
+	}
+
+	public class TypeDefinition : ITypeReference
+	{
+		public string TypeName { get; set; }
+		public string DisplayName { get { return this.Schema.DisplayName; } }
+		public string Description { get; private set; }
+		public string GameDataAllListName { get; set; }
+		public string GameDataRootListName { get; set; }
+		public ITypeReference ReadOnlyListType { get; set; }
+		public List<TypePropertyDefinition> Properties { get; private set; }
+		public TypePropertyDefinition IdMember { get; set; }
+		public List<TypePropertyDefinition> UniqueMembers { get; private set; }
+		public SpecificationDictionary Specification { get; private set; }
+		public Schema Schema { get; private set; }
+		public bool IsSettings { get { return this.Schema.Type == SchemaType.Settings; } }
+
+		public TypeDefinition(Schema schema, TypeResolveFn resolveType)
+		{
+			this.TypeName = MakeDromedaryCaseName(schema.Name);
+			this.Schema = schema;
+			this.Description = PrepareDescription(schema.Description);
+			this.Specification = schema.GetSpecification();
+			this.GameDataAllListName = MakePascalCaseIdentifier("all" + this.Schema.Name);
+			this.GameDataRootListName = MakePascalCaseIdentifier("root" + this.Schema.Name);
+			this.ReadOnlyListType = new GenericTypeReference(resolveType(KNOWN_TYPE_READ_ONLY_LIST), this);
+
+			this.Properties = new List<TypePropertyDefinition>();
+			this.UniqueMembers = new List<TypePropertyDefinition>();
+			foreach (var schemaProperty in this.Schema.Properties)
+			{
+				var memberDefinition = new TypePropertyDefinition(schemaProperty, resolveType);
+				if (schemaProperty.Name == KNOWN_SCHEMA_PROPERTY_ID)
+				{
+					this.IdMember = memberDefinition;
+				}
+				if (schemaProperty.Uniqueness != Uniqueness.None)
+				{
+					this.UniqueMembers.Add(memberDefinition);
+				}
+				this.Properties.Add(memberDefinition);
+			}
+		}
+
+		public override string ToString()
+		{
+			return this.TypeName;
+		}
+	}
+
+	public class TypePropertyDefinition : TypeMemberDefinition
+	{
+		public string DisplayName { get { return this.SchemaProperty.DisplayName; } }
+		public string Description { get; private set; }
+		public int Ordinal { get; set; }
+		public DataType DataType { get { return this.SchemaProperty.DataType; } }
+		public Requirement Requirement { get { return this.SchemaProperty.Requirement; } }
+
+		public ITypeReference ReferencedType { get; set; }
+		public ITypeReference DeReferencedType { get; set; }
+		public TypeMemberDefinition BackingField { get; set; }
+		public TypeMemberDefinition ConstructorParameter { get; set; }
+
+		public SpecificationDictionary Specification { get; private set; }
+		public SchemaProperty SchemaProperty { get; private set; }
+
+		public TypePropertyDefinition(SchemaProperty schemaProperty, TypeResolveFn resolveType)
+			: base(schemaProperty.Name, GetType(schemaProperty, resolveType))
+		{
+			this.Ordinal = schemaProperty.DeclaredSchema.Properties.IndexOf(schemaProperty) + 1;
+			this.SchemaProperty = schemaProperty;
+			this.Description = PrepareDescription(schemaProperty.Description);
+			this.Specification = this.SchemaProperty.GetSpecification();
+			this.BackingField = new TypeMemberDefinition("_" + this.Name, this.Type);
+			this.ConstructorParameter = new TypeMemberDefinition(this.Name, this.Type);
+
+			this.Name = MakeDromedaryCaseName(this.SchemaProperty.Name);
+
+			if (this.DataType == DataType.Formula)
+			{
+				this.ConstructorParameter.Type = new GenericTypeReference("Dictionary", resolveType("string"), resolveType("object"));
+			}
+
+			this.ReferencedType = schemaProperty.ReferenceType != null ? resolveType(schemaProperty.ReferenceType.Id) : null;
+
+			if (this.DataType == DataType.ReferenceCollection)
+			{
+				this.DeReferencedType = new GenericTypeReference(resolveType(KNOWN_TYPE_READ_ONLY_LIST), this.ReferencedType);
+			}
+			else
+			{
+				this.DeReferencedType = this.ReferencedType;
+			}
+		}
+
+		private static ITypeReference GetType(SchemaProperty schemaProperty, TypeResolveFn resolveType)
+		{
+			var type = default(ITypeReference);
+			switch (schemaProperty.DataType)
+			{
+				case DataType.Logical:
+				case DataType.Text:
+				case DataType.Time:
+				case DataType.Date:
+				case DataType.Number:
+				case DataType.Integer:
+					type = resolveType(schemaProperty.GetPropertyValueType().Name);
+					break;
+				case DataType.MultiPickList:
+				case DataType.PickList:
+					type = resolveType(schemaProperty.Id);  // will resolve EnumDefinition by this id
+					break;
+				case DataType.LocalizedText:
+					type = resolveType(KNOWN_TYPE_LOCALIZED_STRING);
+					break;
+				case DataType.Document:
+					type = resolveType(schemaProperty.ReferenceType.Id); // will resolve TypeDefinition by this id
+					break;
+				case DataType.DocumentCollection:
+					type = new GenericTypeReference(resolveType(KNOWN_TYPE_READ_ONLY_LIST), resolveType(schemaProperty.ReferenceType.Id));
+					break;
+				case DataType.Reference:
+					type = new GenericTypeReference(resolveType(KNOWN_TYPE_REFERENCE), resolveType(schemaProperty.ReferenceType.Id));
+					break;
+				case DataType.ReferenceCollection:
+					type = new GenericTypeReference(resolveType(KNOWN_TYPE_READ_ONLY_LIST), new GenericTypeReference(resolveType(KNOWN_TYPE_REFERENCE), resolveType(schemaProperty.ReferenceType.Id)));
+					break;
+				case DataType.Formula:
+					if (schemaProperty.GetSpecification().GetFormulaResultType() == null)
+					{
+						type = resolveType(KNOWN_TYPE_UNBOUND_EXPRESSION);
+					}
+					else
+					{
+						type = resolveType(schemaProperty.Id); // will resolve FormulaDefinition by this id
+					}
+					break;
+				default:
+					throw new InvalidOperationException(string.Format("Unknown property data type {0}.", schemaProperty.DataType));
+			}
+
+			if (schemaProperty.Requirement == Requirement.None && Array.IndexOf(NotNullableDataTypes, schemaProperty.DataType) >= 0)
+			{
+				type = new GenericTypeReference("Nullable", type);
+			}
+
+			return type;
+		}
+	}
+
+	public class TypeMemberDefinition
+	{
+		public string Name { get; set; }
+		public ITypeReference Type { get; set; }
+
+		public TypeMemberDefinition(string name, ITypeReference typeReference)
+		{
+			this.Name = MakePascalCaseIdentifier(name);
+			this.Type = typeReference;
+		}
+	}
+
+	public class EnumDefinition : ITypeReference
+	{
+		public string Name { get; set; }
+		public string TypeName { get; set; }
+		public ITypeReference BaseType { get; set; }
+		public bool IsFlags { get; set; }
+		public List<KeyValuePair<string, IComparable>> Values { get; private set; }
+		public HashSet<SchemaProperty> SchemaPropertys { get; private set; }
+
+		public EnumDefinition(SchemaProperty schemaProperty, TypeResolveFn resolveType)
+		{
+			this.SchemaPropertys = new HashSet<SchemaProperty>();
+			this.SchemaPropertys.Add(schemaProperty);
+
+			var specification = schemaProperty.GetSpecification();
+
+			this.Name = string.IsNullOrEmpty(specification.CustomTypeName) ? schemaProperty.DeclaredSchema.Name + schemaProperty.Name : specification.CustomTypeName;
+			this.TypeName = MakeDromedaryCaseName(this.Name);
+			this.IsFlags = schemaProperty.DataType == DataType.MultiPickList;
+
+			this.Values = new List<KeyValuePair<string, IComparable>>();
+			var hasDefault = false;
+			foreach (var kv in specification.GetPickListValues())
+			{
+				hasDefault = hasDefault | kv.Value == "0";
+
+			}
+			var valueType = typeof(long);
+			foreach (var kv in specification.GetPickListValues())
+			{
+				var key = MakeDromedaryCaseName(kv.Key);
+				try
+				{
+					var value = (IComparable)Convert.ChangeType(kv.Value, valueType, CultureInfo.InvariantCulture);
+
+					if (this.ContainsKey(key) == false)
+					{
+						this.Values.Add(new KeyValuePair<string, IComparable>(key, value));
+					}
+				}
+				catch (FormatException fe)
+				{
+					throw new InvalidOperationException(string.Format("Failed to parse '{1}.{2}' pick list value '{0}' as integer.", kv.Value, schemaProperty.DeclaredSchema.Name, schemaProperty.Name), fe);
+				}
+			}
+
+			if (!hasDefault)
+			{
+				this.Values.Insert(0, new KeyValuePair<string, IComparable>("None",  0L));
+			}
+
+			this.Values.Sort(OrderByValue);
+
+			var maxSize = this.SchemaPropertys.Max(ea => ea.Size);
+			this.BaseType = resolveType(GetBaseType(maxSize, true));
+
+		}
+
+		public bool ContainsKey(string key)
+		{
+			foreach (var kv in this.Values)
+			{
+				if (string.Equals(kv.Key, key, StringComparison.Ordinal))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public void MergeWith(EnumDefinition otherDefinition, TypeResolveFn resolveType)
+		{
+			foreach (var schemaProperty in otherDefinition.SchemaPropertys)
+			{
+				this.SchemaPropertys.Add(schemaProperty);
+			}
+
+			foreach (var kv in otherDefinition.Values)
+			{
+				if (this.ContainsKey(kv.Key) == false)
+				{
+					this.Values.Add(kv);
+				}
+			}
+
+			this.IsFlags = this.IsFlags || otherDefinition.IsFlags;
+
+			if (Equals(this.BaseType, otherDefinition.BaseType) == false)
+			{
+				// determine new size and change base type accordingly
+				var maxSize = this.SchemaPropertys.Max(ea => ea.Size);
+				this.BaseType = resolveType(GetBaseType(maxSize, true));
+
+				// convert values to new type
+				var valueType = typeof(long);
+				for (var index = 0; index < this.Values.Count; index++)
+				{
+					var key = this.Values[index].Key;
+					var value = (IComparable)Convert.ChangeType(this.Values[index].Value, valueType, CultureInfo.InvariantCulture);
+					this.Values[index] = new KeyValuePair<string, IComparable>(key, value);
+				}
+			}
+
+			this.Values.Sort(OrderByValue);
+		}
+
+		private static  int OrderByValue(KeyValuePair<string, IComparable> x, KeyValuePair<string, IComparable> y)
+		{
+			return x.Value.CompareTo(y.Value);
+		}
+
+		private static string GetBaseType(int size, bool signed)
+		{
+			var newType = string.Empty;
+			switch (size)
+			{
+				case 1: newType = signed ? typeof(sbyte).Name : typeof(byte).Name; break;
+				case 2: newType = signed ? typeof(short).Name : typeof(ushort).Name; break;
+				case 3:
+				case 4: newType = signed ? typeof(int).Name : typeof(uint).Name; break;
+				default: newType = signed ? typeof(long).Name : typeof(ulong).Name; break;
+			}
+			return newType;
+		}
+
+		public override string ToString()
+		{
+			return this.TypeName;
+		}
+	}
+
+	public class FormulaDefinition : ITypeReference
+	{
+		public string Name { get; set; }
+		public string TypeName { get; set; }
+		public ITypeReference ContextThisType { get; set; }
+		public ITypeReference ContextType { get; set; }
+		public string[] ParameterNames { get; set; }
+		public ITypeReference[] ParameterTypes { get; set; }
+		public ITypeReference ReturnType { get; set; }
+		public SpecificationDictionary Specification { get; private set; }
+		public SchemaProperty SchemaProperty { get; private set; }
+
+		public FormulaDefinition(SchemaProperty schemaProperty, TypeResolveFn resolveType)
+		{
+			this.SchemaProperty = schemaProperty;
+			this.Specification = this.SchemaProperty.GetSpecification();
+
+			var declaredSchemaTypeRef = resolveType(MakeDromedaryCaseName(this.SchemaProperty.DeclaredSchema.Name));
+
+			this.Name = this.Specification.CustomTypeName;
+			var defaultName = new DerivedTypeReference(string.Empty, declaredSchemaTypeRef, this.SchemaProperty.Name + FORMULA_SUFFIX);
+			this.TypeName = MakeDromedaryCaseName(string.IsNullOrEmpty(this.Name) ? defaultName.TypeName : this.Name);
+
+			this.ContextThisType = declaredSchemaTypeRef;
+			this.ContextType = new DerivedTypeReference(string.Empty, this.ContextThisType, this.SchemaProperty.Name + FORMULA_SCOPE_SUFFIX);
+			this.ReturnType = resolveType(this.Specification.GetFormulaResultType() ?? "void");
+
+			var parameters = this.Specification.GetFormulaParameters();
+			this.ParameterNames = new string[parameters.Count];
+			this.ParameterTypes = new ITypeReference[parameters.Count];;
+
+			for(var index = 0; index < parameters.Count; index++)
+			{
+				this.ParameterNames[index] = MakePascalCaseIdentifier(parameters[index].Key);
+				this.ParameterTypes[index] = resolveType(parameters[index].Value);
+			}
+		}
+
+		public override string ToString()
+		{
+			return this.TypeName;
+		}
+	}
+
+	public sealed class GenericTypeReference : ITypeReference
+	{
+		public string TypeName
+		{
+			get
+			{
+				if (this.GenericArguments.Length > 0)
+				{
+					return this.Type.TypeName + "<" + string.Join(",", Array.ConvertAll(this.GenericArguments, a => a.TypeName)) + ">";
+				}
+				else
+				{
+					return this.Type.TypeName;
+				}
+			}
+		}
+		public ITypeReference Type { get; private  set; }
+		public ITypeReference[] GenericArguments { get; private  set; }
+
+		public GenericTypeReference(string typeName, params ITypeReference[] genericArguments)
+			:this(new NativeTypeReference(typeName), genericArguments)
+		{
+
+		}
+		public GenericTypeReference(ITypeReference type, params ITypeReference[] genericArguments)
+		{
+			this.Type = type;
+			this.GenericArguments = genericArguments ?? new ITypeReference[0];
+		}
+
+		public override string ToString()
+		{
+			return this.TypeName;
+		}
+	}
+
+	public class NativeTypeReference : ITypeReference
+	{
+		public string TypeName { get; private set; }
+
+		public NativeTypeReference(string typeName)
+		{
+			this.TypeName = typeName;
+		}
+
+		public override string ToString()
+		{
+			return this.TypeName;
+		}
+	}
+
+	public class LazyTypeReference : ITypeReference
+	{
+		private readonly  string typeName;
+		private readonly TypeResolveFn resolveType;
+
+		public string TypeName { get { return this.resolveType(this.typeName).TypeName; } }
+
+		public LazyTypeReference(string typeName, TypeResolveFn resolveType)
+		{
+			this.typeName = typeName;
+			this.resolveType = resolveType;
+		}
+
+		public override bool Equals(object otherType)
+		{
+			if (otherType == null || otherType is LazyTypeReference == false)
+			{
+				return false;
+			}
+			return this.typeName.Equals(((LazyTypeReference)otherType).typeName, StringComparison.Ordinal);
+		}
+		public override int GetHashCode()
+		{
+			return this.typeName.GetHashCode();
+		}
+
+		public override string ToString()
+		{
+			return this.TypeName;
+		}
+	}
+
+	public class DerivedTypeReference : ITypeReference
+	{
+		private readonly string prefix;
+		private readonly string suffix;
+		private readonly ITypeReference baseType;
+
+		public string TypeName { get { return this.prefix + this.baseType.TypeName + this.suffix;  } }
+
+		public DerivedTypeReference(string prefix, ITypeReference baseType, string suffix)
+		{
+			this.prefix = prefix ?? String.Empty;
+			this.suffix = suffix ?? String.Empty;
+			this.baseType = baseType;
+		}
+
+		public override string ToString()
+		{
+			return this.TypeName;
+		}
+	}
+
+	public delegate ITypeReference TypeResolveFn(string typeName);
+
+#>

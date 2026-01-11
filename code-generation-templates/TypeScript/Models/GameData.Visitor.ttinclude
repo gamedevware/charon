@@ -1,0 +1,125 @@
+<#+
+	private void WriteGameDataVisitor(CodeGenerationContext context)
+	{
+#>
+export abstract class GameDataVisitor
+{
+	public visit(document: <#= context.TargetLanguage.DocumentClassName #>): void
+	{
+		check(document, 'document').is.not.nullOrUndefined();
+
+		if (!document) {
+			return;
+		}
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		else if (document instanceof <#= typeDef.TypeName #>) {
+			this.visit<#= typeDef #>(document);
+		}
+<#+
+		}
+#>
+		else {
+			throw new Error(`Unknown document type '${document?.constructor?.name}'.`);
+		}
+	}
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	public visit<#= typeDef #>(document: <#= typeDef #>): void
+	{
+		check(document, 'document').is.not.nullOrUndefined();
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.Document)
+				{
+#>
+		if (document.<#= propertyDef.Name #>)
+		{
+			this.visit<#= propertyDef.DocumentOrReferenceType #>(document.<#= propertyDef.Name #>);
+		}
+<#+
+				}
+				else if (propertyDef.DataType == DataType.DocumentCollection)
+				{
+#>
+		if (document.<#= propertyDef.Name #>)
+		{
+			for (const subDocument of document.<#= propertyDef.Name #>.asList)
+			{
+				this.visit<#= propertyDef.DocumentOrReferenceType #>(subDocument);
+			}
+		}
+<#+
+				}
+			}
+#>
+	}
+<#+
+		}
+#>
+}
+
+class DocumentCollectorGameDataVisitor extends GameDataVisitor
+{
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>	public readonly all<#= typeDef.Schema.Name #>: <#= typeDef.TypeName #>[] = [];
+<#+
+		}
+#>
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	public visit<#= typeDef #>(document: <#= typeDef.TypeName #>): void
+	{
+		this.all<#= typeDef.Schema.Name #>.push(document);
+
+		super.visit<#= typeDef #>(document);
+	}
+<#+
+		}
+#>
+}
+
+class DereferencingVisitor extends GameDataVisitor
+{
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	public visit<#= typeDef #>(document: <#= typeDef.TypeName #>): void
+	{
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.Reference)
+				{
+#>
+		document.<#= propertyDef.RawName #>?.dereference();
+<#+
+				}
+				else if (propertyDef.DataType == DataType.ReferenceCollection)
+				{
+#>
+		document.<#= propertyDef.RawName #>?.dereference();
+<#+
+				}
+			}
+#>
+		super.visit<#= typeDef #>(document);
+	}
+<#+
+		}
+#>
+}
+<#+
+	}
+#>

@@ -1,0 +1,411 @@
+﻿<#+
+	private void WriteReadGameDataMergeCode(CodeGenerationContext context)
+	{
+		if (context.DisablePatching)
+		{
+			return;
+		}
+#>
+	private function mergeGameData(gameDataDocument:Map<String, ReaderValue>, patchDocument:Map<String, ReaderValue>):Map<String, ReaderValue> {
+		if (gameDataDocument == null)
+			throw 'gameDataDocument cannot be null';
+		if (patchDocument == null)
+			throw 'patchDocument cannot be null';
+
+		var mergedCollections = new Map<String, ReaderValue>();
+		var gameDataCollections = gameDataDocument.exists('Collections') ? gameDataDocument.get('Collections') : ReaderValue.Null;
+		var patchCollections = patchDocument.exists('Collections') ? patchDocument.get('Collections') : ReaderValue.Null;
+
+		var gameDataCollectionsMap:Map<String, ReaderValue>;
+		switch (gameDataCollections) {
+			case ReaderValue.Document(value):
+				gameDataCollectionsMap = value;
+			default:
+				gameDataCollectionsMap = new Map<String, ReaderValue>();
+		}
+
+		var patchCollectionsMap:Map<String, ReaderValue>;
+		switch (patchCollections) {
+			case ReaderValue.Document(value):
+				patchCollectionsMap = value;
+			default:
+				patchCollectionsMap = new Map<String, ReaderValue>();
+		}
+
+		var schemaNames = this.unionKeys(gameDataCollectionsMap.keys(), patchCollectionsMap.keys());
+
+		var gameDataDocumentCollection:ReaderValue;
+		var patchDocumentCollection:ReaderValue;
+
+		for (schemaIdOrName in schemaNames) {
+			switch (schemaIdOrName) {
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+				case '<#= typeDef.Schema.Id #>', '<#= typeDef.Schema.Name #>':
+					gameDataDocumentCollection = gameDataCollectionsMap.exists('<#= typeDef.Schema.Id #>') ? gameDataCollectionsMap.get('<#= typeDef.Schema.Id #>') : gameDataCollectionsMap.exists('<#= typeDef.Schema.Name #>') ? gameDataCollectionsMap.get('<#= typeDef.Schema.Name #>') : ReaderValue.Null;
+					patchDocumentCollection = patchCollectionsMap.exists('<#= typeDef.Schema.Id #>') ? patchCollectionsMap.get('<#= typeDef.Schema.Id #>') : patchCollectionsMap.exists('<#= typeDef.Schema.Name #>') ? patchCollectionsMap.get('<#= typeDef.Schema.Name #>') : ReaderValue.Null;
+
+					schemaNames.remove('<#= typeDef.Schema.Id #>');
+					schemaNames.remove('<#= typeDef.Schema.Name #>');
+
+					if (patchDocumentCollection == null || patchDocumentCollection == ReaderValue.Null) {
+						mergedCollections.set('<#= typeDef.Schema.Name #>', gameDataDocumentCollection);
+					} else if (gameDataDocumentCollection == null || gameDataDocumentCollection == ReaderValue.Null) {
+						mergedCollections.set('<#= typeDef.Schema.Name #>', patchDocumentCollection);
+					} else {
+						mergedCollections.set('<#= typeDef.Schema.Name #>', this.mergeDocumentCollection(gameDataDocumentCollection, patchDocumentCollection, '<#= typeDef #>', /* purge rest */ false));
+					}
+<#+
+		}
+#>
+			}
+		}
+
+		var changeNumber:ReaderValue = ReaderValue.Int(0);
+		if (patchDocument.exists('ChangeNumber')) {
+			changeNumber = patchDocument.get('ChangeNumber');
+		} else if (gameDataDocument.exists('ChangeNumber')) {
+			changeNumber = gameDataDocument.get('ChangeNumber');
+		}
+		var revisionHash:ReaderValue = ReaderValue.Null;
+		if (patchDocument.exists('RevisionHash')) {
+			revisionHash = patchDocument.get('RevisionHash');
+		} else if (gameDataDocument.exists('RevisionHash')) {
+			revisionHash = gameDataDocument.get('RevisionHash');
+		}
+
+		var mergedGameDataDocument = new Map<String, ReaderValue>();
+		mergedGameDataDocument.set('ChangeNumber', changeNumber);
+		mergedGameDataDocument.set('RevisionHash', revisionHash);
+		mergedGameDataDocument.set('Collections', ReaderValue.Document(mergedCollections));
+		return mergedGameDataDocument;
+	}
+
+	private function mergeDocumentCollection(originalCollection:ReaderValue, modifiedCollection:ReaderValue, typeName:String, purgeRest:Bool):ReaderValue {
+		function toDocumentsById(documentCollection:Array<ReaderValue>):Map<String, ReaderValue> {
+			var documentsById = new Map<String, ReaderValue>();
+			for (documentValue in documentCollection) {
+				switch (documentValue) {
+					case ReaderValue.Document(document):
+						var idValue = document.get('Id');
+						switch (idValue) {
+							case String(value):
+								documentsById.set(value, documentValue);
+							case Bool(value):
+								documentsById.set(Std.string(value), documentValue);
+							case Int(value):
+								documentsById.set(Std.string(value), documentValue);
+							case Int64(value):
+								documentsById.set(haxe.Int64.toStr(value), documentValue);
+							case Float(value):
+								documentsById.set(Std.string(value), documentValue);
+							default:
+								/* ignore */
+						}
+					default:
+						/* ignore */
+				}
+			}
+			return documentsById;
+		}
+
+		var originalCollectionById:Map<String, ReaderValue>;
+		switch (originalCollection) {
+			case ReaderValue.Document(value):
+				originalCollectionById = value;
+			case ReaderValue.Collection(value):
+				originalCollectionById = toDocumentsById(value);
+			default:
+				return modifiedCollection ?? ReaderValue.Null;
+		}
+
+		var modifiedCollectionById:Map<String, ReaderValue>;
+		switch (modifiedCollection) {
+			case ReaderValue.Document(value):
+				modifiedCollectionById = value;
+			case ReaderValue.Collection(value):
+				modifiedCollectionById = toDocumentsById(value);
+			default:
+				return originalCollection ?? ReaderValue.Null;
+		}
+
+		var mergedCollectionById = new Map<String, ReaderValue>();
+		var ids:List<String> = purgeRest ? this.unionKeys(modifiedCollectionById.keys(),
+			null) : this.unionKeys(originalCollectionById.keys(), modifiedCollectionById.keys());
+
+		for (documentId in ids) {
+			var originalValueExists = originalCollectionById.exists(documentId);
+			var originalValue = originalValueExists ? originalCollectionById.get(documentId) ?? ReaderValue.Null : ReaderValue.Null;
+			var modifiedValueExists = modifiedCollectionById.exists(documentId);
+			var modifiedValue = modifiedValueExists ? modifiedCollectionById.get(documentId) ?? ReaderValue.Null : ReaderValue.Null;
+
+			var mergedDocument = ReaderValue.Null;
+			if (originalValueExists && !modifiedValueExists) {
+				// unchanged
+				mergedDocument = originalValue;
+			} else if (originalValueExists && originalValue == ReaderValue.Null) {
+				// keep deleted documents as deleted
+				mergedDocument = ReaderValue.Null;
+			} else if (!originalValueExists && modifiedValueExists) {
+				// modified
+				mergedDocument = modifiedValue;
+			} else if (originalValue.match(ReaderValue.Document(_)) && modifiedValue.match(ReaderValue.Document(_))) {
+				// merged
+				mergedDocument = this.mergeDocument(originalValue, modifiedValue, typeName);
+			} else {
+				// modified
+				mergedDocument = modifiedValue;
+			}
+			mergedCollectionById.set(documentId, mergedDocument);
+		}
+
+		return ReaderValue.Document(mergedCollectionById);
+	}
+
+	private function mergeDocument(originalDocumentValue:ReaderValue, modifiedDocumentValue:ReaderValue, typeName:String):ReaderValue {
+		var originalDocument:Map<String, ReaderValue>;
+		switch (originalDocumentValue) {
+			case ReaderValue.Document(value):
+				originalDocument = value;
+			default:
+				return modifiedDocumentValue ?? ReaderValue.Null;
+		}
+
+		var modifiedDocument:Map<String, ReaderValue>;
+		switch (modifiedDocumentValue) {
+			case ReaderValue.Document(value):
+				modifiedDocument = value;
+			default:
+				return originalDocumentValue ?? ReaderValue.Null;
+		}
+
+		var mergedDocument = new Map<String, ReaderValue>();
+		switch (typeName) {
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+			case '<#= typeDef #>':
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.Text && propertyDef.SchemaProperty.Name == "Languages" && typeDef.Schema.Name == "ProjectSettings")
+				{
+#>				this.mergePropertyLanguagesValue(mergedDocument, originalDocument, modifiedDocument, '<#= propertyDef.SchemaProperty.Name #>');
+<#+
+				}
+				else if (propertyDef.DataType == DataType.ReferenceCollection || propertyDef.DataType == DataType.DocumentCollection)
+				{
+#>				this.mergePropertyValue(mergedDocument, originalDocument, modifiedDocument, '<#= propertyDef.SchemaProperty.Name #>', (original, modified) -> this.mergeDocumentCollection(original, modified, '<#= propertyDef.DocumentOrReferenceType #>', true));
+<#+
+				}
+				else if (propertyDef.DataType == DataType.Document)
+				{
+#>				this.mergePropertyDocumentValue(mergedDocument, originalDocument, modifiedDocument, '<#= propertyDef.SchemaProperty.Name #>', (original, modified) -> this.mergeDocument(original, modified, '<#= propertyDef.DocumentOrReferenceType #>'));
+<#+
+				}
+				else if (propertyDef.DataType == DataType.LocalizedText)
+				{
+#>				this.mergePropertyValue(mergedDocument, originalDocument, modifiedDocument, '<#= propertyDef.SchemaProperty.Name #>', (original, modified) -> this.mergeLocalizedText(original, modified));
+<#+
+				}
+				else
+				{
+#>				this.mergePropertyValue(mergedDocument, originalDocument, modifiedDocument, '<#= propertyDef.SchemaProperty.Name #>');
+<#+
+				}
+			}
+		}
+#>
+			default:
+				/* ignore */
+		}
+
+		return ReaderValue.Document(mergedDocument);
+	}
+
+	private function mergePropertyDocumentValue(mergedDocument:Map<String, ReaderValue>, originalDocument:Map<String, ReaderValue>,
+			modifiedDocument:Map<String, ReaderValue>, propertyName:String, ?mergeFn:Null<(a:ReaderValue, b:ReaderValue) -> ReaderValue>):Void {
+
+		var modifiedValue = modifiedDocument.exists(propertyName) ? modifiedDocument.get(propertyName) ?? ReaderValue.Null : ReaderValue.Null;
+		var originalValue = originalDocument.exists(propertyName) ? originalDocument.get(propertyName) ?? ReaderValue.Null : ReaderValue.Null;
+
+		switch (modifiedValue) {
+			case ReaderValue.Document(document):
+				if (originalValue == ReaderValue.Null && !document.exists('Id')) {
+				 	// unable to merge into missing document
+					mergedDocument.set(propertyName, ReaderValue.Null);
+					return;
+				}
+			default: /* skip to default merge */
+		}
+
+		this.mergePropertyValue(mergedDocument, originalDocument, modifiedDocument, propertyName, mergeFn);
+	}
+
+	private function mergePropertyLanguagesValue(mergedDocument:Map<String, ReaderValue>, originalDocument:Map<String, ReaderValue>,
+			modifiedDocument:Map<String, ReaderValue>, propertyName:String):Void {
+		var originalValueExists = originalDocument.exists(propertyName);
+		var originalValue = originalValueExists ? originalDocument.get(propertyName) ?? ReaderValue.Null : ReaderValue.Null;
+		var modifiedValueExists = modifiedDocument.exists(propertyName);
+		var modifiedValue = modifiedValueExists ? modifiedDocument.get(propertyName) ?? ReaderValue.Null : ReaderValue.Null;
+
+		if (!originalValueExists && !modifiedValueExists) {
+			return;
+		}
+
+		var originalLanguageListStr:String;
+		switch (originalValue) {
+			case ReaderValue.String(value):
+				originalLanguageListStr = value;
+			default:
+				originalLanguageListStr = '';
+		}
+
+		var modifiedLanguageListStr:String;
+		switch (modifiedValue) {
+			case ReaderValue.String(value):
+				modifiedLanguageListStr = value;
+			default:
+				modifiedLanguageListStr = '';
+		}
+
+		var originalLanguageList = originalLanguageListStr.split(originalLanguageListStr.indexOf(';') >= 0 ? ';' : originalLanguageListStr.indexOf(',') >= 0 ? ',' : originalLanguageListStr.indexOf('|') >= 0 ? '|' : ' ');
+		var modifiedLanguageList = modifiedLanguageListStr.split(modifiedLanguageListStr.indexOf(';') >= 0 ? ';' : modifiedLanguageListStr.indexOf(',') >= 0 ? ',' : modifiedLanguageListStr.indexOf('|') >= 0 ? '|' : ' ');
+
+		for (languageId in modifiedLanguageList) {
+			if (originalLanguageList.contains(languageId)) {
+				continue;
+			}
+			originalLanguageList.push(languageId);
+		}
+
+		mergedDocument.set(propertyName, ReaderValue.String(originalLanguageList.join(';')));
+	}
+
+	private function mergePropertyValue(mergedDocument:Map<String, ReaderValue>, originalDocument:Map<String, ReaderValue>,
+			modifiedDocument:Map<String, ReaderValue>, propertyName:String, ?mergeFn:Null<(a:ReaderValue, b:ReaderValue) -> ReaderValue>):Void {
+
+		var originalValueExists = originalDocument.exists(propertyName);
+		var originalValue = originalValueExists ? originalDocument.get(propertyName) ?? ReaderValue.Null : ReaderValue.Null;
+		var modifiedValueExists = modifiedDocument.exists(propertyName);
+		var modifiedValue = modifiedValueExists ? modifiedDocument.get(propertyName) ?? ReaderValue.Null : ReaderValue.Null;
+
+		if (!originalValueExists && !modifiedValueExists) {
+			return;
+		}
+
+		var mergedValue:ReaderValue;
+		if (originalValueExists && !modifiedValueExists) {
+			// unchanged
+			mergedValue = originalValue;
+		} else if (!originalValueExists && modifiedValueExists) {
+			// modified
+			mergedValue = modifiedValue;
+		} else if (originalValue != ReaderValue.Null && modifiedValue != ReaderValue.Null) {
+			// modified
+			if (mergeFn != null) {
+				mergedValue = mergeFn(originalValue, modifiedValue);
+			} else {
+				mergedValue = modifiedValue;
+			}
+		} else {
+			// modified
+			mergedValue = modifiedValue;
+		}
+
+		mergedDocument.set(propertyName, mergedValue);
+	}
+
+	private function mergeLocalizedText(originalLocalizedTextValue:ReaderValue, modifiedLocalizedTextValue:ReaderValue):ReaderValue {
+		var originalLocalizedText:Map<String, ReaderValue>;
+		switch (originalLocalizedTextValue) {
+			case ReaderValue.Document(value):
+				originalLocalizedText = value;
+			default:
+				return modifiedLocalizedTextValue ?? ReaderValue.Null;
+		}
+
+		var modifiedLocalizedText:Map<String, ReaderValue>;
+		switch (modifiedLocalizedTextValue) {
+			case ReaderValue.Document(value):
+				modifiedLocalizedText = value;
+			default:
+				return originalLocalizedTextValue ?? ReaderValue.Null;
+		}
+
+		function areSame(left:Map<String, ReaderValue>, right:Map<String, ReaderValue>):Bool {
+			if (left == right) {
+				return true;
+			}
+
+			for (languageId in this.unionKeys(left.keys(), right.keys())) {
+				if (languageId == 'note') {
+					continue;
+				}
+				var leftValue = left.get(languageId) ?? ReaderValue.Null;
+				var rightValue = right.get(languageId) ?? ReaderValue.Null;
+				var leftText:Null<String> = null;
+				var rightText:Null<String> = null;
+				switch (leftValue) {
+					case String(value):
+						leftText = value;
+					default: /* skip */
+				}
+				switch (rightValue) {
+					case String(value):
+						rightText = value;
+					default: /* skip */
+				}
+
+				if (leftText != rightText) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		if (areSame(originalLocalizedText, modifiedLocalizedText)) {
+			return originalLocalizedTextValue;
+		}
+
+		var mergedLocalizedTextValue = new Map<String, ReaderValue>();
+		for (languageId in this.unionKeys(originalLocalizedText.keys(), modifiedLocalizedText.keys())) {
+			var originalValue = originalLocalizedText.get(languageId) ?? ReaderValue.Null;
+			var modifiedValue = modifiedLocalizedText.get(languageId) ?? ReaderValue.Null;
+
+			if (!modifiedLocalizedText.exists(languageId)) {
+				mergedLocalizedTextValue.set(languageId, originalValue);
+			} else {
+				mergedLocalizedTextValue.set(languageId, modifiedValue);
+			}
+		}
+		return ReaderValue.Document(mergedLocalizedTextValue);
+	}
+
+	private function unionKeys(a:Null<Iterator<String>>, b:Null<Iterator<String>>):List<String> {
+		var keys = new List<String>();
+		var addedKeys = new Map<String, String>();
+		if (a != null) {
+			for (key in a) {
+				if (!addedKeys.exists(key)) {
+					keys.push(key);
+					addedKeys.set(key, key);
+				}
+			}
+		}
+		if (b != null) {
+			for (key in b) {
+				if (!addedKeys.exists(key)) {
+					keys.push(key);
+					addedKeys.set(key, key);
+				}
+			}
+		}
+		return keys;
+	}
+<#+
+	}
+#>

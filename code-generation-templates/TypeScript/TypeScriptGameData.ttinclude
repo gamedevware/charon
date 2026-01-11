@@ -1,0 +1,299 @@
+﻿<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Runtime.CompilerServices" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.ObjectModel" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.IO.Compression" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Security" #>
+<#@ include file="./ObjectModel.ttinclude" once="true" #>
+<#@ include file="./Models/Enums.ttinclude" once="true" #>
+<#@ include file="./Models/Formulas.ttinclude" once="true" #>
+<#@ include file="./Models/Classes.ttinclude" once="true" #>
+<#@ include file="./Models/GameData.ttinclude" once="true" #>
+<#@ include file="./SupportTypes.ttinclude" once="true" #>
+<#@ include file="./Formatters.ttinclude" once="true" #>
+<#@ include file="./Formulas.ttinclude" once="true" #>
+<#
+	this.GenerationEnvironment.Length = 0; // clean any whitespace before generation
+
+	var optimizations = this.Optimizations ?? Array.Empty<string>();
+	var context = new CodeGenerationContext(this.GameDataPath, new TypeScriptLanguage {
+		Namespace = this.Namespace,
+		GameDataClassName = this.GameDataClassName,
+		DocumentClassName = this.DocumentClassName,
+		DocumentReferenceClassName = this.DocumentClassName + "Reference",
+	}, optimizations) {
+		ToolsName = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name ?? "TypeScriptGameDataGenerator.tt",
+		ToolsVersion = this.GetType().Assembly.GetName().Version.ToString(),
+	};
+
+	var allFormulasReferencedExternalTypes = context.ObjectModel.Formulas
+		.SelectMany(formulaDef => formulaDef.GetReferencedExternalTypes())
+		.Distinct(TypeReference.TypeNameEqualityComparer)
+		.ToList();
+#>
+<#= FormatImport(allFormulasReferencedExternalTypes, from: "formula.known.types").Replace("/* #", "").Replace("*/", "") #>
+<#
+
+	WriteFile("check", context, () =>
+		WriteCheck(context));
+
+	WriteFile("coerce.to.function", context, () =>
+	{
+		WriteImport("check");
+		WriteImport("TimeSpan");
+		WriteCoerceToFunction(context);
+	});
+
+	WriteFile("string.format.function", context, () =>
+		WriteStringFormatFunction(context));
+
+	WriteFile("get.function.parameter.names.function", context, () =>
+		WriteGetFunctionParameterNamesFunction(context));
+
+	WriteFile("time.span", context, () =>
+		WriteTimeSpan(context));
+
+	WriteFile("formatters", context, () =>
+	{
+		WriteImport("check");
+#>
+export module Formatters
+{
+<# this.WriteFormatters(context); #>
+}
+<#
+	});
+
+	WriteFile("formulas", context, () =>
+	{
+		WriteImport("check");
+		WriteImport("TimeSpan");
+		WriteImport("coerceTo, coerceToEnum", "coerce.to.function");
+		WriteImport("formatString", "string.format.function");
+		WriteImport("getFunctionParameterNames", "get.function.parameter.names.function");
+#>
+export module Formulas
+{
+<# this.WriteFormulas(context); #>
+}
+<#
+	});
+
+	WriteFile(MakeTypeScriptFileName(context.TargetLanguage.DocumentClassName), context, () =>
+	{
+		WriteImport("check");
+
+		this.WriteDocument(context);
+	});
+
+	WriteFile(MakeTypeScriptFileName(context.TargetLanguage.DocumentCollectionClassName), context, () =>
+	{
+		WriteImport("check");
+		WriteImport(context.TargetLanguage.DocumentClassName);
+
+		this.WriteDocumentCollection(context);
+	});
+
+	WriteFile(MakeTypeScriptFileName(context.TargetLanguage.DocumentReferenceClassName), context, () =>
+	{
+		WriteImport("check");
+		WriteImport(context.TargetLanguage.DocumentClassName);
+
+		this.WriteDocumentReferenceBaseClass(context);
+	});
+
+	WriteFile(MakeTypeScriptFileName(context.TargetLanguage.DocumentReferenceCollectionClassName), context,  () =>
+	{
+		WriteImport("check");
+		WriteImport(context.TargetLanguage.DocumentClassName);
+		WriteImport(context.TargetLanguage.DocumentCollectionClassName);
+		WriteImport(context.TargetLanguage.DocumentReferenceClassName);
+
+		this.WriteDocumentReferenceCollection(context);
+	});
+
+	WriteFile(MakeTypeScriptFileName(context.TargetLanguage.LocalizedTextClassName), context, () =>
+	{
+		WriteImport("check");
+
+		this.WriteLocalizedText(context);
+	});
+
+	foreach (var typeDef in context.ObjectModel.Types)
+	{
+		WriteFile(MakeTypeScriptFileName(typeDef.TypeName), context, () =>
+		{
+			WriteImport(context.TargetLanguage.DocumentClassName);
+			WriteImport(context.TargetLanguage.DocumentCollectionClassName);
+			WriteImport(context.TargetLanguage.LocalizedTextClassName);
+			WriteImport(context.TargetLanguage.DocumentReferenceClassName);
+			WriteImport(context.TargetLanguage.DocumentReferenceCollectionClassName);
+			WriteImport(typeDef.GetReferenceTypes(), exceptType: typeDef.TypeName);
+
+			WriteClass(typeDef, context);
+		});
+	}
+
+	foreach (var enumDef in context.ObjectModel.Enums)
+	{
+		WriteFile(MakeTypeScriptFileName(enumDef.TypeName), context, () =>
+		{
+			WriteImport("coerceTo, coerceToEnum", "coerce.to.function");
+
+			WriteEnum(enumDef, context);
+		});
+	}
+
+	foreach (var formulaDef in context.ObjectModel.Formulas)
+	{
+		WriteFile(MakeTypeScriptFileName(formulaDef.TypeName), context, () =>
+		{
+			WriteImport("check");
+			WriteImport("Formulas");
+			WriteImport("coerceTo, coerceToEnum", "coerce.to.function");
+			WriteImport(formulaDef.GetReferenceTypes(), exceptType: formulaDef.TypeName);
+			WriteImport(formulaDef.GetReferencedExternalTypes(), from: "formula.known.types");
+
+			WriteFormula(formulaDef, context);
+		});
+	}
+
+	WriteFile(MakeTypeScriptFileName(context.TargetLanguage.GameDataClassName), context, () =>
+	{
+		WriteImport("check");
+		WriteImport("TimeSpan");
+		WriteImport("coerceTo, coerceToEnum", "coerce.to.function");
+		WriteImport("Formatters");
+		WriteImport("Formulas");
+		WriteImport(context.TargetLanguage.DocumentClassName);
+		WriteImport(context.TargetLanguage.DocumentCollectionClassName);
+		WriteImport(context.TargetLanguage.LocalizedTextClassName);
+		WriteImport(context.TargetLanguage.DocumentReferenceClassName);
+		WriteImport(context.TargetLanguage.DocumentReferenceCollectionClassName);
+		WriteImport(context.ObjectModel.GetAllDefinedTypes(), exceptType: context.TargetLanguage.GameDataClassName);
+		WriteExport("Formatters");
+
+		this.WriteGameDataClass(context);
+	});
+
+	WriteFile("index", context, () =>
+    {
+		WriteExport("TimeSpan");
+		WriteExport("Formatters");
+		WriteExport("Formulas");
+		WriteExport(context.TargetLanguage.GameDataClassName);
+		WriteExport(context.TargetLanguage.DocumentClassName);
+		WriteExport(context.TargetLanguage.DocumentCollectionClassName);
+		WriteExport(context.TargetLanguage.LocalizedTextClassName);
+		WriteExport(context.TargetLanguage.DocumentReferenceClassName);
+		WriteExport(context.TargetLanguage.DocumentReferenceCollectionClassName);
+		WriteExport(context.ObjectModel.GetAllDefinedTypes(), exceptType: context.TargetLanguage.GameDataClassName);
+    });
+#>
+
+
+<#+
+	private void WriteFile(string fileName, CodeGenerationContext context, Action writeBodyAction)
+	{
+#>
+/* # move to <#= fileName #>.ts */
+/*
+  The source code was generated by the Charon, GameDevWare, <#= DateTime.UtcNow.Year #>
+  License: MIT
+*/
+/*
+  <auto-generated>
+      This code was generated by a tool.
+      Changes to this file may cause incorrect behavior and will be lost if
+      the code is regenerated.
+  </auto-generated>
+*/
+/* eslint-disable */
+<#+
+		writeBodyAction();
+#>
+/* eslint-enable */
+<#+
+	}
+	private void WriteImport(string className, string from = "")
+	{
+		this.Write(FormatImport(className, from));
+		this.Write("\r\n");
+	}
+	private string FormatImport(string className, string from = "")
+	{
+		if (string.IsNullOrEmpty(from))
+		{
+			return $"/* # import {{ {className} }} from './{MakeTypeScriptFileName(className)}'; */";
+		}
+		else
+		{
+			return $"/* # import {{ {className} }} from './{from}'; */";
+		}
+	}
+	private void WriteImport(IEnumerable<ITypeReference> typeReferences, string exceptType = "", string from = "")
+	{
+		this.Write(FormatImport(typeReferences, exceptType, from));
+		this.Write("\r\n");
+	}
+	private string FormatImport(IEnumerable<ITypeReference> typeReferences, string exceptType = "", string from = "")
+	{
+		return string.Join("\r\n", typeReferences
+			.Where(typeRef => typeRef.TypeName != exceptType)
+			.Select(typeRef => CollapseTypeName(typeRef.TypeName))
+			.Distinct()
+			.Select(typeName => FormatImport(typeName, from)));
+	}
+	private void WriteExport(IEnumerable<ITypeReference> typeReferences, string exceptType = "", string from = "")
+	{
+		this.Write(FormatExport(typeReferences, exceptType, from));
+		this.Write("\r\n");
+	}
+	private string FormatExport(IEnumerable<ITypeReference> typeReferences, string exceptType = "", string from = "")
+	{
+		return string.Join("\r\n", typeReferences
+			.Where(typeRef => typeRef.TypeName != exceptType)
+			.Select(typeRef => CollapseTypeName(typeRef.TypeName))
+			.Distinct()
+			.Select(typeName => FormatExport(typeName, from)));
+	}
+	private void WriteExport(string className, string from = "")
+	{
+		this.Write(FormatExport(className, from));
+		this.Write("\r\n");
+	}
+	private string FormatExport(string className, string from = "")
+	{
+		if (string.IsNullOrEmpty(from))
+		{
+			return $"/* # export {{ {className} }} from './{MakeTypeScriptFileName(className)}'; */";
+		}
+		else
+		{
+			return $"/* # export {{ {className} }} from './{from}'; */";
+		}
+	}
+
+	private string CollapseTypeName(string typeName)
+	{
+		if (typeName == null) throw new ArgumentNullException(nameof(typeName));
+
+		var typeNamePathSplitterIndex = typeName.IndexOf(".", StringComparison.Ordinal);
+		if (typeNamePathSplitterIndex < 0)
+		{
+			return typeName;
+		}
+		else
+		{
+			return typeName.Substring(0, typeNamePathSplitterIndex);
+		}
+	}
+#>
+

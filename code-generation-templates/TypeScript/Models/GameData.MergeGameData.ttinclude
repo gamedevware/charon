@@ -1,0 +1,335 @@
+﻿<#+
+	private void WriteReadGameDataMergeCode(CodeGenerationContext context)
+	{
+		if (context.DisablePatching)
+		{
+			return;
+		}
+#>
+		private mergeGameData(gameDataDocument: object, patchDocument: object): object {
+			check(gameDataDocument, 'gameDataDocument').is.object().and.not.nullOrUndefined();
+			check(patchDocument, 'patchDocument').is.object().and.not.nullOrUndefined();
+
+			const collections: { [schemaName: string]: ReadonlyArray<object> | object | null } = {};
+
+			let gameDataCollections: Readonly<typeof collections> = {};
+			if ('Collections' in gameDataDocument &&
+				typeof (gameDataDocument['Collections']) === 'object') {
+				gameDataCollections = gameDataDocument['Collections'] as Readonly<typeof collections>;
+			}
+			let patchCollections: Readonly<typeof collections> = {};
+			if ('Collections' in patchDocument &&
+				typeof (patchDocument['Collections']) === 'object') {
+				patchCollections = patchDocument['Collections'] as Readonly<typeof collections>;
+			}
+
+			const visitedSchemas = new Set<string>();
+			for (const schemaIdOrName of [...Object.keys(gameDataCollections), ...Object.keys(patchCollections)]) {
+
+				if (visitedSchemas.has(schemaIdOrName)) {
+					continue;
+				}
+
+				let gameDataDocumentArrayOrMap: any;
+				let patchDocumentArrayOrMap: any;
+				switch (schemaIdOrName) {
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+					case '<#= typeDef.Schema.Id #>':
+					case '<#= typeDef.Schema.Name #>':
+						visitedSchemas.add('<#= typeDef.Schema.Id #>');
+						visitedSchemas.add('<#= typeDef.Schema.Name #>');
+
+						patchDocumentArrayOrMap = '<#= typeDef.Schema.Id #>' in patchCollections ? patchCollections['<#= typeDef.Schema.Id #>'] :
+							'<#= typeDef.Schema.Name #>' in patchCollections ? patchCollections['<#= typeDef.Schema.Name #>'] : null;
+						gameDataDocumentArrayOrMap = '<#= typeDef.Schema.Id #>' in gameDataCollections ? gameDataCollections['<#= typeDef.Schema.Id #>'] :
+							'<#= typeDef.Schema.Name #>' in gameDataCollections ? gameDataCollections['<#= typeDef.Schema.Name #>'] : null;
+
+						if (patchDocumentArrayOrMap == null ||  patchDocumentArrayOrMap == undefined ||
+							gameDataDocumentArrayOrMap == null || gameDataDocumentArrayOrMap == undefined) {
+							collections['<#= typeDef.Schema.Name #>'] = patchDocumentArrayOrMap ?? gameDataDocumentArrayOrMap;
+						} else {
+							collections['<#= typeDef.Schema.Name #>'] = this.mergeRootDocumentCollection(gameDataDocumentArrayOrMap, patchDocumentArrayOrMap, <#= typeDef #>);
+						}
+						break;
+<#+
+		}
+#>
+				}
+			}
+
+			let changeNumber = 0;
+			if ('ChangeNumber' in gameDataDocument) {
+				changeNumber = coerceTo(gameDataDocument['ChangeNumber'], 'number');
+			}
+			if ('ChangeNumber' in patchDocument) {
+				changeNumber = coerceTo(patchDocument['ChangeNumber'], 'number');
+			}
+			let revisionHash: string | null = null;
+			if ('RevisionHash' in gameDataDocument) {
+				revisionHash = coerceTo(gameDataDocument['RevisionHash'], 'string');
+			}
+			if ('RevisionHash' in patchDocument) {
+				revisionHash = coerceTo(patchDocument['RevisionHash'], 'string');
+			}
+
+			return {
+				'ChangeNumber': changeNumber,
+				'RevisionHash': revisionHash,
+				'Collections': collections,
+			}
+		}
+
+		private mergeRootDocumentCollection(originalArrayOrMap: any, modifiedArrayOrMap: any, type: Function): object | null {
+
+			if (originalArrayOrMap && typeof originalArrayOrMap === 'object' ||
+				modifiedArrayOrMap && typeof modifiedArrayOrMap === 'object') {
+				return this.mergeDocumentCollection(originalArrayOrMap, modifiedArrayOrMap, type, /* purgeRest */ false);
+			} else {
+				return originalArrayOrMap ?? modifiedArrayOrMap;
+			}
+		}
+
+		private mergeDocumentCollection(originalValue: object | object[], modifiedValue: object | object[], type: Function, purgeRest: boolean = true): object {
+			check(originalValue, 'originalValue').is.object().and.not.nullOrUndefined();
+			check(modifiedValue, 'modifiedValue').is.object().and.not.nullOrUndefined();
+
+			var mergedCollectionById: { [id: string]: object | null | undefined } = {};
+			var originalCollectionById = toDocumentsById(originalValue);
+			var modifiedCollectionById = toDocumentsById(modifiedValue);
+			var ids = purgeRest ? Object.keys(modifiedCollectionById) : [...Object.keys(originalCollectionById), ...Object.keys(modifiedCollectionById)];
+			const visitedIds = new Set<string>();
+
+			for (const documentId of ids) {
+				if (visitedIds.has(documentId)) {
+					continue;
+				}
+				visitedIds.add(documentId);
+
+				const originalValue = documentId in originalCollectionById ? originalCollectionById[documentId] : undefined;
+				const originalValueExists = originalValue !== undefined;
+				const modifiedValue = documentId in modifiedCollectionById ? modifiedCollectionById[documentId] : undefined;
+				const modifiedValueExists = modifiedValue !== undefined;
+
+				let mergedDocument;
+				if (originalValueExists && originalValue == null) {
+ 					// keep deleted documents as deleted
+					mergedDocument = null;
+				}
+				else if (originalValueExists && !modifiedValueExists) {
+					// unchanged
+					mergedDocument = originalValue;
+				}
+				else if (!originalValueExists && modifiedValueExists) {
+					mergedDocument = modifiedValue;
+				}
+				else if (originalValue && typeof originalValue === 'object' &&
+					modifiedValue && typeof originalValue === 'object') {
+					// merged
+					mergedDocument = this.mergeDocument(originalValue, modifiedValue, type);
+				}
+				else {
+					// modified
+					mergedDocument = modifiedValue;
+				}
+
+				mergedCollectionById[documentId] = mergedDocument;
+			}
+			return mergedCollectionById;
+
+			function toDocumentsById(documentCollection: any): typeof mergedCollectionById {
+				if (Array.isArray(documentCollection)) {
+					return Object.fromEntries(documentCollection.map(document => [document.Id, document]));
+				} else if (typeof (documentCollection) === 'object') {
+					return documentCollection as typeof mergedCollectionById;
+				} else  {
+					return {};
+				}
+			}
+		}
+
+		private mergeDocument(originalDocument: object, modifiedDocument: object, type: Function): object {
+			check(originalDocument, 'originalDocument').is.object().and.not.nullOrUndefined();
+			check(modifiedDocument, 'modifiedDocument').is.object().and.not.nullOrUndefined();
+
+			const mergedDocument: { [propertyName: string]: any } = {};
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+				if (type === <#= typeDef #>)
+				{
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.Text && propertyDef.SchemaProperty.Name == "Languages" && typeDef.Schema.Name == "ProjectSettings")
+				{
+#>
+					this.mergePropertyLanguagesValue(mergedDocument, originalDocument, modifiedDocument, '<#= propertyDef.SchemaProperty.Name #>');
+<#+
+				}
+				else if (propertyDef.DataType == DataType.ReferenceCollection || propertyDef.DataType == DataType.DocumentCollection)
+				{
+#>
+					this.mergePropertyValue(mergedDocument, originalDocument, modifiedDocument, '<#= propertyDef.SchemaProperty.Name #>', (original, modified) => this.mergeDocumentCollection(original, modified, <#= propertyDef.DocumentOrReferenceType #>));
+<#+
+				}
+				else if (propertyDef.DataType == DataType.Document)
+				{
+#>
+					this.mergePropertyDocumentValue(mergedDocument, originalDocument, modifiedDocument, '<#= propertyDef.SchemaProperty.Name #>', (original, modified) => this.mergeDocument(original, modified, <#= propertyDef.DocumentOrReferenceType #>));
+<#+
+				}
+				else if (propertyDef.DataType == DataType.LocalizedText)
+				{
+#>
+					this.mergePropertyValue(mergedDocument, originalDocument, modifiedDocument, '<#= propertyDef.SchemaProperty.Name #>', (original, modified) => this.mergeLocalizedText(original, modified));
+<#+
+				}
+				else
+				{
+#>
+					this.mergePropertyValue(mergedDocument, originalDocument, modifiedDocument, '<#= propertyDef.SchemaProperty.Name #>');
+<#+
+				}
+			}
+#>
+			}
+<#+
+		}
+#>
+			return mergedDocument;
+		}
+
+		private mergePropertyDocumentValue(mergedDocument: { [propertyName: string]: any }, originalDocument: any, modifiedDocument: any, propertyName: string, mergeFn?: (o: object, m: object) => object): void {
+			check(mergedDocument, 'mergedDocument').is.object().and.not.nullOrUndefined();
+			check(originalDocument, 'originalDocument').is.object().and.not.nullOrUndefined();
+			check(modifiedDocument, 'modifiedDocument').is.object().and.not.nullOrUndefined();
+			check(propertyName, 'propertyName').is.string().and.not.nullOrUndefined();
+
+			const originalValue = propertyName in originalDocument ? originalDocument[propertyName] : undefined;
+			const modifiedValue = propertyName in modifiedDocument ? modifiedDocument[propertyName] : undefined;
+			if (!originalValue && modifiedValue &&
+				typeof (modifiedValue) === 'object' &&
+				!('Id' in modifiedValue)) {
+				// unable to merge into missing document
+				mergedDocument[propertyName] = null;
+				return;
+			}
+
+			this.mergePropertyValue(mergedDocument, originalDocument, modifiedDocument, propertyName, mergeFn);
+		}
+
+		private mergePropertyLanguagesValue(mergedDocument: { [propertyName: string]: any }, originalDocument: any, modifiedDocument: any, propertyName: string): void {
+			const originalValue = propertyName in originalDocument ? originalDocument[propertyName] : undefined;
+			const modifiedValue = propertyName in modifiedDocument ? modifiedDocument[propertyName] : undefined;
+
+			const originalLanguages = (typeof (originalValue) === 'string' ? originalValue : '').split(/[;,|\s]/);
+			const modifiedLanguages = (typeof (modifiedValue) === 'string' ? modifiedValue : '').split(/[;,|\s]/);
+
+			for (const languageId of modifiedLanguages) {
+				if (originalLanguages.indexOf(languageId) >= 0) {
+					continue;
+				}
+				originalLanguages.push(languageId);
+			}
+
+			mergedDocument[propertyName] = originalLanguages.filter(languageId => !!languageId).join(';');
+		}
+
+		private mergePropertyValue(mergedDocument: { [propertyName: string]: any }, originalDocument: any, modifiedDocument: any, propertyName: string, mergeFn?: (o: object, m: object) => object): void {
+			check(mergedDocument, 'mergedDocument').is.object().and.not.nullOrUndefined();
+			check(originalDocument, 'originalDocument').is.object().and.not.nullOrUndefined();
+			check(modifiedDocument, 'modifiedDocument').is.object().and.not.nullOrUndefined();
+			check(propertyName, 'propertyName').is.string().and.not.nullOrUndefined();
+
+			const originalValue = propertyName in originalDocument ? originalDocument[propertyName] : undefined;
+			const originalValueExists = originalValue !== undefined;
+			const modifiedValue = propertyName in modifiedDocument ? modifiedDocument[propertyName] : undefined;
+			const modifiedValueExists = modifiedValue !== undefined;
+
+			if (!originalValueExists && !modifiedValueExists) {
+				return; // nothing to merge
+			}
+
+			let mergedValue: any;
+			if (originalValueExists && !modifiedValueExists) {
+				// unchanged
+				mergedValue = originalValue;
+			}
+			else if (!originalValueExists && modifiedValueExists) {
+				// modified
+				mergedValue = modifiedValue;
+			}
+			else if (originalValue && typeof (originalValue) === 'object' &&
+				modifiedValue && typeof (modifiedValue) === 'object') {
+				// merged
+				if (mergeFn) {
+					mergedValue = mergeFn(originalValue, modifiedValue);
+				}
+				else {
+					mergedValue = modifiedValue;
+				}
+			}
+			else {
+				// modified
+				mergedValue = modifiedValue;
+			}
+
+			mergedDocument[propertyName] = mergedValue;
+		}
+
+		private mergeLocalizedText(originalValue: object, modifiedValue: object): object {
+			check(originalValue, 'originalValue').is.object().and.not.nullOrUndefined();
+			check(modifiedValue, 'modifiedValue').is.object().and.not.nullOrUndefined();
+
+			if (areSame()) {
+				return originalValue;
+			}
+
+			const mergedLocalizedText: { [languageId: string]: object | null | undefined } = {};
+			for (const languageId of [...Object.keys(originalValue), ...Object.keys(modifiedValue)]) {
+				const originalText = (<any>originalValue)[languageId];
+				const modifiedText = (<any>modifiedValue)[languageId];
+
+				if (languageId in mergedLocalizedText) {
+					continue; // already added
+				}
+
+				if (modifiedText === null) {
+					mergedLocalizedText[languageId] = null;
+				}
+				else {
+					mergedLocalizedText[languageId] = modifiedText ?? originalText;
+				}
+			}
+			return mergedLocalizedText;
+
+			function areSame(): boolean {
+				for (const languageId in originalValue) {
+					if (languageId == 'notes') {
+						continue;
+					}
+
+					if (!Object.prototype.hasOwnProperty.call(originalValue, languageId)) {
+						continue;
+					}
+					if (!Object.prototype.hasOwnProperty.call(modifiedValue, languageId)) {
+						return false;
+					}
+
+					const originalText = (<any>originalValue)[languageId];
+					const modifiedText = (<any>modifiedValue)[languageId];
+					if (originalText !== modifiedText) {
+						return false;
+					}
+				}
+				return Object.keys(originalValue).length === Object.keys(modifiedValue).length;
+			}
+		}
+<#+
+	}
+#>

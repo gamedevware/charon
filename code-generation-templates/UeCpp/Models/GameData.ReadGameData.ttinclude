@@ -1,0 +1,888 @@
+﻿<#+
+	private void WriteReadGameDataCodeHeader(CodeGenerationContext context)
+	{
+#>
+	TSharedRef<IGameDataReader> CreateReader(FArchive* const GameDataStream, const FGameDataLoadOptions& Options);
+
+	bool ReadGameData(const TSharedRef<IGameDataReader>& Reader);
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	bool ReadDocument
+	(
+		const TSharedRef<IGameDataReader>& Reader,
+		<#= typeDef.TypeName #>*& Document,
+		UObject* Outer,
+		TArray<FString>& GameDataPath,
+		bool NextToken = true
+	);
+<#+
+		}
+#>
+	template <typename IdType, typename DocumentType>
+	bool ReadDocumentCollection
+	(
+		const TSharedRef<IGameDataReader>& Reader,
+		TMap<IdType,DocumentType*>& Collection,
+		int32 Capacity,
+		UObject* Outer,
+		TArray<FString>& GameDataPath,
+		bool NextToken = true
+	);
+	bool ReadLocalizedText
+	(
+		const TSharedRef<IGameDataReader>& Reader,
+		<#= context.TargetLanguage.LocalizedTextClassName #>& LocalizedText,
+		TArray<FString>& GameDataPath,
+		bool NextToken = true
+	);
+
+	template <typename DocumentReferenceType>
+	bool ReadDocumentReferenceCollection
+	(
+		const TSharedRef<IGameDataReader>& Reader,
+		TArray<DocumentReferenceType>& Collection,
+		const FString& SchemaIdOrName,
+		TArray<FString>& GameDataPath,
+		bool NextToken = true
+	);
+
+	bool ReadDocumentReference
+	(
+		const TSharedRef<IGameDataReader>& Reader,
+		<#= context.TargetLanguage.DocumentReferenceClassName #>& DocumentReference,
+		const FString& SchemaIdOrName,
+		TArray<FString>& GameDataPath,
+		bool NextToken = true
+	);
+
+	template <typename FormulaType>
+	bool ReadFormula
+	(
+		const TSharedRef<IGameDataReader>& Reader,
+		FormulaType*& Formula,
+		UObject* Outer,
+		TArray<FString>& GameDataPath,
+		bool NextToken = true
+	);
+
+	FString CombineGameDataPath(const TArray<FString>& GameDataPath);
+<#+
+	}
+
+	private void WriteReadGameDataCodeImplementation(CodeGenerationContext context)
+	{
+#>
+
+TSharedRef<IGameDataReader> <#= context.TargetLanguage.GameDataClassName #>::CreateReader(FArchive* const GameDataStream, const FGameDataLoadOptions& Options)
+{
+	switch (Options.Format)
+	{
+<#+
+		if (context.DisableJsonSerialization == false)
+		{
+#>
+	case EGameDataFormat::Json:
+		return FGameDataReaderFactory::CreateJsonReader(GameDataStream);
+<#+
+		}
+		if (context.DisableMessagePackSerialization == false)
+		{
+#>
+	case EGameDataFormat::MessagePack:
+		return FGameDataReaderFactory::CreateMessagePackReader(GameDataStream);
+<#+
+		}
+#>
+	default:
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Unknown game data format specified in FGameDataLoadOptions. Fallback to JSON formatter."));
+		return FGameDataReaderFactory::CreateJsonReader(GameDataStream);
+	}
+}
+
+UObject* FindDocumentByUniqueName(const FString& ObjectName, TSharedPtr<TMap<FString, UObject*>> DocumentsById)
+{
+	if (!DocumentsById)
+	{
+		return nullptr;
+	}
+
+	const UObject* const* ConstFoundObject = DocumentsById->Find(ObjectName);
+	if (!ConstFoundObject)
+	{
+		return nullptr;
+	}
+
+	UObject* FoundObject = const_cast<UObject*>(*ConstFoundObject);
+	if (FoundObject->HasAnyFlags(EObjectFlags::RF_MirroredGarbage))
+	{
+		return nullptr; // object has been marked for deletion
+	}
+	return FoundObject;
+}
+void FillDocumentByUniqueNameMap(UObject* Outer, TSharedPtr<TMap<FString, UObject*>>& DocumentsById)
+{
+	if (!Outer) {
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Can't fill documents by unique name map for `null` Outer."));
+		return;
+	}
+
+	if (!DocumentsById)
+	{
+		DocumentsById = MakeShared<TMap<FString, UObject*>>();
+	}
+	else
+	{
+		DocumentsById->Reset();
+	}
+
+	// Iterate through all objects with this Outer (including nested)
+	ForEachObjectWithOuter(Outer, [DocumentsById](UObject* Child)
+	{
+		// skip already deleted or non-document objects
+		if (Child->HasAnyFlags(EObjectFlags::RF_MirroredGarbage) ||
+			!Cast<<#= context.TargetLanguage.DocumentClassName #>>(Child))
+		{
+			return;
+		}
+
+		FString ObjectName = Child->GetName();
+		if (DocumentsById->Contains(ObjectName))
+		{
+			UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Warning, TEXT("Duplicate object name found while filling unique document names map: %s"), *ObjectName);
+			return;
+		}
+		DocumentsById->Add(ObjectName, Child);
+	},
+	/* bIncludeNested */ true);
+}
+void ClearDocumentByUniqueNameMap(TSharedPtr<TMap<FString, UObject*>> DocumentsById)
+{
+	if (!DocumentsById)
+	{
+		return;
+	}
+	DocumentsById->Reset();
+}
+
+template <typename DocumentType>
+FString MakeUniqueDocumentName(DocumentType* Document)
+{
+	if (!Document) {
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Can't make unique name for `null` document."));
+		return FString();
+	}
+
+	FString DocumentUniqueName;
+	FGameDataDocumentIdConvert::ConvertToString(Document->Id, DocumentUniqueName);
+	DocumentUniqueName.InsertAt(0, TEXT("_"));
+	DocumentUniqueName.InsertAt(0, DocumentType::StaticClass()->GetName());
+	return DocumentUniqueName;
+}
+
+void TryRenameDocument(UObject* Document, const TCHAR* NewName)
+{
+	if (!Document) {
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Can't rename `null` document."));
+		return;
+	}
+
+	if (Document->Rename(NewName, nullptr, REN_NonTransactional | REN_DoNotDirty | REN_DontCreateRedirectors | REN_Test))
+	{
+		Document->Rename(NewName, nullptr, REN_NonTransactional | REN_DoNotDirty | REN_DontCreateRedirectors);
+	}
+	else
+	{
+		// in case of collision we generate unique name
+		Document->Rename(*MakeUniqueObjectName(Document->GetOuter(), Document->GetClass(), Document->GetFName()).ToString(), nullptr, REN_NonTransactional | REN_DoNotDirty | REN_DontCreateRedirectors);
+	}
+}
+
+void TryDeleteDocument(UObject* Document)
+{
+	if (!Document) {
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Can't delete `null` document."));
+		return;
+	}
+
+	Document->Rename(nullptr, GetTransientPackage(), REN_DontCreateRedirectors | REN_NonTransactional | REN_ForceNoResetLoaders);
+}
+
+void MarkChildDocumentsForDeletion(UObject* Document)
+{
+	if (!Document) {
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Can't mark as orphand children for deletion for `null` document."));
+		return;
+	}
+
+	Document->ClearFlags(EObjectFlags::RF_TagGarbageTemp);
+
+	ForEachObjectWithOuter(Document, [&](UObject* Child)
+	{
+		if (!Cast<<#= context.TargetLanguage.DocumentClassName #>>(Child))
+		{
+			return;
+		}
+		Child->SetFlags(EObjectFlags::RF_TagGarbageTemp);
+	},
+	/* bIncludeNested */ false);
+}
+
+void SweepMarkedChildDocuments(UObject* Document)
+{
+	if (!Document) {
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Can't sweep orphained children for `null` document."));
+		return;
+	}
+
+	TArray<UObject*> ChildrenToDestroy;
+	ForEachObjectWithOuter(Document, [&](UObject* Child)
+	{
+		// skip already deleted or non-document objects
+		if (Child->HasAnyFlags(EObjectFlags::RF_MirroredGarbage) ||
+			!Cast<<#= context.TargetLanguage.DocumentClassName #>>(Child) ||
+			!Child->HasAnyFlags(EObjectFlags::RF_TagGarbageTemp))
+		{
+			return;
+		}
+		Child->ClearFlags(EObjectFlags::RF_TagGarbageTemp);
+		ChildrenToDestroy.Add(Child);
+	},
+	/* bIncludeNested */ false);
+
+	for (UObject* Child : ChildrenToDestroy)
+	{
+		Child->MarkAsGarbage();
+		Child->Rename(nullptr, GetTransientPackage(), REN_DontCreateRedirectors | REN_NonTransactional | REN_ForceNoResetLoaders);
+	}
+}
+
+bool <#= context.TargetLanguage.GameDataClassName #>::ReadGameData(const TSharedRef<IGameDataReader>& Reader)
+{
+	auto GameDataPath = TArray<FString>();
+	GameDataPath.Add(TEXT(""));
+
+	if (!Reader->ReadObjectBegin())
+	{
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+		return false;
+	}
+
+	FillDocumentByUniqueNameMap(this, this->NameLookupDuringLoading);
+	MarkChildDocumentsForDeletion(this);
+
+	while (Reader->GetNotation() != EJsonNotation::ObjectEnd)
+	{
+		if (Reader->IsError())
+		{
+			UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+			return false;
+		}
+
+		auto MemberName = Reader->ReadMember();
+		if (MemberName == TEXT("ChangeNumber"))
+		{
+			Reader->ReadValue(ChangeNumber);
+			Reader->ReadNext();
+		}
+		else if (MemberName == TEXT("RevisionHash"))
+		{
+			Reader->ReadValue(RevisionHash);
+			Reader->ReadNext();
+		}
+		else if (MemberName == TEXT("Collections"))
+		{
+			GameDataPath.Add(TEXT("Collections"));
+			Reader->ReadObjectBegin();
+			while (Reader->GetNotation() != EJsonNotation::ObjectEnd)
+			{
+				if (Reader->IsError())
+				{
+					UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+					return false;
+				}
+
+				auto CollectionName = Reader->ReadMember();
+				GameDataPath.Add(CollectionName);
+				switch (CollectionName.Len())
+				{
+<#+
+		foreach (var typeDefinitionsByNameLength in context.ObjectModel.Types.ToLookup(t => t.Schema.Name.Length).OrderBy(l => l.Key))
+		{
+#>
+					case <#= typeDefinitionsByNameLength.Key #>:
+						if (CollectionName.IsEmpty())
+						{
+							Reader->SkipAny();
+						}
+<#+
+			foreach (var typeDef in typeDefinitionsByNameLength)
+			{
+				var rootDocsCount = 100;
+
+				if (context.Statistics.RootDocumentCount.TryGetValue(typeDef.Schema, out rootDocsCount) == false)
+				{
+					rootDocsCount = 100;
+				}
+#>
+						else if (CollectionName == TEXT("<#= typeDef.Schema.Id #>") || CollectionName == TEXT("<#= typeDef.Schema.Name #>"))
+						{
+							GameDataPath.Add(TEXT("<#= typeDef.Schema.Name #>"));
+							if (!ReadDocumentCollection(Reader, this-><#= typeDef.CollectionName #>, <#= rootDocsCount #>, this, GameDataPath))
+							{
+								UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Failed to read '%s' document collection. Path: %s."), TEXT("<#= typeDef.Schema.Name #>"), *CombineGameDataPath(GameDataPath));
+								return false;
+							}
+							GameDataPath.Pop();
+						}
+<#+
+			}
+#>
+						else
+						{
+							Reader->SkipAny();
+						}
+						break;
+<#+
+		}
+#>
+					default:
+						Reader->SkipAny();
+						break;
+				}
+			}
+			Reader->ReadObjectEnd();
+			GameDataPath.Pop();
+			break;
+		}
+		else
+		{
+			Reader->SkipAny();
+		}
+	}
+	Reader->ReadObjectEnd();
+	GameDataPath.Pop();
+
+	if (Reader->IsError())
+	{
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+		return false;
+	}
+
+	ClearDocumentByUniqueNameMap(this->NameLookupDuringLoading);
+	SweepMarkedChildDocuments(this);
+
+	return true;
+}
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+bool <#= context.TargetLanguage.GameDataClassName #>::ReadDocument
+(
+	const TSharedRef<IGameDataReader>& Reader,
+	<#= typeDef #>*& Document,
+	UObject* Outer,
+	TArray<FString>& GameDataPath,
+	bool NextToken
+)
+{
+	Document = NewObject<<#= typeDef #>>(Outer, <#= typeDef #>::StaticClass(), NAME_None, EObjectFlags::RF_NoFlags);
+	Outer = Document;
+
+	Reader->ReadObjectBegin();
+	while (Reader->GetNotation() != EJsonNotation::ObjectEnd)
+	{
+		if (Reader->IsError())
+		{
+			UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+			return false;
+		}
+
+		auto PropertyName = Reader->ReadMember();
+		bool bReadSuccess;
+		GameDataPath.Add(PropertyName);
+<#+
+			if (typeDef.IsUnion)
+			{
+#>		if (PropertyName != TEXT("Id") && !Reader->IsNull())
+		{
+			if (!Document->Tag.IsEmpty())
+			{
+				UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Tagged Union has multiple conflicting options. Conflicting Options: %s, %s."), *FString(Document->Tag), *PropertyName);
+			}
+			Document->Tag = PropertyName;
+		}
+<#+
+			}
+#>
+		if (PropertyName.IsEmpty())
+		{
+			Reader->SkipAny();
+		}
+<#+
+				foreach (var propertyDef in typeDef.Properties)
+				{
+
+#>
+		else if (PropertyName == TEXT("<#= propertyDef.SchemaProperty.Name #>"))
+		{
+<#+
+					if (propertyDef.Requirement == Requirement.None)
+					{
+#>
+			if (Reader->IsNull())
+			{
+				Reader->ReadNext();
+				continue;
+			}
+<#+
+					}
+					else
+					{
+#>
+			if (Reader->IsNull())
+			{
+				UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Unexpected null value for property '%s' of document. Path: %s."), TEXT("<#= typeDef.Schema.Name #>.<#= propertyDef.Name #>"), *CombineGameDataPath(GameDataPath));
+				return false;
+			}
+<#+
+					}
+
+					if (propertyDef.DataType == DataType.Document)
+					{
+#>			bReadSuccess = ReadDocument(Reader, Document-><#= propertyDef.Name #>, Outer, GameDataPath);
+<#+
+					}
+					else if (propertyDef.DataType == DataType.DocumentCollection)
+					{
+#>			bReadSuccess = ReadDocumentCollection(Reader, Document-><#= propertyDef.Name #>, 0, Outer, GameDataPath);
+<#+
+					}
+					else if (propertyDef.DataType == DataType.Reference && propertyDef.RawProperty == null)
+					{
+#>			bReadSuccess = ReadDocumentReference(Reader, Document-><#= propertyDef.Name #>, TEXT("<#= propertyDef.SchemaProperty.ReferenceType.Schema.Name #>"), GameDataPath);
+<#+
+					}
+					else if (propertyDef.DataType == DataType.Reference)
+					{
+#>			bReadSuccess = ReadDocumentReference(Reader, Document-><#= propertyDef.RawName #>, TEXT("<#= propertyDef.SchemaProperty.ReferenceType.Schema.Name #>"), GameDataPath);
+<#+
+					}
+					else if (propertyDef.DataType == DataType.ReferenceCollection && propertyDef.RawProperty == null)
+					{
+#>			bReadSuccess = ReadDocumentReferenceCollection(Reader, Document-><#= propertyDef.Name #>, TEXT("<#= propertyDef.SchemaProperty.ReferenceType.Schema.Name #>"), GameDataPath);
+<#+
+					}
+					else if (propertyDef.DataType == DataType.ReferenceCollection)
+					{
+#>			bReadSuccess = ReadDocumentReferenceCollection(Reader, Document-><#= propertyDef.RawName #>, TEXT("<#= propertyDef.SchemaProperty.ReferenceType.Schema.Name #>"), GameDataPath);
+<#+
+					}
+					else if (propertyDef.DataType == DataType.Formula)
+					{
+						if (propertyDef.SchemaProperty.IsRawFormulaType)
+						{
+#>			TSharedPtr<FJsonObject> FormulaObject;
+			bReadSuccess = Reader->ReadObject(FormulaObject);
+			Document-><#= propertyDef.Name #>.JsonObject = FormulaObject;
+<#+
+						}
+						else
+						{
+#>			bReadSuccess = ReadFormula(Reader, Document-><#= propertyDef.Name #>, Outer, GameDataPath);
+<#+
+						}
+					}
+					else if (propertyDef.DataType == DataType.LocalizedText && propertyDef.RawProperty == null)
+					{
+#>			bReadSuccess = ReadLocalizedText(Reader, Document-><#= propertyDef.Name #>, GameDataPath);
+<#+
+					}
+					else if (propertyDef.DataType == DataType.LocalizedText)
+					{
+#>			bReadSuccess = ReadLocalizedText(Reader, Document-><#= propertyDef.RawName #>, GameDataPath);
+<#+
+					}
+					else
+					{
+#>			bReadSuccess = Reader->ReadValue(Document-><#= propertyDef.Name #>) && Reader->ReadNext();
+<#+
+					}
+#>
+			if (!bReadSuccess)
+			{
+				UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Failed to read value for property '%s' of document. Path: %s."), TEXT("<#= typeDef.Schema.Name #>.<#= propertyDef.Name #>"), *CombineGameDataPath(GameDataPath));
+				return false;
+			}
+<#+
+					if (propertyDef.SchemaProperty.Name == "Id")
+					{
+#>
+			FString NewName = MakeUniqueDocumentName(Document);
+			UObject* ExistingObject = FindDocumentByUniqueName(NewName, this->NameLookupDuringLoading);
+			<#= typeDef #>* ExistingDocument = Cast<<#= typeDef #>>(ExistingObject);
+			if (ExistingDocument)
+			{
+<#+
+						foreach (var propertyNameToCopy in typeDef.Properties.Select(propertyDefToCopy => propertyDefToCopy.RawName ?? propertyDefToCopy.Name))
+						{
+#>
+				ExistingDocument-><#= propertyNameToCopy #> = Document-><#= propertyNameToCopy #>;
+<#+
+						}
+#>
+
+				TryDeleteDocument(Document);
+				Document->MarkAsGarbage();
+				Document = ExistingDocument;
+
+				MarkChildDocumentsForDeletion(ExistingDocument);
+			}
+			else if (ExistingObject)
+			{
+				TryDeleteDocument(ExistingObject);
+				TryRenameDocument(Document, *NewName);
+			}
+			else
+			{
+				TryRenameDocument(Document, *NewName);
+			}
+<#+
+					}
+#>
+		}
+<#+
+				}
+#>
+		else
+		{
+			Reader->SkipAny();
+		}
+		GameDataPath.Pop();
+	}
+	Reader->ReadObjectEnd(NextToken);
+
+	if (Reader->IsError())
+	{
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+		return false;
+	}
+
+<#+
+			if (typeDef.IsUnion)
+			{
+#>	if (Document->Tag.IsEmpty())
+	{
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Tagged Union has no selected option."));
+	}
+<#+
+			}
+#>
+
+	SweepMarkedChildDocuments(Document);
+
+	return true;
+}
+<#+
+		}
+#>
+template <typename IdType, typename DocumentType>
+bool <#= context.TargetLanguage.GameDataClassName #>::ReadDocumentCollection
+(
+	const TSharedRef<IGameDataReader>& Reader,
+	TMap<IdType,DocumentType*>& Collection,
+	int32 Capacity,
+	UObject* Outer,
+	TArray<FString>& GameDataPath,
+	bool NextToken
+)
+{
+	Collection.Empty();
+	if (Reader->IsNull())
+	{
+		return true;
+	}
+
+	const bool IsByIdCollection = Reader->GetNotation() == EJsonNotation::ObjectStart;
+	auto Documents = TArray<DocumentType*>();
+
+	if (Capacity > 0)
+	{
+		Documents.Reserve(Capacity);
+	}
+
+	if (IsByIdCollection)
+	{
+		Reader->ReadObjectBegin();
+	}
+	else
+	{
+		Reader->ReadArrayBegin();
+	}
+
+	int32 Count = -1;
+	while (Reader->GetNotation() != EJsonNotation::ArrayEnd &&
+			Reader->GetNotation() != EJsonNotation::ObjectEnd)
+	{
+		Count++;
+
+		if (Reader->IsError())
+		{
+			UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+			return false;
+		}
+		if (Reader->IsNull())
+		{
+			Reader->ReadNext();
+			continue;
+		}
+
+		auto DocumentId = Reader->GetIdentifier();
+		if (!DocumentId.IsEmpty())
+		{
+			GameDataPath.Add(DocumentId);
+		}
+		else
+		{
+			GameDataPath.Add(FString::FromInt(Count));
+		}
+
+		DocumentType* Document = nullptr;
+		if (ReadDocument(Reader, Document, Outer, GameDataPath) && Document != nullptr)
+		{
+			Documents.Add(Document);
+		}
+		else
+		{
+			UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Failed to read document. Path: %s."), *CombineGameDataPath(GameDataPath));
+			return false;
+		}
+
+		GameDataPath.Pop();
+	}
+	if (IsByIdCollection)
+	{
+		Reader->ReadObjectEnd(NextToken);
+	}
+	else
+	{
+		Reader->ReadArrayEnd(NextToken);
+	}
+
+	if (Reader->IsError())
+	{
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+		return false;
+	}
+
+	ToMapById(Collection, Documents);
+
+	return true;
+}
+bool <#= context.TargetLanguage.GameDataClassName #>::ReadLocalizedText
+(
+	const TSharedRef<IGameDataReader>& Reader,
+	<#= context.TargetLanguage.LocalizedTextClassName #>& LocalizedText,
+	TArray<FString>& GameDataPath,
+	bool NextToken
+)
+{
+	auto LocStringMap = TMap<FString, FText>();
+	Reader->ReadObjectBegin();
+	while (Reader->GetNotation() != EJsonNotation::ObjectEnd)
+	{
+		if (Reader->IsError())
+		{
+			UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+			return false;
+		}
+
+		FString LanguageId = Reader->ReadMember();
+		if (LanguageId == TEXT("notes")) {
+			Reader->SkipAny();
+			continue;
+		}
+
+		FText Text;
+		GameDataPath.Add(LanguageId);
+		if (!Reader->ReadValue(Text))
+		{
+			UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Failed to read localized text for language '%s'. Path: %s."), *LanguageId, *CombineGameDataPath(GameDataPath));
+			return false;
+		}
+		Reader->ReadNext();
+		GameDataPath.Pop();
+
+		if (LanguageId.IsEmpty() || Text.IsEmpty())
+		{
+			continue;
+		}
+		LocStringMap.Add(LanguageId, Text);
+	}
+	Reader->ReadObjectEnd(NextToken);
+
+	LocalizedText = <#= context.TargetLanguage.LocalizedTextClassName #>(LocStringMap, LanguageSwitcher);
+	return true;
+}
+
+template <typename DocumentReferenceType>
+bool <#= context.TargetLanguage.GameDataClassName #>::ReadDocumentReferenceCollection
+(
+	const TSharedRef<IGameDataReader>& Reader,
+	TArray<DocumentReferenceType>& Collection,
+	const FString& SchemaIdOrName,
+	TArray<FString>& GameDataPath,
+	bool NextToken
+)
+{
+	Collection.Empty();
+	if (Reader->IsNull())
+	{
+		return true;
+	}
+
+	const bool IsByIdCollection = Reader->GetNotation() == EJsonNotation::ObjectStart;
+
+	if (IsByIdCollection)
+	{
+		Reader->ReadObjectBegin();
+	}
+	else
+	{
+		Reader->ReadArrayBegin();
+	}
+	while (Reader->GetNotation() != EJsonNotation::ArrayEnd &&
+			Reader->GetNotation() != EJsonNotation::ObjectEnd)
+	{
+		if (Reader->IsError())
+		{
+			UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+			return false;
+		}
+		if (Reader->IsNull())
+		{
+			Reader->ReadNext();
+			continue;
+		}
+
+		DocumentReferenceType DocumentReference;
+		if (!ReadDocumentReference(Reader, DocumentReference, SchemaIdOrName, GameDataPath))
+		{
+			UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Failed to read document reference. Path: %s."), *CombineGameDataPath(GameDataPath));
+			return false;
+		}
+		Collection.Add(DocumentReference);
+	}
+	if (IsByIdCollection)
+	{
+		Reader->ReadObjectEnd(NextToken);
+	}
+	else
+	{
+		Reader->ReadArrayEnd(NextToken);
+	}
+
+	if (Reader->IsError())
+	{
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+		return false;
+	}
+
+	return true;
+}
+
+bool <#= context.TargetLanguage.GameDataClassName #>::ReadDocumentReference
+(
+	const TSharedRef<IGameDataReader>& Reader,
+	<#= context.TargetLanguage.DocumentReferenceClassName #>& DocumentReference,
+	const FString& SchemaIdOrName,
+	TArray<FString>& GameDataPath,
+	bool NextToken
+)
+{
+	FString Id;
+	Reader->ReadObjectBegin();
+	while (Reader->GetNotation() != EJsonNotation::ObjectEnd)
+	{
+		if (Reader->IsError())
+		{
+			UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+			return false;
+		}
+
+		auto MemberName = Reader->ReadMember();
+		if (MemberName == TEXT("Id"))
+		{
+			if (!Reader->ReadValue(Id))
+			{
+				UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Failed to read 'Id' value for document reference. Path: %s."), *CombineGameDataPath(GameDataPath));
+				return false;
+			}
+			Reader->ReadNext();
+		}
+		else
+		{
+			Reader->SkipAny();
+		}
+	}
+
+	Reader->ReadObjectEnd(NextToken);
+
+	if (Id.IsEmpty())
+	{
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Document reference 'Id' is null or empty. Path: %s."), *CombineGameDataPath(GameDataPath));
+		return false;
+	}
+
+	DocumentReference.Id = Id;
+	DocumentReference.SchemaIdOrName = SchemaIdOrName;
+	DocumentReference.GameData = this;
+
+	return true;
+}
+
+template <typename FormulaType>
+bool <#= context.TargetLanguage.GameDataClassName #>::ReadFormula
+(
+		const TSharedRef<IGameDataReader>& Reader,
+		FormulaType*& Formula,
+		UObject* Outer,
+		TArray<FString>& GameDataPath,
+		bool NextToken
+)
+{
+	if (Reader->IsError())
+	{
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+		return false;
+	}
+
+	TSharedPtr<FJsonObject> FormulaObject;
+	if (!Reader->ReadObject(FormulaObject, NextToken) || FormulaObject == nullptr)
+	{
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Failed to read JsonObject for Formula data type. Path: %s."), *CombineGameDataPath(GameDataPath));
+		return false;
+	}
+
+	if (Reader->IsError())
+	{
+		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("File pasing failed due error '%s'. Path: %s."), *Reader->GetErrorMessage(), *CombineGameDataPath(GameDataPath));
+		return false;
+	}
+
+	Formula = NewObject<FormulaType>(Outer);
+	Formula->ExpressionTree.JsonObject = FormulaObject;
+
+	return true;
+}
+
+FString <#= context.TargetLanguage.GameDataClassName #>::CombineGameDataPath(const TArray<FString>& GameDataPath)
+{
+	return FString::Join(GameDataPath, TEXT("/"));
+}
+<#+
+	}
+#>

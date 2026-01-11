@@ -1,0 +1,40 @@
+﻿<#+
+	private void WriteFormulaHeader(FormulaDefinition formulaDef, CodeGenerationContext context)
+	{
+#>/* # move to Public/<#= formulaDef #>.h */
+#pragma once
+<#+
+	WriteFileHeader();
+#>
+// ReSharper disable All
+
+#include "UObject/Class.h"
+#include "Dom/JsonObject.h"
+#include "Templates/SharedPointer.h"
+#include "JsonObjectWrapper.h"
+
+#include "<#= formulaDef #>.generated.h"
+
+/**
+  * <#= formulaDef.Description ?? string.Empty #>
+  */
+UCLASS(BlueprintType)
+class <#= context.CppLanguage.ApiName #> <#= formulaDef #> : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+	FJsonObjectWrapper ExpressionTree;
+
+	<#= formulaDef #>() { }
+};
+<#+
+	}
+#>
+<#+
+	private void WriteFormulaImplementation(FormulaDefinition formulaDef, CodeGenerationContext context)
+	{
+
+	}
+#>

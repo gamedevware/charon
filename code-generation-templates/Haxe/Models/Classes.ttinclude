@@ -1,0 +1,204 @@
+﻿<#+
+	private void WriteClass(TypeDefinition typeDef, CodeGenerationContext context)
+	{
+		var customClassAttributes = typeDef.CustomAttributes?.Count > 0 ?
+			string.Join("\r\n", typeDef.CustomAttributes.Select(attribute => "@" + attribute)) : string.Empty;
+		var baseTypeAndInterfaces = typeDef.BaseTypeAndInterfaces?.Count > 0 ?
+			string.Join(" ", typeDef.BaseTypeAndInterfaces) : context.TargetLanguage.DocumentClassName;
+
+		if (!string.IsNullOrEmpty(typeDef.Description))
+		{
+#>/**
+	<#= typeDef.Description #>
+**/
+<#+
+		}
+		if (!string.IsNullOrEmpty(customClassAttributes))
+		{
+#><#= customClassAttributes #>
+<#+
+		}
+#>
+class <#= typeDef #> extends <#= baseTypeAndInterfaces #>
+{
+	public static var SchemaId:String = "<#= typeDef.Schema.Id #>";
+	public static var SchemaName:String = "<#= typeDef.Schema.Name #>";
+
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			var customPropertyAttributes = propertyDef.CustomAttributes?.Count > 0 ?
+				string.Join("\r\n\t", propertyDef.CustomAttributes.Select(attribute => "@" + attribute)) : string.Empty;
+
+			if (!string.IsNullOrEmpty(propertyDef.Description))
+			{
+#>	/**
+	  	<#= propertyDef.Description #>
+	**/
+<#+
+			}
+			if (!string.IsNullOrEmpty(customClassAttributes))
+			{
+#>	<#= customPropertyAttributes #>
+<#+
+			}
+			if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.Reference)
+			{
+#>	public var <#= propertyDef.Name #>(get, null): <#= propertyDef.Type #>;
+	private function get_<#= propertyDef.Name #>(): <#= propertyDef.Type #> {
+		return this.<#= propertyDef.RawName #>?.dereference();
+	}
+	public var <#= propertyDef.RawProperty.Name #>(default, null): <#= propertyDef.RawProperty.Type #>;
+<#+
+			}
+			else if (propertyDef.RawProperty != null &&  propertyDef.DataType == DataType.ReferenceCollection)
+			{
+#>	public var <#= propertyDef.Name #>(get, null): <#= propertyDef.Type #>;
+	private function get_<#= propertyDef.Name #>(): <#= propertyDef.Type #> {
+		if (this.<#= propertyDef.Name #> != null) {
+			return this.<#= propertyDef.Name #>;
+		}
+		return this.<#= propertyDef.Name #> = new <#= propertyDef.Type #>(this.<#= propertyDef.RawName #>?.dereference() ?? [], 'Id', document -> document.id);
+	}
+	public var <#= propertyDef.RawProperty.Name #>(default, null): <#= propertyDef.RawProperty.Type #>;
+<#+
+			}
+			else if (propertyDef.RawProperty != null &&  propertyDef.DataType == DataType.LocalizedText)
+			{
+#>	public var <#= propertyDef.Name #>(get, null): String;
+	private function get_<#= propertyDef.Name #>(): String {
+		return this.<#= propertyDef.RawName #>.value;
+	}
+	public var <#= propertyDef.RawProperty.Name #>(default, null): <#= propertyDef.RawProperty.Type #>;
+<#+
+			}
+			else
+			{
+#>	public var <#= propertyDef.Name #>(default, null): <#= propertyDef.Type #>;
+<#+
+			}
+		}
+		if (typeDef.IsUnion)
+		{
+#>	/**
+	  	The name of the selected property in a tagged union.
+	**/
+	public var tag(default, null): String;
+
+<#+
+		}
+
+		var constructorArguments = string.Join(", ", typeDef.Properties.Select(p => p.RawProperty ?? p).Select(p => p.ConstructorParameter.Name + ": " + p.ConstructorParameter.Type));
+		if (typeDef.IsUnion)
+		{
+			constructorArguments += ", tag: String";
+		}
+#>
+	/**
+	  	Constructor for <#= typeDef #>.
+	**/
+	public function new(<#= constructorArguments #>)
+	{
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+#>		this.<#= propertyDef.RawName #> = <#= propertyDef.ConstructorParameter.Name #>;
+<#+
+		}
+
+		if (typeDef.IsUnion)
+		{
+#>
+		this.tag = tag;
+
+<#+
+		}
+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if (propertyDef.DataType == DataType.Document)
+			{
+#>		if (this.<#= propertyDef.Name #> != null) {
+			this.<#= propertyDef.Name #>.parent = this;
+		}
+<#+
+			}
+			else if (propertyDef.DataType == DataType.DocumentCollection)
+			{
+#>		for (document in this.<#= propertyDef.Name #>.list) { document.parent = this; }
+<#+
+			}
+		}
+#>
+	}
+
+<#+
+		if (typeDef.IsUnion)
+		{
+#>
+	/**
+	 * Transforms this type into a proper enum (ADT).
+	 */
+	public function asEnum(): <#= typeDef #>Enum {
+		return switch (this.tag) {
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.SchemaProperty.Name == "Id") continue;
+
+#>			case "<#= propertyDef.SchemaProperty.Name #>":
+				if (this.<#= propertyDef.Name #> == null) {
+					throw 'Invalid <#= typeDef #>: tag is "<#= propertyDef.SchemaProperty.Name #>" but "<#= propertyDef.Name #>" is null.';
+				}
+				<#= typeDef #>Enum.<#= context.TargetLanguage.MakeTypeName(propertyDef.Name) #>(this.<#= propertyDef.Name #>);
+<#+
+			}
+#>			default:
+			   <#= typeDef #>Enum.Unknown(this.tag);
+		}
+	}
+
+<#+
+		}
+#>
+	public override function toString(): String
+	{
+		var sb = new StringBuf();
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			var propertyDisplayName = propertyDef.DisplayName.Replace("\"", "\\\"").Replace("\\", "\\\\");
+#>			sb.add("<#= propertyDisplayName #>: ");
+			sb.add(this.<#= propertyDef.RawName #>);
+			sb.add(sb.length > 0 ? ", " : "");
+<#+
+		}
+#>
+		return sb.toString();
+	}
+}
+<#+
+		if (typeDef.IsUnion)
+		{
+#>
+
+/**
+ * Tagged union (sum type) representing a <#= typeDef #>.
+ */
+enum <#= typeDef #>Enum {
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.SchemaProperty.Name == "Id") continue;
+
+#>
+	<#= context.TargetLanguage.MakeTypeName(propertyDef.Name) #>(<#= propertyDef.ConstructorParameter.Name #>: <#= context.TargetLanguage.MakeRequiredTypeRef(propertyDef.Type) #>);
+<#+
+			}
+#>
+	Unknown(tag: String);
+}
+<#+
+		}
+	}
+#>

@@ -1,0 +1,84 @@
+﻿<#+
+	private void WriteDocumentIdHeader(EnumDefinition enumDef, CodeGenerationContext context)
+	{
+		if (enumDef.IsPickList)
+		{
+			return;
+		}
+
+#>/* # move to Public/<#= enumDef #>.h */
+#pragma once
+<#+
+		WriteFileHeader();
+#>
+#include "Misc/DateTime.h"
+#include "Misc/Timespan.h"
+// ReSharper disable All
+
+/**
+  * <#= enumDef.Description ?? string.Empty #>
+  */
+struct <#= context.CppLanguage.ApiName #> <#= enumDef #> {
+public:
+<#+
+		foreach (var kv in enumDef.Values)
+		{
+			var enumName = kv.Key;
+#>
+	static const <#= enumDef.BaseType #> <#= enumName #>;
+<#+
+		}
+#>
+};
+<#+
+	}
+	private void WriteDocumentIdImplementation(EnumDefinition enumDef, CodeGenerationContext context)
+	{
+		if (enumDef.IsPickList)
+		{
+			return;
+		}
+#>/* # move to Private/<#= enumDef #>.cpp */
+<#+
+		WriteFileHeader();
+#>
+#include "<#= enumDef #>.h"
+
+// ReSharper disable All
+<#+
+		foreach (var kv in enumDef.Values)
+		{
+			var enumName = kv.Key;
+			var enumValue = kv.Value;
+			var enumValueStr = Convert.ToString(enumValue, CultureInfo.InvariantCulture) ?? string.Empty;
+
+			switch (enumDef.BaseTypeCode)
+			{
+				case EnumBaseTypeCode.Int32:
+				case EnumBaseTypeCode.Int64:
+				case EnumBaseTypeCode.Float32:
+				case EnumBaseTypeCode.Float64:
+					break;
+				case EnumBaseTypeCode.String:
+					enumValueStr = "TEXT(\"" + JsonGameDataReader.EscapeString(enumValueStr, forUnicodeEncoding: false) + "\")";
+					break;
+				case EnumBaseTypeCode.TimeSpan:
+					enumValueStr = $"[]() {{ FTimespan Result; FTimespan::Parse(TEXT(\"{JsonGameDataReader.EscapeString(enumValueStr, forUnicodeEncoding: false)}\"), Result); return Result; }}();";
+					break;
+				case EnumBaseTypeCode.Bool:
+					enumValueStr = (((bool?)enumValue ?? false) ? "true" : "false");
+					break;
+				case EnumBaseTypeCode.DateTime:
+					var dateTimeString = enumValue is IFormattable formattable
+						? formattable.ToString("o", CultureInfo.InvariantCulture) : enumValueStr;
+					enumValueStr = $"[]() {{ FDateTime Result; FDateTime::ParseIso8601(TEXT(\"{JsonGameDataReader.EscapeString(dateTimeString, forUnicodeEncoding: false)}\"), Result); return Result; }}();";
+					break;
+				default: throw new InvalidOperationException($"Unknown enum base type: {enumDef.BaseType}.");
+			}
+
+#>
+const <#= enumDef.BaseType #> <#= enumDef #>::<#= enumName #> = <#= enumValueStr #>;
+<#+
+		}
+	}
+#>

@@ -1,0 +1,274 @@
+<#+
+	private void WriteGameDataVisitorHeader(CodeGenerationContext context)
+	{
+#>
+public:
+	void ResolveAllReferences();
+	void FindAllDocuments();
+
+	class FVisitor
+	{
+	public:
+		virtual ~FVisitor() = default;
+
+		/*
+         * Base visit method. Called to dispatch each document.
+		 */
+		virtual void Visit(<#= context.TargetLanguage.DocumentClassName #>* Document);
+
+		// visit methods
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		virtual void Visit(<#= typeDef #>& Document);
+<#+
+		}
+#>
+	};
+
+	void ApplyVisitor(FVisitor& Visitor) const;
+
+	class FFindingVisitor : public FVisitor
+	{
+	public:
+		// collected documents
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		TArray<<#= typeDef #>*> <#= typeDef.Schema.Name #> = TArray<<#= typeDef #>*>();
+<#+
+		}
+#>
+
+		// visit methods
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		virtual void Visit(<#= typeDef #>& Document) override;
+<#+
+		}
+#>
+	};
+
+private:
+	class FDereferencingVisitor : public FVisitor
+	{
+		// visit methods
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		virtual void Visit(<#= typeDef #>& Document) override;
+<#+
+		}
+#>
+	};
+
+	class FLanguagesUpdateVisitor : public FVisitor
+	{
+	private:
+		const TArray<FString> LanguageIds;
+
+	public:
+		FLanguagesUpdateVisitor(const TArray<FString>& LanguageIds);
+
+		// visit methods
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		virtual void Visit(<#= typeDef #>& Document) override;
+<#+
+		}
+#>
+		void RemoveExtraKeys(TMap<FString, FText>& TextByLanguageId);
+	};
+<#+
+	}
+
+	private void WriteGameDataVisitorImplementation(CodeGenerationContext context)
+	{
+#>
+void <#= context.TargetLanguage.GameDataClassName #>::ApplyVisitor(FVisitor& Visitor) const
+{
+	for (const auto Document : GetRootDocuments())
+	{
+		Visitor.Visit(Document);
+	}
+}
+
+void <#= context.TargetLanguage.GameDataClassName #>::ResolveAllReferences()
+{
+	auto DereferencingVisitor = <#= context.TargetLanguage.GameDataClassName #>::FDereferencingVisitor();
+	ApplyVisitor(DereferencingVisitor);
+}
+
+void <#= context.TargetLanguage.GameDataClassName #>::FindAllDocuments()
+{
+	auto FindingVisitor = <#= context.TargetLanguage.GameDataClassName #>::FFindingVisitor();
+	ApplyVisitor(FindingVisitor);
+
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	ToMapById(this->All<#= typeDef.CollectionName #>, FindingVisitor.<#= typeDef.Schema.Name #>);
+<#+
+		}
+#>
+}
+
+void <#= context.TargetLanguage.GameDataClassName #>::FVisitor::Visit(<#= context.TargetLanguage.DocumentClassName #>* Document)
+{
+	if (Document == nullptr)
+	{
+		return;
+	}
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	else if ((Document->GetClass() == <#= typeDef #>::StaticClass()))
+	{
+		Visit(static_cast<<#= typeDef #>&>(*Document));
+	}
+<#+
+		}
+#>
+}
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+void <#= context.TargetLanguage.GameDataClassName #>::FVisitor::Visit(<#= typeDef #>& Document)
+{
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.Document)
+				{
+#>
+	if (Document.<#= propertyDef.Name #>)
+	{
+		Visit (static_cast<<#= context.TargetLanguage.DocumentClassName #>*>(Document.<#= propertyDef.Name #>));
+	}
+<#+
+				}
+				else if (propertyDef.DataType == DataType.DocumentCollection)
+				{
+#>
+	for (const auto SubDocumentById : Document.<#= propertyDef.Name #>)
+	{
+		if (SubDocumentById.Value == nullptr) { continue; }
+		Visit(static_cast<<#= context.TargetLanguage.DocumentClassName #>*>(SubDocumentById.Value));
+	}
+<#+
+				}
+			}
+#>
+}
+<#+
+		}
+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			var count = 0;
+			if (context.Statistics.DocumentCount.TryGetValue(typeDef.Schema, out count))
+			{
+				count += 5;
+			}
+			else
+			{
+				count = 50;
+			}
+#>
+void <#= context.TargetLanguage.GameDataClassName #>::FFindingVisitor::Visit(<#= typeDef #>& Document)
+{
+	if (this-><#= typeDef.Schema.Name #>.Num() == 0)
+	{
+		this-><#= typeDef.Schema.Name #>.Reserve(<#= count #>);
+	}
+	this-><#= typeDef.Schema.Name #>.Add(&Document);
+
+	FVisitor::Visit(Document);
+}
+<#+
+		}
+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+void <#= context.TargetLanguage.GameDataClassName #>::FDereferencingVisitor::Visit(<#= typeDef #>& Document)
+{
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.Reference)
+				{
+#>
+	if (Document.<#= propertyDef.RawName #>.IsValid())
+	{ auto _ = Document.<#= propertyDef.RawName #>.GetReferencedDocument(); }
+<#+
+				}
+				else if (propertyDef.DataType == DataType.ReferenceCollection)
+				{
+#>
+	for (auto Reference : Document.<#= propertyDef.RawName #>)
+	{ auto _ = Reference.IsValid() ? Reference.GetReferencedDocument() : nullptr; }
+<#+
+				}
+				else if (propertyDef.DataType == DataType.ReferenceCollection)
+				{
+#>
+	{ auto _ = Document.Get<#= propertyDef.Name #>(); }
+<#+
+				}
+			}
+#>
+	FVisitor::Visit(Document);
+}
+<#+
+		}
+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+void <#= context.TargetLanguage.GameDataClassName #>::FLanguagesUpdateVisitor::Visit(<#= typeDef #>& Document)
+{
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.LocalizedText)
+				{
+#>
+	RemoveExtraKeys(Document.<#= propertyDef.RawName #>.TextByLanguageId);
+<#+
+				}
+			}
+#>
+	FVisitor::Visit(Document);
+}
+<#+
+		}
+#>
+<#= context.TargetLanguage.GameDataClassName #>::FLanguagesUpdateVisitor::FLanguagesUpdateVisitor(const TArray<FString>& LanguageIds)
+	: LanguageIds(LanguageIds)
+{
+}
+void <#= context.TargetLanguage.GameDataClassName #>::FLanguagesUpdateVisitor::RemoveExtraKeys(TMap<FString, FText>& TextByLanguageId)
+{
+	for (auto It = TextByLanguageId.CreateIterator(); It; ++It)
+	{
+		if (!this->LanguageIds.Contains(It->Key))
+		{
+			It.RemoveCurrent();
+		}
+	}
+}
+<#+
+	}
+#>

@@ -1,0 +1,244 @@
+﻿<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Runtime.CompilerServices" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.ObjectModel" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.IO.Compression" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Security" #>
+<#@ include file="./ObjectModel.ttinclude" once="true" #>
+<#@ include file="./Formatters.ttinclude" once="true" #>
+<#@ include file="./SupportTypes.ttinclude" once="true" #>
+<#@ include file="./Models/Enums.ttinclude" once="true" #>
+<#@ include file="./Models/Formulas.ttinclude" once="true" #>
+<#@ include file="./Models/GameData.ttinclude" once="true" #>
+<#@ include file="./Models/Classes.ttinclude" once="true" #>
+<#@ include file="./Models/DocumentCollectionExtensions.ttinclude" once="true" #>
+<#
+	this.GenerationEnvironment.Length = 0; // clean any whitespace before generation
+
+	var optimizations = this.Optimizations ?? Array.Empty<string>();
+	var context = new CodeGenerationContext(this.GameDataPath, new HaxeLanguage() {
+		Namespace = this.Namespace,
+		GameDataClassName = this.GameDataClassName,
+		DocumentClassName = this.DocumentClassName,
+		DocumentReferenceClassName = this.DocumentClassName + "Reference",
+	}, optimizations) {
+		ToolsName = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name ?? "HaxeGameDataGenerator.tt",
+		ToolsVersion = this.GetType().Assembly.GetName().Version.ToString(),
+	};
+#>
+package  <#= context.TargetLanguage.Namespace #>;
+
+import haxe.Int64;
+import haxe.io.Bytes;
+import haxe.io.Eof;
+import haxe.io.Input;
+import haxe.io.BufferInput;
+import haxe.ds.GenericStack;
+import haxe.ds.ReadOnlyArray;
+import haxe.ds.BalancedTree;
+import haxe.iterators.ArrayKeyValueIterator;
+
+<#
+	foreach (var typeDef in context.ObjectModel.Types)
+	{
+		WriteFile(typeDef.TypeName, context, () =>
+		{
+			this.WriteDefaultDataTypeImports(context);
+			this.WriteImport(typeDef.GetReferenceTypes(), exceptType: typeDef.TypeName);
+
+			this.WriteClass(typeDef, context);
+		});
+	}
+
+	foreach (var enumDef in context.ObjectModel.Enums)
+	{
+		WriteFile(enumDef.TypeName, context, () =>
+			this.WriteEnum(enumDef, context));
+	}
+
+	foreach (var formulaDef in context.ObjectModel.Formulas)
+	{
+		WriteFile(formulaDef.TypeName, context, () =>
+		{
+			this.WriteDefaultDataTypeImports(context);
+			this.WriteImport(formulaDef.GetReferenceTypes().Where(NotBuildInType), exceptType: formulaDef.TypeName);
+			this.WriteImport(formulaDef.GetReferencedExternalTypes().Where(NotBuildInType));
+			this.WriteFormula(formulaDef, context);
+		});
+	}
+
+	WriteFile(context.TargetLanguage.GameDataClassName, context, () =>
+	{
+		this.WriteDefaultDataTypeImports(context);
+		this.WriteImport(context.ObjectModel.GetAllDefinedTypes(), exceptType: context.TargetLanguage.GameDataClassName);
+		this.WriteGameDataClass(context);
+	});
+
+	WriteFile(context.TargetLanguage.DocumentClassName, context, () =>
+	{
+		this.WriteDocumentBaseClass(context);
+	});
+
+	WriteFile(context.TargetLanguage.DocumentReferenceClassName, context, () =>
+	{
+		this.WriteImport(MakePackageName(context.TargetLanguage.Namespace, "Formatters.ReaderValue"));
+		this.WriteImport(MakePackageName(context.TargetLanguage.Namespace, context.TargetLanguage.DocumentClassName));
+		this.WriteDocumentReferenceBaseClass(context);
+	});
+
+	WriteFile(context.TargetLanguage.DocumentReferenceCollectionClassName, context, () =>
+	{
+		this.WriteImport(MakePackageName(context.TargetLanguage.Namespace, "Formatters.ReaderValue"));
+		this.WriteImport(MakePackageName(context.TargetLanguage.Namespace, context.TargetLanguage.DocumentClassName));
+		this.WriteImport(MakePackageName(context.TargetLanguage.Namespace, context.TargetLanguage.DocumentReferenceClassName));
+		this.WriteDocumentReferenceCollection(context);
+	});
+
+	WriteFile(context.TargetLanguage.DocumentCollectionClassName, context, () =>
+	{
+		this.WriteImport(MakePackageName(context.TargetLanguage.Namespace, context.TargetLanguage.DocumentClassName));
+		this.WriteDocumentCollection(context);
+	});
+
+	WriteFile(context.TargetLanguage.DocumentCollectionClassName + "Extensions", context, () =>
+	{
+		this.WriteDefaultDataTypeImports(context);
+		this.WriteImport(context.ObjectModel.GetAllDefinedTypes(), exceptType: context.TargetLanguage.GameDataClassName);
+		this.WriteDocumentCollectionExtensions(context);
+	});
+
+	WriteFile(context.TargetLanguage.LocalizedTextClassName, context, () =>
+	{
+		this.WriteImport(MakePackageName(context.TargetLanguage.Namespace, "LanguageFallbackOption"));
+		this.WriteImport(MakePackageName(context.TargetLanguage.Namespace, "LanguageSwitcher"));
+		this.WriteLocalizedText(context);
+	});
+
+	WriteFile("LanguageFallbackOption", context, () =>
+    	this.WriteLanguageFallbackOption(context));
+
+	WriteFile("LanguageSwitcher", context, () =>
+	{
+		this.WriteImport(MakePackageName(context.TargetLanguage.Namespace, "LanguageFallbackOption"));
+		this.WriteLanguageSwitcher(context);
+	});
+
+	WriteFile("TimeSpan", context, () =>
+		this.WriteTimeSpan(context));
+
+	WriteFile("Formatters", context, () =>
+	{
+		WriteFormatters();
+#>
+<#
+	});
+#>
+
+<#+
+	private string FormatImport(string className)
+	{
+		return $"/* # import {className}; */";
+	}
+	private string FormatImport(IEnumerable<ITypeReference> typeReferences, string exceptType = "")
+	{
+		return string.Join("\r\n", typeReferences
+			.Where(typeRef => typeRef.TypeName != exceptType)
+			.Select(typeRef => CollapseTypeName(typeRef.TypeName))
+			.Distinct()
+			.Select(typeName => FormatImport(typeName)));
+	}
+	private string MakePackageName(string prefix, string packageName)
+	{
+		if (string.IsNullOrEmpty(prefix))
+		{
+			return packageName;
+		}
+		else
+		{
+			return prefix + "." + packageName;
+		}
+	}
+	private string CollapseTypeName(string typeName)
+	{
+		if (typeName == null) throw new ArgumentNullException(nameof(typeName));
+
+		var typeNamePathSplitterIndex = typeName.IndexOf(".", StringComparison.Ordinal);
+		if (typeNamePathSplitterIndex < 0)
+		{
+			return typeName;
+		}
+		else
+		{
+			return typeName.Substring(0, typeNamePathSplitterIndex);
+		}
+	}
+
+	private void WriteImport(IEnumerable<ITypeReference> typeReferences, string exceptType = "")
+	{
+		this.Write(FormatImport(typeReferences, exceptType));
+		this.Write("\r\n");
+	}
+	private void WriteImport(string className)
+	{
+		this.Write(FormatImport(className));
+		this.Write("\r\n");
+	}
+	private void WriteFile(string fileName, CodeGenerationContext context, Action writeBodyAction)
+	{
+#>
+/* # move to <#= fileName #>.hx */
+
+//
+// The source code was generated by the Charon, GameDevWare, <#= DateTime.UtcNow.Year #>
+// License: MIT
+//
+//------------------------------------------------------------------------------
+// <auto-generated>
+//	 This code was generated by a tool.
+//	 Changes to this file may cause incorrect behavior and will be lost if
+//	 the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+/* # package  <#= context.TargetLanguage.Namespace #>; */
+
+/* # import haxe.Int64; */
+/* # import haxe.io.Bytes; */
+/* # import haxe.io.Eof; */
+/* # import haxe.io.Input; */
+/* # import haxe.io.BufferInput; */
+/* # import haxe.ds.GenericStack; */
+/* # import haxe.ds.ReadOnlyArray; */
+/* # import haxe.ds.BalancedTree; */
+/* # import haxe.iterators.ArrayKeyValueIterator; */
+<#+
+		writeBodyAction();
+#>
+<#+
+	}
+	private void WriteDefaultDataTypeImports(CodeGenerationContext context)
+	{
+#>
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, "TimeSpan") #>; */
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, "DocumentCollection") #>; */
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, "DocumentReferenceCollection") #>; */
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, context.TargetLanguage.DocumentClassName) #>; */
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, context.TargetLanguage.DocumentReferenceClassName) #>; */
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, "LanguageSwitcher") #>; */
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, "LanguageFallbackOption") #>; */
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, "LocalizedText") #>; */
+/* # import <#= MakePackageName(context.TargetLanguage.Namespace, "Formatters.ReaderValue") #>; */
+<#+
+	}
+	private static bool NotBuildInType(ITypeReference typeReference)
+	{
+		return typeReference is NativeTypeReference nativeType && nativeType.TypeName.StartsWith("System");
+	}
+#>

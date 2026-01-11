@@ -1,0 +1,1917 @@
+<#@ assembly name="System.Core, Culture=neutral, PublicKeyToken=b77a5c561934e089" #>
+
+		#region Serialization: Common Types
+
+
+		public enum Format
+		{
+			Json,
+			Bson,
+			Xml,
+			MessagePack
+		}
+
+		private abstract class Reader
+		{
+			private static readonly StringLookupTable SharedStringsLookupTable = <# this.GenerateStringLookupTable(this.Statistics.StringsCount); #>
+
+			protected readonly StringLookupTable stringLookupTable = SharedStringsLookupTable;
+
+			public abstract ReaderNode Node { get; }
+
+			public abstract int LineNumber { get; }
+			public abstract int ColumnNumber { get; }
+
+			public abstract bool NextToken();
+
+			public void ReadGameData(<#= this.GameDataClassName #> gameData, Dictionary<string, object> patch = null)
+			{
+				this.ReadObjectBegin();
+				while(this.Node.Token != ReaderToken.EndOfObject)
+				{
+					var memberName = this.ReadMember();
+					switch(memberName)
+					{
+						case "ChangeNumber":
+							gameData.changeNumber = (Int32)this.Node.AsInt32;
+							this.NextToken();
+						break;
+						case "Collections":
+<# if (this.DisablePatching == false) { #>
+							var collectionPatch = GetDocument(patch, "Collections");
+<# } #>
+							this.ReadObjectBegin();
+							while(this.Node.Token != ReaderToken.EndOfObject)
+							{
+								var collectionName = this.ReadMember();
+								switch (collectionName.Length)
+								{
+<#
+foreach(var typeDefinitionsByNameLength in this.Types.ToLookup(t => t.Schema.Name.Length).OrderBy(l => l.Key))
+{
+#>
+									case <#= typeDefinitionsByNameLength.Key #>:
+										switch(collectionName)
+										{
+<#
+	foreach(var typeDef in typeDefinitionsByNameLength)
+	{
+		var rootDocsCount = 0;
+		if (this.Statistics.RootDocumentCount.TryGetValue(typeDef.Schema, out rootDocsCount) == false)
+		{
+			rootDocsCount = 100;
+		}
+
+		var schemaCollectionPatchVariable = MakePascalCaseIdentifier(typeDef.Schema.Name) + "Patch";
+#>
+											case "<#= typeDef.Schema.Name #>":
+											{
+												if (this.IsNull())
+												{
+													this.NextToken();
+													break;
+												}
+<# if (this.DisablePatching == false) { #>
+												var <#= schemaCollectionPatchVariable #> = GetDocumentCollection(collectionPatch, "<#= typeDef.Schema.Name #>") ?? GetDocumentCollection(collectionPatch, "<#= typeDef.Schema.Id #>");
+<# } else { schemaCollectionPatchVariable = "null"; } #>
+
+												gameData.<#= typeDef.GameDataRootListName #> = this.Read<#= typeDef.Schema.Name #>Collection(<#= schemaCollectionPatchVariable #>, <#= rootDocsCount #>, isRootCollection: true);
+												break;
+											}
+<#
+	}
+#>
+											default:
+												this.ReadAny();
+												break;
+										}
+										break;
+<#
+}
+#>
+									default:
+										this.ReadAny();
+										break;
+								}
+							}
+							this.ReadObjectEnd();
+							return;
+						default:
+							this.ReadAny();
+							break;
+					}
+				}
+
+				this.ReadObjectEnd();
+
+				// update language list
+				var projectSettings = gameData.<#= this.TypeById["ProjectSettings"].GameDataRootListName #>.FirstOrDefault();
+				if (projectSettings != null && string.IsNullOrEmpty(projectSettings.Languages) == false)
+				{
+						var languages = new List<String>(projectSettings.Languages.Split(";,| ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
+						if (string.IsNullOrEmpty(projectSettings.PrimaryLanguage) == false)
+						{
+							gameData.primaryLanguage = projectSettings.PrimaryLanguage;
+						}
+						else if (languages.Count > 0)
+						{
+							gameData.primaryLanguage = languages[0];
+						}
+						else
+						{
+							gameData.primaryLanguage = "EN-US";
+						}
+						languages.Remove(projectSettings.PrimaryLanguage);
+						languages.Add(projectSettings.PrimaryLanguage);
+						languages.Sort(StringComparer.OrdinalIgnoreCase);
+
+						gameData.languages = new ReadOnlyCollection<String>(languages);
+				}
+			}
+<#
+foreach (var typeDef in this.Types)
+{
+	var propertiesByNameLength = typeDef.Properties.ToLookup(propDef => propDef.Name.Length);
+	var idType = typeDef.IdMember.Type;
+#>
+
+			private <#= this.ReadOnlyListClassName #><<#= typeDef.TypeName #>> Read<#= typeDef.Schema.Name #>Collection(Dictionary<string, object> collectionPatch = null, int capacity = 0, bool isRootCollection = false)
+			{
+				var collection = default(List<<#= typeDef #>>);
+				this.ReadArrayBegin();
+				while (this.Node.Token != ReaderToken.EndOfArray)
+				{
+					if (this.IsNull())
+					{
+						this.NextToken();
+						continue;
+					}
+
+					var value = this.Read<#= typeDef.Schema.Name #>(collectionPatch);
+					if (collection == null) { collection = new List<<#= typeDef #>>(capacity > 0 ? capacity : 10); }
+
+					collection.Add(value);
+				}
+				this.ReadArrayEnd();
+<# if (this.DisablePatching == false) { #>
+				if (collectionPatch != null)
+				{
+					PatchCollection<<#= idType #>, <#= typeDef.TypeName #>>(collection, collectionPatch, d => Create<#= typeDef.Schema.Name #>(d), d => d.Id, isRootCollection);
+				}
+<# } #>
+
+				return <#= this.ReadOnlyListClassName #><<#= typeDef.TypeName #>>.Create(collection);
+			}
+<# if (this.DisablePatching == false) { #>
+			private <#= typeDef.TypeName #> Create<#= typeDef.Schema.Name #>(Dictionary<string, object> values)
+			{
+				if (values == null)
+				{
+					return null;
+				}
+
+<#
+	foreach (var propertyDef in typeDef.Properties)
+	{
+		var accessExpression = "";
+		var referencedSchema = propertyDef.ReferencedType != null ? this.MetaData.GetSchema(propertyDef.SchemaProperty.ReferenceType.Id) : null;
+		var localVariableName = MakePascalCaseIdentifier("_" + propertyDef.Name + "_");
+		switch (propertyDef.DataType)
+		{
+			case DataType.Logical:
+			case DataType.Text:
+			case DataType.Time:
+			case DataType.Date:
+			case DataType.Number:
+			case DataType.Integer: accessExpression = "GetAndCovertValue<" + propertyDef.ConstructorParameter.Type + ">(values, \"" + propertyDef.Name + "\")"; break;
+			case DataType.MultiPickList:
+			case DataType.PickList: accessExpression = "(" + propertyDef.ConstructorParameter.Type + ")GetAndCovertValue<" + propertyDef.ConstructorParameter.Type + ">(values, \"" + propertyDef.Name + "\")"; break;
+			case DataType.LocalizedText: accessExpression = this.LocalizedStringClassName + ".Create(GetDocument(values, \"" + propertyDef.Name + "\"))"; break;
+			case DataType.Document: accessExpression = "Create" + referencedSchema.Name + "(GetDocument(values, \"" + propertyDef.Name + "\"))"; break;
+			case DataType.DocumentCollection:
+			case DataType.ReferenceCollection: accessExpression = "default(" + propertyDef.ConstructorParameter.Type + ")"; break;
+			case DataType.Reference: accessExpression = this.ReferenceClassName + "<" + propertyDef.ReferencedType  + ">.Create(GetDocument(values, \"" + propertyDef.Name + "\"))"; break;
+			case DataType.Formula: accessExpression = "GetDocument(values, \"" + propertyDef.Name + "\")"; break;
+			default: throw new InvalidOperationException(string.Format("Unknown property data type {0}.", propertyDef.DataType));
+		}
+
+		if (propertyDef.DataType == DataType.DocumentCollection || propertyDef.DataType == DataType.ReferenceCollection)
+		{
+			var createFn = propertyDef.DataType == DataType.DocumentCollection ? "Create" + referencedSchema.Name : this.ReferenceClassName + "<" + propertyDef.ReferencedType  + ">.Create";
+#>
+				var <#= localVariableName #>Collection_ = GetDocumentCollection(values, "<#= propertyDef.Name #>").Values.OfType<Dictionary<string, object>>().Select(<#= createFn #>).ToList();
+				var <#= localVariableName #> = <#= propertyDef.ConstructorParameter.Type #>.Create(<#= localVariableName #>Collection_);
+<#
+		}
+		else
+		{
+#>
+				var <#= localVariableName #> = <#= accessExpression #>;
+<#
+		}
+	}
+#>
+
+				return new <#= typeDef.TypeName #>(<#= string.Join( ", ", typeDef.Properties.Select(p => MakePascalCaseIdentifier("_" + p.Name + "_")).ToArray()) #>);
+			}
+<# } #>
+			private <#= typeDef.TypeName #> Read<#= typeDef.Schema.Name #>(Dictionary<string, object> collectionOrDocumentPatch = null)
+			{
+<# if (this.DisablePatching == false) { #>
+				var documentPatch = default(Dictionary<string, object>);
+
+				// if patch douments contains 'Id' property then is is a document patch. If not then it is a collection of patches by document id
+				if (collectionOrDocumentPatch != null && collectionOrDocumentPatch.ContainsKey("Id"))
+				{
+					documentPatch = collectionOrDocumentPatch;
+					collectionOrDocumentPatch = null;
+				}
+<# } #>
+
+#pragma warning disable 0168 // The variable is declared but never used
+<#
+	foreach (var propertyDef in typeDef.Properties)
+	{
+#>
+				var <#= MakePascalCaseIdentifier("_" + propertyDef.Name + "_") #> = default(<#= propertyDef.ConstructorParameter.Type #>);
+<#
+	}
+#>
+#pragma warning restore 0168
+				this.ReadObjectBegin();
+				while (this.Node.Token != ReaderToken.EndOfObject)
+				{
+					var propertyName = this.ReadMember();
+					switch (propertyName.Length)
+					{
+<#
+	foreach (var length in propertiesByNameLength.OrderBy(a => a.Key))
+	{
+#>
+						case <#= length.Key #>:
+						{
+							switch (propertyName)
+							{
+<#
+		foreach (var propertyDef in length)
+		{
+			var localVariableName = MakePascalCaseIdentifier("_" + propertyDef.Name + "_");
+
+#>
+								case "<#= propertyDef.Name #>":
+								{
+<#
+			if (propertyDef.Requirement == Requirement.None)
+			{
+#>
+									if (this.IsNull())
+									{
+										this.NextToken();
+										continue;
+									}
+
+<#
+			}
+			else
+			{
+#>
+									this.ThrowIfNull("value of <#= propertyDef.DataType #> type", "<#= propertyDef.Name #>", "<#= typeDef.Schema.Name #>");
+
+<#
+			}
+
+			if (propertyDef.DataType == DataType.Document)
+			{
+				var referencedSchema = this.MetaData.GetSchema(propertyDef.SchemaProperty.ReferenceType.Id);
+				if (this.DisablePatching == false)
+				{
+#>
+									var documentPatchObj = default(object);
+									if (documentPatch != null && documentPatch.TryGetValue("<#= propertyDef.Name #>", out documentPatchObj) && documentPatchObj == null)
+									{
+										this.ReadAny(); // skip because it was removed in patch
+									}
+									else
+									{
+										<#= localVariableName #> = this.Read<#= referencedSchema.Name #>(documentPatchObj as Dictionary<string, object>);
+									}
+<#
+				}
+				else
+				{
+#>
+										<#= localVariableName #> = this.Read<#= referencedSchema.Name #>();
+<#
+				}
+			}
+			else if (propertyDef.DataType == DataType.DocumentCollection)
+			{
+				var referencedSchema = this.MetaData.GetSchema(propertyDef.SchemaProperty.ReferenceType.Id);
+				if (this.DisablePatching == false)
+				{
+#>
+									<#= localVariableName #> = Read<#= referencedSchema.Name #>Collection(collectionPatch: GetDocumentCollection(documentPatch, "<#= propertyDef.Name #>"));
+<#
+				}
+				else
+				{
+#>
+									<#= localVariableName #> = Read<#= referencedSchema.Name #>Collection();
+<#
+				}
+			}
+			else if (propertyDef.DataType == DataType.Reference)
+			{
+#>
+									<#= localVariableName #> = this.ReadReference<<#= propertyDef.ReferencedType #>>();
+
+<#
+			}
+			else if (propertyDef.DataType == DataType.ReferenceCollection)
+			{
+#>
+									<#= localVariableName #> = ReadReferenceCollection<<#= propertyDef.ReferencedType #>>();
+<#
+			}
+			else if (propertyDef.DataType == DataType.Formula)
+			{
+#>
+									<#= localVariableName #> = this.ReadObject();
+<#
+			}
+			else if (propertyDef.DataType == DataType.LocalizedText)
+			{
+#>
+									<#= localVariableName #> = this.ReadLocalizedString();
+<#
+			}
+			else
+			{
+#>
+									this.ThrowIfNotValue();
+
+									<#= localVariableName #> = (<#= propertyDef.ConstructorParameter.Type #>)this.Node.As<#= propertyDef.SchemaProperty.GetPropertyValueType().Name #>;
+									this.NextToken();
+<#
+			}
+
+			if (typeDef.IdMember == propertyDef && this.DisablePatching == false)
+			{
+#>
+
+									if (collectionOrDocumentPatch != null)
+									{
+										documentPatch = GetDocument(collectionOrDocumentPatch, Convert.ToString(<#= MakePascalCaseIdentifier("_" + typeDef.IdMember.Name + "_") #>, CultureInfo.InvariantCulture));
+									}
+<#
+			}
+#>
+									break;
+								}
+<#
+		}
+#>
+								default:
+								{
+									this.ReadAny();
+									break;
+								}
+							}
+							break;
+						}
+<#
+	}
+#>
+						default:
+						{
+							this.ReadAny();
+							break;
+						}
+					}
+				}
+				this.ReadObjectEnd();
+
+<# if (this.DisablePatching == false) { #>
+				if (documentPatch != null && documentPatch.Count > 1)
+				{
+<#
+	foreach (var propertyDef in typeDef.Properties)
+	{
+		var patchFunction = default(string);
+		switch (propertyDef.DataType)
+		{
+			case DataType.LocalizedText: patchFunction = "PatchLocalizedString"; break;
+			case DataType.Document: continue;
+			case DataType.DocumentCollection: continue;
+			case DataType.Reference: patchFunction = "PatchReference"; break;
+			case DataType.ReferenceCollection: patchFunction = "PatchReferenceCollection"; break;
+			default: patchFunction = "PatchValue"; break;
+		}
+#>
+					<#= patchFunction #>(documentPatch, "<#= propertyDef.Name #>", ref <#= MakePascalCaseIdentifier("_" + propertyDef.Name + "_") #>);
+<#
+	}
+#>
+				}
+<# } #>
+
+				return new <#= typeDef.TypeName #>(<#= string.Join( ", ", typeDef.Properties.Select(p => MakePascalCaseIdentifier("_" + p.Name + "_")).ToArray()) #>);
+			}
+<#
+}
+#>
+			public Dictionary<string, object> ReadDocument()
+			{
+				return this.ReadObject();
+			}
+
+			private void ReadArrayBegin(bool nextToken = true)
+			{
+				if (this.Node.Token != ReaderToken.BeginArray)
+				{
+					throw ReaderException.UnexpectedToken(this, ReaderToken.BeginArray);
+				}
+				if (this.IsEndOfStream())
+				{
+					throw ReaderException.UnexpectedToken(this, ReaderToken.EndOfArray);
+				}
+
+				if (nextToken)
+					this.NextToken();
+			}
+			private void ReadArrayEnd(bool nextToken = true)
+			{
+				if (this.Node.Token != ReaderToken.EndOfArray)
+				{
+					throw ReaderException.UnexpectedToken(this, ReaderToken.EndOfArray);
+				}
+
+				if (!this.IsEndOfStream() && nextToken)
+				{
+					this.NextToken();
+				}
+			}
+			private void ReadObjectBegin(bool nextToken = true)
+			{
+				if (this.Node.Token != ReaderToken.BeginObject)
+				{
+					throw ReaderException.UnexpectedToken(this, ReaderToken.BeginObject);
+				}
+
+				if (this.IsEndOfStream())
+				{
+					throw ReaderException.UnexpectedToken(this, ReaderToken.EndOfObject);
+				}
+
+				if (nextToken)
+				{
+					this.NextToken();
+				}
+			}
+			private void ReadObjectEnd(bool nextToken = true)
+			{
+				if (this.Node.Token != ReaderToken.EndOfObject)
+				{
+					throw ReaderException.UnexpectedToken(this, ReaderToken.EndOfObject);
+				}
+
+				if (!this.IsEndOfStream() && nextToken)
+				{
+					this.NextToken();
+				}
+			}
+			private string ReadMember(bool nextToken = true)
+			{
+				if (this.Node.Token != ReaderToken.Member && this.Node.Token != ReaderToken.Value)
+				{
+					throw ReaderException.UnexpectedToken(this, ReaderToken.Member, ReaderToken.Value);
+				}
+
+				var memberName = this.Node.AsString;
+
+				if (!this.IsEndOfStream() && nextToken)
+				{
+					this.NextToken();
+				}
+
+				return memberName;
+			}
+
+			protected object ReadAny(bool nextToken = true)
+			{
+				var value = default(object);
+				switch(this.Node.Token)
+				{
+					case ReaderToken.BeginArray: value = this.ReadArray(false); break;
+					case ReaderToken.BeginObject: value = this.ReadObject(false); break;
+					case ReaderToken.Null: value = null; break;
+					case ReaderToken.Value: value = this.Node.AsObject; break;
+					default: throw ReaderException.UnexpectedToken(this, ReaderToken.BeginArray, ReaderToken.BeginObject, ReaderToken.Null, ReaderToken.Value);
+				}
+
+				if (nextToken)
+				{
+					this.NextToken();
+				}
+
+				return value;
+			}
+			private List<object> ReadArray(bool nextToken = true)
+			{
+				var list = default(List<object>);
+				var itemIndex = 0;
+				var item1 = default(object);
+				var item2 = default(object);
+				var item3 = default(object);
+				var item4 = default(object);
+
+				this.ReadArrayBegin();
+				while(this.Node.Token != ReaderToken.EndOfArray)
+				{
+					var value = this.ReadAny();
+
+					if (list == null)
+					{
+						switch (itemIndex)
+						{
+							case 0:
+								item1 = value;
+								itemIndex = 1;
+								continue;
+							case 1:
+								item2 = value;
+								itemIndex = 2;
+								continue;
+							case 2:
+								item3 = value;
+								itemIndex = 3;
+								continue;
+							case 3:
+								item4 = value;
+								itemIndex = 4;
+								continue;
+							default:
+								list = new List<object>(itemIndex + 1);
+								list.Add(item1);
+								list.Add(item2);
+								list.Add(item3);
+								list.Add(item4);
+								break;
+						}
+					}
+
+					list.Add(value);
+				}
+				this.ReadArrayEnd(nextToken);
+
+				if (itemIndex == 0)
+				{
+					list = new List<object>(1);
+				}
+				else if (list == null)
+				{
+					list = new List<object>(itemIndex);
+
+					if (itemIndex > 0) { list.Add(item1); }
+					if (itemIndex > 1) { list.Add(item2); }
+					if (itemIndex > 2) { list.Add(item3); }
+					if (itemIndex > 3) { list.Add(item4); }
+				}
+
+				return list;
+			}
+			private Dictionary<string, object> ReadObject(bool nextToken = true)
+			{
+				var keyValueIndex = 0;
+				var keyValuePair1 = default(KeyValuePair<string, object>);
+				var keyValuePair2 = default(KeyValuePair<string, object>);
+				var keyValuePair3 = default(KeyValuePair<string, object>);
+				var keyValuePair4 = default(KeyValuePair<string, object>);
+				var dictionary = default(Dictionary<string, object>);
+
+				this.ReadObjectBegin();
+				while(this.Node.Token != ReaderToken.EndOfObject)
+				{
+					var key = this.ReadMember();
+					var value = this.ReadAny();
+
+					if (dictionary == null)
+					{
+						switch (keyValueIndex)
+						{
+							case 0:
+								keyValuePair1 = new KeyValuePair<string, object>(key, value);
+								keyValueIndex = 1;
+								continue;
+							case 1:
+								keyValuePair2 = new KeyValuePair<string, object>(key, value);
+								keyValueIndex = 2;
+								continue;
+							case 2:
+								keyValuePair3 = new KeyValuePair<string, object>(key, value);
+								keyValueIndex = 3;
+								continue;
+							case 3:
+								keyValuePair4 = new KeyValuePair<string, object>(key, value);
+								keyValueIndex = 4;
+								continue;
+							default:
+								dictionary = new Dictionary<string, object>(keyValueIndex + 1);
+								dictionary[keyValuePair1.Key] = keyValuePair1.Value;
+								dictionary[keyValuePair2.Key] = keyValuePair2.Value;
+								dictionary[keyValuePair3.Key] = keyValuePair3.Value;
+								dictionary[keyValuePair4.Key] = keyValuePair4.Value;
+								break;
+						}
+					}
+
+					dictionary[key] = value;
+				}
+				this.ReadObjectEnd(nextToken);
+
+
+				if (keyValueIndex == 0)
+				{
+					dictionary = new Dictionary<string, object>(1);
+				}
+				else if (dictionary == null)
+				{
+					dictionary = new Dictionary<string, object>(keyValueIndex);
+					switch (keyValueIndex)
+					{
+						case 1: dictionary[keyValuePair1.Key] = keyValuePair1.Value; break;
+						case 2: dictionary[keyValuePair2.Key] = keyValuePair2.Value; goto case 1;
+						case 3: dictionary[keyValuePair3.Key] = keyValuePair3.Value; goto case 2;
+						case 4: dictionary[keyValuePair4.Key] = keyValuePair4.Value; goto case 3;
+					}
+				}
+
+				return dictionary;
+			}
+			private <#= this.LocalizedStringClassName #> ReadLocalizedString(bool nextToken = true)
+			{
+				var locString = new <#= this.LocalizedStringClassName #>();
+				this.ReadObjectBegin();
+				while(this.Node.Token != ReaderToken.EndOfObject)
+				{
+					var key = this.ReadMember();
+					var value = Convert.ToString(this.ReadAny(), CultureInfo.InvariantCulture);
+
+					if (key == "notes")
+					{
+						continue;
+					}
+
+					locString[key] = value;
+				}
+				this.ReadObjectEnd(nextToken);
+				return locString;
+			}
+			private <#= this.ReadOnlyListClassName #><<#= this.ReferenceClassName #><T>> ReadReferenceCollection<T>(bool nextToken = true) where T : <#= this.DocumentClassName #>
+			{
+				var referenceCollection = default(List<<#= this.ReferenceClassName #><T>>);
+				this.ReadArrayBegin();
+				while (this.Node.Token != ReaderToken.EndOfArray)
+				{
+					if (this.IsNull())
+					{
+						this.NextToken();
+						continue;
+					}
+
+					var value = this.ReadReference<T>();
+					if (referenceCollection == null) { referenceCollection = new List<<#= this.ReferenceClassName #><T>>(5); }
+					referenceCollection.Add(value);
+				}
+				this.ReadArrayEnd(nextToken);
+
+				return <#= this.ReadOnlyListClassName #><<#= this.ReferenceClassName #><T>>.Create(referenceCollection);
+			}
+			private <#= this.ReferenceClassName #><T> ReadReference<T>(bool nextToken = true) where T : <#= this.DocumentClassName #>
+			{
+				var reference = new <#= this.ReferenceClassName #><T>();
+				this.ReadObjectBegin();
+				while (this.Node.Token != ReaderToken.EndOfObject)
+				{
+					var key = this.ReadMember();
+					if (key == "Id")
+						reference.Id = this.ReadAny();
+					else
+						this.ReadAny();
+				}
+				this.ReadObjectEnd(nextToken);
+				return reference;
+			}
+
+			private bool IsEndOfStream()
+			{
+				return this.Node.Token == ReaderToken.EndOfStream;
+			}
+			private bool IsNull()
+			{
+				return this.Node.Token == ReaderToken.Null;
+			}
+			private void ThrowIfNotValue()
+			{
+				if (this.Node.Token != ReaderToken.Value)
+				{
+					throw ReaderException.UnexpectedToken(this, ReaderToken.Value);
+				}
+			}
+			private void ThrowIfNull(string expected, string propertyName, string schemaName)
+			{
+				if (this.Node.Token == ReaderToken.Null)
+				{
+					throw ReaderException.UnexpectedNullValue(expected, propertyName, schemaName, this);
+				}
+			}
+
+			private static T GetValueAs<T>(Dictionary<string, object> values, string key, T defaultValue = default(T))
+			{
+				if (key == null) throw new ArgumentNullException("key");
+
+				var valueObj = default(object);
+				if (values == null || values.TryGetValue(key, out valueObj) == false || valueObj is T == false)
+				{
+					return defaultValue;
+				}
+				return (T)valueObj;
+			}
+			private static object GetValue(Dictionary<string, object> values, string key)
+			{
+				if (key == null) throw new ArgumentNullException("key");
+
+				if (values == null)
+				{
+					return null;
+				}
+
+				var valueObj = default(object);
+				values.TryGetValue(key, out valueObj);
+				return valueObj;
+			}
+			private static Dictionary<string, object> GetDocument(Dictionary<string, object> values, string key)
+			{
+				return GetValueAs<Dictionary<string, object>>(values, key);
+			}
+			private static T GetAndCovertValue<T>(Dictionary<string, object> values, string key, T defaultValue = default(T))
+			{
+				if (key == null) throw new ArgumentNullException("key");
+
+				var valueObj = default(object);
+				if (values == null || values.TryGetValue(key, out valueObj) == false)
+				{
+					return defaultValue;
+				}
+
+				return ConvertTo<T>(valueObj);
+			}
+
+			private static Dictionary<string, object> GetDocumentCollection(Dictionary<string, object> values, string key)
+			{
+				if (key == null) throw new ArgumentNullException("key");
+
+				var valueObj = default(object);
+				if (values == null || values.TryGetValue(key, out valueObj) == false)
+				{
+					return null;
+				}
+
+				if (valueObj is Dictionary<string, object>)
+				{
+					return (Dictionary<string, object>)valueObj;
+				}
+				else if (valueObj is List<object>)
+				{
+					var documents = (List<object>)valueObj;
+					var documentsById = new Dictionary<string, object>(documents.Count);
+					foreach (var document in documents)
+					{
+						var id = Convert.ToString(GetValue(document as Dictionary<string, object>, "Id"), CultureInfo.InvariantCulture);
+						if (string.IsNullOrEmpty(id))
+						{
+							continue;
+						}
+						documentsById[id] = document;
+					}
+					return documentsById;
+				}
+				else
+				{
+					return null;
+				}
+			}
+<# if (this.DisablePatching == false) { #>
+			private static void PatchValue<T>(Dictionary<string, object> values, string key, ref T value)
+			{
+				if (key == null) throw new ArgumentNullException("key");
+
+				var valueObj = default(object);
+				if (values == null || values.Count == 0 || values.TryGetValue(key, out valueObj) == false)
+				{
+					return;
+				}
+
+				value = ConvertTo<T>(valueObj);
+			}
+			private void PatchCollection<IdType, SchemaT>(List<SchemaT> collection, Dictionary<string, object> collectionPatch, Func<Dictionary<string, object>, SchemaT> constructor, Func<SchemaT, IdType> getId, bool isRootCollection)
+			{
+				if (collection == null) throw new ArgumentNullException("collection");
+				if (collectionPatch == null) throw new ArgumentNullException("collectionPatch");
+				if (constructor == null) throw new ArgumentNullException("constructor");
+				if (getId == null) throw new ArgumentNullException("getId");
+
+				var collectionIndex = 0;
+				var idComparer = Comparer<IdType>.Default;
+				var patchIndex = 0;
+				foreach (var kv in collectionPatch)
+				{
+					var id = ConvertTo<IdType>(kv.Key);
+					collectionIndex = -1;
+					for (int k = 0; k < collection.Count; k++)
+					{
+						if (idComparer.Compare(getId(collection[k]), id) != 0)
+						{
+							continue;
+						}
+						collectionIndex = k;
+						break;
+					}
+
+					if (kv.Value == null && collectionIndex != -1)
+					{
+						// remove document
+						collection.RemoveAt(collectionIndex);
+					}
+					else if (kv.Value is Dictionary<string, object> && collectionIndex == -1)
+					{
+						// create document
+						var document = (Dictionary<string, object>)kv.Value;
+						collection.Add(constructor(document));
+					}
+					else if (patchIndex != collectionIndex && collectionIndex != -1 && isRootCollection == false)
+					{
+						// re-order document
+						var document = collection[collectionIndex];
+						collection.RemoveAt(collectionIndex);
+						collection.Insert(patchIndex, document);
+					}
+
+					patchIndex++;
+				}
+			}
+			private static void PatchReference<T>(Dictionary<string, object> values, string key, ref <#= this.ReferenceClassName #><T> value) where T : <#= this.DocumentClassName #>
+			{
+				if (key == null) throw new ArgumentNullException("key");
+
+				var valueObj = default(object);
+				if (values == null || values.Count == 0 || values.TryGetValue(key, out valueObj) == false)
+				{
+					return;
+				}
+
+				var newReference = valueObj as Dictionary<string, object>;
+				var newReferenceId = default(object);
+				if (newReference == null || newReference.TryGetValue("Id", out newReferenceId) == false || newReferenceId == null)
+				{
+					value = null;
+					return;
+				}
+				value = new <#= this.ReferenceClassName #><T>() { Id = newReferenceId };
+			}
+			private static void PatchReferenceCollection<T>(Dictionary<string, object> values, string key, ref <#= this.ReadOnlyListClassName #><<#= this.ReferenceClassName #><T>> value) where T : <#= this.DocumentClassName #>
+			{
+				if (key == null) throw new ArgumentNullException("key");
+
+				var valueObj = default(object);
+				if (values == null || values.Count == 0 || values.TryGetValue(key, out valueObj) == false)
+				{
+					return;
+				}
+
+				if (valueObj is Dictionary<string, object>)
+				{
+					var referenceById = (Dictionary<string, object>)valueObj;
+					var collection = new List<<#= this.ReferenceClassName #><T>>(referenceById.Count);
+
+					foreach(var kv in referenceById)
+					{
+						if (kv.Value == null)
+						{
+							continue;
+						}
+						collection.Add(new <#= this.ReferenceClassName #><T> { Id = kv.Key });
+					}
+
+					value = <#= this.ReadOnlyListClassName #><<#= this.ReferenceClassName #><T>>.Create(collection);
+				}
+				else if (valueObj is List<object>)
+				{
+					var referenceCollection = (List<object>)valueObj;
+					var collection = new List<<#= this.ReferenceClassName #><T>>(referenceCollection.Count);
+
+					foreach(var reference in referenceCollection)
+					{
+						if (reference == null || reference is Dictionary<string, object> == false)
+						{
+							continue;
+						}
+						var id = GetValue((Dictionary<string, object>)reference, "Id");
+						if (id == null)
+						{
+							continue;
+						}
+						collection.Add(new <#= this.ReferenceClassName #><T> { Id = id });
+					}
+
+					value = <#= this.ReadOnlyListClassName #><<#= this.ReferenceClassName #><T>>.Create(collection);
+				}
+			}
+			private static void PatchLocalizedString(Dictionary<string, object> values, string key, ref <#= this.LocalizedStringClassName #> value)
+			{
+				if (key == null) throw new ArgumentNullException("key");
+
+				var valueObj = default(object);
+				if (values == null || values.Count == 0 || values.TryGetValue(key, out valueObj) == false)
+				{
+					return;
+				}
+
+				var newLocalization = valueObj as Dictionary<string, object>;
+				if (newLocalization == null)
+				{
+					value = null;
+					return;
+				}
+
+				value = value ?? new <#= this.LocalizedStringClassName #>();
+				foreach (var kv in newLocalization)
+				{
+					if (kv.Value == null)
+					{
+						value[kv.Key] = null;
+					}
+					else
+					{
+						value[kv.Key] = Convert.ToString(kv.Value, CultureInfo.InvariantCulture);
+					}
+				}
+			}
+<# } #>
+			private static T ConvertTo<T>(object valueObj)
+			{
+				if (valueObj is T)
+				{
+					return (T)valueObj;
+				}
+
+				var nullableType = Nullable.GetUnderlyingType(typeof(T));
+				var valueType = nullableType ?? typeof(T);
+				if (valueObj == null)
+				{
+					if (typeof(T).IsValueType && nullableType == null)
+					{
+						throw new InvalidOperationException(string.Format("Unable to convert null value to type '{0}'.", typeof(T)));
+					}
+					return default(T);
+				}
+				else if (valueType.IsEnum)
+				{
+					return (T)Enum.Parse(valueType, Convert.ToString(valueObj, CultureInfo.InvariantCulture), true);
+				}
+				else
+				{
+					return (T)Convert.ChangeType(valueObj, valueType, CultureInfo.InvariantCulture);
+				}
+			}
+
+			public override string ToString()
+			{
+				return this.Node.ToString();
+			}
+		}
+
+		private struct ReaderNode
+		{
+			private static readonly string[] DateTimeFormats = new string[] { "yyyy-MM-ddTHH:mm:ss.fffZ", "o" };
+
+			private readonly object value;
+
+			public readonly ReaderToken Token;
+			public readonly Type ValueType;
+
+			public bool HasValue { get { return this.ValueType != typeof(void); } }
+
+			public ReaderNode(ReaderToken token)
+			{
+				this.Token = token;
+				this.value = null;
+				this.ValueType = typeof(void);
+			}
+			public ReaderNode(ReaderToken token, object value)
+			{
+				if (value == null) throw new ArgumentNullException("value");
+
+				this.Token = token;
+				this.value = value;
+				this.ValueType = value is IStrongBox ? ((IStrongBox)value).ValueType : value.GetType();
+			}
+
+			public bool AsBoolean
+			{
+				get
+				{
+					if (this.value is IStrongBox) return (this.value as IStrongBox).AsBoolean;
+					return Convert.ToBoolean(this.value, CultureInfo.InvariantCulture);
+				}
+			}
+			public byte AsByte
+			{
+				get
+				{
+					if (this.value is IStrongBox) return (this.value as IStrongBox).AsByte;
+					return Convert.ToByte(this.value, CultureInfo.InvariantCulture);
+				}
+			}
+			public short AsInt16
+			{
+				get
+				{
+					if (this.value is IStrongBox) return (this.value as IStrongBox).AsInt16;
+					return Convert.ToInt16(this.value, CultureInfo.InvariantCulture);
+				}
+			}
+			public int AsInt32
+			{
+				get
+				{
+					if (this.value is IStrongBox) return (this.value as IStrongBox).AsInt32;
+					return Convert.ToInt32(this.value, CultureInfo.InvariantCulture);
+				}
+			}
+			public long AsInt64
+			{
+				get
+				{
+					if (this.value is IStrongBox) return (this.value as IStrongBox).AsInt64;
+					return Convert.ToInt64(this.value, CultureInfo.InvariantCulture);
+				}
+			}
+			public sbyte AsSByte
+			{
+				get
+				{
+					if (this.value is IStrongBox) return (this.value as IStrongBox).AsSByte;
+					return Convert.ToSByte(this.value, CultureInfo.InvariantCulture);
+				}
+			}
+			public ushort AsUInt16
+			{
+				get
+				{
+					if (this.value is IStrongBox) return (this.value as IStrongBox).AsUInt16;
+					return Convert.ToUInt16(this.value, CultureInfo.InvariantCulture);
+				}
+			}
+			public uint AsUInt32
+			{
+				get
+				{
+					if (this.value is IStrongBox) return (this.value as IStrongBox).AsUInt32;
+					return Convert.ToUInt32(this.value, CultureInfo.InvariantCulture);
+				}
+			}
+			public ulong AsUInt64
+			{
+				get
+				{
+					if (this.value is IStrongBox) return (this.value as IStrongBox).AsUInt64;
+					return Convert.ToUInt64(this.value, CultureInfo.InvariantCulture);
+				}
+			}
+			public float AsSingle
+			{
+				get
+				{
+					if (this.value is IStrongBox) return (this.value as IStrongBox).AsSingle;
+					return Convert.ToSingle(this.value, CultureInfo.InvariantCulture);
+				}
+			}
+			public double AsDouble
+			{
+				get
+				{
+					if (this.value is IStrongBox) return (this.value as IStrongBox).AsDouble;
+					return Convert.ToDouble(this.value, CultureInfo.InvariantCulture);
+				}
+			}
+			public decimal AsDecimal
+			{
+				get
+				{
+					if (this.value is IStrongBox) return (this.value as IStrongBox).AsDecimal;
+					return Convert.ToDecimal(this.value, CultureInfo.InvariantCulture);
+				}
+			}
+			public string AsString
+			{
+				get
+				{
+					var value = this.value;
+					if (this.value is IStrongBox) value = (this.value as IStrongBox).AsObject;
+					return Convert.ToString(value, CultureInfo.InvariantCulture);
+				}
+			}
+			public DateTime AsDateTime
+			{
+				get
+				{
+					var dateTimeStr = this.AsString;
+					var date = DateTime.ParseExact(dateTimeStr, DateTimeFormats, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+					return date;
+				}
+			}
+			public TimeSpan AsTimeSpan
+			{
+				get
+				{
+					var timeSpanStr = this.AsString;
+					var timeSpan = TimeSpan.Parse(timeSpanStr);
+					return timeSpan;
+				}
+			}
+			public object AsObject
+			{
+				get
+				{
+					if (this.value is IStrongBox) return (this.value as IStrongBox).AsObject;
+					return this.value;
+				}
+			}
+
+			public override string ToString()
+			{
+				return string.Format(CultureInfo.InvariantCulture, "{0}:{1}", this.Token, this.value);
+			}
+		}
+
+		private interface IStrongBox
+		{
+			bool AsBoolean { get; }
+			byte AsByte { get; }
+			short AsInt16 { get; }
+			int AsInt32 { get; }
+			long AsInt64 { get; }
+			sbyte AsSByte { get; }
+			ushort AsUInt16 { get; }
+			uint AsUInt32 { get; }
+			ulong AsUInt64 { get; }
+			float AsSingle { get; }
+			double AsDouble { get; }
+			decimal AsDecimal { get; }
+			Type ValueType { get; }
+			object AsObject { get; }
+
+			void Store<T>(T value);
+		}
+
+		private sealed class StrongBox<ValueT> : IStrongBox
+		{
+			private static readonly Type ValueType = typeof(ValueT);
+
+			private readonly IFormatProvider formatProvider;
+
+			public ValueT Value;
+
+			public StrongBox(ValueT value, IFormatProvider formatProvider)
+				: this(formatProvider)
+			{
+				this.Value = value;
+			}
+			public StrongBox(IFormatProvider formatProvider)
+			{
+				if (formatProvider == null) throw new ArgumentNullException("formatProvider");
+
+				this.formatProvider = formatProvider;
+			}
+
+			Type IStrongBox.ValueType { get { return ValueType; } }
+			public bool AsBoolean { get	{ return Convert.ToBoolean((object)Value, this.formatProvider);	} }
+			public byte AsByte { get { return Convert.ToByte((object)Value, this.formatProvider); } }
+			public short AsInt16 { get { return Convert.ToInt16((object)Value, this.formatProvider); } }
+			public int AsInt32 { get { return Convert.ToInt32((object)Value, this.formatProvider); } }
+			public long AsInt64 { get { return Convert.ToInt64((object)Value, this.formatProvider); } }
+			public sbyte AsSByte { get { return Convert.ToSByte((object)Value, this.formatProvider); } }
+			public ushort AsUInt16 { get { return Convert.ToUInt16((object)Value, this.formatProvider); } }
+			public uint AsUInt32 { get { return Convert.ToUInt32((object)Value, this.formatProvider); } }
+			public ulong AsUInt64 { get { return Convert.ToUInt64((object)Value, this.formatProvider); } }
+			public float AsSingle { get { return Convert.ToSingle((object)Value, this.formatProvider); } }
+			public double AsDouble { get { return Convert.ToDouble((object)Value, this.formatProvider); } }
+			public decimal AsDecimal { get { return Convert.ToDecimal((object)Value, this.formatProvider); } }
+			public object AsObject { get { return this.Value; } }
+
+			public void Store<T>(T value)
+			{
+				var type = typeof(T);
+				if (type != ValueType)
+				{
+					throw new ArgumentException(string.Format("Unable to store value of type '{0}' in container of type '{1}'", typeof(ValueT), type));
+				}
+				this.Value = (ValueT)(object)value;
+			}
+
+			public override string ToString()
+			{
+				return Convert.ToString(this.Value, this.formatProvider);
+			}
+		}
+
+		private enum ReaderToken
+		{
+			None = 0,
+			BeginArray,
+			EndOfArray,
+			BeginObject,
+			EndOfObject,
+			Member,
+			Null,
+			Value,
+			Comment,
+			EndOfStream
+		}
+
+		public sealed class StringSet
+		{
+			public static readonly Comparer<ulong> KeyComparer = Comparer<ulong>.Default;
+
+			private readonly ulong[] keys;
+			private readonly StringSet[] subSets;
+			private readonly string[] values;
+
+			public StringSet(ulong[] keys, StringSet[] subSets)
+			{
+				if(keys == null) throw new ArgumentNullException("keys");
+				if(subSets == null) throw new ArgumentNullException("subSets");
+				if(subSets.Length != keys.Length) throw new ArgumentException("invalid sets", "keys");
+
+				this.keys = keys;
+				this.subSets = subSets;
+			}
+			public StringSet(ulong[] keys, string[] values)
+			{
+				if(keys == null) throw new ArgumentNullException("keys");
+				if(values == null) throw new ArgumentNullException("values");
+				if(values.Length != keys.Length) throw new ArgumentException("invalid sets", "keys");
+
+				this.keys = keys;
+				this.values = values;
+			}
+
+			public bool TryNarrow(ulong octet, out StringSet value)
+			{
+				var subSetIndex = 0;
+				switch (this.keys.Length)
+				{
+					case 1: subSetIndex = this.keys[0] == octet ? 0 : -1; break;
+					case 2: subSetIndex = this.keys[0] == octet ? 0 : this.keys[1] == octet ? 1 : -1; break;
+					case 3:
+					case 4:
+					case 5: subSetIndex = Array.IndexOf(this.keys, octet, 0, this.keys.Length); break;
+					default: subSetIndex = Array.BinarySearch(this.keys, 0, this.keys.Length, octet, KeyComparer); break;
+				}
+
+				if (subSetIndex < 0)
+				{
+					value =  null;
+					return false;
+				}
+				value = this.subSets[subSetIndex];
+				return true;
+			}
+			public bool TryGetValue(ulong octet, out string value)
+			{
+				var valueIndex = 0;
+				switch (this.keys.Length)
+				{
+					case 1: valueIndex = this.keys[0] == octet ? 0 : -1; break;
+					case 2: valueIndex = this.keys[0] == octet ? 0 : this.keys[1] == octet ? 1 : -1; break;
+					case 3:
+					case 4:
+					case 5: valueIndex = Array.IndexOf(this.keys, octet, 0, this.keys.Length); break;
+					default: valueIndex = Array.BinarySearch(this.keys, 0, this.keys.Length, octet, KeyComparer); break;
+				}
+
+				if (valueIndex < 0)
+				{
+					value = null;
+					return false;
+				}
+
+				value = this.values[valueIndex];
+				return value != null;
+			}
+		}
+
+		public sealed class StringLookupTable
+		{
+			public const int MAX_STRING_SIZE = 8 * 8;
+
+			private readonly StringSet[] table;
+
+			public StringLookupTable(StringSet[] table)
+			{
+				if (table == null) throw new ArgumentNullException("table");
+
+				this.table = table;
+				Array.Resize(ref this.table, MAX_STRING_SIZE + 1);
+			}
+
+			public bool TryGetString(byte[] bytes, int offset, int count, out string value)
+			{
+				const int LAST_ASCII_CHARACTER = 0x7f;
+
+				if (bytes == null) { throw new ArgumentNullException("bytes"); }
+				if (count < 0) throw new ArgumentOutOfRangeException("count");
+				if (offset < 0) throw new ArgumentOutOfRangeException("offset");
+				if (offset + count > bytes.Length) throw new ArgumentOutOfRangeException("offset");
+
+				if (count == 0)
+				{
+					value = string.Empty;
+					return true;
+				}
+
+				value = null;
+				if (count > MAX_STRING_SIZE || this.table[count] == null)
+				{
+					return false;
+				}
+
+				var end = offset + count;
+				var octet = 0UL;
+				for (var i = 0; offset + i < end; i++)
+				{
+					var character = bytes[offset + i];
+					if (character > LAST_ASCII_CHARACTER)
+					{
+						return false;
+					}
+
+					if (i < 8)
+					{
+						octet = unchecked(octet | ((ulong)character << 8 * i));
+					}
+				}
+
+				var set = this.table[count];
+				var narrowOffset = 1;
+				for (var i = 0; i < (count - 1) / 8; i++, narrowOffset++)
+				{
+					if (set == null || !set.TryNarrow(octet, out set))
+					{
+						return false;
+					}
+
+					octet = GetUInt64(bytes, offset + narrowOffset * 8, end);
+				}
+
+				return set != null && set.TryGetValue(octet, out value);
+			}
+			public bool TryGetString(char[] chars, int offset, int count, out string value)
+			{
+				const int LAST_ASCII_CHARACTER = 0x7f;
+
+				if (chars == null) { throw new ArgumentNullException("chars"); }
+				if (count < 0) throw new ArgumentOutOfRangeException("count");
+				if (offset < 0) throw new ArgumentOutOfRangeException("offset");
+				if (offset + count > chars.Length) throw new ArgumentOutOfRangeException("offset");
+
+				if (count == 0)
+				{
+					value = string.Empty;
+					return true;
+				}
+
+				value = null;
+				if (count > MAX_STRING_SIZE || this.table[count] == null)
+				{
+					return false;
+				}
+
+				var end = offset + count;
+				var octet = 0UL;
+				for (var i = 0; offset + i < end; i++)
+				{
+					var character = chars[offset + i];
+					if (character > LAST_ASCII_CHARACTER)
+					{
+						return false;
+					}
+
+					if (i < 8)
+					{
+						octet = unchecked(octet | ((ulong)character << 8 * i));
+					}
+				}
+
+				var set = this.table[count];
+				var narrowOffset = 1;
+				for (var i = 0; i < (count - 1) / 8; i++, narrowOffset++)
+				{
+					if (set == null || !set.TryNarrow(octet, out set))
+					{
+						return false;
+					}
+
+					octet = GetUInt64(chars, offset + narrowOffset * 8, end);
+				}
+
+				return set != null && set.TryGetValue(octet, out value);
+			}
+
+			private static ulong GetUInt64(byte[] bytes, int offset, int end)
+			{
+				if (offset >= end)
+				{
+					return 0;
+				}
+
+				switch (end - offset)
+				{
+					case 1: return (ulong)bytes[offset];
+					case 2:
+						return (ulong)bytes[offset] |
+							(ulong)bytes[offset + 1] << 8 * 1;
+					case 3:
+						return (ulong)bytes[offset] |
+							(ulong)bytes[offset + 1] << 8 * 1 |
+							(ulong)bytes[offset + 2] << 8 * 2;
+					case 4:
+						return (ulong)bytes[offset] |
+							(ulong)bytes[offset + 1] << 8 * 1 |
+							(ulong)bytes[offset + 2] << 8 * 2 |
+							(ulong)bytes[offset + 3] << 8 * 3;
+					case 5:
+						return (ulong)bytes[offset] |
+							(ulong)bytes[offset + 1] << 8 * 1 |
+							(ulong)bytes[offset + 2] << 8 * 2 |
+							(ulong)bytes[offset + 3] << 8 * 3 |
+							(ulong)bytes[offset + 4] << 8 * 4;
+					case 6:
+						return (ulong)bytes[offset] |
+							(ulong)bytes[offset + 1] << 8 * 1 |
+							(ulong)bytes[offset + 2] << 8 * 2 |
+							(ulong)bytes[offset + 3] << 8 * 3 |
+							(ulong)bytes[offset + 4] << 8 * 4 |
+							(ulong)bytes[offset + 5] << 8 * 5;
+					case 7:
+						return (ulong)bytes[offset] |
+							(ulong)bytes[offset + 1] << 8 * 1 |
+							(ulong)bytes[offset + 2] << 8 * 2 |
+							(ulong)bytes[offset + 3] << 8 * 3 |
+							(ulong)bytes[offset + 4] << 8 * 4 |
+							(ulong)bytes[offset + 5] << 8 * 5 |
+							(ulong)bytes[offset + 6] << 8 * 6;
+					default:
+						return (ulong)bytes[offset] |
+							(ulong)bytes[offset + 1] << 8 * 1 |
+							(ulong)bytes[offset + 2] << 8 * 2 |
+							(ulong)bytes[offset + 3] << 8 * 3 |
+							(ulong)bytes[offset + 4] << 8 * 4 |
+							(ulong)bytes[offset + 5] << 8 * 5 |
+							(ulong)bytes[offset + 6] << 8 * 6 |
+							(ulong)bytes[offset + 7] << 8 * 7;
+				}
+			}
+			private static ulong GetUInt64(char[] chars, int offset, int end)
+			{
+				if (offset >= end)
+				{
+					return 0;
+				}
+
+				switch (end - offset)
+				{
+					case 1: return (ulong)chars[offset];
+					case 2:
+						return (ulong)chars[offset] |
+							(ulong)chars[offset + 1] << 8 * 1;
+					case 3:
+						return (ulong)chars[offset] |
+							(ulong)chars[offset + 1] << 8 * 1 |
+							(ulong)chars[offset + 2] << 8 * 2;
+					case 4:
+						return (ulong)chars[offset] |
+							(ulong)chars[offset + 1] << 8 * 1 |
+							(ulong)chars[offset + 2] << 8 * 2 |
+							(ulong)chars[offset + 3] << 8 * 3;
+					case 5:
+						return (ulong)chars[offset] |
+							(ulong)chars[offset + 1] << 8 * 1 |
+							(ulong)chars[offset + 2] << 8 * 2 |
+							(ulong)chars[offset + 3] << 8 * 3 |
+							(ulong)chars[offset + 4] << 8 * 4;
+					case 6:
+						return (ulong)chars[offset] |
+							(ulong)chars[offset + 1] << 8 * 1 |
+							(ulong)chars[offset + 2] << 8 * 2 |
+							(ulong)chars[offset + 3] << 8 * 3 |
+							(ulong)chars[offset + 4] << 8 * 4 |
+							(ulong)chars[offset + 5] << 8 * 5;
+					case 7:
+						return (ulong)chars[offset] |
+							(ulong)chars[offset + 1] << 8 * 1 |
+							(ulong)chars[offset + 2] << 8 * 2 |
+							(ulong)chars[offset + 3] << 8 * 3 |
+							(ulong)chars[offset + 4] << 8 * 4 |
+							(ulong)chars[offset + 5] << 8 * 5 |
+							(ulong)chars[offset + 6] << 8 * 6;
+					default:
+						return (ulong)chars[offset] |
+							(ulong)chars[offset + 1] << 8 * 1 |
+							(ulong)chars[offset + 2] << 8 * 2 |
+							(ulong)chars[offset + 3] << 8 * 3 |
+							(ulong)chars[offset + 4] << 8 * 4 |
+							(ulong)chars[offset + 5] << 8 * 5 |
+							(ulong)chars[offset + 6] << 8 * 6 |
+							(ulong)chars[offset + 7] << 8 * 7;
+				}
+			}
+		}
+
+		[Serializable]
+		private class ReaderException : SerializationException
+		{
+			public int Code { get; set; }
+			public int LineNumber { get; set; }
+			public int ColumnNumber { get; set; }
+
+			private ReaderException(string message, Reader reader)
+				: base(message)
+			{
+				if (message == null) throw new ArgumentNullException("message");
+
+				if (reader != null)
+					this.Update(reader);
+			}
+
+			protected ReaderException(SerializationInfo info, StreamingContext context)
+				: base(info, context)
+			{
+				if (info == null) throw new ArgumentNullException("info");
+
+				this.LineNumber = info.GetInt32("LineNumber");
+				this.ColumnNumber = info.GetInt32("ColumnNumber");
+			}
+
+			private void Update(Reader reader)
+			{
+				if (reader == null) throw new ArgumentNullException("reader");
+
+				this.LineNumber = reader.LineNumber;
+				this.ColumnNumber = reader.ColumnNumber;
+			}
+
+			public override void GetObjectData(SerializationInfo info, StreamingContext context)
+			{
+				if (info == null) throw new ArgumentNullException("info");
+
+				info.AddValue("Code", this.Code);
+				info.AddValue("LineNumber", this.LineNumber);
+				info.AddValue("ColumnNumber", this.ColumnNumber);
+
+				base.GetObjectData(info, context);
+			}
+
+			public static Exception UnexpectedEndOfStream(Reader reader)
+			{
+				if (reader == null) throw new ArgumentNullException("reader");
+
+				return new ReaderException(string.Format("Unexpected end of stream."), reader);
+			}
+			public static Exception UnexpectedToken(Reader reader, params ReaderToken[] expectedTokens)
+			{
+				if (reader == null) throw new ArgumentNullException("reader");
+				if (expectedTokens == null) throw new ArgumentNullException("expectedTokens");
+
+				var tokensStr = default(string);
+				if (expectedTokens.Length == 0)
+				{
+					tokensStr = "<no tokens>";
+				}
+				else
+				{
+					var tokens = Array.ConvertAll(expectedTokens, c => c.ToString());
+					tokensStr = String.Join(", ", tokens);
+				}
+
+				return new ReaderException(string.Format("Expected one of there '{2}' but found '{0}'({1}).", reader.Node.Token, reader.Node.ValueType.Name, tokensStr), reader);
+			}
+			public static Exception UnknownEscapeSequence(string escape, Reader reader)
+			{
+				if (escape == null) throw new ArgumentNullException("escape");
+				if (reader == null) throw new ArgumentNullException("reader");
+
+				return new ReaderException(string.Format("An unknown escape sequence '{0}'.", escape),reader);
+			}
+			public static Exception UnterminatedStringLiteral(Reader reader)
+			{
+				if (reader == null) throw new ArgumentNullException("reader");
+
+				return new ReaderException(string.Format("An unterminated string literal."), reader);
+			}
+			public static Exception UnknownNotation(Reader reader, string notation)
+			{
+				if (reader == null) throw new ArgumentNullException("reader");
+
+				return new ReaderException(string.Format("An unknown notation '{0}'.", notation), reader);
+			}
+			public static Exception StringLiteralIsTooLong(Reader reader, int size, int maxSize)
+			{
+				if (reader == null) throw new ArgumentNullException("reader");
+
+				return new ReaderException(string.Format("String literal is too long '{0}'. Maximum size is {1}.", size, maxSize), reader);
+			}
+			public static Exception BinaryDataIsTooLong(Reader reader, int size, int maxSize)
+			{
+				if (reader == null) throw new ArgumentNullException("reader");
+
+				return new ReaderException(string.Format("Binary data is too long '{0}'. Maximum size is {1}.", size, maxSize), reader);
+			}
+			public static Exception ReadingBrokenDocument(Reader reader, string additionalInformation)
+			{
+				if (reader == null) throw new ArgumentNullException("reader");
+
+				return new ReaderException(string.Format("Failed to continue deserialize because document's structure is invalid. Additional information: {0}", additionalInformation), reader);
+			}
+			public static Exception UnknownMessagePackType(string type, Reader reader)
+			{
+				if (reader == null) throw new ArgumentNullException("reader");
+
+				return new ReaderException(string.Format("An unknown Message Pack type '{0}'.", type), reader);
+			}
+			public static Exception UnexpectedNullValue(string expected, string propertyName, string schemaName, Reader reader)
+			{
+				if (reader == null) throw new ArgumentNullException("reader");
+
+				return new ReaderException(string.Format("A null value is deserialized instead of {0} for required property '{1}' in schema '{2}'.", expected, propertyName, schemaName), reader);
+			}
+		}
+
+		public static Dictionary<string, object> MergeDocuments(Dictionary<string, object> left, Dictionary<string, object> right)
+		{
+			if (left == null && right == null)
+			{
+				return null;
+			}
+			else if (left == null)
+			{
+				return right;
+			}
+			else if (right == null)
+			{
+				return left;
+			}
+
+			var keys = new HashSet<string>(left.Keys.Concat(right.Keys));
+			var result = new Dictionary<string, object>(keys.Count);
+			foreach (var key in keys)
+			{
+				var leftValue = default(object);
+				var rightValue = default(object);
+				var leftHasValue = left.TryGetValue(key, out leftValue);
+				var rightHasValue = right.TryGetValue(key, out rightValue);
+				var leftDocument = leftValue as Dictionary<string, object>;
+				var rightDocument = rightValue as Dictionary<string, object>;
+				var leftIsDeleted = leftHasValue && leftValue == null;
+				var rightIsDeleted = rightHasValue && rightValue == null;
+
+				if (!leftHasValue && !rightHasValue)
+				{
+					continue;
+				}
+				if ((leftIsDeleted || rightIsDeleted) && (leftDocument != null || rightDocument != null))
+				{
+					result[key] = null; // keep deleted documents as deleted
+				}
+				else if (!rightHasValue)
+				{
+					result[key] = leftValue;
+				}
+				else if (!leftHasValue)
+				{
+					result[key] = rightValue;
+				}
+				else if (leftDocument != null && rightDocument != null)
+				{
+					result[key] = MergeDocuments(leftDocument, rightDocument);
+				}
+				else
+				{
+					result[key] = rightValue;
+				}
+			}
+			return result;
+		}
+
+<# if(this.DisableMessagePackSerialization == false || this.DisableBsonSerialization == false) { #>
+<#@ include file=".\EndianessConverter.ttinclude" once="true" #>
+<# } #>
+		#endregion
+<#+
+
+	public class IndexedString : IComparable<IndexedString>
+	{
+		public readonly string Value;
+		public readonly ulong[] Octets;
+
+		public IndexedString(string value)
+		{
+			this.Value = value;
+			this.Octets = new ulong[8];
+			for (var i = 0; i < 8; i++)
+			{
+				this.Octets[i] = GetUInt64(value, 8 * i);
+			}
+		}
+
+		public int CompareTo(IndexedString otherString)
+		{
+			if (this.Value.Length != otherString.Value.Length)
+			{
+				return this.Value.Length.CompareTo(otherString.Value.Length);
+			}
+
+			for (var i = 0; i < this.Octets.Length; i++)
+			{
+				var comp = this.Octets[i].CompareTo(otherString.Octets[i]);
+				if (comp != 0)
+				{
+					return comp;
+				}
+			}
+			return 0;
+		}
+
+		private static ulong GetUInt64(string chars, int offset)
+		{
+			if (offset >= chars.Length)
+			{
+				return 0;
+			}
+
+			var result = 0L;
+			var bytesToConvert = Math.Min(chars.Length - offset, 8);
+			for (var i = 0; i < bytesToConvert; i++)
+			{
+				result = unchecked((result << 8) | chars[offset + bytesToConvert - 1 - i]);
+			}
+			return unchecked((ulong)result);
+		}
+	}
+
+	private void GenerateStringLookupTable(Dictionary<string, int> stringsWithCount)
+	{
+		if (this.DisableStringPooling)
+		{
+			this.WriteLine("null;");
+			return;
+		}
+
+		var maxLookupStringSize = 64;
+		var minLookupStringSize = 1;
+		var minStringCount = 3;
+		var lookupTable = new List<IndexedString>[maxLookupStringSize + 1];
+		var addedCount = 0;
+		foreach (var kv in stringsWithCount)
+		{
+			var stringLength = kv.Key.Length;
+			var count = 0;
+			if (this.Statistics.StringsCount.TryGetValue(kv.Key, out count) == false)
+			{
+				count = kv.Value;
+			}
+
+			if (count < minStringCount || stringLength > maxLookupStringSize || stringLength < minLookupStringSize || kv.Key.Any(ch => ch > 0x7F))
+			{
+				continue;
+			}
+
+			if (lookupTable[stringLength] == null) { lookupTable[stringLength] = new List<IndexedString>(); }
+			lookupTable[stringLength].Add(new IndexedString(kv.Key));
+			addedCount++;
+		}
+
+		if (addedCount == 0)
+		{
+			this.WriteLine("null;");
+			return;
+		}
+		else
+		{
+			this.Write("new StringLookupTable(new StringSet[] { ");
+		}
+
+		this.WriteLine(string.Empty);
+		this.Write("\t\t");
+		var charactersWritten = 0;
+		for (var stringLength = 0; stringLength < lookupTable.Length; stringLength++)
+		{
+			var indexedStrings = lookupTable[stringLength];
+			if (indexedStrings == null)
+			{
+				this.NewLineIfNeeded(ref charactersWritten);
+
+				this.Write("null, ");
+				charactersWritten += 6;
+
+				this.NewLineIfNeeded(ref charactersWritten);
+				continue;
+			}
+
+			this.RecursiveWriteStringSet(indexedStrings, stringLength, 0, ref charactersWritten);
+			this.Write(", ");
+			charactersWritten += 2;
+
+			this.NewLineIfNeeded(ref charactersWritten);
+		}
+
+		this.WriteLine(string.Empty);
+		this.WriteLine("});");
+	}
+
+	private void RecursiveWriteStringSet(IEnumerable<IndexedString> indexedStrings, int stringLength, int depth, ref int charactersWritten)
+	{
+		var groupedStrings = new List<KeyValuePair<ulong, List<IndexedString>>>(
+			indexedStrings
+				.GroupBy(ix => ix.Octets[depth])
+				.Select(gr => new KeyValuePair<ulong, List<IndexedString>>(gr.Key, gr.ToList()))
+		);
+		groupedStrings.Sort((x,y) => x.Key.CompareTo(y.Key));
+
+		this.NewLineIfNeeded(ref charactersWritten);
+
+		this.Write("new StringSet(new ulong[] { ");
+		charactersWritten += 25;
+
+		foreach (var kv in groupedStrings)
+		{
+			this.NewLineIfNeeded(ref charactersWritten);
+
+			var keyString = "0x" + kv.Key.ToString("X",CultureInfo.InvariantCulture);
+			this.Write(keyString);
+			this.Write(", ");
+			charactersWritten += keyString.Length + 2;
+
+			this.NewLineIfNeeded(ref charactersWritten);
+		}
+
+		var isValues = (depth + 1) * 8 >= stringLength;
+		if (isValues)
+		{
+			this.NewLineIfNeeded(ref charactersWritten);
+
+			this.Write("}, new string[] { ");
+			charactersWritten += 21;
+			foreach (var kv in groupedStrings)
+			{
+				this.NewLineIfNeeded(ref charactersWritten);
+
+				foreach (var stringValue in kv.Value)
+				{
+					var keyString = "\"" + JsonReader.JsonUtils.Escape(stringValue.Value) + "\",";
+					this.Write(keyString);
+					charactersWritten += keyString.Length;
+
+					this.NewLineIfNeeded(ref charactersWritten);
+				}
+			}
+			this.Write("})");
+		}
+		else
+		{
+			this.NewLineIfNeeded(ref charactersWritten);
+			this.Write("}, new StringSet[] { ");
+			charactersWritten += 21;
+			foreach (var kv in groupedStrings)
+			{
+				this.NewLineIfNeeded(ref charactersWritten);
+
+				this.RecursiveWriteStringSet(kv.Value, stringLength, depth + 1, ref charactersWritten);
+				this.Write(", ");
+				charactersWritten += 2;
+			}
+			this.Write("})");
+		}
+	}
+
+	private void NewLineIfNeeded(ref int charactersWritten)
+	{
+		if (charactersWritten > 160)
+		{
+			this.WriteLine(string.Empty);
+			this.Write("\t\t");
+			charactersWritten = 0;
+		}
+	}
+#>

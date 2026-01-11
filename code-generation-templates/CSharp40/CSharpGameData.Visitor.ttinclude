@@ -1,0 +1,264 @@
+		#region Visitors
+		public void ApplyVisitor(Visitor visitor)
+		{
+			if (visitor == null) throw new ArgumentNullException("visitor");
+
+			foreach(var document in this.EnumerateRoots())
+				document.Apply(visitor);
+		}
+
+		private void FindAllDocuments()
+		{
+			var findingVisitor = new FindingVisitor();
+			this.ApplyVisitor(findingVisitor);
+
+<#
+	foreach(var typeDef in this.Types)
+	{
+#>
+
+			if (findingVisitor.All<#= typeDef.Schema.Name #> != null)
+			{
+				var list = findingVisitor.All<#= typeDef.Schema.Name #>;
+				list.Sort();
+				this.<#= typeDef.GameDataAllListName #> = new <#= typeDef.ReadOnlyListType #>(list);
+			}
+			else
+			{
+				this.<#= typeDef.GameDataAllListName #> = <#= typeDef.ReadOnlyListType #>.Empty;
+			}
+<#
+	}
+#>
+		}
+
+		public class Visitor
+		{
+<#
+		foreach(var typeDef in this.Types)
+		{
+#>
+			public virtual void Visit(<#= typeDef.TypeName #> value)
+			{
+			}
+<#
+		}
+#>
+		}
+
+		private class FindingVisitor : Visitor
+		{
+<#
+		foreach(var typeDef in this.Types)
+		{
+#>
+			public List<<#= typeDef.TypeName #>> All<#= typeDef.Schema.Name #>;
+<#
+		}
+#>
+
+<#
+		foreach(var typeDef in this.Types)
+		{
+			var count = 0;
+			if (this.Statistics.DocumentCount.TryGetValue(typeDef.Schema, out count))
+			{
+				count += 5;
+			}
+			else
+			{
+				count = 50;
+			}
+#>
+			public override void Visit(<#= typeDef.TypeName #> value)
+			{
+				if (this.All<#= typeDef.Schema.Name #> == null)
+					this.All<#= typeDef.Schema.Name #> = new List<<#= typeDef.TypeName #>>(<#= count #>);
+
+				this.All<#= typeDef.Schema.Name #>.Add(value);
+			}
+<#
+		}
+#>
+		}
+		#endregion
+<#+
+
+	public abstract class GameDataVisitor
+	{
+		protected  Metadata metaData;
+
+		public void Visit(Dictionary<string, object> gameData, Metadata metaData)
+		{
+			if (gameData == null) throw new ArgumentNullException("gameData");
+			if (metaData == null) throw new ArgumentNullException("metaData");
+
+			this.metaData = metaData;
+
+			if (!gameData.ContainsKey("Collections"))
+				throw new InvalidOperationException("Invalid gamedata. Missing 'Collections'.");
+
+			var collections = (Dictionary<string, object>)gameData["Collections"];
+			var documentStack = new Stack<Dictionary<string, object>>();
+			var propertyStack = new Stack<SchemaProperty>();
+			foreach (var schemaName in collections.Keys)
+			{
+				var schema = default(Schema);
+				if (metaData.TryGetSchema(schemaName, out schema) == false)
+					continue;
+
+				var documents = (collections[schemaName] as IEnumerable ?? Enumerable.Empty<Dictionary<string, object>>()).Cast<Dictionary<string, object>>();
+				foreach (var document in documents)
+				{
+					if (document == null) continue;
+
+					documentStack.Clear();
+					propertyStack.Clear();
+
+					this.VisitDocument(document, schema, documentStack, propertyStack);
+				}
+			}
+		}
+
+		public virtual void VisitDocument(Dictionary<string, object> document, Schema documentSchema, Stack<Dictionary<string, object>> parentDocuments, Stack<SchemaProperty> path)
+		{
+			if (document == null) throw new ArgumentNullException("document");
+			if (documentSchema == null) throw new ArgumentNullException("documentSchema");
+			if (parentDocuments == null) throw new ArgumentNullException("parentDocuments");
+			if (path == null) throw new ArgumentNullException("path");
+
+			foreach (var schemaProperty in documentSchema.Properties)
+			{
+				if (schemaProperty.DataType != DataType.Document && schemaProperty.DataType != DataType.DocumentCollection)
+					continue;
+
+				var value = default(object);
+				if (document.TryGetValue(schemaProperty.Name, out value) == false || value == null)
+					continue;
+
+				var subSchema = this.metaData.GetSchema(schemaProperty.ReferenceType.Id);
+				parentDocuments.Push(document);
+				path.Push(schemaProperty);
+				if (value is List<object>)
+				{
+					foreach (var subDocument in (List<object>)value)
+					{
+						this.VisitDocument((Dictionary<string, object>)subDocument, subSchema, parentDocuments, path);
+					}
+				}
+				else if (value is Dictionary<string, object>)
+				{
+					this.VisitDocument((Dictionary<string, object>)value, subSchema, parentDocuments, path);
+				}
+				parentDocuments.Pop();
+				path.Pop();
+			}
+		}
+	}
+
+	public sealed class StatisticsVisitor : GameDataVisitor
+	{
+		public readonly Dictionary<Schema, int> RootDocumentCount = new Dictionary<Schema, int>(200);
+		public readonly Dictionary<Schema, int> DocumentCount = new Dictionary<Schema, int>(200);
+		public readonly Dictionary<string, int> StringsCount = new Dictionary<string, int>(40000);
+		public int MaxStringSize = 64;
+
+		public override void VisitDocument
+			(Dictionary<string, object> document, Schema documentSchema, Stack<Dictionary<string, object>> parentDocuments, Stack<SchemaProperty> path)
+		{
+			var count = 0;
+			if (this.DocumentCount.TryGetValue(documentSchema, out count))
+			{
+				this.DocumentCount[documentSchema] = count + 1;
+			}
+			else
+			{
+				this.DocumentCount[documentSchema] = 1;
+			}
+
+			if (parentDocuments.Count == 0)
+			{
+				if (this.RootDocumentCount.TryGetValue(documentSchema, out count))
+				{
+					this.RootDocumentCount[documentSchema] = count + 1;
+				}
+				else
+				{
+					this.RootDocumentCount[documentSchema] = 1;
+				}
+			}
+
+			this.FindStrings(document);
+
+
+			base.VisitDocument(document, documentSchema, parentDocuments, path);
+		}
+
+		private void FindStrings(Dictionary<string, object> document)
+		{
+			if (document == null)
+			{
+				return;
+			}
+
+			foreach (var kv in document)
+			{
+				this.IncrementStringCount(kv.Key);
+
+				if (kv.Value is string)
+				{
+					this.IncrementStringCount((string)kv.Value);
+				}
+				else if (kv.Value is Dictionary<string, object>)
+				{
+					this.FindStrings((Dictionary<string, object>)kv.Value);
+				}
+				else if (kv.Value is List<object>)
+				{
+					this.FindStrings((List<object>)kv.Value);
+				}
+			}
+		}
+		private void FindStrings(List<object> documents)
+		{
+			if (documents == null)
+			{
+				return;
+			}
+
+			foreach (var item in documents)
+			{
+				if (item is string)
+				{
+					this.IncrementStringCount((string)item);
+				}
+				else if (item is Dictionary<string, object>)
+				{
+					this.FindStrings((Dictionary<string, object>)item);
+				}
+				else if (item is List<object>)
+				{
+					this.FindStrings((List<object>)item);
+				}
+			}
+		}
+
+		private void IncrementStringCount(string value)
+		{
+			if (value == null || value.Length > this.MaxStringSize)
+			{
+				return;
+			}
+
+			var count = 0;
+			if (this.StringsCount.TryGetValue(value, out count))
+			{
+				this.StringsCount[value] = count + 1;
+			}
+			else
+			{
+				this.StringsCount[value] = 1;
+			}
+		}
+	}
+#>

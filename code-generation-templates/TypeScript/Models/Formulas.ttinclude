@@ -1,0 +1,62 @@
+﻿<#+
+	private void WriteFormula(FormulaDefinition formulaDef, CodeGenerationContext context)
+	{
+		var invokeParameters = string.Join(", ", formulaDef.ParameterNames.Select((name, i) => name + ": " + formulaDef.ParameterTypes[i]).ToArray());
+
+#>/**
+  * <#= formulaDef.Description #>
+  */
+export class <#= formulaDef #> extends Function {
+	private readonly expression: Formulas.FormulaExpression;
+	private readonly typeResolver: Formulas.FormulaTypeResolver;
+
+	public readonly context: { ['this']: <#= formulaDef.ContextThisType #> };
+
+	constructor(expressionObj: any) {
+		super();
+		check(expressionObj, 'expressionObj').is.object().and.not.nullOrUndefined();
+
+		this.context = { ['this']: <<#= formulaDef.ContextThisType #>><unknown> null /* will be initalized after constructor */ };
+		this.expression = Formulas.FormulaExpression.create(expressionObj);
+		this.typeResolver = new Formulas.KnownTypeResolver(new Map([
+<#+
+		foreach (var typeRef in formulaDef.GetReferenceTypes().Concat(formulaDef.GetReferencedExternalTypes()))
+		{
+#>
+			['<#= typeRef #>', Formulas.prepareClassOrEnum(<#= typeRef #>)],
+<#+
+		}
+#>
+		]));
+
+		return new Proxy(this, {
+			apply: (target, _, args) => (target as any).invoke(...args)
+		});
+	}
+
+	public invoke(<#= invokeParameters #>): <#= formulaDef.ReturnType #> {
+		const executionContext = new Formulas.FormulaExecutionContext(
+			new Map<string, any>([
+<#+
+		for (var p = 0; p < formulaDef.ParameterNames.Length; p++)
+		{
+#>                ['<#= formulaDef.ParameterRawNames[p] #>', <#= formulaDef.ParameterNames[p] #>],
+<#+
+		}
+#>
+			]),
+			this.typeResolver,
+			/* auto null propagation */ false,
+			this.context
+		);
+		const result = this.expression.execute(executionContext);
+		return coerceTo(result, '<#= formulaDef.ReturnType #>');
+	}
+
+	public toString(): string {
+		return this.expression.toString();
+	}
+}
+<#+
+	}
+#>

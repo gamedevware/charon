@@ -1,0 +1,325 @@
+﻿<#+
+	private void WriteClassHeader(TypeDefinition typeDef, CodeGenerationContext context)
+	{
+		var typeDefAttributes = new List<string>(typeDef.CustomAttributes ?? new List<string>());
+		if (!typeDefAttributes.Any(attribute => attribute.StartsWith("UCLASS(", StringComparison.Ordinal)))
+		{
+			typeDefAttributes.Insert(0, "UCLASS(BlueprintType)");
+		}
+		var customClassAttributes = typeDefAttributes.Count > 0 ? string.Join("\r\n", typeDefAttributes) : string.Empty;
+		var baseTypeAndInterfaces = typeDef.BaseTypeAndInterfaces?.Count > 0 ?
+			string.Join(", ", typeDef.BaseTypeAndInterfaces) : context.TargetLanguage.DocumentClassName;
+
+		var idPropertyDef = typeDef.Properties.FirstOrDefault(propDef => propDef.Name == "Id");
+
+#>/* # move to Public/<#= typeDef #>.h */
+#pragma once
+<#+
+	WriteFileHeader();
+#>
+// ReSharper disable All
+
+#include "GameData/<#= context.TargetLanguage.DocumentClassName #>.h"
+#include "GameData/<#= context.TargetLanguage.DocumentReferenceClassName #>.h"
+#include "GameData/FLocalizedText.h"
+#include "JsonObjectWrapper.h"
+
+<#+
+		foreach (var typeRef in typeDef.GetReferenceTypes().Where(typeRef => typeRef is EnumDefinition || typeRef is FormulaDefinition))
+		{
+#>#include "<#= typeRef #>.h"
+<#+
+		}
+#>
+#include "<#= typeDef #>.generated.h"
+
+<#+
+		foreach (var typeRef in typeDef.GetReferenceTypes().Where(typeRef => typeRef is TypeDefinition))
+		{
+			if (ReferenceEquals(typeRef, typeDef))
+			{
+				continue;
+			}
+#>class <#= typeRef #>; // forward declaration
+<#+
+		}
+#>
+
+/**
+  * <#= typeDef.Description ?? string.Empty #>
+  */
+<#+
+		if (!string.IsNullOrEmpty(customClassAttributes))
+		{
+#><#= customClassAttributes #>
+<#+
+		}
+#>
+class <#= context.CppLanguage.ApiName #> <#= typeDef #> : public <#= baseTypeAndInterfaces #>
+{
+	GENERATED_BODY()
+
+public:
+    static const FString SchemaId;
+    static const FString SchemaName;
+
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.ReferenceCollection)
+			{
+#>
+	/**
+	  * De-referenced collection of documents for <#= propertyDef.Name #>. Should not be directly used.
+	  */
+	<#= propertyDef.Type #> <#= propertyDef.BackingField.Name #>Documents;
+<#+
+			}
+			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.Reference)
+			{
+#>
+	/**
+	  * De-referenced document of <#= propertyDef.Name #>. Should not be directly used.
+	  */
+	<#= propertyDef.Type #> <#= propertyDef.BackingField.Name #>Document;
+<#+
+			}
+		}
+#>
+public:
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			var propertyDefAttributes = new List<string>(propertyDef.CustomAttributes ?? new List<string>());
+			if (!propertyDefAttributes.Any(attribute => attribute.StartsWith("UPROPERTY(", StringComparison.Ordinal)))
+			{
+				propertyDefAttributes.Insert(0, "UPROPERTY(BlueprintReadOnly, VisibleAnywhere)");
+			}
+			var customPropertyAttributes = propertyDefAttributes.Count > 0 ? string.Join("\r\n\t", propertyDefAttributes) : string.Empty;
+
+			if (!string.IsNullOrEmpty(propertyDef.Description))
+			{
+#>
+	/**
+	  * <#= propertyDef.Description #>
+	  */
+<#+
+			}
+			if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.Reference)
+			{
+#>
+	UFUNCTION(BlueprintCallable)
+	<#= propertyDef.Type #> Get<#= propertyDef.Name #>();
+	/**
+	  * Raw value of <#= propertyDef.Name #>.
+	  */
+<#+
+				if (!string.IsNullOrEmpty(customPropertyAttributes))
+				{
+#>	<#= customPropertyAttributes #>
+<#+
+				}
+#>
+	<#= propertyDef.RawProperty.Type #> <#= propertyDef.RawProperty.Name #>;
+<#+
+			}
+			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.ReferenceCollection)
+			{
+#>
+	UFUNCTION(BlueprintCallable)
+	<#= propertyDef.Type #> Get<#= propertyDef.Name #>();
+	/**
+	  * Raw value of <#= propertyDef.Name #>.
+	  */
+<#+
+				if (!string.IsNullOrEmpty(customPropertyAttributes))
+				{
+#>	<#= customPropertyAttributes #>
+<#+
+				}
+#>
+	<#= propertyDef.RawProperty.Type #> <#= propertyDef.RawProperty.Name #>;
+<#+
+			}
+			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.LocalizedText)
+			{
+#>
+	UFUNCTION(BlueprintCallable)
+	<#= propertyDef.Type #> Get<#= propertyDef.Name #>();
+	/**
+	  * Raw value of <#= propertyDef.Name #>.
+	  */
+<#+
+				if (!string.IsNullOrEmpty(customPropertyAttributes))
+				{
+#>	<#= customPropertyAttributes #>
+<#+
+				}
+#>
+	<#= propertyDef.RawProperty.Type #> <#= propertyDef.RawProperty.Name #>;
+<#+
+			}
+			else if (propertyDef.DataType == DataType.Formula && !propertyDef.SchemaProperty.IsRawFormulaType)
+			{
+				if (!string.IsNullOrEmpty(customPropertyAttributes))
+				{
+#>	<#= customPropertyAttributes #>
+<#+
+				}
+#>
+	<#= propertyDef.Type #> <#= propertyDef.Name #>;
+<#+
+			}
+			else
+			{
+				if (!string.IsNullOrEmpty(customPropertyAttributes))
+				{
+#>	<#= customPropertyAttributes #>
+<#+
+				}
+#>
+	<#= propertyDef.Type #> <#= propertyDef.Name #>;
+<#+
+			}
+		}
+
+		if (typeDef.IsUnion)
+		{
+#>
+
+	/**
+	  * The name of the selected property in a tagged union.
+	  */
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	FString Tag;
+
+	/**
+	  *  / Visitor interface for processing tagged union variants in a type-safe manner.
+	  */
+	struct FUnionVisitor
+	{
+	public:
+		virtual ~FUnionVisitor() = default;
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.SchemaProperty.Name == "Id") continue;
+
+#>		/**
+		  *  Visits the <#= propertyDef.SchemaProperty.Name #> variant.
+		  */
+		virtual void Visit<#= propertyDef.SchemaProperty.Name #>(<#= propertyDef.Type #> <#= propertyDef.ConstructorParameter.Name #>);
+<#+
+			}
+#>
+
+		/**
+		  *  Visits the empty union or unknown tag.
+		  */
+		virtual void UnknownTag(FString Tag);
+	};
+
+	/**
+	  * Applies a visitor to this tagged union, executing the appropriate visit method based on the active variant.
+	  */
+	void Apply(FUnionVisitor& visitor);
+<#+
+		}
+#>
+};
+<#+
+	}
+
+	private void WriteClassImplementation(TypeDefinition typeDef, CodeGenerationContext context)
+	{
+#>/* # move to Private/<#= typeDef #>.cpp */
+<#+
+	WriteFileHeader();
+#>
+// ReSharper disable All
+
+#include "<#= typeDef #>.h"
+<#+
+		foreach (var typeRef in typeDef.GetReferenceTypes().Where(typeRef => typeRef is TypeDefinition || typeRef is FormulaDefinition))
+		{
+			if (ReferenceEquals(typeRef, typeDef))
+			{
+				continue;
+			}
+
+#>#include "<#= typeRef #>.h"
+<#+
+		}
+#>
+
+const FString <#= typeDef #>::SchemaId = TEXT("<#= typeDef.Schema.Id #>");
+const FString <#= typeDef #>::SchemaName = TEXT("<#= typeDef.Schema.Name #>");
+
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.Reference)
+			{
+#>
+<#= propertyDef.Type #> <#= typeDef #>::Get<#= propertyDef.Name #>() {
+		<#= context.TargetLanguage.DocumentReferenceClassName #>::GetReferencedDocument(<#= propertyDef.RawName #>, <#= propertyDef.BackingField.Name #>Document);
+		return <#= propertyDef.BackingField.Name #>Document;
+}
+<#+
+			}
+			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.ReferenceCollection)
+			{
+#>
+<#= propertyDef.Type #> <#= typeDef #>::Get<#= propertyDef.Name #>() {
+	<#= context.TargetLanguage.DocumentReferenceClassName #>::GetReferencedDocuments(<#= propertyDef.RawName #>, <#= propertyDef.BackingField.Name #>Documents);
+	return <#= propertyDef.BackingField.Name #>Documents;
+}
+<#+
+			}
+			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.LocalizedText)
+			{
+#>
+<#= propertyDef.Type #> <#= typeDef #>::Get<#= propertyDef.Name #>() {
+	return <#= propertyDef.RawName #>.GetCurrent();
+}
+<#+
+			}
+		}
+
+		if (typeDef.IsUnion)
+		{
+#>
+void <#= typeDef #>::Apply(FUnionVisitor& visitor)
+{
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.SchemaProperty.Name == "Id") continue;
+#>
+	if (this->Tag == TEXT("<#= propertyDef.SchemaProperty.Name #>"))
+	{
+<#+
+				if (propertyDef.RawProperty != null && (propertyDef.DataType == DataType.LocalizedText ||
+					propertyDef.DataType == DataType.ReferenceCollection ||
+					propertyDef.DataType == DataType.Reference))
+				{
+#>		return visitor.Visit<#= propertyDef.SchemaProperty.Name #>(this->Get<#= propertyDef.Name #>());
+<#+
+				}
+				else
+				{
+#>		return visitor.Visit<#= propertyDef.SchemaProperty.Name #>(this-><#= propertyDef.Name #>);
+<#+
+				}
+#>
+	}
+<#+
+			}
+#>	else {
+		return visitor.UnknownTag(this->Tag);
+	}
+}
+<#+
+		}
+	}
+#>

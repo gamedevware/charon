@@ -1,0 +1,32 @@
+﻿<#+
+	private void WriteDocumentCollectionExtensions(CodeGenerationContext context)
+	{
+#>
+		public static class <#= context.TargetLanguage.DocumentCollectionClassName #>Extensions
+		{
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.SchemaProperty.Uniqueness == Uniqueness.None ||
+				    propertyDef.SchemaProperty.Name == "Id")
+				{
+					continue;
+				}
+				var documentCollectionByPropertyKey = $"{context.TargetLanguage.DocumentCollectionClassName}<{propertyDef.Type},{typeDef}>";
+				var documentCollectionByIdKey = $"{context.TargetLanguage.DocumentCollectionClassName}<{typeDef.IdMember.Type},{typeDef}>";
+#>
+			public static <#= documentCollectionByPropertyKey #> By<#= propertyDef.SchemaProperty.Name #>(this <#= documentCollectionByIdKey #> byIdCollection)
+			{
+				return byIdCollection.ByKey(document => document.<#= propertyDef.Name #>);
+			}
+<#+
+
+			}
+		}
+#>
+		}
+<#+
+	}
+#>

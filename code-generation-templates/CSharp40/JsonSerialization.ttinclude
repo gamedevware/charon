@@ -1,0 +1,1114 @@
+		#region Serialization: JSON
+		private void ReadJson(<#= this.GameDataClassName #> gameData, Stream data, Stream[] patches, Encoding encoding, bool leaveOpen)
+		{
+			if (gameData == null) throw new ArgumentNullException("gameData");
+			if (data == null) throw new ArgumentNullException("data");
+			if (encoding == null) throw new ArgumentNullException("encoding");
+
+			var gameDataPatch = default(Dictionary<string, object>);
+			if (patches != null)
+			{
+				foreach(var patchStream in patches)
+				{
+					using(var patchJsonReader = new JsonReader(new StreamReader(patchStream, encoding), leaveOpen))
+					{
+						gameDataPatch = MergeDocuments(gameDataPatch, patchJsonReader.ReadDocument());
+					}
+				}
+			}
+
+			using(var jsonReader = new JsonReader(new StreamReader(data, encoding), leaveOpen))
+			{
+				jsonReader.ReadGameData(gameData, gameDataPatch);
+			}
+		}
+
+		private sealed partial class JsonReader : Reader, IDisposable
+		{
+			private const int DEFAULT_BUFFER_SIZE = ushort.MaxValue / 2;
+			private const int CHAR_SIZE = 2;
+
+			const int LEXER_STATE_COMPLETE = -1;
+			const int LEXER_STATE_START = 0;
+			const int LEXER_STATE_LEXEME = 1;
+			const int LEXER_STATE_QUOTED = 2;
+			const int LEXER_STATE_QUOTED_ESCAPE = 3;
+			const int LEXER_STATE_COMMENT_BEGINING = 4;
+			const int LEXER_STATE_COMMENT_SINGLELINE = 5;
+			const int LEXER_STATE_COMMENT_MULTILINE = 6;
+			const int LEXER_STATE_COMMENT_MULTILINE_ENDING = 7;
+
+			private const int NUMBER_FLOAT = 2;
+			private const int NUMBER_FLOAT_WITH_EXP = 3;
+			private const int NUMBER_INTEGER = 0;
+			private const int NUMBER_NEGATIVE_INTEGER = 1;
+			private const int NUMBER_NOT = -1;
+
+			private static readonly int Int32MaxLength = int.MaxValue.ToString().Length;
+			private static readonly int Int64MaxLength = long.MaxValue.ToString().Length;
+
+			private readonly ArraySegment<char> LexemeTrue = new ArraySegment<char>(JsonNotation.True.ToCharArray(), 0, 4);
+			private readonly ArraySegment<char> LexemeFalse = new ArraySegment<char>(JsonNotation.False.ToCharArray(), 0, 5);
+			private readonly ArraySegment<char> LexemeNull = new ArraySegment<char>(JsonNotation.Null.ToCharArray(), 0, 4);
+
+			private readonly bool leaveOpen;
+			private readonly TextReader textReader;
+
+			// tokenizing
+			private readonly char[] buffer;
+			private int bufferOffset;
+			private int bufferAvailable;
+			private int lineNum = 1;
+			private int colNum = 1;
+
+			// parsing
+			private ReaderNode node;
+			private ArraySegment<char> rawJson;
+
+			private StrongBox<bool> trueBox;
+			private StrongBox<bool> falseBox;
+			private StrongBox<int> intBox;
+			private StrongBox<DateTime> dateBox;
+			private JsonValueBox jsonValueBox;
+
+			public override ReaderNode Node { get { if (this.node.Token == ReaderToken.None) this.NextToken(); return this.node; } }
+
+			// statistics
+			public override int LineNumber { get { return this.lineNum; } }
+			public override int ColumnNumber { get { return this.colNum; } }
+
+			public JsonReader(TextReader textReader, bool leaveOpen = false, int bufferSize = DEFAULT_BUFFER_SIZE)
+			{
+				if (textReader == null) throw new ArgumentNullException("textReader");
+				if (bufferSize <= 0) throw new ArgumentOutOfRangeException("bufferSize");
+
+				this.buffer = new char[bufferSize];
+				this.textReader = textReader;
+				this.leaveOpen = leaveOpen;
+			}
+
+			public override bool NextToken()
+			{
+				this.rawJson = default(ArraySegment<char>);
+				this.node = default(ReaderNode);
+
+				var fragments = default(ArraySegment<char>[]);
+				var state = LEXER_STATE_COMPLETE;
+				var lexemeSize = 0;
+
+				var lexeme = this.NextLexeme(ref state);
+				if (lexeme.Count == 0)
+				{
+					this.node = new ReaderNode(ReaderToken.EndOfStream);
+					return false;
+				}
+				if (state != LEXER_STATE_COMPLETE)
+				{
+					var firstFragment = Copy(ref lexeme);
+					var secondFragment = this.NextLexeme(ref state);
+
+					if (state == LEXER_STATE_COMPLETE)
+					{
+						if (secondFragment.Count == 0)
+						{
+							lexeme = firstFragment;
+							lexemeSize = lexeme.Count;
+						}
+						else
+						{
+							fragments = new ArraySegment<char>[2] { firstFragment, secondFragment };
+							lexemeSize = firstFragment.Count + secondFragment.Count;
+						}
+					}
+					else
+					{
+						var fragmentIndex = 0;
+						fragments = new ArraySegment<char>[8];
+						fragments[fragmentIndex++] = firstFragment;
+						fragments[fragmentIndex++] = Copy(ref secondFragment);
+						lexemeSize = firstFragment.Count + secondFragment.Count;
+
+						do
+						{
+							lexeme = this.NextLexeme(ref state);
+
+							if (lexeme.Count == 0)
+							{
+								break;
+							}
+							if (fragmentIndex == fragments.Length)
+							{
+								Array.Resize(ref fragments, (int)(fragments.Length * 1.5));
+							}
+
+							fragments[fragmentIndex++] = Copy(ref lexeme);
+							lexemeSize += lexeme.Count;
+
+						} while (state != LEXER_STATE_COMPLETE);
+					}
+				}
+				else
+				{
+					lexemeSize = lexeme.Count;
+				}
+
+				if (lexemeSize == 1)
+				{
+					this.rawJson = fragments != null ? fragments[0] : lexeme;
+					switch (rawJson.Array[rawJson.Offset])
+					{
+						case JsonNotation.Const0: this.node = new ReaderNode(ReaderToken.Value, this.Box(0)); return true;
+						case JsonNotation.Const1: this.node = new ReaderNode(ReaderToken.Value, this.Box(1)); return true;
+						case JsonNotation.Const2: this.node = new ReaderNode(ReaderToken.Value, this.Box(2)); return true;
+						case JsonNotation.Const3: this.node = new ReaderNode(ReaderToken.Value, this.Box(3)); return true;
+						case JsonNotation.Const4: this.node = new ReaderNode(ReaderToken.Value, this.Box(4)); return true;
+						case JsonNotation.Const5: this.node = new ReaderNode(ReaderToken.Value, this.Box(5)); return true;
+						case JsonNotation.Const6: this.node = new ReaderNode(ReaderToken.Value, this.Box(6)); return true;
+						case JsonNotation.Const7: this.node = new ReaderNode(ReaderToken.Value, this.Box(7)); return true;
+						case JsonNotation.Const8: this.node = new ReaderNode(ReaderToken.Value, this.Box(8)); return true;
+						case JsonNotation.Const9: this.node = new ReaderNode(ReaderToken.Value, this.Box(9)); return true;
+						case JsonNotation.BeginArray: this.node = new ReaderNode(ReaderToken.BeginArray); return true;
+						case JsonNotation.BeginObject: this.node = new ReaderNode(ReaderToken.BeginObject); return true;
+						case JsonNotation.EndArray: this.node = new ReaderNode(ReaderToken.EndOfArray); return true;
+						case JsonNotation.EndObject: this.node = new ReaderNode(ReaderToken.EndOfObject); return true;
+						default: throw ReaderException.UnknownNotation(this, new string(this.rawJson.Array, this.rawJson.Offset, this.rawJson.Count));
+					}
+				}
+				if (lexemeSize == 4)
+				{
+					if (Match(ref lexeme, fragments, 0, LexemeTrue))
+					{
+						this.rawJson = LexemeTrue;
+						this.node = new ReaderNode(ReaderToken.Value, this.Box(true));
+						return true;
+					}
+					if (Match(ref lexeme, fragments, 0, LexemeNull))
+					{
+						this.rawJson = LexemeNull;
+						this.node = new ReaderNode(ReaderToken.Null);
+						return true;
+					}
+				}
+				if (lexemeSize == 5 && Match(ref lexeme, fragments, 0, LexemeFalse))
+				{
+					this.rawJson = LexemeFalse;
+					this.node = new ReaderNode(ReaderToken.Value, this.Box(false));
+					return true;
+				}
+
+				// combine fragments into one lexeme
+				if (fragments != null)
+				{
+					var combined = new char[lexemeSize];
+					var offset = 0;
+					foreach (var fragment in fragments)
+					{
+						if (fragment.Array == null) break;
+						Buffer.BlockCopy(fragment.Array, fragment.Offset * CHAR_SIZE, combined, offset * CHAR_SIZE, fragment.Count * CHAR_SIZE);
+						offset += fragment.Count;
+					}
+					lexeme = new ArraySegment<char>(combined, 0, offset);
+					//fragments = null;
+				}
+
+				this.rawJson = lexeme;
+				if (lexeme.Array[lexeme.Offset] == JsonNotation.Quote) // start with quote
+				{
+					if (lexeme.Array[lexeme.Offset + lexeme.Count - 1] != JsonNotation.Quote) // not ending with quote
+						throw ReaderException.UnterminatedStringLiteral(this);
+
+					if (lexemeSize == 2)
+					{
+						this.node = new ReaderNode(ReaderToken.Value, string.Empty);
+						return true;
+					}
+<#
+	if (this.DisableStringPooling == false)
+	{
+#>
+					var knownStringValue = default(string);
+					if (this.stringLookupTable != null && this.stringLookupTable.TryGetString(lexeme.Array, lexeme.Offset + 1, lexeme.Count - 2, out knownStringValue))
+					{
+						this.node = new ReaderNode(ReaderToken.Value, knownStringValue);
+					}
+					else
+<#
+	}
+#>
+					{
+						this.node = new ReaderNode(ReaderToken.Value, this.Box(ref lexeme));
+					}
+					return true;
+				}
+
+				switch (GetNumberType(ref lexeme))
+				{
+					case NUMBER_INTEGER:
+						var integerType = lexeme.Count < Int32MaxLength
+							? typeof(int)
+							: lexeme.Count < Int64MaxLength ? typeof(long) : typeof(ulong);
+						this.node = new ReaderNode(ReaderToken.Value, this.Box(ref lexeme, integerType));
+						return true;
+					case NUMBER_NEGATIVE_INTEGER:
+						var signedIntegerType = lexeme.Count < Int32MaxLength + 1 ? typeof(int) : typeof(long);
+						this.node = new ReaderNode(ReaderToken.Value, this.Box(ref lexeme, signedIntegerType));
+						return true;
+					case NUMBER_FLOAT:
+					case NUMBER_FLOAT_WITH_EXP:
+						this.node = new ReaderNode(ReaderToken.Value, this.Box(ref lexeme, typeof(double)));
+						return true;
+					default:
+						throw ReaderException.UnknownNotation(this, new string(this.rawJson.Array, this.rawJson.Offset, this.rawJson.Count));
+				}
+			}
+
+			private object Box(ref ArraySegment<char> lexeme)
+			{
+				if (this.jsonValueBox == null)
+					this.jsonValueBox = new JsonValueBox(CultureInfo.InvariantCulture);
+
+				this.jsonValueBox.Store(lexeme, typeof(string));
+
+				return this.jsonValueBox;
+			}
+			private object Box(ref ArraySegment<char> lexeme, Type type)
+			{
+				if (type == null) throw new ArgumentNullException("type");
+
+				if (this.jsonValueBox == null)
+					this.jsonValueBox = new JsonValueBox(CultureInfo.InvariantCulture);
+
+				this.jsonValueBox.Store(lexeme, type);
+				return this.jsonValueBox;
+			}
+			private object Box(int value)
+			{
+				if (this.intBox == null)
+					this.intBox = new StrongBox<int>(CultureInfo.InvariantCulture);
+
+				this.intBox.Store(value);
+				return this.intBox;
+			}
+			private object Box(DateTime value)
+			{
+				if (this.dateBox == null)
+					this.dateBox = new StrongBox<DateTime>(CultureInfo.InvariantCulture);
+
+				this.dateBox.Store(value);
+
+				return this.intBox;
+			}
+			private object Box(bool value)
+			{
+				if (value)
+				{
+					if (this.trueBox == null)
+						this.trueBox = new StrongBox<bool>(true, CultureInfo.InvariantCulture);
+					return trueBox;
+				}
+				if (this.falseBox == null)
+					this.falseBox = new StrongBox<bool>(false, CultureInfo.InvariantCulture);
+				return falseBox;
+			}
+
+			private static bool Match(ref ArraySegment<char> lexeme, ArraySegment<char>[] fragments, int offset, ArraySegment<char> matchTo)
+			{
+				var count = matchTo.Count;
+				if (fragments == null)
+				{
+					for (int i = 0; i < count; i++)
+					{
+						if (lexeme.Array[lexeme.Offset + i] != matchTo.Array[matchTo.Offset + i])
+							return false;
+					}
+
+					return true;
+				}
+				var mo = 0;
+				foreach (var fg in fragments)
+				{
+					if (fg.Array == null) break;
+
+					for (int i = 0; i < fg.Count; i++)
+					{
+						if (fg.Array[fg.Offset + i] != matchTo.Array[mo])
+							return false;
+
+						mo++;
+					}
+				}
+
+				return true;
+			}
+			private static int GetNumberType(ref ArraySegment<char> lexeme)
+			{
+				const int INT_PART = 0;
+				const int FRAC_PART = 1;
+				const int EXP_PART = 2;
+				const char POINT = '.';
+				const char EXPONENT = 'E';
+				const char EXPONENT_ALT = 'e';
+				const char PLUS = '+';
+				const char MINUS = '-';
+				const char DIGIT_START = '0';
+				const char DIGIT_END = '9';
+
+				var isNegative = false;
+				var buffer = lexeme.Array;
+				var offset = lexeme.Offset;
+				var count = lexeme.Offset + lexeme.Count;
+
+				var part = INT_PART;
+
+				for (var i = offset; i < count; i++)
+				{
+					var character = buffer[i];
+
+					switch (part)
+					{
+						case INT_PART:
+							switch (character)
+							{
+								case MINUS:
+									if (i != offset)
+									{
+										return NUMBER_NOT;
+									}
+									isNegative = true;
+									break;
+								case PLUS:
+									if (i != offset)
+									{
+										return NUMBER_NOT;
+									}
+									break;
+								case POINT:
+									if (i == offset)
+									{
+										return NUMBER_NOT; // decimal point as first character
+									}
+									part = FRAC_PART;
+									break;
+								default:
+									if (character == EXPONENT || character == EXPONENT_ALT)
+									{
+										if (i == offset)
+										{
+											return NUMBER_NOT; // exponent at first character
+										}
+										part = EXP_PART;
+									}
+									else if (character < DIGIT_START && character > DIGIT_END)
+									{
+										return NUMBER_NOT; // non digit character in integer part
+									}
+									break;
+							}
+							break;
+						case FRAC_PART:
+							if (character == EXPONENT || character == EXPONENT_ALT)
+							{
+								if (i == offset)
+								{
+									return NUMBER_NOT; // exponent at first character
+								}
+								part = EXP_PART;
+							}
+							else if (character < DIGIT_START && character > DIGIT_END)
+							{
+								return NUMBER_NOT; // non digit character in fraction part
+							}
+							break;
+						case EXP_PART:
+							if (character == PLUS || character == MINUS)
+							{
+								if (buffer[i - 1] != EXPONENT && buffer[i - 1] != EXPONENT_ALT)
+								{
+									return NUMBER_NOT; // sign not at start of exponent part
+								}
+							}
+							else if (character < DIGIT_START && character > DIGIT_END)
+							{
+								return NUMBER_NOT; // non digit character in integer part
+							}
+							break;
+					}
+				}
+
+				switch (part)
+				{
+					case INT_PART: return isNegative ? NUMBER_NEGATIVE_INTEGER : NUMBER_INTEGER;
+					case FRAC_PART: return NUMBER_FLOAT;
+					case EXP_PART: return NUMBER_FLOAT_WITH_EXP;
+					default: return NUMBER_NOT;
+				}
+			}
+			private static ArraySegment<char> Copy(ref ArraySegment<char> lexeme)
+			{
+				var newLexeme = new ArraySegment<char>(new char[lexeme.Count], 0, lexeme.Count);
+				Buffer.BlockCopy(lexeme.Array, lexeme.Offset * CHAR_SIZE, newLexeme.Array, 0, lexeme.Count * CHAR_SIZE);
+				return newLexeme;
+			}
+			private static bool IsWhiteSpaceLatin(char character)
+			{
+				return character == ' ' || character >= '\t' && character <= '\r' || (character == ' ' || character == '\x0085');
+			}
+			private ArraySegment<char> NextLexeme(ref int state)
+			{
+				this.ResetBufferIfNeeded();
+
+				var buffer = this.buffer;
+				var lexemeStartIndex = this.bufferOffset;
+				var lexemeLength = 0;
+
+				start:
+				if (this.bufferAvailable == 0 && this.ReadToBuffer() == 0)
+				{
+					state = LEXER_STATE_COMPLETE;
+					return new ArraySegment<char>(this.buffer, lexemeStartIndex, lexemeLength);
+				}
+
+				if (state == LEXER_STATE_COMPLETE)
+					state = LEXER_STATE_START;
+
+				var bufferEnd = this.bufferOffset + this.bufferAvailable;
+				for (var i = this.bufferOffset; i < bufferEnd; i++)
+				{
+					this.colNum++;
+					switch (state)
+					{
+						case LEXER_STATE_START:
+							switch (buffer[i])
+							{
+								case JsonNotation.Newline: this.lineNum++; this.colNum = 1; goto case JsonNotation.Space;
+								case JsonNotation.Space:
+								case JsonNotation.Return:
+								case JsonNotation.Tab:
+								case JsonNotation.IdentifierSeparator:
+								case JsonNotation.ValueSeparator:
+									continue; // insignificant whitespaces
+								case JsonNotation.Comment:
+									state = LEXER_STATE_COMMENT_BEGINING;
+									continue;
+								case JsonNotation.EndArray:
+								case JsonNotation.EndObject:
+								case JsonNotation.BeginObject:
+								case JsonNotation.BeginArray:
+									state = LEXER_STATE_COMPLETE;
+									this.bufferOffset = i + 1;
+									this.bufferAvailable = bufferEnd - i - 1;
+									return new ArraySegment<char>(buffer, i, 1);
+								case JsonNotation.Quote:
+									lexemeStartIndex = i;
+									state = LEXER_STATE_QUOTED;
+									continue;
+								default:
+									if (IsWhiteSpaceLatin(buffer[i]))
+									{
+										goto case JsonNotation.Space;
+									}
+									lexemeStartIndex = i;
+									state = LEXER_STATE_LEXEME;
+									continue;
+							}
+						case LEXER_STATE_LEXEME:
+							switch (buffer[i])
+							{
+								// lexeme terminators
+								case JsonNotation.Space:
+								case JsonNotation.Newline:
+								case JsonNotation.Return:
+								case JsonNotation.Tab:
+								case JsonNotation.IdentifierSeparator:
+								case JsonNotation.ValueSeparator:
+								case JsonNotation.EndArray:
+								case JsonNotation.EndObject:
+								case JsonNotation.BeginObject:
+								case JsonNotation.BeginArray:
+									state = LEXER_STATE_COMPLETE;
+									this.bufferOffset = i;
+									this.bufferAvailable = bufferEnd - i;
+									return new ArraySegment<char>(buffer, lexemeStartIndex, i - lexemeStartIndex);
+								default:
+									if (IsWhiteSpaceLatin(buffer[i]))
+									{
+										goto case JsonNotation.Space;
+									}
+									continue;
+							}
+						case LEXER_STATE_QUOTED:
+						case LEXER_STATE_QUOTED_ESCAPE:
+							switch (buffer[i])
+							{
+								case JsonNotation.Newline:
+								case JsonNotation.Return:
+									throw ReaderException.UnterminatedStringLiteral(this);
+								case JsonNotation.Quote:
+									if (state == LEXER_STATE_QUOTED_ESCAPE)
+									{
+										state = LEXER_STATE_QUOTED;
+										continue;
+									}
+
+									state = LEXER_STATE_COMPLETE;
+									this.bufferOffset = i + 1;
+									this.bufferAvailable = bufferEnd - i - 1;
+									return new ArraySegment<char>(buffer, lexemeStartIndex, i - lexemeStartIndex + 1);
+								case JsonNotation.Escape:
+									state = LEXER_STATE_QUOTED_ESCAPE; // skips escaped quotes - \"
+									continue;
+								default:
+									if (state == LEXER_STATE_QUOTED_ESCAPE)
+									{
+										state = LEXER_STATE_QUOTED;
+									}
+									continue;
+							}
+						case LEXER_STATE_COMMENT_BEGINING:
+							switch (buffer[i])
+							{
+								case JsonNotation.Comment:
+									state = LEXER_STATE_COMMENT_SINGLELINE;
+									continue;
+								case JsonNotation.CommentMultiline:
+									state = LEXER_STATE_COMMENT_MULTILINE;
+									continue;
+								default:
+									throw ReaderException.UnknownNotation(this, JsonNotation.Comment + buffer[i].ToString());
+							}
+						case LEXER_STATE_COMMENT_SINGLELINE:
+							switch (buffer[i])
+							{
+								case JsonNotation.Newline:
+								case JsonNotation.Return:
+									state = LEXER_STATE_START;
+									continue;
+								default: continue;
+							}
+						case LEXER_STATE_COMMENT_MULTILINE_ENDING:
+						case LEXER_STATE_COMMENT_MULTILINE:
+							switch (buffer[i])
+							{
+								case JsonNotation.CommentMultiline:
+									state = LEXER_STATE_COMMENT_MULTILINE_ENDING;
+									continue;
+								case JsonNotation.Comment:
+									if (state == LEXER_STATE_COMMENT_MULTILINE_ENDING)
+										state = LEXER_STATE_START;
+									continue;
+								default: continue;
+							}
+
+					}
+				}
+
+				if (state == LEXER_STATE_START || state == LEXER_STATE_COMMENT_BEGINING || state == LEXER_STATE_COMMENT_MULTILINE ||
+					state == LEXER_STATE_COMMENT_MULTILINE_ENDING || state == LEXER_STATE_COMMENT_SINGLELINE)
+				{
+					// no lexemes found in current buffer
+					this.bufferOffset = this.bufferAvailable = lexemeStartIndex = lexemeLength = 0;
+					goto start; // restart
+				}
+
+				lexemeLength = bufferEnd - lexemeStartIndex;
+
+				// buffer contains only fragment of lexeme
+				// lexeme parsing is not complete so there is 2 options:
+				// 1) try to fill buffer and retry parsing
+				// 2) return fragment to caller
+
+				if (lexemeLength < this.buffer.Length / 2)
+				{
+					// if fragment is small then move fragment to the start of the buffer and re-start parsing
+					if (lexemeStartIndex != 0)
+					{
+						Buffer.BlockCopy(this.buffer, lexemeStartIndex * CHAR_SIZE, this.buffer, 0, lexemeLength * CHAR_SIZE);
+						lexemeStartIndex = 0;
+					}
+
+					this.bufferOffset = lexemeLength;
+					this.bufferAvailable = 0;
+
+					goto start; // restart
+				}
+				else
+				{
+					// if fragment is huge then return it to caller
+
+					// set buffer is consumed
+					this.bufferOffset = this.bufferAvailable = 0;
+
+					return new ArraySegment<char>(this.buffer, lexemeStartIndex, lexemeLength);
+				}
+			}
+			private void ResetBufferIfNeeded()
+			{
+				if (this.bufferAvailable == 0)
+				{
+					this.bufferOffset = 0;
+				}
+			}
+			private int ReadToBuffer()
+			{
+				if (this.bufferOffset + this.bufferAvailable >= this.buffer.Length)
+				{
+					throw new InvalidOperationException("Unable to read to buffer because there is not space available. This will cause zero read and erroneous 'End Of Stream' message.");
+				}
+
+				var offset = this.bufferOffset + this.bufferAvailable;
+				var count = this.buffer.Length - offset;
+				var read = this.textReader.Read(this.buffer, offset, count);
+				this.bufferAvailable += read;
+				return read;
+			}
+
+			public void Dispose()
+			{
+				if (this.leaveOpen == false)
+					this.textReader.Dispose();
+			}
+
+			private sealed class JsonValueBox : IStrongBox
+			{
+				private readonly IFormatProvider formatProvider;
+				private ArraySegment<char> value;
+				private Type valueType;
+
+				public Type ValueType { get { return this.valueType; } }
+
+				public bool AsBoolean { get { return Convert.ToBoolean(this.LoadString(), CultureInfo.InvariantCulture); } }
+				public byte AsByte { get { return checked((byte)this.LoadUInt32()); } }
+				public short AsInt16 { get { return checked((short)this.LoadInt32()); } }
+				public int AsInt32 { get { return this.LoadInt32(); } }
+				public long AsInt64 { get { return this.LoadInt64(); } }
+				public sbyte AsSByte { get { return checked((sbyte)this.LoadInt32()); } }
+				public ushort AsUInt16 { get { return checked((ushort)this.LoadUInt32()); } }
+				public uint AsUInt32 { get { return this.LoadUInt32(); } }
+				public ulong AsUInt64 { get { return this.LoadUInt64(); } }
+				public float AsSingle { get { return Convert.ToSingle(this.LoadString(), CultureInfo.InvariantCulture); } }
+				public double AsDouble { get { return Convert.ToDouble(this.LoadString(), CultureInfo.InvariantCulture); } }
+				public decimal AsDecimal { get { return Convert.ToDecimal(this.LoadString(), CultureInfo.InvariantCulture); } }
+				public object AsObject { get { return this.LoadString(); } }
+
+				public JsonValueBox(IFormatProvider formatProvider)
+				{
+					if (formatProvider == null) throw new ArgumentNullException("formatProvider");
+
+					this.formatProvider = formatProvider;
+				}
+
+				private uint LoadUInt32()
+				{
+					var array = this.value.Array;
+					var offset = this.value.Offset;
+					var count = this.value.Count;
+
+					if (array[offset] == JsonNotation.Quote && array[offset + count - 1] == JsonNotation.Quote) // quoted
+					{
+						offset++;
+						count -= 2;
+					}
+
+					return JsonUtils.StringToUInt32(array, offset, count, this.formatProvider);
+				}
+				private ulong LoadUInt64()
+				{
+					var array = this.value.Array;
+					var offset = this.value.Offset;
+					var count = this.value.Count;
+
+					if (array[offset] == JsonNotation.Quote && array[offset + count - 1] == JsonNotation.Quote) // quoted
+					{
+						offset++;
+						count -= 2;
+					}
+
+					return JsonUtils.StringToUInt64(array, offset, count, this.formatProvider);
+				}
+				private int LoadInt32()
+				{
+					var array = this.value.Array;
+					var offset = this.value.Offset;
+					var count = this.value.Count;
+
+					if (array[offset] == JsonNotation.Quote && array[offset + count - 1] == JsonNotation.Quote) // quoted
+					{
+						offset++;
+						count -= 2;
+					}
+
+					return JsonUtils.StringToInt32(array, offset, count, this.formatProvider);
+				}
+				private long LoadInt64()
+				{
+					var array = this.value.Array;
+					var offset = this.value.Offset;
+					var count = this.value.Count;
+
+					if (array[offset] == JsonNotation.Quote && array[offset + count - 1] == JsonNotation.Quote) // quoted
+					{
+						offset++;
+						count -= 2;
+					}
+
+					return JsonUtils.StringToInt64(array, offset, count, this.formatProvider);
+				}
+				private string LoadString()
+				{
+					var array = this.value.Array;
+					var offset = this.value.Offset;
+					var count = this.value.Count;
+
+					if (array[offset] == JsonNotation.Quote && array[offset + count - 1] == JsonNotation.Quote) // quoted
+					{
+						offset++;
+						count -= 2;
+					}
+
+					return JsonUtils.UnEscapeBuffer(array, offset, count, false);
+				}
+
+				public void Store<T>(T value)
+				{
+					this.value = (ArraySegment<char>)(object)value;
+					this.valueType = typeof(string);
+				}
+
+				public void Store(ArraySegment<char> value, Type valueType)
+				{
+					if (valueType == null) throw new ArgumentNullException("valueType");
+
+					this.value = value;
+					this.valueType = valueType;
+				}
+
+				public override string ToString()
+				{
+					return this.LoadString();
+				}
+			}
+
+			private static class JsonUtils
+			{
+				public static string UnEscapeBuffer(char[] charsToUnEscape, int offset, int count, bool strict)
+				{
+					if (charsToUnEscape == null) throw new ArgumentNullException("charsToUnEscape");
+					if (offset < 0) throw new ArgumentOutOfRangeException("offset");
+					if (count < 0) throw new ArgumentOutOfRangeException("count");
+					if (offset + count > charsToUnEscape.Length) throw new ArgumentOutOfRangeException("offset");
+
+					var unEscapedCount = GetUnEscapedCount(charsToUnEscape, offset, count);
+					if (unEscapedCount == count)
+					{
+						return new string(charsToUnEscape, offset, count);
+					}
+
+					var resultBuilder = new StringBuilder(unEscapedCount);
+					var plainStart = offset;
+					var plainLen = 0;
+					var end = offset + count;
+					for (var i = offset; i < end; i++)
+					{
+						var ch = charsToUnEscape[i];
+						if (ch != '\\')
+						{
+							plainLen++;
+							continue;
+						}
+
+						if (i + 1 >= end)
+						{
+							if (strict)
+							{
+								throw ReaderException.UnknownEscapeSequence("\\\0", null);
+							}
+							else
+							{
+								plainLen++;
+								break; // u
+							}
+						}
+
+						var sequenceLength = 1;
+						// append unencoded chunk
+						if (plainLen != 0)
+						{
+							resultBuilder.Append(charsToUnEscape, plainStart, plainLen);
+							plainLen = 0;
+						}
+
+						var sequenceKind = charsToUnEscape[i + 1];
+						switch (sequenceKind)
+						{
+							case 'n':
+								resultBuilder.Append('\n');
+								break;
+							case 'r':
+								resultBuilder.Append('\r');
+								break;
+							case 'b':
+								resultBuilder.Append('\b');
+								break;
+							case 'f':
+								resultBuilder.Append('\f');
+								break;
+							case 't':
+								resultBuilder.Append('\t');
+								break;
+							case '\\':
+								resultBuilder.Append('\\');
+								break;
+							case '/':
+								resultBuilder.Append('/');
+								break;
+							case '\'':
+								resultBuilder.Append('\'');
+								break;
+							case '\"':
+								resultBuilder.Append('\"');
+								break;
+
+							// unicode symbol
+							case 'u':
+								resultBuilder.Append((char)HexStringToUInt32(charsToUnEscape, i + 2, 4));
+								sequenceLength = 5;
+								break;
+
+							// latin hex encoded symbol
+							case 'x':
+								resultBuilder.Append((char)HexStringToUInt32(charsToUnEscape, i + 2, 2));
+								sequenceLength = 3;
+								break;
+
+							// latin dec encoded symbol
+							case '1':
+							case '2':
+							case '3':
+							case '4':
+							case '5':
+							case '6':
+							case '7':
+							case '8':
+							case '9':
+							case '0':
+								resultBuilder.Append((char)StringToInt32(charsToUnEscape, i + 1, 3));
+								sequenceLength = 3;
+								break;
+							default:
+								if (!strict)
+								{
+									resultBuilder.Append(sequenceKind);
+									break;
+								}
+								else
+								{
+									throw ReaderException.UnknownEscapeSequence("\\" + sequenceKind, null);
+								}
+						}
+
+						// set next chunk start right after this escape
+						plainStart = i + sequenceLength + 1;
+						i += sequenceLength;
+					}
+
+					// append last unencoded chunk
+					if (plainLen != 0)
+					{
+						resultBuilder.Append(charsToUnEscape, plainStart, plainLen);
+					}
+
+					return resultBuilder.ToString();
+				}
+				private static int GetUnEscapedCount(char[] charsToUnEscape, int offset, int count)
+				{
+					if (charsToUnEscape == null) throw new ArgumentNullException("charsToUnEscape");
+					if (offset < 0) throw new ArgumentOutOfRangeException("offset");
+					if (count < 0) throw new ArgumentOutOfRangeException("count");
+					if (offset + count > charsToUnEscape.Length) throw new ArgumentOutOfRangeException("offset");
+
+					var newCount = 0;
+					var end = offset + count;
+					for (var i = offset; i < end; i++)
+					{
+						var ch = charsToUnEscape[i];
+						newCount++;
+						if (ch != '\\')
+						{
+							continue;
+						}
+
+						var toSkip = 1;
+						var sequenceKind = charsToUnEscape[i + 1];
+						switch (sequenceKind)
+						{
+							// unicode symbol
+							case 'u':
+								toSkip = 5;
+								break;
+
+							// latin hex encoded symbol
+							case 'x':
+								toSkip = 3;
+								break;
+							// latin dec encoded symbol
+							case '1':
+							case '2':
+							case '3':
+							case '4':
+							case '5':
+							case '6':
+							case '7':
+							case '8':
+							case '9':
+							case '0':
+								toSkip = 3;
+								break;
+							default:
+								toSkip = 1;
+								break;
+						}
+						i += toSkip;
+					}
+					return newCount;
+				}
+
+				public static uint HexStringToUInt32(char[] buffer, int offset, int count)
+				{
+					const uint ZERO = (ushort)'0';
+					const uint a = (ushort)'a';
+					const uint A = (ushort)'A';
+
+					var result = 0u;
+					for (var i = 0; i < count; i++)
+					{
+						var c = buffer[offset + i];
+						var d = 0u;
+						if (c >= '0' && c <= '9')
+							d = (c - ZERO);
+						else if (c >= 'a' && c <= 'f')
+							d = 10u + (c - a);
+						else if (c >= 'A' && c <= 'F')
+							d = 10u + (c - A);
+						else
+							throw new FormatException();
+
+						result = 16u * result + d;
+					}
+
+					return result;
+				}
+
+				public static long StringToInt64(char[] buffer, int offset, int count, IFormatProvider formatProvider = null)
+				{
+					const ulong ZERO = (ushort)'0';
+
+					var result = 0UL;
+					var neg = false;
+					for (var i = 0; i < count; i++)
+					{
+						var c = buffer[offset + i];
+						if (i == 0 && c == '-')
+						{
+							neg = true;
+							continue;
+						}
+						if (c < '0' || c > '9')
+							throw new FormatException();
+
+						result = checked(10UL * result + (c - ZERO));
+					}
+
+					if (neg)
+						return -(long)(result);
+					return (long)result;
+				}
+				public static int StringToInt32(char[] buffer, int offset, int count, IFormatProvider formatProvider = null)
+				{
+					const uint ZERO = (ushort)'0';
+
+					var result = 0u;
+					var neg = false;
+					for (var i = 0; i < count; i++)
+					{
+						var c = buffer[offset + i];
+						if (i == 0 && c == '-')
+						{
+							neg = true;
+							continue;
+						}
+						if (c < '0' || c > '9')
+							throw new FormatException();
+
+						result = checked(10u * result + (c - ZERO));
+					}
+
+					if (neg)
+						return -(int)(result);
+					return (int)result;
+				}
+				public static ulong StringToUInt64(char[] buffer, int offset, int count, IFormatProvider formatProvider = null)
+				{
+					const ulong ZERO = (ushort)'0';
+
+					var result = 0UL;
+					for (var i = 0; i < count; i++)
+					{
+						var c = buffer[offset + i];
+						if (c < '0' || c > '9')
+							throw new FormatException();
+
+						result = checked(10UL * result + (c - ZERO));
+					}
+
+					return result;
+				}
+				public static uint StringToUInt32(char[] buffer, int offset, int count, IFormatProvider formatProvider = null)
+				{
+					const uint ZERO = (ushort)'0';
+
+					var result = 0U;
+					for (var i = 0; i < count; i++)
+					{
+						var c = buffer[offset + i];
+						if (c < '0' || c > '9')
+							throw new FormatException();
+
+						result = checked(10 * result + (c - ZERO));
+					}
+
+					return result;
+				}
+			}
+
+			private static class JsonNotation
+			{
+				public const char Tab = '\t';
+				public const char Space = ' ';
+				public const char Newline = '\n';
+				public const char Return = '\r';
+				public const char IdentifierSeparator = ':';
+				public const char ValueSeparator = ',';
+				public const char BeginArray = '[';
+				public const char EndArray = ']';
+				public const char BeginObject = '{';
+				public const char EndObject = '}';
+				public const char Escape = '\\';
+				public const char Comment = '/';
+				public const char CommentMultiline = '*';
+				public const char Quote = '\"';
+				public const char Const0 = '0';
+				public const char Const1 = '1';
+				public const char Const2 = '2';
+				public const char Const3 = '3';
+				public const char Const4 = '4';
+				public const char Const5 = '5';
+				public const char Const6 = '6';
+				public const char Const7 = '7';
+				public const char Const8 = '8';
+				public const char Const9 = '9';
+				public const string True = "true";
+				public const string False = "false";
+				public const string Null = "null";
+			}
+		}
+		#endregion

@@ -1,0 +1,186 @@
+<#+
+	private void WriteGameDataVisitor(CodeGenerationContext context)
+	{
+#>
+		#region Visitors
+		public void ApplyVisitor(Visitor visitor)
+		{
+			if (visitor == null) throw new ArgumentNullException("visitor");
+
+			foreach (var document in this.EnumerateRoots())
+			{
+				visitor.Visit(document);
+			}
+		}
+
+		public void ResolveAllReferences()
+		{
+			var dereferencingVisitor = new DereferencingVisitor();
+			this.ApplyVisitor(dereferencingVisitor);
+		}
+
+		private void FindAllDocuments()
+		{
+			var findingVisitor = new FindingVisitor();
+			this.ApplyVisitor(findingVisitor);
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+			if (findingVisitor.All<#= typeDef.Schema.Name #>?.Count > 0)
+			{
+				this.allDocuments.<#= typeDef.CollectionName #> = new <#= typeDef.CollectionType #>(findingVisitor.All<#= typeDef.Schema.Name #>, document => document.Id);
+			}
+<#+
+		}
+#>
+		}
+
+		public class Visitor
+		{
+			#region Visit Methods
+
+			public virtual void Visit(<#= context.TargetLanguage.DocumentClassName #> document)
+			{
+				if (document == null) throw new ArgumentNullException(nameof(document));
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+				if (document is <#= typeDef.TypeName #> __<#= typeDef #>)
+				{
+					this.Visit(__<#= typeDef #>);
+				}
+				else
+<#+
+		}
+#>				{
+					throw new ArgumentException($"Unknown document type '{document.GetType()}'.", nameof(document));
+				}
+			}
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+			public virtual void Visit(<#= typeDef #> document)
+			{
+				if (document == null) throw new ArgumentNullException(nameof(document));
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.Document)
+				{
+#>
+				if (document.<#= propertyDef.Name #> != null)
+				{
+					this.Visit((<#= context.TargetLanguage.DocumentClassName #>) document.<#= propertyDef.Name #>);
+				}
+<#+
+				}
+				else if (propertyDef.DataType == DataType.DocumentCollection)
+				{
+#>
+				if (document.<#= propertyDef.Name #> != null)
+				{
+					foreach (var subDocument in document.<#= propertyDef.Name #>.AsList)
+					{
+						this.Visit((<#= context.TargetLanguage.DocumentClassName #>) subDocument);
+					}
+				}
+<#+
+				}
+			}
+#>
+			}
+<#+
+		}
+#>
+			#endregion
+		}
+
+		private class FindingVisitor : Visitor
+		{
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>			public List<<#= typeDef.TypeName #>> All<#= typeDef.Schema.Name #>;
+<#+
+		}
+#>
+			#region Visit Methods
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			var count = 0;
+			if (context.Statistics.DocumentCount.TryGetValue(typeDef.Schema, out count))
+			{
+				count += 5;
+			}
+			else
+			{
+				count = 50;
+			}
+#>
+			public override void Visit(<#= typeDef.TypeName #> document)
+			{
+				if (this.All<#= typeDef.Schema.Name #> == null)
+				{
+					this.All<#= typeDef.Schema.Name #> = new List<<#= typeDef.TypeName #>>(<#= count #>);
+				}
+				this.All<#= typeDef.Schema.Name #>.Add(document);
+
+				base.Visit(document);
+			}
+<#+
+		}
+#>
+			#endregion
+		}
+
+		private class DereferencingVisitor : Visitor
+		{
+			#region Visit Methods
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+			public override void Visit(<#= typeDef.TypeName #> document)
+			{
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.Reference)
+				{
+#>
+				if (document.<#= propertyDef.RawName #> != null)
+				{
+					document.<#= propertyDef.RawName #>.Dereference();
+				}
+<#+
+				}
+				else if (propertyDef.DataType == DataType.ReferenceCollection)
+				{
+#>
+				if (document.<#= propertyDef.RawName #> != null)
+				{
+					document.<#= propertyDef.RawName #>.Dereference();
+				}
+<#+
+				}
+			}
+#>
+				base.Visit(document);
+			}
+<#+
+		}
+#>
+			#endregion
+		}
+
+		#endregion
+<#+
+	}
+#>

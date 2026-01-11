@@ -1,0 +1,532 @@
+﻿<#+
+	private void WriteReadGameDataMergeCodeImplementation(CodeGenerationContext context)
+	{
+#>
+TSharedPtr<FJsonObject> <#= context.TargetLanguage.GameDataClassName #>::MergeGameData(const TSharedPtr<FJsonObject>& GameDataDocument, const TSharedPtr<FJsonObject>& PatchDocument)
+{
+	const TSharedPtr<FJsonObject>* GameDataCollections;
+	if (!GameDataDocument->TryGetObjectField(TEXT("Collections"), GameDataCollections)) {
+		GameDataCollections = nullptr;
+	}
+
+	const TSharedPtr<FJsonObject>* PatchCollections;
+	if (!PatchDocument->TryGetObjectField(TEXT("Collections"), PatchCollections)) {
+		PatchCollections = nullptr;
+	}
+
+	auto MergedCollections = MakeShared<FJsonObject>();
+	if (GameDataCollections != nullptr && GameDataCollections->IsValid() &&
+		PatchCollections != nullptr && PatchCollections->IsValid())
+	{
+		auto& GameDataCollectionsMap = GameDataCollections->Get()->Values;
+		auto& PatchCollectionsMap = PatchCollections->Get()->Values;
+
+		TSet<FString> VisitedSchemas;
+		auto SchemaNames = MergeKeys(GameDataCollectionsMap, PatchCollectionsMap);
+
+		for (auto SchemaName : SchemaNames.Get())
+		{
+			if (VisitedSchemas.Contains(SchemaName))
+			{
+				continue;
+			}
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+			if (SchemaName == TEXT("<#= typeDef.Schema.Id #>") || SchemaName == TEXT("<#= typeDef.Schema.Name #>"))
+			{
+				VisitedSchemas.Add(TEXT("<#= typeDef.Schema.Id #>"));
+				VisitedSchemas.Add(TEXT("<#= typeDef.Schema.Name #>"));
+
+				auto GameDataDocumentCollection = GameDataCollectionsMap.Find(TEXT("<#= typeDef.Schema.Id #>"));
+				if (GameDataDocumentCollection == nullptr)
+				{
+					GameDataDocumentCollection = GameDataCollectionsMap.Find(TEXT("<#= typeDef.Schema.Name #>"));
+				}
+				auto PatchDocumentCollection = PatchCollectionsMap.Find(TEXT("<#= typeDef.Schema.Id #>"));
+				if (PatchDocumentCollection == nullptr)
+				{
+					PatchDocumentCollection = PatchCollectionsMap.Find(TEXT("<#= typeDef.Schema.Name #>"));
+				}
+
+				if (GameDataDocumentCollection != nullptr && PatchDocumentCollection != nullptr)
+				{
+					auto MergedCollection = MergeDocumentCollection<<#= typeDef #>>(GameDataDocumentCollection->ToSharedRef(), PatchDocumentCollection->ToSharedRef(), false);
+					MergedCollections->SetField(TEXT("<#= typeDef.Schema.Name #>"), MergedCollection);
+				}
+				else if (GameDataDocumentCollection != nullptr)
+				{
+					MergedCollections->SetField(TEXT("<#= typeDef.Schema.Name #>"), *GameDataDocumentCollection);
+				}
+				else if (PatchDocumentCollection != nullptr)
+				{
+					MergedCollections->SetField(TEXT("<#= typeDef.Schema.Name #>"), *PatchDocumentCollection);
+				}
+			}
+			else
+<#+
+		}
+#>
+			{
+				/* ignore schema */
+			}
+		}
+	}
+	else if (GameDataCollections != nullptr && GameDataCollections->IsValid())
+	{
+		MergedCollections = GameDataCollections->ToSharedRef();
+	}
+	else if (PatchCollections != nullptr && PatchCollections->IsValid())
+	{
+		MergedCollections = PatchCollections->ToSharedRef();
+	}
+
+	int MergedChangeNumber;
+	if (GameDataDocument->HasTypedField<EJson::Number>(TEXT("ChangeNumber")))
+	{
+		GameDataDocument->GetField<EJson::Number>(TEXT("ChangeNumber"))->TryGetNumber(MergedChangeNumber);
+	}
+	if (PatchDocument->HasTypedField<EJson::Number>(TEXT("ChangeNumber")))
+	{
+		PatchDocument->GetField<EJson::Number>(TEXT("ChangeNumber"))->TryGetNumber(MergedChangeNumber);
+	}
+
+	FString MergedRevisionHash;
+	if (GameDataDocument->HasTypedField<EJson::String>(TEXT("RevisionHash")))
+	{
+		GameDataDocument->GetField<EJson::String>(TEXT("RevisionHash"))->TryGetString(MergedRevisionHash);
+	}
+	if (PatchDocument->HasTypedField<EJson::String>(TEXT("RevisionHash")))
+	{
+		PatchDocument->GetField<EJson::String>(TEXT("RevisionHash"))->TryGetString(MergedRevisionHash);
+	}
+
+	auto MergedGameData = MakeShared<FJsonObject>();
+	MergedGameData->SetField(TEXT("ChangeNumber"), MakeShared<FJsonValueNumber>(MergedChangeNumber));
+	MergedGameData->SetField(TEXT("RevisionHash"), MakeShared<FJsonValueString>(MergedRevisionHash));
+	MergedGameData->SetField(TEXT("Collections"), MakeShared<FJsonValueObject>(MergedCollections));
+	return MergedGameData;
+}
+
+struct ToIdMapper
+{
+	static TSharedPtr<FJsonObject> ToDocumentById(TSharedRef<FJsonValue> Collection)
+	{
+		TSharedPtr<FJsonObject>* CollectionByIdPtr;
+		TArray<TSharedPtr<FJsonValue>>* CollectionPtr;
+		if (Collection->TryGetObject(CollectionByIdPtr) && CollectionByIdPtr != nullptr && CollectionByIdPtr->IsValid())
+		{
+			return *CollectionByIdPtr;
+		}
+		else if (Collection->TryGetArray(CollectionPtr) && CollectionPtr != nullptr)
+		{
+			auto CollectionById = MakeShared<FJsonObject>();
+			for (auto DocumentOrNullPtr : *CollectionPtr)
+			{
+				TSharedPtr<FJsonObject>* DocumentObjectPtr;
+				if (DocumentOrNullPtr->TryGetObject(DocumentObjectPtr) && DocumentObjectPtr->IsValid())
+				{
+					auto Document = DocumentObjectPtr->ToSharedRef();
+					auto IdValue = Document->TryGetField(TEXT("Id"));
+					double IdValueDouble;
+					FString IdValueString;
+					bool IdValueBool;
+					if (IdValue != nullptr && IdValue->TryGetNumber(IdValueDouble))
+					{
+						CollectionById->SetObjectField(FString::Format(TEXT("{0}"), {IdValueDouble}), Document);
+					}
+					else if (IdValue != nullptr && IdValue->TryGetString(IdValueString))
+					{
+						CollectionById->SetObjectField(IdValueString, Document);
+					}
+					else if (IdValue != nullptr && IdValue->TryGetBool(IdValueBool))
+					{
+						CollectionById->SetObjectField(IdValueBool ? TEXT("True") : TEXT("False"), Document);
+					}
+				}
+			}
+			return CollectionById;
+		}
+		else
+		{
+			return MakeShared<FJsonObject>();
+		}
+	}
+};
+
+template <typename DocumentType>
+TSharedPtr<FJsonValue> <#= context.TargetLanguage.GameDataClassName #>::MergeDocumentCollection(TSharedRef<FJsonValue> OriginalCollection, TSharedRef<FJsonValue> ModifiedCollection, bool PurgeRest)
+{
+	auto OriginalCollectionById = ToIdMapper::ToDocumentById(OriginalCollection);
+	auto ModifiedCollectionById = ToIdMapper::ToDocumentById(ModifiedCollection);
+	auto MergedCollectionById = MakeShared<FJsonObject>();
+	auto DocumentIds = PurgeRest ? MergeKeys(ModifiedCollectionById->Values, TMap<FString, TSharedPtr<FJsonValue>>()) : MergeKeys(OriginalCollectionById->Values, ModifiedCollectionById->Values);
+
+	for (auto DocumentId : DocumentIds.Get())
+	{
+		TSharedPtr<FJsonValue> OriginalDocumentObjectPtr = OriginalCollectionById->TryGetField(DocumentId);
+		auto OriginalDocumentExists = OriginalDocumentObjectPtr.IsValid();
+
+		TSharedPtr<FJsonValue> ModifiedDocumentObjectPtr = ModifiedCollectionById->TryGetField(DocumentId);
+		auto ModifiedDocumentExists = ModifiedDocumentObjectPtr.IsValid();
+
+		TSharedPtr<FJsonValue> MergedDocument = nullptr;
+		if (OriginalDocumentExists && !ModifiedDocumentExists)
+		{
+			// unchanged
+			MergedDocument = OriginalDocumentObjectPtr;
+		}
+		else if (OriginalDocumentExists && OriginalCollectionById->HasTypedField<EJson::Null>(DocumentId))
+		{
+			// keep deleted documents as deleted
+			MergedDocument = nullptr;
+		}
+		else if (!OriginalDocumentExists && ModifiedDocumentExists)
+		{
+			// modified
+			MergedDocument = ModifiedDocumentObjectPtr;
+		}
+		else if (OriginalDocumentExists && OriginalCollectionById->HasTypedField<EJson::Object>(DocumentId) &&
+			ModifiedDocumentExists && ModifiedCollectionById->HasTypedField<EJson::Object>(DocumentId))
+		{
+			// merged
+			MergedDocument = MergeDocument<DocumentType>(OriginalDocumentObjectPtr.ToSharedRef(), ModifiedDocumentObjectPtr.ToSharedRef());
+		}
+		else
+		{
+			// modified
+			MergedDocument = ModifiedDocumentObjectPtr;
+		}
+
+
+		if (MergedDocument)
+		{
+			MergedCollectionById->SetField(DocumentId, MergedDocument);
+		}
+		else
+		{
+			MergedCollectionById->SetField(DocumentId, MakeShared<FJsonValueNull>());
+		}
+	}
+
+	return MakeShared<FJsonValueObject>(MergedCollectionById);
+}
+
+template <typename DocumentType>
+TSharedPtr<FJsonValue> <#= context.TargetLanguage.GameDataClassName #>::MergeDocument(TSharedRef<FJsonValue> OriginalDocument, TSharedRef<FJsonValue> ModifiedDocument)
+{
+	TSharedPtr<FJsonObject>* OriginalDocumentObjectPtr;
+	if (!OriginalDocument->TryGetObject(OriginalDocumentObjectPtr))
+	{
+		OriginalDocumentObjectPtr = nullptr;
+	}
+
+	TSharedPtr<FJsonObject>* ModifiedDocumentObjectPtr;
+	if (!ModifiedDocument->TryGetObject(ModifiedDocumentObjectPtr))
+	{
+		ModifiedDocumentObjectPtr = nullptr;
+	}
+
+	if (OriginalDocumentObjectPtr == nullptr || !OriginalDocumentObjectPtr->IsValid() ||
+		ModifiedDocumentObjectPtr == nullptr || !ModifiedDocumentObjectPtr->IsValid())
+	{
+		return nullptr;
+	}
+
+	auto ModifiedDocumentObjectRef = ModifiedDocumentObjectPtr->ToSharedRef();
+	auto OriginalDocumentObjectRef = OriginalDocumentObjectPtr->ToSharedRef();
+	auto MergedDocument = MakeShared<FJsonObject>();
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	if constexpr (std::is_same_v<DocumentType, <#= typeDef #>>)
+	{
+<#+
+			foreach (var propertyDef in typeDef.Properties)
+			{
+				if (propertyDef.DataType == DataType.Text && propertyDef.SchemaProperty.Name == "Languages" && typeDef.Schema.Name == "ProjectSettings")
+				{
+#>		MergePropertyLanguagesValue(MergedDocument, OriginalDocumentObjectRef, ModifiedDocumentObjectRef, TEXT("<#= propertyDef.SchemaProperty.Name #>"));
+<#+
+				}
+				else if (propertyDef.DataType == DataType.ReferenceCollection || propertyDef.DataType == DataType.DocumentCollection)
+				{
+#>		MergePropertyValue(MergedDocument, OriginalDocumentObjectRef, ModifiedDocumentObjectRef, TEXT("<#= propertyDef.SchemaProperty.Name #>"), OptionalMergeValueFunc([this](TSharedRef<FJsonValue> OriginalValue, TSharedRef<FJsonValue> ModifiedValue) { return MergeDocumentCollection<<#= propertyDef.DocumentOrReferenceType #>>(OriginalValue, ModifiedValue, true); }));
+<#+
+				}
+				else if (propertyDef.DataType == DataType.Document)
+				{
+#>		MergePropertyDocumentValue(MergedDocument, OriginalDocumentObjectRef, ModifiedDocumentObjectRef, TEXT("<#= propertyDef.SchemaProperty.Name #>"), OptionalMergeValueFunc([this](TSharedRef<FJsonValue> OriginalValue, TSharedRef<FJsonValue> ModifiedValue) { return MergeDocument<<#= propertyDef.DocumentOrReferenceType #>>(OriginalValue, ModifiedValue); }));
+<#+
+				}
+				else if (propertyDef.DataType == DataType.LocalizedText)
+				{
+#>		MergePropertyValue(MergedDocument, OriginalDocumentObjectRef, ModifiedDocumentObjectRef, TEXT("<#= propertyDef.SchemaProperty.Name #>"), OptionalMergeValueFunc([this](TSharedRef<FJsonValue> OriginalValue, TSharedRef<FJsonValue> ModifiedValue) { return MergeLocalizedText(OriginalValue, ModifiedValue); }));
+<#+
+				}
+				else
+				{
+#>		MergePropertyValue(MergedDocument, OriginalDocumentObjectRef, ModifiedDocumentObjectRef, TEXT("<#= propertyDef.SchemaProperty.Name #>"));
+<#+
+				}
+			}
+#>
+	}
+	else
+<#+
+		}
+#>
+	{
+		/* ignore type */
+	}
+
+	return MakeShared<FJsonValueObject>(MergedDocument);
+}
+
+
+void <#= context.TargetLanguage.GameDataClassName #>::MergePropertyDocumentValue(TSharedRef<FJsonObject> MergedDocument, TSharedRef<FJsonObject> OriginalDocument, TSharedRef<FJsonObject> ModifiedDocument, const FString PropertyName, OptionalMergeValueFunc MergeFn)
+{
+	const TSharedPtr<FJsonObject>* ModifiedDocumentObjectPtr;
+	if (ModifiedDocument->TryGetObjectField(PropertyName, ModifiedDocumentObjectPtr) &&
+		ModifiedDocumentObjectPtr != nullptr && ModifiedDocumentObjectPtr->IsValid() &&
+		!ModifiedDocumentObjectPtr->Get()->HasField(TEXT("Id")) &&
+		OriginalDocument->HasTypedField<EJson::Null>(PropertyName))
+	{
+		// unable to merge partial data into missing document
+		MergedDocument->SetField(PropertyName, MakeShared<FJsonValueNull>());
+		return;
+	}
+
+	MergePropertyValue(MergedDocument, OriginalDocument, ModifiedDocument, PropertyName, MergeFn);
+}
+
+void <#= context.TargetLanguage.GameDataClassName #>::MergePropertyLanguagesValue(TSharedRef<FJsonObject> MergedDocument, TSharedRef<FJsonObject> OriginalDocument, TSharedRef<FJsonObject> ModifiedDocument, const FString PropertyName)
+{
+	auto OriginalValue = OriginalDocument->TryGetField(PropertyName);
+	auto OriginalValueExists = OriginalValue.IsValid();
+
+	auto ModifiedValue = ModifiedDocument->TryGetField(PropertyName);
+	auto ModifiedValueExists = ModifiedValue.IsValid();
+
+	if (!OriginalValueExists && !ModifiedValueExists)
+	{
+		return;
+	}
+
+	auto OriginalLanguageListStr = OriginalValueExists && OriginalValue->Type == EJson::String ? OriginalValue->AsString() : FString();
+	auto ModifiedLanguageListStr = ModifiedValueExists && ModifiedValue->Type == EJson::String ? ModifiedValue->AsString() : FString();
+	auto OriginalLanguageList = TArray<FString>();
+	auto ModifiedLanguageList = TArray<FString>();
+
+	ParseLanguageList(OriginalLanguageListStr, OriginalLanguageList);
+	ParseLanguageList(ModifiedLanguageListStr, ModifiedLanguageList);
+
+	for (const auto LanguageId : ModifiedLanguageList)
+	{
+		if (OriginalLanguageList.Contains(LanguageId))
+		{
+			continue;
+		}
+		OriginalLanguageList.Add(LanguageId);
+	}
+
+	MergedDocument->SetStringField(PropertyName, FString::Join(OriginalLanguageList, TEXT(";")));
+}
+
+void <#= context.TargetLanguage.GameDataClassName #>::MergePropertyValue(TSharedRef<FJsonObject> MergedDocument, TSharedRef<FJsonObject> OriginalDocument, TSharedRef<FJsonObject> ModifiedDocument, const FString PropertyName, OptionalMergeValueFunc MergeFn)
+{
+	auto OriginalValue = OriginalDocument->TryGetField(PropertyName);
+	auto OriginalValueExists = OriginalValue.IsValid();
+
+	auto ModifiedValue = ModifiedDocument->TryGetField(PropertyName);
+	auto ModifiedValueExists = ModifiedValue.IsValid();
+
+	if (!OriginalValueExists && !ModifiedValueExists)
+	{
+		return;
+	}
+
+	TSharedPtr<FJsonValue> MergedValue = nullptr;
+	if (OriginalValueExists && !ModifiedValueExists)
+	{
+		// unchanged
+		MergedValue = OriginalValue;
+	}
+	else if (!OriginalValueExists && ModifiedValueExists)
+	{
+		// modified
+		MergedValue = ModifiedValue;
+	}
+	else if (OriginalValue != nullptr && ModifiedValue != nullptr)
+	{
+		// modified
+		if (MergeFn.IsSet())
+		{
+			MergedValue = MergeFn.GetValue()(OriginalValue.ToSharedRef(), ModifiedValue.ToSharedRef());
+		}
+		else
+		{
+			MergedValue = ModifiedValue;
+		}
+	}
+	else
+	{
+		// modified
+		MergedValue = ModifiedValue;
+	}
+
+
+	if (MergedValue != nullptr)
+	{
+		MergedDocument->SetField(PropertyName, MergedValue);
+	}
+	else
+	{
+		MergedDocument->SetField(PropertyName, MakeShared<FJsonValueNull>());
+	}
+}
+
+TSharedRef<FJsonValue> <#= context.TargetLanguage.GameDataClassName #>::MergeLocalizedText(TSharedRef<FJsonValue> OriginalLocalizedText, TSharedRef<FJsonValue> ModifiedLocalizedText)
+{
+	struct TextComparer
+	{
+		static bool IsSame(TSharedRef<FJsonObject> Left, TSharedRef<FJsonObject> Right)
+		{
+			TArray<FString> Keys;
+			for(int i = 0; i < 2; i++)
+			{
+				if (i == 0)
+				{
+					Left->Values.GetKeys(Keys);
+				}
+				else
+				{
+					Right->Values.GetKeys(Keys);
+				}
+
+				for (auto LanguageId : Keys)
+				{
+					if (LanguageId == TEXT("notes") )
+					{
+						continue;
+					}
+
+					auto LeftValue = Left->TryGetField(LanguageId);
+					auto RightValue = Right->TryGetField(LanguageId);
+					FString LeftText, RightText;
+
+					if (LeftValue == nullptr || RightValue == nullptr || LeftValue->Type != RightValue->Type)
+					{
+						return false;
+					}
+
+					if (LeftValue->TryGetString(LeftText) &&
+						RightValue->TryGetString(RightText) &&
+						LeftText != RightText)
+					{
+						return false;
+					}
+
+				}
+			}
+
+			return true;
+		}
+	};
+
+	TSharedPtr<FJsonObject>* OriginalLocalizedTextPtr;
+	if (!OriginalLocalizedText->TryGetObject(OriginalLocalizedTextPtr))
+	{
+		OriginalLocalizedTextPtr = nullptr;
+	}
+
+	TSharedPtr<FJsonObject>* ModifiedLocalizedTextPtr;
+	if (!ModifiedLocalizedText->TryGetObject(ModifiedLocalizedTextPtr))
+	{
+		ModifiedLocalizedTextPtr = nullptr;
+	}
+
+	if (OriginalLocalizedTextPtr == nullptr || !OriginalLocalizedTextPtr->IsValid())
+	{
+		return ModifiedLocalizedTextPtr != nullptr && ModifiedLocalizedTextPtr->IsValid() ?
+			MakeShared<FJsonValueObject>(*ModifiedLocalizedTextPtr) : static_cast<TSharedRef<FJsonValue>>(MakeShared<FJsonValueNull>());
+	}
+	else if (ModifiedLocalizedTextPtr == nullptr || !ModifiedLocalizedTextPtr->IsValid())
+	{
+		return OriginalLocalizedTextPtr != nullptr && OriginalLocalizedTextPtr->IsValid() ?
+			MakeShared<FJsonValueObject>(*OriginalLocalizedTextPtr) : static_cast<TSharedRef<FJsonValue>>(MakeShared<FJsonValueNull>());
+	}
+	else if (TextComparer::IsSame(OriginalLocalizedTextPtr->ToSharedRef(), ModifiedLocalizedTextPtr->ToSharedRef()))
+	{
+		return MakeShared<FJsonValueObject>(*OriginalLocalizedTextPtr);
+	}
+
+	auto& OriginalLocalizedTextMap = OriginalLocalizedTextPtr->Get()->Values;
+	auto& ModifiedLocalizedTextMap = ModifiedLocalizedTextPtr->Get()->Values;
+	auto LanguageIds = MergeKeys(OriginalLocalizedTextMap, ModifiedLocalizedTextMap);
+	auto MergedLocalizedText = MakeShared<FJsonObject>();
+	for (auto LanguageId : LanguageIds.Get())
+	{
+		auto OriginalText = OriginalLocalizedTextMap.Find(LanguageId);
+		auto ModifiedText = ModifiedLocalizedTextMap.Find(LanguageId);
+
+		if (ModifiedText != nullptr && ModifiedText->IsValid())
+		{
+			MergedLocalizedText->SetField(LanguageId, *ModifiedText);
+		}
+		else if (OriginalText != nullptr && OriginalText->IsValid())
+		{
+			MergedLocalizedText->SetField(LanguageId, *OriginalText);
+		}
+	}
+
+	return MakeShared<FJsonValueObject>(MergedLocalizedText);
+}
+
+TSharedRef<TArray<FString>> <#= context.TargetLanguage.GameDataClassName #>::MergeKeys(const TMap<FString, TSharedPtr<FJsonValue>>& Collection1, const TMap<FString, TSharedPtr<FJsonValue>>& Collection2)
+{
+	TArray<FString> Keys;
+	Collection1.GetKeys(Keys);
+
+	auto MergedKeys = MakeShared<TArray<FString>>();
+	for (auto Key : Keys)
+	{
+		MergedKeys->Push(Key);
+	}
+
+	Collection2.GetKeys(Keys);
+	for (auto Key : Keys)
+	{
+		if (MergedKeys->Contains(Key))
+		{
+			continue; // skip duplicates
+		}
+		MergedKeys->Push(Key);
+	}
+	return MergedKeys;
+}
+<#+
+	}
+	private void WriteReadGameDataMergeCodeHeader(CodeGenerationContext context)
+	{
+		if (context.DisablePatching)
+		{
+			return;
+		}
+#>
+	TSharedPtr<FJsonObject> MergeGameData(const TSharedPtr<FJsonObject>& GameDataDocument, const TSharedPtr<FJsonObject>& PatchDocument);
+	template <typename DocumentType>
+	TSharedPtr<FJsonValue> MergeDocumentCollection(TSharedRef<FJsonValue> OriginalCollection, TSharedRef<FJsonValue> ModifiedCollection, bool PurgeRest);
+	template <typename DocumentType>
+	TSharedPtr<FJsonValue> MergeDocument(TSharedRef<FJsonValue> OriginalDocument, TSharedRef<FJsonValue> ModifiedDocument);
+	typedef TOptional<TFunction<TSharedPtr<FJsonValue>(TSharedRef<FJsonValue>, TSharedRef<FJsonValue>)>> OptionalMergeValueFunc;
+	void MergePropertyDocumentValue(TSharedRef<FJsonObject> MergedDocument, TSharedRef<FJsonObject> OriginalDocument, TSharedRef<FJsonObject> ModifiedDocument, const FString PropertyName, OptionalMergeValueFunc MergeFn = OptionalMergeValueFunc());
+	void MergePropertyLanguagesValue(TSharedRef<FJsonObject> MergedDocument, TSharedRef<FJsonObject> OriginalDocument, TSharedRef<FJsonObject> ModifiedDocument, const FString PropertyName);
+	void MergePropertyValue(TSharedRef<FJsonObject> MergedDocument, TSharedRef<FJsonObject> OriginalDocument, TSharedRef<FJsonObject> ModifiedDocument, const FString PropertyName, OptionalMergeValueFunc MergeFn = OptionalMergeValueFunc());
+	TSharedRef<FJsonValue> MergeLocalizedText(TSharedRef<FJsonValue> OriginalLocalizedText, TSharedRef<FJsonValue> ModifiedLocalizedText);
+	TSharedRef<TArray<FString>> MergeKeys(const TMap<FString, TSharedPtr<FJsonValue>>& Collection1, const TMap<FString, TSharedPtr<FJsonValue>>& Collection2);
+<#+
+	}
+#>

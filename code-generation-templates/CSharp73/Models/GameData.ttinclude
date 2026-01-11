@@ -1,0 +1,340 @@
+﻿<#@ include file="GameData.Visitor.ttinclude" once="true" #>
+<#@ include file="GameData.ReadGameData.ttinclude" once="true" #>
+<#@ include file="GameData.MergeGameData.ttinclude" once="true" #>
+
+<#+
+	private void WriteGameDataClass(CodeGenerationContext context)
+	{
+#>
+	[GeneratedCode(<#= context.TargetLanguage.GameDataClassName #>.GeneratorName, <#= context.TargetLanguage.GameDataClassName #>.GeneratorVersion)]
+	public partial class <#= context.TargetLanguage.GameDataClassName #>
+	{
+		public const string GeneratorName = "<#= context.ToolsName #>";
+		public const string GeneratorVersion = "<#= context.ToolsVersion #>";
+
+		private class DocumentCollections
+		{
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+			public <#= typeDef.CollectionType #> <#= typeDef.CollectionName #> = <#= typeDef.CollectionType #>.Empty;
+<#+
+		}
+#>
+		}
+
+		#region Formula fields
+		public static readonly Type[] FormulaTypes = new Type[]
+		{
+				typeof(<#= context.TargetLanguage.GameDataClassName #>),
+<#+
+			foreach (var schemaTypeName in context.ObjectModel.Types.Select(v => v.TypeName))
+			{
+#>
+				typeof(<#= schemaTypeName #>),
+<#+
+			}
+#>
+<#+
+			foreach (var expressionTypeName in context.ObjectModel.Formulas.Select(f => f.TypeName))
+			{
+#>
+				typeof(<#= expressionTypeName #>),
+<#+
+			}
+#>
+<#+
+			foreach (var enumTypeName in context.ObjectModel.Enums.Select(f => f.TypeName))
+			{
+#>
+				typeof(<#= enumTypeName #>),
+<#+
+			}
+#>
+		};
+#if USE_DYNAMIC_EXPRESSIONS
+		public static readonly GameDevWare.Dynamic.Expressions.ITypeResolver TypeResolver = new GameDevWare.Dynamic.Expressions.KnownTypeResolver(FormulaTypes);
+#elif !SUPPRESS_BUILD_IN_FORMULAS
+		public static readonly Formulas.IFormulaTypeResolver TypeResolver = new Formulas.KnownFormulaTypeResolver(FormulaTypes, Formulas.FormulaOptions.None);
+#endif
+		#endregion
+
+		#region Schema collections storage fields
+		private readonly DocumentCollections rootDocuments;
+		private readonly DocumentCollections allDocuments;
+		#endregion
+
+		#region Schema collections
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			if (typeDef.IsSettings)
+			{
+#>
+		public <#= typeDef #> <#= typeDef.SettingsName #> => this.GetOne<<#= typeDef #>>(this.rootDocuments.<#= typeDef.CollectionName #>.AsList);
+<#+
+			}
+			else
+			{
+#>
+		public <#= typeDef.CollectionType #> All<#= typeDef.CollectionName #> => this.allDocuments.<#= typeDef.CollectionName #>;
+		public <#= typeDef.CollectionType #> <#= typeDef.CollectionName #> => this.rootDocuments.<#= typeDef.CollectionName #>;
+<#+
+			}
+		}
+#>
+		#endregion
+
+		private ReadOnlyCollection<String> languages;
+		private <#= context.TargetLanguage.LocalizedTextClassName #>.LanguageSwitcher languageSwitcher;
+		private int changeNumber;
+		private string revisionHash;
+		private string gameDataVersion;
+
+		public int ChangeNumber { get { return this.changeNumber; } }
+		public string RevisionHash { get { return this.revisionHash; } }
+		public string GameDataVersion { get { return this.gameDataVersion; } }
+		public ReadOnlyCollection<string> SupportedLanguages { get { return this.languages; } }
+		public Func<string, object, <#= context.TargetLanguage.DocumentClassName #>> FindDocument { get; private set; }
+
+
+		public <#= context.TargetLanguage.GameDataClassName #>(Stream gameDataStream, Formatters.GameDataLoadOptions options)
+		{
+			if (gameDataStream == null) throw new ArgumentNullException(nameof(gameDataStream));
+			if (options == null) throw new ArgumentNullException(nameof(options));
+
+			this.languages = new ReadOnlyCollection<String>(new String[] { "<#= context.Metadata.ProjectSettings.PrimaryLanguage #>" });
+			this.rootDocuments = new DocumentCollections();
+			this.allDocuments = new DocumentCollections();
+			this.languageSwitcher = new <#= context.TargetLanguage.LocalizedTextClassName #>.LanguageSwitcher {
+				CurrentLanguageId = "<#= context.Metadata.ProjectSettings.PrimaryLanguage #>",
+				FallbackLanguageId = "<#= context.Metadata.ProjectSettings.PrimaryLanguage #>",
+				PrimaryLanguageId = "<#= context.Metadata.ProjectSettings.PrimaryLanguage #>",
+			};
+
+			this.FindDocument = this.FindDocumentInternal;
+
+			var gameDataReader = this.CreateReader(gameDataStream, options);
+			gameDataReader.NextToken();
+<#+
+		if (context.DisablePatching)
+		{
+#>
+			if (options.Patches != null && options.Patches.Count > 0)
+			{
+				throw new NotSupportedException("Patching is not supported. Please enable patching during code generation.");
+			}
+<#+
+		}
+		else
+		{
+#>
+			var patches = (options.Patches ?? Array.Empty<Stream>());
+			if (patches.Count > 0)
+			{
+				var gameDataDocument = gameDataReader.ReadObject();
+				foreach (var patchStream in patches)
+				{
+					using (var patchReader = this.CreateReader(patchStream, options))
+					{
+						patchReader.NextToken();
+						var patchDocument = patchReader.ReadObject();
+						gameDataDocument = this.MergeGameData(gameDataDocument, patchDocument);
+					}
+				}
+				gameDataReader = new Formatters.GameDataObjectReader(gameDataDocument);
+				gameDataReader.NextToken();
+			}
+<#+
+		}
+#>
+			try { this.ReadGameData(gameDataReader); }
+			finally { gameDataReader.Dispose(); }
+
+			this.FindAllDocuments();
+			this.ReadProjectSettings();
+
+<#+
+		if (context.EagerReferenceResolution)
+		{
+#>
+			this.ResolveAllReferences();
+<#+
+		}
+#>
+
+#pragma warning disable 0162 // Unreachable code detected
+			this.OnInitialize();
+#pragma warning restore 0162
+		}
+
+		partial void OnInitialize();
+
+		public IEnumerable<<#= context.TargetLanguage.DocumentClassName #>> GetAllDocuments()
+		{
+			return this.EnumerateAll();
+		}
+
+		public void SetLanguage(string languageId)
+		{
+			this.SetLanguage(languageId, languageId);
+		}
+		public void SetLanguage(string languageId, string fallbackLanguageId = "<#= context.Metadata.ProjectSettings.PrimaryLanguage #>", <#= context.TargetLanguage.LocalizedTextClassName #>.FallbackOption fallbackOption = <#= context.TargetLanguage.LocalizedTextClassName #>.FallbackOption.OnNull)
+		{
+			if (languageId == null) throw new ArgumentNullException(nameof(languageId));
+			if (fallbackLanguageId == null) throw new ArgumentNullException(nameof(fallbackLanguageId));
+
+			this.languageSwitcher.CurrentLanguageId = languageId;
+			this.languageSwitcher.FallbackLanguageId = fallbackLanguageId ?? languageId;
+			this.languageSwitcher.FallbackOption = fallbackOption;
+		}
+
+		public IEnumerable<string> GetDocumentIds(string schemaNameOrId)
+		{
+#pragma warning disable 1522 // Empty switch block
+			switch (schemaNameOrId)
+			{
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			var idType = typeDef.IdMember.Type;
+#>
+				case "<#= typeDef.Schema.Name #>":
+				case "<#= typeDef.Schema.Id #>": return this.allDocuments.<#= typeDef.CollectionName #>.Values.Select(document => ChangeType<string>(document.Id));
+<#+
+		}
+#>
+			}
+#pragma warning restore 1522
+			throw new System.ArgumentException(string.Format("Unable find Schema with id '{0}'.", schemaNameOrId) , nameof(schemaNameOrId));
+		}
+
+		public IEnumerable<string> GetDocumentSchemaNames()
+		{
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+			yield return "<#= typeDef.Schema.Name #>";
+<#+
+		}
+#>
+		}
+
+		private DocumentT GetOne<DocumentT>(IReadOnlyCollection<DocumentT> documents) where DocumentT : <#= context.TargetLanguage.DocumentClassName #>
+		{
+			switch(documents.Count)
+			{
+				case 0: throw new InvalidOperationException($"Unable to find '{typeof(DocumentT)}' document. Please create '{typeof(DocumentT)}' document before using this property.");
+				case 1: return System.Linq.Enumerable.Single<DocumentT>(documents);
+				default: throw new InvalidOperationException($"There are multiple variants of the '{typeof(DocumentT)}' document. Please remove the excess before using this property.");
+			}
+		}
+
+		private <#= context.TargetLanguage.DocumentClassName #> FindDocumentInternal(string schemaId, object id)
+		{
+			if (schemaId == null) throw new ArgumentNullException(nameof(schemaId));
+
+#pragma warning disable 1522 // Empty switch block
+			switch (schemaId)
+			{
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+			var idType = typeDef.IdMember.Type;
+#>
+				case "<#= typeDef.Schema.Name #>":
+				case "<#= typeDef.Schema.Id #>": return this.allDocuments.<#= typeDef.CollectionName #>.Get(ChangeType<<#= idType #>>(id));
+<#+
+		}
+#>
+			}
+#pragma warning restore 1522
+			throw new System.ArgumentException(string.Format("Unable find Schema with id '{0}'.", schemaId) , nameof(schemaId));
+		}
+
+		private IEnumerable<<#= context.TargetLanguage.DocumentClassName #>> EnumerateAll()
+		{
+			var i = 0;
+			var end = 0;
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+			var <#= typeDef.CollectionFieldName #>List = this.allDocuments.<#= typeDef.CollectionName #>.AsList;
+			for (i = 0, end = <#= typeDef.CollectionFieldName #>List.Count; i < end; i++)
+			{
+				yield return <#= typeDef.CollectionFieldName #>List[i];
+			}
+<#+
+		}
+#>
+			yield break;
+		}
+
+		private IEnumerable<<#= context.TargetLanguage.DocumentClassName #>> EnumerateRoots()
+		{
+			var i = 0;
+			var end = 0;
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+			var <#= typeDef.CollectionFieldName #>List = this.rootDocuments.<#= typeDef.CollectionName #>.AsList;
+			for (i = 0, end = <#= typeDef.CollectionFieldName #>List.Count; i < end; i++)
+			{
+				yield return <#= typeDef.CollectionFieldName #>List[i];
+			}
+<#+
+		}
+#>
+
+			yield break;
+		}
+
+		private static T ChangeType<T>(object objValue)
+		{
+			if (objValue is T typeValue)
+			{
+				return typeValue;
+			}
+			else if (typeof(T).IsEnum && objValue is string enumValueString)
+			{
+				return (T)Enum.Parse(typeof(T), enumValueString, ignoreCase: true);
+			}
+			else if (typeof(T).IsEnum)
+			{
+				return (T)Enum.ToObject(typeof(T), objValue);
+			}
+			else if (typeof(T) == typeof(TimeSpan))
+			{
+				var timeSpanStr = Convert.ToString(objValue, CultureInfo.InvariantCulture);
+				return (T)(object)TimeSpan.Parse(timeSpanStr);
+			}
+			else if (typeof(T) == typeof(DateTime))
+			{
+				var dateTimeStr = Convert.ToString(objValue, CultureInfo.InvariantCulture);
+				return (T)(object)DateTime.ParseExact(dateTimeStr, Formatters.GameDataReader.DateTimeFormats, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+			}
+			else if (typeof(T) == typeof(DateTimeOffset))
+			{
+				var dateTimeOffsetStr = Convert.ToString(objValue, CultureInfo.InvariantCulture);
+				return (T)(object)DateTimeOffset.ParseExact(dateTimeOffsetStr, Formatters.GameDataReader.DateTimeFormats, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+			}
+			else
+			{
+				return (T)Convert.ChangeType(objValue, typeof(T), CultureInfo.InvariantCulture);
+			}
+		}
+
+<#+
+		this.WriteReadGameDataCode(context);
+		this.WriteReadGameDataMergeCode(context);
+		this.WriteGameDataVisitor(context);
+#>
+
+	}
+<#+
+	}
+#>

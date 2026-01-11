@@ -1,0 +1,584 @@
+<#+
+	public sealed class Metadata
+	{
+		public static readonly CultureInfo DefaultFormat = CultureInfo.InvariantCulture;
+
+		private readonly Dictionary<object, Schema> schemasById;
+		private readonly Dictionary<string, Schema> schemasByName;
+		private readonly ProjectSettings projectSettings;
+
+		public readonly Version ToolsVersion;
+		public readonly int ChangeNumber;
+
+		public ProjectSettings ProjectSettings { get { return this.projectSettings; } }
+
+		public Metadata(Dictionary<string, object> gameData)
+		{
+			if (gameData == null) throw new ArgumentNullException("gameData");
+
+			if (!gameData.ContainsKey("Collections"))
+				throw new InvalidOperationException("Invalid gamedata. Missing 'Collections'.");
+
+			var collections = (Dictionary<string, object>)gameData["Collections"];
+
+			if (!collections.ContainsKey("Schema"))
+				throw new InvalidOperationException("Invalid gamedata. Missing 'Schema' collection.");
+
+			var schemas = ((List<object>)collections["Schema"]).ConvertAll(v => new Schema((Dictionary<string, object>)v));
+			var projectSettings = Enumerable.Empty<ProjectSettings>();
+
+			if (collections.ContainsKey("ProjectSettings"))
+			{
+				projectSettings = ((List<object>)collections["ProjectSettings"]).ConvertAll(v => new ProjectSettings((Dictionary<string, object>)v));
+			}
+
+			this.schemasById = new Dictionary<object, Schema>();
+			this.schemasByName = new Dictionary<string, Schema>(StringComparer.Ordinal);
+
+			foreach (var schema in schemas)
+			{
+				this.schemasById[schema.Id] = schema;
+				this.schemasByName[schema.Name] = schema;
+			}
+
+			this.projectSettings = projectSettings.FirstOrDefault() ?? new ProjectSettings(new Dictionary<string, object>());
+
+			this.ToolsVersion = gameData.ContainsKey("ToolsVersion") ? new Version((string)gameData["ToolsVersion"]) : new Version();
+			this.ChangeNumber = GetValueOrDefault(gameData, "ChangeNumber", 0);
+		}
+
+		public ICollection<Schema> GetSchemas()
+		{
+			return this.schemasById.Values;
+		}
+		public Schema GetSchema(string schemaIdOrName)
+		{
+			if (schemaIdOrName == null) throw new ArgumentNullException("schemaIdOrName");
+
+			var schema = default(Schema);
+			if (this.TryGetSchema(schemaIdOrName, out schema) == false)
+				throw new ArgumentException(string.Format("Unable to find schema with id or name '{0}'.", schemaIdOrName));
+			return schema;
+		}
+		public bool TryGetSchema(string schemaIdOrName, out Schema schema)
+		{
+			if (schemaIdOrName == null) throw new ArgumentNullException("schemaIdOrName");
+
+			if (this.schemasById.TryGetValue(schemaIdOrName, out schema) == false && this.schemasByName.TryGetValue(schemaIdOrName, out schema) == false)
+				return false;
+
+			return true;
+		}
+
+		public static T GetValueOrDefault<T>(Dictionary<string, object> values, string valueName, T defaultValue, bool isRequired = false, string subject = null)
+		{
+			if (values == null) throw new ArgumentNullException("values");
+			if (valueName == null) throw new ArgumentNullException("valueName");
+
+			var valueObj = default(object);
+			if (values.TryGetValue(valueName, out valueObj))
+			{
+				if (valueObj is T)
+				{
+					return (T)valueObj;
+				}
+				else if (valueObj == null)
+				{
+					return default(T);
+				}
+				else if (typeof(T).IsEnum)
+				{
+					return (T)Enum.Parse(typeof(T), Convert.ToString(valueObj, DefaultFormat), true);
+				}
+				else
+				{
+					return (T)Convert.ChangeType(valueObj, typeof(T), DefaultFormat);
+				}
+			}
+			else if (isRequired)
+			{
+				throw new InvalidOperationException(string.Format("{0} is missing required member '{1}'.", subject ?? "Object", valueName));
+			}
+			else
+			{
+				return defaultValue;
+			}
+		}
+	}
+
+	public sealed class Schema
+	{
+		private readonly Dictionary<string, SchemaProperty> propertiesById;
+		private readonly Dictionary<string, SchemaProperty> propertiesByName;
+		private readonly SpecificationDictionary specification;
+
+		public readonly string Id;
+		public readonly string Name;
+		public readonly SchemaType Type;
+		public readonly string DisplayName;
+		public readonly string Description;
+		public readonly string Specification;
+
+		public List<SchemaProperty> Properties { get; private set; }
+
+		public Schema(Dictionary<string, object> values)
+		{
+			if (values == null) throw new ArgumentNullException("values");
+
+			this.Id = Metadata.GetValueOrDefault(values, "Id", string.Empty, true, this.GetType().Name);
+			this.Name = Metadata.GetValueOrDefault(values, "Name", string.Empty, true, this.GetType().Name);
+			this.Type = Metadata.GetValueOrDefault(values, "Type", default(SchemaType), false, this.GetType().Name);
+			this.DisplayName = Metadata.GetValueOrDefault(values, "DisplayName", string.Empty, false, this.GetType().Name);
+			this.Description = Metadata.GetValueOrDefault(values, "Description", string.Empty, false, this.GetType().Name);
+			this.Specification = Metadata.GetValueOrDefault(values, "Specification", string.Empty, false, this.GetType().Name);
+
+			this.Properties = new List<SchemaProperty>();
+			var propertiesObj = default(object);
+			if (values.TryGetValue("Properties", out propertiesObj) && propertiesObj != null)
+			{
+				foreach (var propertyObj in (List<object>)propertiesObj)
+				{
+					this.Properties.Add(new SchemaProperty((Dictionary<string, object>)propertyObj, this));
+				}
+			}
+
+			if (string.IsNullOrEmpty(this.DisplayName))
+			{
+				this.DisplayName = this.Name;
+			}
+
+			this.propertiesById = new Dictionary<string, SchemaProperty>(StringComparer.Ordinal);
+			this.propertiesByName = new Dictionary<string, SchemaProperty>(StringComparer.Ordinal);
+
+			foreach (var attr in this.Properties)
+			{
+				this.propertiesById.Add(attr.Id, attr);
+				this.propertiesByName.Add(attr.Name, attr);
+			}
+			this.specification = new SpecificationDictionary(this.Specification ?? string.Empty);
+		}
+
+
+		public bool HasProperty(string propertyIdOrName)
+		{
+			if (propertyIdOrName == null) throw new ArgumentNullException("propertyIdOrName");
+
+			return this.propertiesById.ContainsKey(propertyIdOrName) || this.propertiesByName.ContainsKey(propertyIdOrName);
+		}
+		public SchemaProperty GetProperty(string propertyIdOrName)
+		{
+			if (propertyIdOrName == null) throw new ArgumentNullException("propertyIdOrName");
+
+			var schemaProperty = default(SchemaProperty);
+			if (this.propertiesById.TryGetValue(propertyIdOrName, out schemaProperty) == false && this.propertiesByName.TryGetValue(propertyIdOrName, out schemaProperty) == false)
+				throw new ArgumentException(string.Format("Unable to find property with id or name '{0}' on schema '{1}'.", propertyIdOrName, this.Name));
+			return schemaProperty;
+		}
+		public SpecificationDictionary GetSpecification()
+		{
+			return this.specification;
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0}, id: {1}", this.Name, this.Id);
+		}
+	}
+
+	public sealed class SchemaProperty
+	{
+		private readonly Type propertyValueType;
+		private readonly SpecificationDictionary specification;
+		private readonly IEqualityComparer equalityComparer;
+
+		public readonly string Id;
+		public readonly string Name;
+		public readonly string DisplayName;
+		public readonly string Description;
+
+		public readonly DataType DataType;
+		public readonly Uniqueness Uniqueness;
+		public readonly Requirement Requirement;
+		public readonly SchemaReference ReferenceType;
+		public readonly string DefaultValue;
+		public readonly int Size;
+		public readonly string Specification;
+
+		public readonly Schema DeclaredSchema;
+
+		public SchemaProperty(Dictionary<string, object> values, Schema declaredSchema)
+		{
+			if (values == null) throw new ArgumentNullException("values");
+			if (declaredSchema == null) throw new ArgumentNullException("declaredSchema");
+
+			this.DeclaredSchema = declaredSchema;
+
+			this.Id = Metadata.GetValueOrDefault(values, "Id", string.Empty, true, this.GetType().Name);
+			this.Name = Metadata.GetValueOrDefault(values, "Name", string.Empty, true, this.GetType().Name);
+			this.DisplayName = Metadata.GetValueOrDefault(values, "DisplayName", this.Name, false, this.GetType().Name);
+			this.Description = Metadata.GetValueOrDefault(values, "Description", string.Empty, false, this.GetType().Name);
+			this.DefaultValue = Metadata.GetValueOrDefault(values, "DefaultValue", default(string), false, this.GetType().Name);
+			this.DataType = Metadata.GetValueOrDefault(values, "DataType", default(DataType), true, this.GetType().Name);
+			this.Uniqueness = Metadata.GetValueOrDefault(values, "Uniqueness", default(Uniqueness), true, this.GetType().Name);
+			this.Requirement = Metadata.GetValueOrDefault(values, "Requirement", default(Requirement), true, this.GetType().Name);
+			this.Size = Metadata.GetValueOrDefault(values, "Size", default(int), true, this.GetType().Name);
+			this.Specification = Metadata.GetValueOrDefault(values, "Specification", default(string), false, this.GetType().Name);
+
+			if (string.IsNullOrEmpty(this.DisplayName))
+			{
+				this.DisplayName = this.Name;
+			}
+
+			var referenceTypeObj = default(object);
+			if (values.TryGetValue("ReferenceType", out referenceTypeObj) && referenceTypeObj != null)
+			{
+				this.ReferenceType = new SchemaReference {
+					Id = Metadata.GetValueOrDefault((Dictionary<string, object>)referenceTypeObj, "Id", string.Empty, true, "ReferenceType")
+				};
+			}
+
+			var spec = new SpecificationDictionary(this.Specification ?? string.Empty);
+			var type = typeof(string);
+			var comparer = default(IEqualityComparer);
+			switch (this.DataType)
+			{
+				case DataType.LocalizedText: type = typeof(Dictionary<string, string>); comparer = EqualityComparer<object>.Default; break;
+				case DataType.Text: type = typeof(string); comparer = StringComparer.Ordinal; break;
+				case DataType.Date: type = typeof(DateTime); comparer = EqualityComparer<DateTime>.Default; break;
+				case DataType.Time: type = typeof(TimeSpan); comparer = EqualityComparer<TimeSpan>.Default; break;
+				case DataType.Logical: type = typeof(Boolean); comparer = EqualityComparer<Boolean>.Default; break;
+				case DataType.Formula:
+				case DataType.Reference:
+				case DataType.Document: type = typeof(Dictionary<string, object>); comparer = EqualityComparer<object>.Default; break;
+				case DataType.ReferenceCollection:
+				case DataType.DocumentCollection: type = typeof(List<Dictionary<string, object>>); comparer = EqualityComparer<object>.Default; break;
+				case DataType.MultiPickList:
+				case DataType.PickList:
+				case DataType.Integer:
+					switch (this.Size)
+					{
+						case 1:
+							type = typeof(sbyte);
+							comparer = EqualityComparer<sbyte>.Default;
+							break;
+						case 2:
+							type = typeof(short);
+							comparer = EqualityComparer<short>.Default;
+							break;
+						case 3:
+						case 4:
+							type = typeof(int);
+							comparer = EqualityComparer<int>.Default;
+							break;
+						case 5:
+						case 6:
+						case 7:
+						case 8:
+							type = typeof(long);
+							comparer = EqualityComparer<long>.Default;
+							break;
+						default:
+							throw new InvalidOperationException(string.Format("Invalid size '{1}' of '{0}' property. Size for integer should be between 1 and 8.", this.Name, this.Size));
+					}
+					break;
+				case DataType.Number:
+					if (this.Size <= 4)
+					{
+						type = typeof(float);
+						comparer = EqualityComparer<float>.Default;
+					}
+					else if (this.Size <= 8)
+					{
+						type = typeof(double);
+						comparer = EqualityComparer<double>.Default;
+					}
+					else
+						throw new InvalidOperationException(string.Format("Invalid size '{1}' of '{0}' property. Size for number should be between 1 and 8.", this.Name, this.Size));
+					break;
+				default: throw new InvalidOperationException(string.Format("Invalid type '{1}' of '{0}' property.", this.Name, this.DataType));
+			}
+
+			this.propertyValueType = type;
+			this.specification = spec;
+			this.equalityComparer = comparer;
+		}
+
+		public Type GetPropertyValueType()
+		{
+			return this.propertyValueType;
+		}
+		public SpecificationDictionary GetSpecification()
+		{
+			return this.specification;
+		}
+		public IEqualityComparer GetEqualityComparer()
+		{
+			return this.equalityComparer;
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0}, id: {1}", this.Name, this.Id);
+		}
+	}
+
+	public sealed class ProjectSettings
+	{
+		public const string DEFAULT_PROJECT_NAME = "Untitled Project";
+
+		public static readonly string DefaultLanguage = "en-US";
+		public static readonly char[] LanguageListSeparator = ";,| ".ToCharArray();
+
+		private readonly string[] languageIds;
+
+		public readonly string Id;
+		public readonly string Name;
+		public readonly string Copyright;
+		public readonly string Languages;
+		public readonly string PrimaryLanguage;
+
+		public ProjectSettings(Dictionary<string, object> values)
+		{
+			if (values == null) throw new ArgumentNullException("values");
+
+			this.Id = Metadata.GetValueOrDefault(values, "Id", string.Empty, false, this.GetType().Name);
+			this.Name = Metadata.GetValueOrDefault(values, "Name", string.Empty, false, this.GetType().Name);
+			this.Copyright = Metadata.GetValueOrDefault(values, "Copyright", string.Empty, false, this.GetType().Name);
+			this.Languages = Metadata.GetValueOrDefault(values, "Languages", string.Empty, false, this.GetType().Name);
+			this.PrimaryLanguage = Metadata.GetValueOrDefault(values, "PrimaryLanguage", string.Empty, false, this.GetType().Name);
+
+			if (string.IsNullOrWhiteSpace(this.Name))
+				this.Name = DEFAULT_PROJECT_NAME;
+			if (string.IsNullOrWhiteSpace(this.Copyright))
+				this.Copyright = string.Empty;
+
+			var allLanguages = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+			if (string.IsNullOrWhiteSpace(this.Languages) == false)
+			{
+				foreach(var lang in this.Languages.Split(LanguageListSeparator, StringSplitOptions.RemoveEmptyEntries))
+					allLanguages.Add(lang);
+			}
+
+			allLanguages.Add(this.PrimaryLanguage);
+
+			var allLanguageIds = allLanguages.ToArray();
+			Array.Sort(allLanguageIds, StringComparer.OrdinalIgnoreCase);
+			this.languageIds = allLanguageIds;
+
+			this.Languages = string.Join(LanguageListSeparator[0].ToString(), this.languageIds);
+		}
+
+		public string[] GetLanguageIds()
+		{
+			return this.languageIds;
+		}
+
+		public ProjectSettings Clone()
+		{
+			var clone = (ProjectSettings)this.MemberwiseClone();
+			return clone;
+		}
+
+		public override string ToString()
+		{
+			return string.Format(
+				"{0}, languages: {2}, primary language: {3}, copyright: {1}",
+				this.Name,
+				this.Copyright,
+				this.Languages,
+				this.PrimaryLanguage
+			);
+		}
+	}
+
+	public class SpecificationDictionary
+	{
+		private static readonly Dictionary<string, string> EmptyPickListValues = new Dictionary<string, string>();
+		private static readonly List<KeyValuePair<string, string>> EmptyFormulaParameters = new List<KeyValuePair<string, string>>();
+
+		public const char PairSeparator = '&';
+		public const char NameValueSeparator = '=';
+
+		private readonly Dictionary<string, HashSet<string>> values;
+		private readonly Dictionary<string, string> pickListValues;
+		private readonly List<KeyValuePair<string, string>> formulaParameters;
+
+		public bool IsPickList { get { return this.pickListValues != null; } }
+
+		public bool HasCustomTypeName { get { return this.values.ContainsKey("typeName") && this.values["typeName"].Count > 0 && string.IsNullOrEmpty(this.values["typeName"].FirstOrDefault()) == false; } }
+		public string CustomTypeName { get { return this.HasCustomTypeName ? this.values["typeName"].FirstOrDefault() : string.Empty; } }
+
+		public SpecificationDictionary()
+		{
+			this.values = new Dictionary<string, HashSet<string>>();
+		}
+		public SpecificationDictionary(string specification)
+			: this()
+		{
+			if (specification == null) throw new ArgumentNullException("specification");
+
+			foreach (var pair in specification.Split(new char[] { PairSeparator }, StringSplitOptions.RemoveEmptyEntries))
+			{
+				var sepIdx = pair.IndexOf('=');
+				if (sepIdx < 0) continue;
+
+				var key = pair.Substring(0, sepIdx);
+				var value = pair.Substring(sepIdx + 1);
+
+				if (key.StartsWith("pick.", StringComparison.Ordinal))
+				{
+					var pickName = key.Substring(5);
+					if (this.pickListValues == null) this.pickListValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+					this.pickListValues[pickName] = value;
+					continue;
+				}
+				if (key.StartsWith("param.", StringComparison.Ordinal))
+				{
+					var paramName = key.Substring(6);
+					if (this.formulaParameters == null) this.formulaParameters = new List<KeyValuePair<string, string>>();
+					this.formulaParameters.Add(new KeyValuePair<string, string>(paramName, value));
+					continue;
+				}
+
+				var list = default(HashSet<string>);
+				if (this.values.TryGetValue(key, out list) == false)
+					this.values[key] = list = new HashSet<string>();
+				list.Add(value);
+			}
+		}
+
+		public HashSet<string> GetValues(string key)
+		{
+			if (key == null) throw new ArgumentNullException("key");
+
+			var list = default(HashSet<string>);
+			if (this.values.TryGetValue(key, out list) == false)
+				this.values[key] = list = new HashSet<string>();
+			return list;
+		}
+		public string MapPickList(string pickListName)
+		{
+			if (this.pickListValues == null || pickListName == null)
+				return pickListName;
+
+			pickListName = pickListName.Trim();
+			var pickListValue = default(string);
+			if (this.pickListValues.TryGetValue(pickListName, out pickListValue) == false)
+				pickListValue = pickListName;
+
+			return pickListValue;
+		}
+		public string MapMultiPickList(string flags)
+		{
+			if (this.pickListValues == null || flags == null)
+				return flags;
+
+			if (flags.IndexOf(',') == -1)
+				return MapPickList(flags);
+
+			var result = default(long);
+			foreach (var flag in flags.Split(','))
+			{
+				var value = MapPickList(flag);
+				var valueNum = default(long);
+				if (long.TryParse(value, NumberStyles.Integer, Metadata.DefaultFormat, out valueNum) == false)
+					throw new FormatException(string.Format("Flag with label '{0}' is not found.", value));
+
+				result |= valueNum;
+			}
+
+			return result.ToString();
+		}
+
+		public Dictionary<string, string> GetPickListValues()
+		{
+			return this.pickListValues ?? EmptyPickListValues;
+		}
+		public List<KeyValuePair<string, string>> GetFormulaParameters()
+		{
+			return this.formulaParameters ?? EmptyFormulaParameters;
+		}
+		public string GetFormulaResultType()
+		{
+			var resultTypes = default(HashSet<string>);
+			var resultType = default(string);
+			if (this.values.TryGetValue("resultType", out resultTypes) || this.values.TryGetValue("result", out resultTypes))
+				resultType = resultTypes.FirstOrDefault();
+
+			if (string.IsNullOrEmpty(resultType))
+			{
+				return null;
+			}
+			return resultType;
+		}
+		public HashSet<string> GetKnownTypes()
+		{
+			var knownTypes = default(HashSet<string>);
+			if (this.values.TryGetValue("knownType", out knownTypes))
+				return knownTypes;
+			else
+				return new HashSet<string>();
+		}
+	}
+
+	[DataContract]
+	public sealed class SchemaReference
+	{
+		[DataMember(Name = "Id")]
+		public string Id { get; set; }
+
+		public override string ToString()
+		{
+			return string.Format("id: {0}", this.Id);
+		}
+	}
+
+	public enum DataType
+	{
+		Text = 0,
+		LocalizedText = 1,
+		Logical = 5,
+		Time = 8,
+		Date = 9,
+		Number = 12,
+		Integer = 13,
+		MultiPickList = 19,
+		PickList = 18,
+		Document = 22,
+		DocumentCollection = 23,
+		Reference = 28,
+		ReferenceCollection = 29,
+		Formula = 35
+	}
+
+	public enum SchemaType
+	{
+		Normal = 0,
+		Component = 1,
+		Settings = 2,
+		Union = 3,
+	}
+
+	public enum IdGeneratorType
+	{
+		Custom = 0,
+		ObjectId = 1,
+		Guid = 2,
+		Sequence = 3,
+		GlobalSequence = 4
+	}
+
+	public enum Requirement
+	{
+		None = 0,
+		NotNull = 2,
+		NotEmpty = 3,
+	}
+
+	public enum Uniqueness
+	{
+		None = 0,
+		Unique = 1,
+		UniqueInContainer = 2,
+	}
+ #>

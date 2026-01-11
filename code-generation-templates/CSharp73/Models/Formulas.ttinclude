@@ -1,0 +1,210 @@
+﻿<#+
+	private void WriteFormula(FormulaDefinition formulaDef, CodeGenerationContext context)
+	{
+		var expressionGenericArguments = new string[formulaDef.ParameterTypes.Length + 1];
+		for (var parameterIndex = 0; parameterIndex < formulaDef.ParameterTypes.Length; parameterIndex++)
+		{
+			expressionGenericArguments[parameterIndex] = formulaDef.ParameterTypes[parameterIndex].TypeName;
+		}
+		expressionGenericArguments[expressionGenericArguments.Length - 1] = formulaDef.ReturnType.TypeName;
+		var functionType = "Func<" + string.Join(", ", expressionGenericArguments) + ">";
+		var invokeParameters = string.Join(", ", formulaDef.ParameterNames.Select((n, i) => formulaDef.ParameterTypes[i] + " " + n).ToArray());
+		var lambdaExpressionType = "Expression<" + functionType + ">";
+#>	/// <summary>
+	/// <#= formulaDef.Description #>
+	/// </summary>
+	[GeneratedCode(<#= context.TargetLanguage.GameDataClassName #>.GeneratorName, <#= context.TargetLanguage.GameDataClassName #>.GeneratorVersion)]
+	public partial class <#= formulaDef #>
+	{
+		public partial class <#= formulaDef.ContextType #>
+		{
+			public <#= formulaDef.ContextThisType #> @this;
+		}
+
+#if USE_DYNAMIC_EXPRESSIONS
+		private static readonly GameDevWare.Dynamic.Expressions.Binder ExpressionBinder;
+
+		private readonly <#= lambdaExpressionType #> expression;
+		private <#= functionType #> compiledExpression;
+
+		public <#= formulaDef.ContextType #> Context { get; private set; }
+
+		static <#= formulaDef #>()
+		{
+			var formulaTypes = new Type[]
+			{
+<#+
+		for (var p = 0; p < formulaDef.ParameterNames.Length; p++)
+		{
+#>
+				typeof(<#= formulaDef.ParameterTypes[p] #>),
+<#+
+		}
+#>
+<#+
+		foreach (var knownType in formulaDef.Specification.GetKnownTypes())
+		{
+#>
+				typeof(<#= knownType #>),
+<#+
+		}
+#>
+				typeof(<#= formulaDef.ReturnType #>),
+				typeof(<#= formulaDef.ContextType #>)
+			};
+
+			var parameters = new ParameterExpression[]
+			{
+<#+
+		for(var p = 0; p < formulaDef.ParameterNames.Length; p++)
+		{
+#>
+				Expression.Parameter(typeof(<#= formulaDef.ParameterTypes[p] #>), "<#= formulaDef.ParameterRawNames[p] #>"),
+<#+
+		}
+#>
+			};
+
+			var typeResolver = new GameDevWare.Dynamic.Expressions.KnownTypeResolver(formulaTypes, <#= context.TargetLanguage.GameDataClassName #>.TypeResolver);
+			ExpressionBinder = new GameDevWare.Dynamic.Expressions.Binder(parameters, typeof(<#= formulaDef.ReturnType #>), typeResolver);
+
+			// AOT preparation
+			if (typeof(object).Name == string.Empty)
+			{
+				new System.Runtime.CompilerServices.StrongBox<<#= formulaDef.ContextType #>>(default(<#= formulaDef.ContextType #>));
+<#+
+		foreach(var knownType in formulaDef.Specification.GetKnownTypes())
+		{
+#>
+				new System.Runtime.CompilerServices.StrongBox<<#= knownType #>>(default(<#= knownType #>));
+<#+
+		}
+#>
+			}
+			GameDevWare.Dynamic.Expressions.AotCompilation.RegisterFunc<<#= string.Join(", ", expressionGenericArguments) #>>();
+		}
+		public <#= formulaDef #>(IReadOnlyDictionary<string, object> expressionTree)
+		{
+			if (expressionTree == null) throw new ArgumentNullException(nameof(expressionTree));
+
+			var syntaxTreeNode = new GameDevWare.Dynamic.Expressions.SyntaxTreeNode((IDictionary<string, object>)expressionTree);
+			this.Context = new <#= formulaDef.ContextType #>();
+			this.expression = (<#=lambdaExpressionType#>)<#= formulaDef #>.ExpressionBinder.Bind(syntaxTreeNode, Expression.Constant(this.Context));
+		}
+
+		public <#= formulaDef.ReturnType #> Invoke(<#= invokeParameters #>)
+		{
+			var __fn = this.CompileAot();
+			return __fn.Invoke(<#= string.Join(", ", formulaDef.ParameterNames) #>);
+		}
+
+		public <#= functionType #> CompileAot()
+		{
+			try
+			{
+				if (this.compiledExpression == null)
+				{
+					this.compiledExpression = this.expression.CompileAot();
+				}
+				return this.compiledExpression;
+			}
+			catch (Exception compilationError)
+			{
+				throw new InvalidOperationException(string.Format("Failed to compile expression '{0}' due errors: {1}{2}", this.ToString(), Environment.NewLine, compilationError.Message), compilationError);
+			}
+		}
+		public <#= functionType #> Compile()
+		{
+			try
+			{
+				if (this.compiledExpression == null)
+				{
+					this.compiledExpression = this.expression.Compile();
+				}
+				return this.compiledExpression;
+			}
+			catch (Exception compilationError)
+			{
+				throw new InvalidOperationException(string.Format("Failed to compile expression '{0}' due errors: {1}{2}", this.ToString(), Environment.NewLine, compilationError.Message), compilationError);
+			}
+		}
+#elif !SUPPRESS_BUILD_IN_FORMULAS
+		private static readonly Formulas.IFormulaTypeResolver TypeResolver;
+
+		private Formulas.FormulaExpression expression;
+
+		public <#= formulaDef.ContextType #> Context { get; private set; }
+
+		static <#= formulaDef #>()
+		{
+			var formulaTypes = new Type[]
+			{
+<#+
+		for (var p = 0; p < formulaDef.ParameterNames.Length; p++)
+		{
+#>
+				typeof(<#= formulaDef.ParameterTypes[p] #>),
+<#+
+		}
+#>
+<#+
+		foreach (var knownType in formulaDef.Specification.GetKnownTypes())
+		{
+#>
+				typeof(<#= knownType #>),
+<#+
+		}
+#>
+				typeof(<#= formulaDef.ReturnType #>),
+				typeof(<#= formulaDef.ContextType #>)
+			};
+
+			TypeResolver = new Formulas.KnownFormulaTypeResolver(formulaTypes, Formulas.FormulaOptions.None, <#= context.TargetLanguage.GameDataClassName #>.TypeResolver);
+			// AOT
+			Formulas.FormulaExpression.RegisterFunc<<#= string.Join(", ", expressionGenericArguments) #>>();
+		}
+		public <#= formulaDef #>(IReadOnlyDictionary<string, object> expressionTree)
+		{
+			if (expressionTree == null) throw new ArgumentNullException(nameof(expressionTree));
+
+			this.Context = new <#= formulaDef.ContextType #>();
+			this.expression = Formulas.FormulaExpression.Create(expressionTree, typeof(<#= formulaDef.ReturnType #>));
+		}
+
+		public <#= formulaDef.ReturnType #> Invoke(<#= invokeParameters #>)
+		{
+			var __lambdaArguments = new Dictionary<string, Formulas.VariableValue>();
+
+<#+
+		for (var p = 0; p < formulaDef.ParameterNames.Length; p++)
+		{
+#>			__lambdaArguments["<#= formulaDef.ParameterRawNames[p] #>"] = new Formulas.VariableValue(<#= formulaDef.ParameterNames[p] #>);
+<#+
+		}
+#>
+
+			var __globalValue = new Formulas.VariableValue(this.Context);
+			var __executionContext = new Formulas.FormulaExecutionContext(__lambdaArguments, typeResolver: <#= formulaDef #>.TypeResolver, global: __globalValue);
+			var __result = this.expression.Execute(__executionContext);
+			return __result.To<<#= formulaDef.ReturnType #>>();
+		}
+#else
+		public <#= formulaDef #>(IReadOnlyDictionary<string, object> expressionTree)
+		{
+			if (expressionTree == null) throw new ArgumentNullException(nameof(expressionTree));
+		}
+
+		public <#= formulaDef.ReturnType #> Invoke(<#= invokeParameters #>)
+		{
+			throw new NotSupportedException();
+		}
+#endif
+
+		public override string ToString()
+		{
+			return this.expression.ToString();
+		}
+	}
+<#+
+	}
+#>
