@@ -1,8 +1,13 @@
-=============================
 Unreal Engine Plugin Overview
 =============================
 
 For Unreal Engine developers, managing complex game data shouldn't mean fighting with restricted DataTables or bloated Blueprints. The `Charon Unreal Plugin <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ provides a robust, professional-grade database workflow designed to handle the scale and performance requirements of modern UE projects.
+
+----------
+
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
+  :width: 800
+  :alt: Charon editor UI
 
 ----------
 
@@ -47,10 +52,6 @@ Key Features
 | **Localization**             | Seamlessly export and import translation keys for global releases.         |
 +------------------------------+----------------------------------------------------------------------------+
 
-.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
-  :width: 800
-  :alt: Charon editor UI
-
 Getting Started
 ===============
 
@@ -63,20 +64,20 @@ Prerequisites
 
 The Unreal Engine plugin is written in C++ but relies on ``dotnet charon``, a .NET Core application which runs on .NET 8.
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Windows
+   .. tab-item:: Windows
 
       1. Download and install `SDK NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``%PROGRAMDATA%/Charon``.
 
-   .. tab:: MacOS
+   .. tab-item:: MacOS
 
       1. Download and install `SDK NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``/Users/<username>/.config/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 
-   .. tab:: Linux
+.. tab-item:: Linux
 
       1. Download and install `NET SDK 8+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``/home/<username>/.config/Charon``.

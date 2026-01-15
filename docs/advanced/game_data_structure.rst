@@ -20,9 +20,9 @@ Game Data Structure
 Game Data
 =========
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Fields
+   .. tab-item:: Fields
 
       - ``ToolsVersion`` (string): Version of the application used to create this file.  
       - ``RevisionHash`` (string): Current changeset hash value.  
@@ -39,7 +39,7 @@ Game Data
               
           - ``<Schema-Name>`` (array): Other document collections listed in alphabetical order.  
 
-   .. tab:: Example
+   .. tab-item:: Example
 
       .. code-block:: js
         
@@ -80,9 +80,9 @@ Game Data
 Project Settings
 ================
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Fields
+   .. tab-item:: Fields
 
       - ``Id`` (string): Unique identifier for the project settings (BSON ObjectId).  
       - ``Name`` (string): Name of the project.  
@@ -91,7 +91,7 @@ Project Settings
       - ``Copyright`` (string): Copyright information for the project.  
       - ``Version`` (string): Version of the current file, represented as four numbers separated by dots (Major.Minor.Build.Revision).  
 
-   .. tab:: Example
+   .. tab-item:: Example
 
       .. code-block:: js
         
@@ -109,9 +109,9 @@ Project Settings
 Schema
 ======
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Fields
+   .. tab-item:: Fields
 
       - ``Id`` (string): Unique identifier for the schema (BSON ObjectId).  
       - ``Name`` (string): Name of the schema (valid C identifier).  
@@ -136,7 +136,7 @@ Schema
       
           - See :ref:`Schema Property <GameDataStructure_SchemaProperty>` section below.  
 
-   .. tab:: Example
+   .. tab-item:: Example
 
       .. code-block:: js
         
@@ -158,9 +158,9 @@ Schema
 Schema Property
 ===============
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Structure
+   .. tab-item:: Structure
 
       - ``Id`` (string): Unique identifier for the property (BSON ObjectId).  
       - ``Name`` (string): Name of the property (valid C identifier).  
@@ -205,7 +205,7 @@ Schema Property
       - ``Size`` (number): Maximum or exact size of the data type. For variable-length types (e.g., text, collections), this defines the size; for others, it is zero.  
       - ``Specification`` (string): Extension data for the property in `application/x-www-form-urlencoded` format (RFC-1867).  
 
-   .. tab:: Example
+   .. tab-item:: Example
 
       .. code-block:: js
         

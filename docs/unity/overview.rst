@@ -5,6 +5,12 @@ If you are building a data-heavy game in Unity, managing that data through Inspe
 
 ----------
 
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
+  :width: 800
+  :alt: Charon editor UI
+  
+----------
+
 1. What is it?
 --------------
 
@@ -46,10 +52,6 @@ Key Features
 | **Memory Efficient** | Optimized loading routines designed specifically for mobile/console performance.|
 +----------------------+---------------------------------------------------------------------------------+
 
-.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
-  :width: 800
-  :alt: Charon editor UI
-
 Getting Started
 ===============
 
@@ -58,20 +60,20 @@ Prerequisites
 
 Unity plugin uses ``dotnet charon`` tool, which is a .NET Core application built for .NET 8.
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Windows
+   .. tab-item:: Windows
 
       1. Download and install `NET SDK 8+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``%PROGRAMDATA%/Charon``.
 
-   .. tab:: MacOS
+   .. tab-item:: MacOS
 
       1. Download and install `NET SDK 8+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``/Users/<username>/.config/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 
-   .. tab:: Linux
+   .. tab-item:: Linux
 
       1. Download and install `NET SDK 8+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``/usr/share/Charon``.

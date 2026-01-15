@@ -5,6 +5,12 @@ For developers who require maximum control over their environment, Charon offers
 
 ----------
 
+.. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
+  :width: 800
+  :alt: Charon editor UI
+  
+----------
+
 1. What is it?
 --------------
 
@@ -41,20 +47,20 @@ Prerequisites
 
 Standalone application uses `dotnet-charon <https://www.nuget.org/packages/dotnet-charon>` tool, which is a .NET Core application built for .NET 8.
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Windows
+   .. tab-item:: Windows
 
       1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``%PROGRAMDATA%/Charon``.
 
-   .. tab:: MacOS
+   .. tab-item:: MacOS
 
       1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``/Users/<username>/.config/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 
-   .. tab:: Linux
+   .. tab-item:: Linux
 
       1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``/home/<username>/.config/Charon``.
@@ -125,9 +131,9 @@ Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/do
 
 Or use following bootstrap script:  
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Windows
+   .. tab-item:: Windows
 
       .. code-block:: bash
   
@@ -143,7 +149,7 @@ Or use following bootstrap script:
 
         ./RunCharon.bat ./gamedata.json --log out
 
-   .. tab:: Linux, MacOS
+   .. tab-item:: Linux, MacOS
 
       .. code-block:: bash
 
@@ -165,9 +171,9 @@ Creating and Editing Game Data
 Any empty **gamedata.json** file could be used as starting point for standalone application launch. 
 The editor will automatically fill the empty file with the initial data.  
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Windows
+   .. tab-item:: Windows
 
       .. code-block:: bash
 
@@ -177,7 +183,7 @@ The editor will automatically fill the empty file with the initial data.
         
         charon .\gamedata.json --log out
 
-   .. tab:: Linux, MacOS
+   .. tab-item:: Linux, MacOS
 
       .. code-block:: bash
 

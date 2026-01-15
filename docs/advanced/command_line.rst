@@ -44,9 +44,9 @@ Alternatively, you can use one of two bootstrap scripts:
 Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download>`_ tool to be included in the system PATH. 
 The scripts handle the installation of the Charon tool and ensure it stays up to date.
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Windows
+   .. tab-item:: Windows
 
       .. code-block:: bash
   
@@ -58,7 +58,7 @@ The scripts handle the installation of the Charon tool and ensure it stays up to
         #               ^
         #      your command goes here
 
-   .. tab:: Linux, MacOS
+   .. tab-item:: Linux, MacOS
 
       .. code-block:: bash
 

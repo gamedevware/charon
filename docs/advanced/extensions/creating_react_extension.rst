@@ -142,34 +142,34 @@ Test Locally in Charon
 
 Place the generated ``.tgz`` file in:
 
-.. tabs::
+.. tab-set::
 
-   .. tab:: Windows
+   .. tab-item:: Windows
 
       .. code-block::
 
         %PROGRAMDATA%\Charon\extensions\
         C:\ProgramData\Charon\extensions\
 
-   .. tab:: MacOS
+   .. tab-item:: MacOS
 
       .. code-block::
 
         /Users/<username>/.config/Charon/extensions/
 
-   .. tab:: Linux
+   .. tab-item:: Linux
 
       .. code-block::
 
         /home/<username>/.config/Charon/extensions/
 
-   .. tab:: Unity
+   .. tab-item:: Unity
 
       .. code-block::
 
         <project-directory>/Library/Charon/extensions/
 
-   .. tab:: Unreal Engine
+   .. tab-item:: Unreal Engine
 
       .. code-block::
 
