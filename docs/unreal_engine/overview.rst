@@ -203,7 +203,7 @@ Initially, all localizable text defaults to ``EN-us`` (US English). Additional l
 Referencing Unreal Engine Assets
 --------------------------------
 
-To reference assets within the game, you can use a special :doc:`sub-data <../gamedata/datatypes/sub/asset>` type. Create a property with the ``Text`` type, enable the `Advanced Options`, and select the `Asset Path` editor for this property.
+To reference assets within the game, you can use a special :doc:`Asset <../gamedata/datatypes/sub/asset>` composite type. Create a property via ``Composite Types`` -> ``Asset Path`` menu options.
 
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/schema_designer_select_editor.png
   :width: 800
