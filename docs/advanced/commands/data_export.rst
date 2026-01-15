@@ -245,6 +245,7 @@ To use `yq` with exported JSON data:
    Use `yq` to update or add fields in the exported JSON file.
 
    .. code-block:: bash
+   
      # Export data
      charon DATA EXPORT --dataBase gamedata.json --schemas Character --output characters.json
 

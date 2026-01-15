@@ -1,9 +1,36 @@
-Standalone Application Overview
-===============================
+Standalone & CLI Overview
+=========================
 
-The standalone version of the game development `tool <https://www.nuget.org/packages/dotnet-charon>`_ is a CLI application that can be installed on 
-a computer, and it allows the user to design and model game data, as well as generate source code for it. 
-The standalone version is typically used by individual game developers or small development teams who want to work offline.
+For developers who require maximum control over their environment, Charon offers a flexible standalone distribution. This version is built for those who prefer working outside of a specific game engine or need to automate their data workflows.
+
+----------
+
+1. What is it?
+--------------
+
+The standalone version is a **cross-platform .NET 8 CLI application**. It operates as a dual-purpose tool:
+
+* **Headless CLI:** A powerful command-line interface for data manipulation and code generation.
+* **Local HTTP Server:** By launching a local server, it provides a high-performance **browser-based UI** for visual data modeling and editing without requiring an internet connection.
+
+2. Which problem does it solve?
+-------------------------------
+
+While the engine plugins are great for standard development, the Standalone/CLI version addresses specialized technical requirements:
+
+* **Custom Pipeline Integration:** Easily integrate game data validation and code generation into custom build scripts or tools.
+* **CI/CD Automation:** Run data integrity checks and generate source code automatically on build servers (GitHub Actions, Jenkins, etc.).
+* **Modding Toolsets:** Distribute a lightweight, engine-agnostic tool to your players, enabling them to create and edit game content safely.
+* **Engine-Agnostic Workflows:** Work on game data for custom engines or projects that don't use Unity or Unreal.
+
+3. For whom?
+------------
+
+This version is tailored for **advanced users and technical leads** who are comfortable with the terminal. It is ideal for:
+
+* **Tools Engineers** building custom development pipelines.
+* **Technical Designers** who need a standalone environment for content creation.
+* **Build Engineers** automating game data processing in the cloud.
 
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
   :width: 800

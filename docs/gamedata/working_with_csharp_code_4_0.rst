@@ -69,6 +69,7 @@ To do this, you can create a new C# file and declare a partial class with the sa
 Here is an example of how this could look:
 
 .. code-block:: csharp
+
   // should be in same namespace as generated GameData class
   public partial class GameData {
   

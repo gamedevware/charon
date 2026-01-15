@@ -97,7 +97,7 @@ Absolute and relative paths
 When running commands, it's crucial to be aware of whether you are using `absolute or relative paths <https://en.wikipedia.org/wiki/Working_directory>`_ to files.  
 
 Understanding Paths
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 1. **Absolute Path**:
    An absolute path defines a file or directory's location in relation to the root directory. In Linux and macOS, it starts from the root ``/``, while in Windows, it begins with a drive letter (like ``C:\\``).  
@@ -111,7 +111,7 @@ Understanding Paths
    - Example: If currently in ``/home/user/Documents``, a file in ``/home/user/Documents/Projects`` would have the relative path ``Projects/FileName``.  
 
 Usage in Terminals
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^
 
 - **Windows Command Prompt**:
   Paths use backslashes (``\\``). Absolute paths start with a drive letter (like ``C:\\Users\\Name``), while relative paths use the file name or paths like ``subfolder\\file.txt``.  

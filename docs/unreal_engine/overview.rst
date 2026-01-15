@@ -1,24 +1,51 @@
+=============================
 Unreal Engine Plugin Overview
 =============================
 
-Charon is a versatile `plugin <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ tailored for Unreal Engine, designed to facilitate data-driven game design 
-by allowing both developers and game designers to efficiently manage static game data, like 
-units, items, missions, quests, and other. Unlike Unreal Engine's DataTables, Charon elevates the 
-experience by offering an integrated editing UI directly within Unreal Engine, 
-enabling the modeling of diverse data structures suited to any game genre. 
-It provides a user-friendly interface that requires no special skills for game designers, simplifying the process of data manipulation. 
-For programmers, Charon streamlines development workflows by generating code to load game data seamlessly into the game.
+For Unreal Engine developers, managing complex game data shouldn't mean fighting with restricted DataTables or bloated Blueprints. The `Charon Unreal Plugin <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ provides a robust, professional-grade database workflow designed to handle the scale and performance requirements of modern UE projects.
+
+----------
+
+1. What is it?
+--------------
+
+The **Charon Unreal Plugin** is a high-performance data management ecosystem integrated directly into the Unreal Editor. It replaces traditional, flat DataTables with a **relational game database** that supports complex nesting, cross-references, and multi-language text—all accessible via a native-feeling UI and backed by an automated C++ code generator.
+
+2. Which problem does it solve?
+-------------------------------
+
+While Unreal Engine is powerful, its default data tools often fall short in complex productions. Charon solves these specific pain points:
+
+* **DataTable Limitations:** Unlike standard DataTables, Charon handles deep hierarchies and complex relationships (like branching quest lines or intricate skill trees) without becoming a visual mess.
+* **Boilerplate Fatigue:** It automatically generates the **C++ and Blueprint** code required to access your data, eliminating the need to manually write struct definitions or parsing logic.
+* **Data Fragility:** With built-in validation checks, it catches errors (like broken links or out-of-range values) before they cause a crash in your build.
+* **Content "Locked" in the Engine:** It allows for easy import/export for spreadsheets and localization, making it easier to collaborate with external writers or translation agencies.
+
+3. For whom?
+------------
+
+* **Technical Directors & Programmers:** Who need type-safe, performant C++ access to game data and a reliable pipeline for CI/CD and modding support.
+* **Game & Narrative Designers:** Who require a structured environment to build massive game worlds, item economies, and dialogue systems without needing to know C++.
+* **Live-Ops Teams:** Who need the ability to dynamically load data updates or perform A/B testing without submitting a new build to storefronts.
+
+----------
 
 Key Features
 ------------
 
-- **Data Modeling**: Define game entities like characters, items, missions, quests, and dialogs to meet the specific needs of your game. Interconnect and fill these tables within one UI.
-- **Error Control**: Implements validation checks to verify the accuracy of input data, reducing the likelihood of errors that could impact gameplay or development.
-- **Code Generation**: Automates the creation of boilerplate code needed to work with your game data, significantly speeding up development time and reducing manual coding errors.
-- **Spreadsheet Export/Import**: Offers seamless integration with spreadsheet software, enabling you to effortlessly populate, edit, and manage your game data in a familiar environment.
-- **Localization Export/Import**: Simplifies the process of preparing game data for translation, making it straightforward to adapt your game for global audiences.
-- **Modding Support**: Empowers your gaming community by providing them with the tools to create and share mods, enhancing the longevity and depth of your game.
-- **Dynamic Load**: Facilitates the dynamic loading of game data, enabling features like A/B testing or the ability to push hot updates directly to your players.
++------------------------------+----------------------------------------------------------------------------+
+| Feature                      | Benefit to Your Workflow                                                   |
++==============================+============================================================================+
+| **C++/Blueprint Generation** | Access your data instantly with full IDE auto-complete and Blueprint nodes.|
++------------------------------+----------------------------------------------------------------------------+
+| **Relational Modeling**      | Interconnect tables (Items, Quests, NPCs) with ease within a single UI.    |
++------------------------------+----------------------------------------------------------------------------+
+| **Hot Updates**              | Support for dynamic loading of game data for live-tuning and hotfixes.     |
++------------------------------+----------------------------------------------------------------------------+
+| **Modding Support**          | Give your community the same professional tools to create game mods.       |
++------------------------------+----------------------------------------------------------------------------+
+| **Localization**             | Seamlessly export and import translation keys for global releases.         |
++------------------------------+----------------------------------------------------------------------------+
 
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
   :width: 800

@@ -19,68 +19,100 @@ Standalone
 
 [How to start with custom game engine](https://gamedevware.github.io/charon/standalone/overview.html) → [C#](https://gamedevware.github.io/charon/gamedata/working_with_csharp_code_7_3.html) • [TypeScript](https://gamedevware.github.io/charon/gamedata/working_with_type_script_code.html) • [Haxe](https://gamedevware.github.io/charon/gamedata/working_with_haxe_code.html)  
 
-Summary
-=======
-
-Charon is a powerful data-driven game development tool designed to streamline the creation and management of static game data within your game. 
-It allows both developers and game designers to efficiently model and edit game entities such as characters, items, missions, quests, and more, directly within the Unity/Unreal Engine/Browser environment. 
-Charon simplifies the process of data manipulation, offering a user-friendly interface and automatic source code generation, which significantly reduces development time and minimizes manual coding errors.
-Charon also offers support for working with text in multiple languages, with easy loading and unloading of translated text. 
-
-With Charon, game developers can focus on creating engaging gameplay experiences without worrying about the technical details of managing game data. 
-It is available in three deployment variants, including a [standalone/offline](https://gamedevware.github.io/charon/standalone/overview.html) application, [web](https://gamedevware.github.io/charon/web/overview.html) application, [Unity](https://gamedevware.github.io/charon/unity/overview.html) and [Unreal Engine](https://gamedevware.github.io/charon/unreal_engine/overview.html) plugins.  
-
-Why Choose Charon over Spreadsheets?
-====================================
-
-Charon replaces traditional spreadsheets or config files with an in-game database, 
-offering a structured and efficient way to manage game data. It hides the complexity of 
-game data that inevitably emerges as the game development progresses.
-
-Is It Free?
-===========
-The offline version, CLI and plugins are completely free and have no restrictions. 
-They are distributed under a free license and allow you to distribute tools along with the game for modding games.  
-
-The online version, which allows working in large teams on shared game data, requires a subscription.
-
-What is Charon
-==============
-
-It is a .NET 8 console application that can be used as a command-line tool for performing CRUD operations with your game data, or as an HTTP Server to provide a UI for modeling and editing your game data. There are plugins for [Unity](https://gamedevware.github.io/charon/unity/overview.html) and [Unreal Engine](https://gamedevware.github.io/charon/unreal_engine/overview.html) that provide a more integrated experience while using Charon.  
-As with any .NET application, it can be launched as is on Windows, macOS and Linux and via `dotnet`.
-
-How it works
+Introduction
 ============
 
-<img width="894" alt="scheme" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/how_it_works.png"/>  
+### 1. What is it?
 
-[Unity](https://gamedevware.github.io/charon/unity/overview.html) or the [Unreal Engine](https://gamedevware.github.io/charon/unreal_engine/overview.html) plugin provides a more natural experience of interacting with game data. Check out the corresponding plugin page for more information on getting started.
+**Charon** is a comprehensive data management ecosystem designed to handle static game data (such as item databases, character stats, and quest trees). It functions as both a **visual editor** and a **code generator**, bridging the gap between raw data and game engine implementation.
 
-To get started with standalone Charon, you’ll need the following:  
-- The `dotnet` runtime [installed](https://dotnet.microsoft.com/en-us/download).  
-- Use [standalone](https://www.nuget.org/packages/dotnet-charon/) tool, which you can install globally using the command:  
-  ```bash  
-  dotnet tool install dotnet-charon --global  
-  ```
-Once set up, follow these steps:
-- Create an empty `gamedata.json` file or use `dotnet charon INIT gamedata.json` command.
-- Launch the Charon tool by running:
-  ```bash  
-  dotnet charon gamedata.json
-  ```
-  This command starts an HTTP server and automatically opens the Charon UI in your default web browser.
-- Use the intuitive web-based UI to design and edit your game data.
-- After editing, utilize Charon’s source code generator to produce language/engine-specific source code for your game data.
-- Integrate the generated source code into your game project. This allows you to load the `gamedata.json` file into your game in a structured and type-safe way, ensuring seamless and error-free data usage.
+Charon is highly flexible and can be used across various environments:
 
-Browser-based UI
-================
+* **Engine Plugins:** Native support for **[Unity](https://gamedevware.github.io/charon/unity/overview.html)** and **[Unreal Engine](https://gamedevware.github.io/charon/unreal_engine/overview.html)**.
+* **[Web](https://gamedevware.github.io/charon/web/overview.html) & Standalone:** Accessible via browser or as a [standalone/CLI](https://gamedevware.github.io/charon/standalone/overview.html) application for custom pipelines.
 
-![](docs/assets/editor_screenshot.png)
+### 2. Which problem does it solve?
 
-<img width="256" alt="screenshot" src="docs/assets/dashboard.png"/>  <img width="256" alt="screenshot" src="docs/assets/document_collection.png"/>  
-<img width="256" alt="screenshot" src="docs/assets/document_form.png"/>  <img width="256" alt="screenshot" src="docs/assets/documents_import.png"/>  
+Managing game data manually is often a fragile process involving messy spreadsheets and repetitive boilerplate code. Charon solves several key pain points:
+
+* **Manual Coding Errors:** Automatically generates source code based on your data models, ensuring type safety and reducing "plumbing" work.
+* **Workflow Fragmentation:** Provides a user-friendly interface for editing data directly within the engine or browser, so you don't have to constantly switch between tools.
+* **Localization Complexity:** Simplifies multi-language support by managing translated text and allowing for easy loading/unloading of localized content.
+* **Data Integrity:** Streamlines the modeling of complex entities like missions and character stats, ensuring the data structure remains consistent.
+
+### 3. For whom?
+
+Charon is built for collaborative game development teams:
+
+* **Game Designers:** Can focus on balancing gameplay and writing content using a structured, intuitive interface without needing to touch raw code.
+* **Developers:** Benefit from clean, automatically generated code and a robust pipeline that handles data serialization and localization out of the box.
+
+## Why Charon over Spreadsheets?
+
+Traditional spreadsheets become "brittle" as a game grows. Charon replaces flat files with a structured game database that handles the complexity for you:
+
+* **Data Integrity:** Unlike spreadsheets, Charon enforces relationships between data (e.g., ensuring a "Quest" doesn't reference an "Item" that was deleted).
+* **Scalability:** It hides the technical "noise" of raw JSON/XML, allowing you to manage thousands of entries without losing track of the big picture.
+* **Type Safety:** By generating source code directly from your data, you eliminate the risk of typos or "magic strings" breaking your build.
+
+---
+
+## Pricing & Licensing
+
+Charon is designed to be accessible for solo developers while providing enterprise features for large studios.
+
+| Version | Features | Cost |
+| --- | --- | --- |
+| **Community** | Offline CLI, Unity/Unreal Plugins, Standalone App. | **Free** (Open License) |
+| **Professional** | Collaborative Online Editor, Team Management, Cloud Hosting. | **Subscription** |
+
+> **Note on Modding:** The free version can be distributed alongside your game, allowing your community to build mods using the same professional tools you used to create the game.
+
+---
+
+## Technical Architecture
+
+Charon is built on **.NET 8** for maximum performance and cross-platform compatibility. It is a versatile tool that adapts to your environment:
+
+* **Cross-Platform:** Runs natively on **Windows, macOS, and Linux**.
+* **Headless or UI:** Can be used as a simple **Command-Line Tool (CLI)** for automated CRUD operations or as an **HTTP Server** that provides a rich web-based UI.
+* **Deep Integration:** Native plugins for [Unity](https://gamedevware.github.io/charon/unity/overview.html) and [Unreal Engine](https://gamedevware.github.io/charon/unreal_engine/overview.html) provide a seamless experience directly within your game editor.
+
+---
+
+## Getting Started
+
+### 1. Installation
+
+To use the standalone version, ensure you have the [dotnet runtime](https://dotnet.microsoft.com/en-us/download) installed, then run:
+
+```bash
+dotnet tool install dotnet-charon --global  
+```
+
+### 2. The Workflow
+
+Charon follows a logical 4-step cycle to get data from your head into your game engine.
+
+1. **Initialize:** Create your data file using `charon INIT gamedata.json`.
+2. **Edit:** Launch the editor by running `charon gamedata.json`. This opens a local web server and UI.
+3. **Generate:** Use the built-in generator to create type-safe source code (C#, C++, etc.) for your specific engine.
+4. **Integrate:** Import the generated code and the `gamedata.json` into your project. You can now access your data with full IntelliSense support.
+
+---
+
+## Browser-Based UI
+
+The editor provides a clean, modern interface for managing even the most complex data structures.
+
+| Dashboard | Document Collection |
+| --- | --- |
+| <img width="400" alt="dashboard" src="docs/assets/dashboard.png"/> | <img width="400" alt="document collection" src="docs/assets/document_collection.png"/> |
+
+| Data Entry Form | Import Tools |
+| --- | --- |
+| <img width="400" alt="document form" src="docs/assets/document_form.png"/> | <img width="400" alt="import" src="docs/assets/documents_import.png"/> |
+
 
 C# Code Example
 ===============

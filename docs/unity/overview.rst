@@ -1,23 +1,50 @@
 Unity Plugin Overview
 =====================
 
-Charon is a versatile `plugin <https://assetstore.unity.com/packages/tools/visual-scripting/game-data-editor-charon-95117>`_ tailored for Unity, designed to facilitate data-driven game design 
-by allowing both developers and game designers to efficiently manage static game data, like 
-units, items, missions, quests, and other. Charon elevates the experience by offering an editing UI directly in your web browser, 
-enabling the modeling of diverse data structures suited to any game genre. 
-It provides a user-friendly interface that requires no special skills for game designers, simplifying the process of data manipulation. 
-For programmers, Charon streamlines development workflows by generating code to load game data seamlessly into the game.
+If you are building a data-heavy game in Unity, managing that data through Inspector overrides or massive ScriptableObjects can quickly become unmanageable. The `Charon Unity Plugin <https://assetstore.unity.com/packages/tools/visual-scripting/game-data-editor-charon-95117>`_ provides a professional-grade database workflow directly within your Unity project.
+
+----------
+
+1. What is it?
+--------------
+
+The **Charon Unity Plugin** is an integrated extension for the Unity Editor that bridges the gap between game design and implementation. It combines a **structured data editor** (accessible via an embedded or external browser) with a **native code generator**.
+
+Instead of manual data entry, it provides a centralized "Game Database" inside your project that behaves like a professional CMS but lives within your local assets.
+
+2. Which problem does it solve?
+-------------------------------
+
+Unity's built-in tools are often insufficient for complex game data. Charon solves the most common "data-driven" headaches:
+
+* **ScriptableObject Sprawl:** No more navigating hundreds of individual ``.asset`` files. All your items, NPCs, and quests are managed in one organized, searchable database.
+* **Lack of Type Safety:** Charon automatically generates the C# classes needed to load your data. This means you get **full IntelliSense support**—no more searching for strings or worrying about typos in your code.
+* **The "Designer-to-Developer" Gap:** It provides a user-friendly, non-technical UI for designers to balance numbers and write dialogue, while generating the clean, performant code that programmers expect.
+* **Localization Bottlenecks:** It includes built-in support for multi-language text, allowing you to swap languages or export translation keys without leaving the editor.
+
+3. For whom?
+------------
+
+* **Unity Developers:** Who want to stop writing boilerplate data-loading code and start using type-safe, optimized data structures.
+* **Game & Narrative Designers:** Who need a powerful, visual environment to model complex systems (like skill trees or quest branches) without touching a line of code.
+* **Production Teams:** Working on RPGs, CCGs, Strategy games, or any project where thousands of balanced data points are the core of the experience.
+
+----------
 
 Key Features
 ------------
 
-- **Data Modeling**: Define game entities like characters, items, missions, quests, and dialogs to meet the specific needs of your game. Interconnect and fill these tables within one UI.
-- **Error Control**: Implements validation checks to verify the accuracy of input data, reducing the likelihood of errors that could impact gameplay or development.
-- **Code Generation**: Automates the creation of boilerplate code needed to work with your game data, significantly speeding up development time and reducing manual coding errors.
-- **Spreadsheet Export/Import**: Offers seamless integration with spreadsheet software, enabling you to effortlessly populate, edit, and manage your game data in a familiar environment.
-- **Localization Export/Import**: Simplifies the process of preparing game data for translation, making it straightforward to adapt your game for global audiences.
-- **Modding Support**: Empowers your gaming community by providing them with the tools to create and share mods, enhancing the longevity and depth of your game.
-- **Dynamic Load**: Facilitates the dynamic loading of game data, enabling features like A/B testing or the ability to push hot updates directly to your players.
++----------------------+---------------------------------------------------------------------------------+
+| Feature              | Description                                                                     |
++======================+=================================================================================+
+| **In-Editor Server** | Launch the data editor directly from the Unity menu bar.                        |
++----------------------+---------------------------------------------------------------------------------+
+| **Auto-Generation**  | C# code is updated automatically whenever you change your data schema.          |
++----------------------+---------------------------------------------------------------------------------+
+| **Asset Integration**| Link your game data directly to Unity Assets (like Prefabs, Sprites, etc.).     |
++----------------------+---------------------------------------------------------------------------------+
+| **Memory Efficient** | Optimized loading routines designed specifically for mobile/console performance.|
++----------------------+---------------------------------------------------------------------------------+
 
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
   :width: 800

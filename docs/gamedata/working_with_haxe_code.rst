@@ -39,6 +39,7 @@ You can access your documents as a list:
 Or you can access specific documents by their ``id`` or *Unique* properties:
 
 .. code-block:: haxe
+
   using GameData; // load byName() and other extension methods
   
   var heroById = gameData.heroesAll.get(heroId); // -> Hero
