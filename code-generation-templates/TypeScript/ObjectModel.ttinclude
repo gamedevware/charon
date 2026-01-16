@@ -1181,8 +1181,6 @@
 		public string Name { get; set; }
 		public string TypeName { get; set; }
 		public string Description { get; set; }
-		public ITypeReference ContextThisType { get; set; }
-		public ITypeReference ContextType { get; set; }
 		public string[] ParameterNames { get; set; }
 		public string[] ParameterRawNames { get; set; }
 		public ITypeReference[] ParameterTypes { get; set; }
@@ -1212,9 +1210,6 @@
 
 			this.TypeName = targetLanguage.MakeFormulaName(this.TypeName);
 
-			var declaredSchemaTypeRef = typeResolver(this.SchemaProperty.DeclaredSchema.Id);
-			this.ContextThisType = declaredSchemaTypeRef;
-			this.ContextType = new DerivedTypeReference(string.Empty, this, GenerationConstants.FORMULA_SCOPE_SUFFIX);
 			this.ReturnType = typeResolver(this.Specification.GetFormulaResultType() ?? "void");
 			this.KnownTypes = this.Specification.GetKnownTypes().Distinct().Select(typeResolver).ToArray();
 			var parameters = this.Specification.GetFormulaParameters();
@@ -1238,7 +1233,6 @@
 			result.AddRange(this.ParameterTypes);
 			result.AddRange(this.KnownTypes);
 			result.Add(this.ReturnType);
-			result.Add(this.ContextThisType);
 
 			for (var index = 0; index < result.Count; index++)
 			{
@@ -1258,7 +1252,6 @@
 			result.AddRange(this.ParameterTypes);
 			result.AddRange(this.KnownTypes);
 			result.Add(this.ReturnType);
-			result.Add(this.ContextThisType);
 
 			for (var index = 0; index < result.Count; index++)
 			{

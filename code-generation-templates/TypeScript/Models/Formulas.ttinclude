@@ -9,15 +9,20 @@
 export class <#= formulaDef #> extends Function {
 	private readonly expression: Formulas.FormulaExpression;
 	private readonly typeResolver: Formulas.FormulaTypeResolver;
+	private globalObject?: object | null;
 
-	public readonly context: { ['this']: <#= formulaDef.ContextThisType #> };
+	/**
+  	  * Gets or sets a value indicating whether null propagation should be applied
+	  * implicitly to this formula during evaluation or code generation.
+  	  */
+	public autoNullPropagation: boolean;
 
 	constructor(expressionObj: any) {
 		super();
 		check(expressionObj, 'expressionObj').is.object().and.not.nullOrUndefined();
 
-		this.context = { ['this']: <<#= formulaDef.ContextThisType #>><unknown> null /* will be initalized after constructor */ };
 		this.expression = Formulas.FormulaExpression.create(expressionObj);
+		this.autoNullPropagation = false;
 		this.typeResolver = new Formulas.KnownTypeResolver(new Map([
 <#+
 		foreach (var typeRef in formulaDef.GetReferenceTypes().Concat(formulaDef.GetReferencedExternalTypes()))
@@ -34,25 +39,41 @@ export class <#= formulaDef #> extends Function {
 		});
 	}
 
+	/**
+  	  * Sets the root provider for global identifiers. Properties and methods of this
+	  * object can be referenced directly within the formula without a qualifier.
+  	  */
+	public setGlobal(globalObject: object | null)
+	{
+		this.globalObject = globalObject;
+	}
+
+	/**
+  	  * Evaluates the formula and returns the resulting value.
+  	  */
 	public invoke(<#= invokeParameters #>): <#= formulaDef.ReturnType #> {
 		const executionContext = new Formulas.FormulaExecutionContext(
 			new Map<string, any>([
 <#+
 		for (var p = 0; p < formulaDef.ParameterNames.Length; p++)
 		{
-#>                ['<#= formulaDef.ParameterRawNames[p] #>', <#= formulaDef.ParameterNames[p] #>],
+#>				['<#= formulaDef.ParameterRawNames[p] #>', <#= formulaDef.ParameterNames[p] #>],
 <#+
 		}
 #>
 			]),
 			this.typeResolver,
-			/* auto null propagation */ false,
-			this.context
+			this.autoNullPropagation,
+			this.globalObject
 		);
 		const result = this.expression.execute(executionContext);
 		return coerceTo(result, '<#= formulaDef.ReturnType #>');
 	}
 
+	/**
+  	  * Returns a string representation of the formula's Abstract Syntax Tree (AST)
+	  * or its equivalent source code.
+  	  */
 	public toString(): string {
 		return this.expression.toString();
 	}

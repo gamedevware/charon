@@ -23,7 +23,12 @@
 #include "GameData/FGameDataDocumentIdConvert.h"
 #include "GameData/Formatters/FGameDataReaderFactory.h"
 #include "GameData/Formatters/IGameDataReader.h"
-
+#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
+#include "GameData/Formulas/FFormulaTypeResolver.h"
+#include "GameData/Formulas/UFormulaExpressionDefaultGlobal.h"
+#include "UObject/ReflectedTypeAccessors.h"
+#include "UObject/Class.h"
+#endif
 #include "Serialization/JsonReader.h"
 #include "Serialization/JsonTypes.h"
 #include "Serialization/Archive.h"
@@ -62,6 +67,7 @@ public:
 	inline static const FString GeneratorVersion = TEXT("<#= context.ToolsVersion #>");
 
 private:
+
 <#+
 		foreach (var typeDef in context.ObjectModel.Types)
 		{
@@ -119,6 +125,10 @@ public:
 		}
 #>
 
+#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
+	static TSharedPtr<FFormulaTypeResolver> GetSharedFormulaTypeResolver();
+#endif
+
 	virtual bool TryLoad(FArchive* const GameDataStream, EGameDataFormat Format) override;
 	bool TryLoad(FArchive* const GameDataStream, FGameDataLoadOptions Options);
 
@@ -131,13 +141,12 @@ public:
 	virtual void GetDocumentSchemaNames(TArray<FString>& OutAllSchemaNames) override;
 	virtual void SetSupportedLanguages(const TArray<FString>& LanguageIds) override;
 
-#if defined(CHARON_PLUGIN_MAJOR_VERSION) && defined(CHARON_PLUGIN_MINOR_VERSION)
-	#if (CHARON_PLUGIN_MAJOR_VERSION > 2025 || (CHARON_PLUGIN_MAJOR_VERSION == 2025 && CHARON_PLUGIN_MINOR_VERSION >= 3))
+#if defined(CHARON_PLUGIN_MAJOR_VERSION) && defined(CHARON_PLUGIN_MINOR_VERSION) && \
+    (CHARON_PLUGIN_MAJOR_VERSION > 2025 || (CHARON_PLUGIN_MAJOR_VERSION == 2025 && CHARON_PLUGIN_MINOR_VERSION >= 3))
 	virtual FStringView GetRevisionHash() override
 	{
 		return this->RevisionHash;
 	}
-	#endif
 #endif
 
 	UFUNCTION(BlueprintCallable)
@@ -196,6 +205,41 @@ private:
 #>
 
 DEFINE_LOG_CATEGORY(Log<#= context.TargetLanguage.GameDataClassName #>);
+
+#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
+static TSharedPtr<FFormulaTypeResolver> SharedFormulaTypeResolver;
+
+TSharedPtr<FFormulaTypeResolver> <#= context.TargetLanguage.GameDataClassName #>::GetSharedFormulaTypeResolver()
+{
+	if (SharedFormulaTypeResolver.IsValid())
+	{
+		return SharedFormulaTypeResolver;
+	}
+
+	SharedFormulaTypeResolver = MakeShared<FFormulaTypeResolver>(nullptr, TArray<UObject*> {
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		<#= typeDef #>::StaticClass(),
+<#+
+		}
+		foreach (var enumDef in context.ObjectModel.Enums)
+		{
+			if (!enumDef.IsPickList)
+			{
+				continue;
+			}
+#>
+		StaticEnum<<#= enumDef #>>(),
+<#+
+		}
+#>
+	});
+
+	return SharedFormulaTypeResolver;
+}
+#endif
 
 void <#= context.TargetLanguage.GameDataClassName #>::Empty()
 {

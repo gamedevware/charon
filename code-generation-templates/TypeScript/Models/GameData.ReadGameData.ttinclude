@@ -239,7 +239,7 @@
 				if (propertyDef.DataType == DataType.Formula && !propertyDef.SchemaProperty.IsRawFormulaType)
 				{
 #>			if (__<#= typeDef #>.<#= propertyDef.Name #>) {
-				__<#= typeDef #>.<#= propertyDef.Name #>.context['this'] = __<#= typeDef #>;
+				__<#= typeDef #>.<#= propertyDef.Name #>.setGlobal({ 'this':  __<#= typeDef #>, 'gameData': this });
 			}
 <#+
 				}

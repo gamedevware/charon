@@ -875,6 +875,10 @@ bool <#= context.TargetLanguage.GameDataClassName #>::ReadFormula
 
 	Formula = NewObject<FormulaType>(Outer);
 	Formula->ExpressionTree.JsonObject = FormulaObject;
+	UFormulaExpressionDefaultGlobal* GlobalObject = NewObject<UFormulaExpressionDefaultGlobal>(Outer, UFormulaExpressionDefaultGlobal::StaticClass(), NAME_None, EObjectFlags::RF_NoFlags);
+	GlobalObject->ThisObject = Outer; // Document
+	GlobalObject->GameData = this;
+	Formula->Global = GlobalObject;
 
 	return true;
 }

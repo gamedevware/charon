@@ -51,6 +51,7 @@
 	foreach (var formulaDef in context.ObjectModel.Formulas)
 	{
 		WriteFormulaHeader(formulaDef, context);
+		WriteFormulaImplementation(formulaDef, context);
 	}
 
 	WriteGameDataClassHeader(context);

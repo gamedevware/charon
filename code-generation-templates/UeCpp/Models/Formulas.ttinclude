@@ -1,6 +1,9 @@
 ﻿<#+
 	private void WriteFormulaHeader(FormulaDefinition formulaDef, CodeGenerationContext context)
 	{
+		var invokeParameters = string.Join(", ", formulaDef.ParameterNames.Select((name, i) => MakePtrTypeIfNeeded(formulaDef.ParameterTypes[i], context) + " " + name).ToArray());
+		var invokeReturnType = MakePtrTypeIfNeeded(formulaDef.ReturnType, context);
+
 #>/* # move to Public/<#= formulaDef #>.h */
 #pragma once
 <#+
@@ -12,6 +15,18 @@
 #include "Dom/JsonObject.h"
 #include "Templates/SharedPointer.h"
 #include "JsonObjectWrapper.h"
+#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
+#include "GameData/Formulas/FFormulaExpression.h"
+#include "GameData/Formulas/FExpressionBuildHelper.h"
+#include "GameData/Formulas/FFormulaTypeResolver.h"
+#include "GameData/Formulas/FFormulaExecutionContext.h"
+#include "GameData/Formulas/FFormulaVariableValue.h"
+#endif
+#if __has_include("<#= context.TargetLanguage.GameDataClassName #>FormulaTypes.h")
+    #include "<#= context.TargetLanguage.GameDataClassName #>FormulaTypes.h"
+#endif
+
+DECLARE_LOG_CATEGORY_EXTERN(Log<#= formulaDef #>, Log, All);
 
 #include "<#= formulaDef #>.generated.h"
 
@@ -23,11 +38,45 @@ class <#= context.CppLanguage.ApiName #> <#= formulaDef #> : public UObject
 {
 	GENERATED_BODY()
 
+private:
+#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
+	TSharedPtr<TArray<TFieldPath<FProperty>>> InvokeParameters;
+	TSharedPtr<FFormulaExpression> Expression;
+#endif
 public:
+	/**
+	  * Gets or sets the Abstract Syntax Tree (AST) of the formula. Used internally.
+	  */
 	UPROPERTY()
 	FJsonObjectWrapper ExpressionTree;
+	/**
+	  * Gets or sets the root provider for global identifiers. Properties and methods of this
+	  * object can be referenced directly within the formula without a qualifier.
+	  */
+	UPROPERTY()
+	TObjectPtr<UObject> Global;
+	/**
+	  * Gets or sets a value indicating whether null propagation should be applied
+	  * implicitly to this formula during evaluation or code generation.
+	  */
+	UPROPERTY()
+	bool AutoNullPropagation;
 
-	<#= formulaDef #>() { }
+	/**
+	  * Evaluates the formula and returns the resulting value.
+	  */
+	UFUNCTION()
+	<#= invokeReturnType #> Invoke(<#= invokeParameters #>);
+
+#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
+	/**
+	  * Gets original formula expression for custom interpretation.
+	  */
+	TSharedPtr<FFormulaExpression> GetExpression();
+private:
+	TSharedPtr<TArray<TFieldPath<FProperty>>> GetOrCreateInvokeParameters();
+	FProperty* GetInvokeParameterAt(int32 Index);
+#endif
 };
 <#+
 	}
@@ -35,6 +84,170 @@ public:
 <#+
 	private void WriteFormulaImplementation(FormulaDefinition formulaDef, CodeGenerationContext context)
 	{
+		var invokeParameters = string.Join(", ", formulaDef.ParameterNames.Select((name, i) => MakePtrTypeIfNeeded(formulaDef.ParameterTypes[i], context) + " " + name).ToArray());
+		var invokeReturnType = MakePtrTypeIfNeeded(formulaDef.ReturnType, context);
+#>
+/* # move to Private/<#= formulaDef #>.cpp */
+<#+
+	WriteFileHeader();
+#>
+// ReSharper disable All
 
+#include "<#= formulaDef #>.h"
+#include "<#= context.TargetLanguage.GameDataClassName #>.h"
+
+DEFINE_LOG_CATEGORY(Log<#= formulaDef #>);
+
+#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
+static TSharedPtr<FFormulaTypeResolver> __TypeResolver;
+
+TSharedRef<FFormulaTypeResolver> GetOrCreateTypeResolver()
+{
+	if (__TypeResolver.IsValid())
+	{
+		return  __TypeResolver.ToSharedRef();
+	}
+
+	__TypeResolver = MakeShared<FFormulaTypeResolver>(<#= context.TargetLanguage.GameDataClassName #>::GetSharedFormulaTypeResolver(), TArray<UObject*> {
+<#+
+		foreach (var typeRef in formulaDef.GetReferenceTypes().Concat(formulaDef.GetReferencedExternalTypes()))
+		{
+			if (IsUObjectType(typeRef))
+			{
+#>
+		<#= typeRef #>::StaticClass(),
+<#+
+			}
+			else if (IsUEnumType(typeRef))
+			{
+#>
+		StaticEnum<<#= typeRef #>>(),
+<#+
+			}
+			else
+			{
+#>
+		// <#= typeRef #> <- unknown name prefix
+<#+
+			}
+		}
+#>
+	});
+
+	return __TypeResolver.ToSharedRef();
+}
+
+TSharedPtr<TArray<TFieldPath<FProperty>>> <#= formulaDef #>::GetOrCreateInvokeParameters()
+{
+	if (!InvokeParameters.IsValid())
+	{
+		UClass* __FormulaClass = <#= formulaDef #>::StaticClass();
+		UFunction* InvokeFunction = __FormulaClass->FindFunctionByName(GET_FUNCTION_NAME_CHECKED(<#= formulaDef #>, Invoke));
+		InvokeParameters = MakeShared<TArray<TFieldPath<FProperty>>>();
+		for (TFieldIterator<FProperty> It(InvokeFunction); It; ++It)
+		{
+			FProperty* Argument = *It;
+			InvokeParameters->Add(Argument);
+		}
+		InvokeParameters->Add(__FormulaClass->FindPropertyByName(GET_MEMBER_NAME_CHECKED(<#= formulaDef #>, Global)));
+	}
+	return InvokeParameters;
+}
+FProperty* <#= formulaDef #>::GetInvokeParameterAt(int32 Index)
+{
+	auto Parameters = GetOrCreateInvokeParameters();
+	Parameters->RangeCheck(Index);
+	auto ParameterFieldPath = Parameters->GetData()[Index];
+
+	check(ParameterFieldPath.Get() != nullptr);
+
+	return ParameterFieldPath.Get();
+}
+
+<#= invokeReturnType #> <#= formulaDef #>::Invoke(<#= invokeParameters #>)
+{
+<#+
+		for (var p = 0; p < formulaDef.ParameterNames.Length; p++)
+		{
+#>
+	const int32 PARAMETER_<#= formulaDef.ParameterNames[p].ToUpperInvariant() #>_INDEX = <#= p #>;
+<#+
+		}
+#>
+	const int32 RETURN_PARAMETER_INDEX = <#= formulaDef.ParameterNames.Length #>;
+	const int32 GLOBAL_PARAMETER_INDEX = <#= formulaDef.ParameterNames.Length + 1 #>;
+
+	TSharedPtr<FFormulaExpression> ParsedExpression = this->GetExpression();
+	<#= invokeReturnType #> __Result = {};
+	if (!ParsedExpression.IsValid())
+	{
+		UE_LOG(Log<#= formulaDef #>, Error, TEXT("ExpressionTree is missing or invalid."));
+		return __Result; // default
+	}
+
+	const TMap<FString, FFormulaVariableValue> __Arguments = {
+<#+
+		for (var p = 0; p < formulaDef.ParameterNames.Length; p++)
+		{
+#>		{ TEXT("<#= formulaDef.ParameterRawNames[p] #>"), FFormulaVariableValue(GetInvokeParameterAt(PARAMETER_<#= formulaDef.ParameterNames[p].ToUpperInvariant() #>_INDEX), &<#= formulaDef.ParameterNames[p] #> ) },
+<#+
+		}
+#>
+	};
+
+	const FFormulaVariableValue __Global = FFormulaVariableValue(GetInvokeParameterAt(GLOBAL_PARAMETER_INDEX), &this->Global);
+	const FFormulaExecutionContext __Context = FFormulaExecutionContext(this->AutoNullPropagation, __Arguments, __Global, GetOrCreateTypeResolver());
+
+	const FFormulaVariableValue __VariableResult = ParsedExpression->Invoke(__Context);
+	if (!__VariableResult.TryCopyCompleteValue(GetInvokeParameterAt(RETURN_PARAMETER_INDEX), &__Result))
+	{
+		UE_LOG(Log<#= formulaDef #>, Error, TEXT("Failed to convert Formula execution result %s to '<#= invokeReturnType #>' type."), *__VariableResult.ToString());
+	}
+	return __Result;
+}
+
+TSharedPtr<FFormulaExpression> <#= formulaDef #>::GetExpression()
+{
+	if (!this->Expression.IsValid() && this->ExpressionTree.JsonObject.IsValid())
+	{
+		this->Expression = FExpressionBuildHelper::CreateExpression(&this->ExpressionTree.JsonObject);
+	}
+	return this->Expression;
+}
+#else
+<#= invokeReturnType #> <#= formulaDef #>::Invoke(<#= invokeParameters #>)
+{
+	UE_LOG(Log<#= formulaDef #>, Error, TEXT("Formulas are not supported or disabled in this version of the plugin. Please update the Unreal Engine plugin to the latest version or enable the feature by adding the 'CHARON_FEATURE_FORMULAS=1' compilation constant."));
+	return {}; // default
+}
+#endif
+<#+
+	}
+	private ITypeReference MakePtrTypeIfNeeded(ITypeReference typeRef, CodeGenerationContext context)
+	{
+		if (IsUObjectType(typeRef))
+		{
+			return context.CppLanguage.MakePtrType(typeRef);
+		}
+		else
+		{
+			return typeRef;
+		}
+	}
+
+	private bool IsUEnumType(ITypeReference typeRef)
+	{
+		var typeName = typeRef.ToString();
+		return typeName.StartsWith("E", StringComparison.Ordinal);
+	}
+
+	private bool IsUObjectType(ITypeReference typeRef)
+	{
+		var typeName = typeRef.ToString();
+		return typeName.StartsWith("U", StringComparison.Ordinal) ||
+			    typeName.StartsWith("A", StringComparison.Ordinal) ||
+				typeName.StartsWith("BP_", StringComparison.Ordinal) ||
+				typeName.StartsWith("WBP_", StringComparison.Ordinal) ||
+				typeName.StartsWith("S", StringComparison.Ordinal);
 	}
 #>

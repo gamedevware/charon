@@ -16,18 +16,12 @@
 	[GeneratedCode(<#= context.TargetLanguage.GameDataClassName #>.GeneratorName, <#= context.TargetLanguage.GameDataClassName #>.GeneratorVersion)]
 	public partial class <#= formulaDef #>
 	{
-		public partial class <#= formulaDef.ContextType #>
-		{
-			public <#= formulaDef.ContextThisType #> @this;
-		}
-
 #if USE_DYNAMIC_EXPRESSIONS
 		private static readonly GameDevWare.Dynamic.Expressions.Binder ExpressionBinder;
 
 		private readonly <#= lambdaExpressionType #> expression;
+		private System.Linq.Expressions.Expression globalExpression;
 		private <#= functionType #> compiledExpression;
-
-		public <#= formulaDef.ContextType #> Context { get; private set; }
 
 		static <#= formulaDef #>()
 		{
@@ -49,8 +43,7 @@
 <#+
 		}
 #>
-				typeof(<#= formulaDef.ReturnType #>),
-				typeof(<#= formulaDef.ContextType #>)
+				typeof(<#= formulaDef.ReturnType #>)
 			};
 
 			var parameters = new ParameterExpression[]
@@ -71,7 +64,6 @@
 			// AOT preparation
 			if (typeof(object).Name == string.Empty)
 			{
-				new System.Runtime.CompilerServices.StrongBox<<#= formulaDef.ContextType #>>(default(<#= formulaDef.ContextType #>));
 <#+
 		foreach(var knownType in formulaDef.Specification.GetKnownTypes())
 		{
@@ -88,8 +80,16 @@
 			if (expressionTree == null) throw new ArgumentNullException(nameof(expressionTree));
 
 			var syntaxTreeNode = new GameDevWare.Dynamic.Expressions.SyntaxTreeNode((IDictionary<string, object>)expressionTree);
-			this.Context = new <#= formulaDef.ContextType #>();
-			this.expression = (<#=lambdaExpressionType#>)<#= formulaDef #>.ExpressionBinder.Bind(syntaxTreeNode, Expression.Constant(this.Context));
+			this.expression = (<#=lambdaExpressionType#>)<#= formulaDef #>.ExpressionBinder.Bind(syntaxTreeNode, this.globalExpression);
+		}
+
+		/// <summary>
+		/// Sets the root provider for global identifiers. Properties and methods of this
+		/// object can be referenced directly within the formula without a qualifier.
+		/// </summary>
+		public void SetGlobal<T>(T globalObject)
+		{
+			this.globalExpression = Expression.Constant(globalObject);
 		}
 
 		public <#= formulaDef.ReturnType #> Invoke(<#= invokeParameters #>)
@@ -132,8 +132,13 @@
 		private static readonly Formulas.IFormulaTypeResolver TypeResolver;
 
 		private Formulas.FormulaExpression expression;
+		private object globalObject;
 
-		public <#= formulaDef.ContextType #> Context { get; private set; }
+		/// <summary>
+		/// Gets or sets a value indicating whether null propagation should be applied
+		/// implicitly to this formula during evaluation or code generation.
+		/// </summary>
+		public bool AutoNullPropagation { get; set; }
 
 		static <#= formulaDef #>()
 		{
@@ -156,7 +161,6 @@
 		}
 #>
 				typeof(<#= formulaDef.ReturnType #>),
-				typeof(<#= formulaDef.ContextType #>)
 			};
 
 			TypeResolver = new Formulas.KnownFormulaTypeResolver(formulaTypes, Formulas.FormulaOptions.None, <#= context.TargetLanguage.GameDataClassName #>.TypeResolver);
@@ -167,8 +171,16 @@
 		{
 			if (expressionTree == null) throw new ArgumentNullException(nameof(expressionTree));
 
-			this.Context = new <#= formulaDef.ContextType #>();
 			this.expression = Formulas.FormulaExpression.Create(expressionTree, typeof(<#= formulaDef.ReturnType #>));
+		}
+
+		/// <summary>
+		/// Sets the root provider for global identifiers. Properties and methods of this
+		/// object can be referenced directly within the formula without a qualifier.
+		/// </summary>
+		public void SetGlobal<T>(T globalObject)
+		{
+			this.globalObject = globalObject;
 		}
 
 		public <#= formulaDef.ReturnType #> Invoke(<#= invokeParameters #>)
@@ -183,8 +195,8 @@
 		}
 #>
 
-			var __globalValue = new Formulas.VariableValue(this.Context);
-			var __executionContext = new Formulas.FormulaExecutionContext(__lambdaArguments, typeResolver: <#= formulaDef #>.TypeResolver, global: __globalValue);
+			var __globalObject = new Formulas.VariableValue(this.globalObject);
+			var __executionContext = new Formulas.FormulaExecutionContext(__lambdaArguments, typeResolver: <#= formulaDef #>.TypeResolver, global: __globalObject, autoNullPropagation: this.AutoNullPropagation);
 			var __result = this.expression.Execute(__executionContext);
 			return __result.To<<#= formulaDef.ReturnType #>>();
 		}
@@ -194,12 +206,29 @@
 			if (expressionTree == null) throw new ArgumentNullException(nameof(expressionTree));
 		}
 
+		/// <summary>
+		/// Sets the root provider for global identifiers. Properties and methods of this
+		/// object can be referenced directly within the formula without a qualifier.
+		/// </summary>
+		public void SetGlobal<T>(T globalObject)
+		{
+
+		}
+
+		/// <summary>
+		/// Evaluates the formula and returns the resulting value.
+		/// </summary>
 		public <#= formulaDef.ReturnType #> Invoke(<#= invokeParameters #>)
 		{
 			throw new NotSupportedException();
 		}
 #endif
 
+		/// <summary>
+		/// Returns a string representation of the formula's Abstract Syntax Tree (AST)
+		/// or its equivalent source code.
+		/// </summary>
+		/// <returns>A string that represents the current formula.</returns>
 		public override string ToString()
 		{
 			return this.expression.ToString();
