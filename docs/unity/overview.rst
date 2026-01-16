@@ -99,6 +99,10 @@ Microsoft.WindowsDesktop.App 9.0.0 [C:\Program Files\dotnet\shared\Microsoft.Win
 Installation from OpenUPM (recommended)
 ---------------------------------------
 
+.. youtube:: xJLR5lkDYb8
+   :width: 640
+   :height: 480
+
 1. Install the required software for your operating system.
 2. Ensure your Unity version is 2021.3 or later.
 3. Open the `OpenUPM <https://openupm.com/packages/com.gamedevware.charon/>`_ page for the plugin.
@@ -107,6 +111,10 @@ Installation from OpenUPM (recommended)
 
 Installation from Unity Asset Store
 -----------------------------------
+
+.. youtube:: MoklxNzt_aY
+   :width: 640
+   :height: 480
 
 1. Install the required software for your operating system.
 2. Ensure your Unity version is 2021.3 or later.
@@ -164,6 +172,10 @@ Whenever there is a modification in the data structure within a JSON file, it is
 
 Working with the Plugin
 =======================
+
+.. youtube:: EZ0oEEVuEug
+   :width: 640
+   :height: 480
 
 Creating Game Data
 ------------------

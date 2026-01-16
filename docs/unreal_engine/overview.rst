@@ -101,6 +101,10 @@ The Unreal Engine plugin is written in C++ but relies on ``dotnet charon``, a .N
 Installation from Marketplace
 -----------------------------
 
+.. youtube:: aeQHWdbiodE
+   :width: 640
+   :height: 480
+
 1. Add to cart Charon plugin `[Epic Launcher] <com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4>`_ / `[Fab.com Asset Page] <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ in the Unreal Engine Marketplace.
 2. Follow the `instruction <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ on installing plugin into your project:
   a. Click **Install to Engine** and select the engine version.
@@ -159,6 +163,10 @@ The Charon plugin is structured into two modules:
   
 Working with the Plugin
 =======================
+
+.. youtube:: Ofp5c3FSS6k
+   :width: 640
+   :height: 480
 
 Creating Game Data
 ------------------
