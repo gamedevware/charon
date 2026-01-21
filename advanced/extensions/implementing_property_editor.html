@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Implementing CharonPropertyEditorElement &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Working with Game Data</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_uecpp_code_.html">Working with Source Code (UE C++)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reset_preferences.html">Resetting UI Preferences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">UI Extensions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/advanced/extensions/implementing_property_editor.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="implementing-charonpropertyeditorelement">
+<h1>Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code><a class="headerlink" href="#implementing-charonpropertyeditorelement" title="Link to this heading"></a></h1>
+<p>Each custom property editor must implement the <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code> interface from the <a class="reference external" href="https://www.npmjs.com/package/charon-extensions">charon-extensions</a> package:</p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="k">export</span><span class="w"> </span><span class="kr">declare</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">CharonPropertyEditorElement</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">valueControl</span><span class="o">:</span><span class="w"> </span><span class="kt">ValueControl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When the editor is rendered, Charon sets <code class="docutils literal notranslate"><span class="pre">valueControl</span></code> to allow your component to:</p>
+<ul class="simple">
+<li><p>Subscribe to input value changes.</p></li>
+<li><p>Update the current value.</p></li>
+<li><p>Access schema metadata.</p></li>
+<li><p>Add custom validation.</p></li>
+<li><p>Respond to focus events.</p></li>
+</ul>
+<section id="valuecontrol">
+<h2><code class="docutils literal notranslate"><span class="pre">ValueControl</span></code><a class="headerlink" href="#valuecontrol" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">ValueControl</span></code> interface loosely mirrors Angular’s <a class="reference external" href="https://angular.dev/api/forms/AbstractControl">AbstractControl</a>. Here’s a simplified definition:</p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="k">export</span><span class="w"> </span><span class="kr">declare</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">ValueControl</span><span class="o">&lt;</span><span class="nx">TValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">any</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">schemaProperty</span><span class="o">:</span><span class="w"> </span><span class="kt">SchemaProperty</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">valueChanges</span><span class="o">:</span><span class="w"> </span><span class="kt">ObservableLike</span><span class="o">&lt;</span><span class="nx">TValue</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">TValue</span><span class="p">;</span>
+
+<span class="w">  </span><span class="nx">setValue</span><span class="p">(</span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">TValue</span><span class="p">,</span><span class="w"> </span><span class="nx">options?</span><span class="o">:</span><span class="w"> </span><span class="kt">ControlEventEmitOptions</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="p">;</span>
+
+<span class="w">  </span><span class="nx">registerDoFocus</span><span class="p">(</span><span class="nx">fn</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">options?</span><span class="o">:</span><span class="w"> </span><span class="kt">FocusOptions</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">void</span><span class="p">,</span><span class="w"> </span><span class="nx">targetName?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nx">TeardownLogic</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">errors</span><span class="o">:</span><span class="w"> </span><span class="kt">Object</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+
+<span class="w">  </span><span class="nx">addValidators</span><span class="p">(</span><span class="nx">validators</span><span class="o">:</span><span class="w"> </span><span class="kt">ValueValidatorFn</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">ValueValidatorFn</span><span class="p">[])</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">removeValidators</span><span class="p">(</span><span class="nx">validators</span><span class="o">:</span><span class="w"> </span><span class="kt">ValueValidatorFn</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">ValueValidatorFn</span><span class="p">[])</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">hasValidator</span><span class="p">(</span><span class="nx">validator</span><span class="o">:</span><span class="w"> </span><span class="kt">ValueValidatorFn</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="purpose-of-valuecontrol">
+<h1>Purpose of <code class="docutils literal notranslate"><span class="pre">ValueControl</span></code><a class="headerlink" href="#purpose-of-valuecontrol" title="Link to this heading"></a></h1>
+<p>The primary purpose of the ValueControl&lt;TValue&gt; interface is to act as a centralized, stateful container that manages a single piece of data (a form field’s value) along with all its associated metadata, lifecycle, and interaction states.</p>
+<p>It decouples the <strong>data model</strong> and <strong>validation logic</strong> from the specific user interface component (e.g., an HTML <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code>).</p>
+<p>Key responsibilities include:</p>
+<ul class="simple">
+<li><p><strong>Value Management:</strong> Storing the current value, tracking its original/starting value, and handling updates (<code class="docutils literal notranslate"><span class="pre">setValue</span></code>, <code class="docutils literal notranslate"><span class="pre">patchValue</span></code>, <code class="docutils literal notranslate"><span class="pre">reset</span></code>).</p></li>
+<li><p><strong>Validation &amp; Status:</strong> Tracking the control’s validation state (<code class="docutils literal notranslate"><span class="pre">valid</span></code>, <code class="docutils literal notranslate"><span class="pre">invalid</span></code>, <code class="docutils literal notranslate"><span class="pre">pending</span></code>, <code class="docutils literal notranslate"><span class="pre">errors</span></code>), providing methods to add/remove validators (<code class="docutils literal notranslate"><span class="pre">addValidators</span></code>, <code class="docutils literal notranslate"><span class="pre">hasError</span></code>), and updating the status (<code class="docutils literal notranslate"><span class="pre">updateValueAndValidity</span></code>).</p></li>
+<li><p><strong>Interaction State:</strong> Tracking user interaction flags (<code class="docutils literal notranslate"><span class="pre">touched</span></code>, <code class="docutils literal notranslate"><span class="pre">untouched</span></code>, <code class="docutils literal notranslate"><span class="pre">dirty</span></code>, <code class="docutils literal notranslate"><span class="pre">pristine</span></code>) and providing methods to change them (<code class="docutils literal notranslate"><span class="pre">markAsTouched</span></code>).</p></li>
+<li><p><strong>Hierarchy/Structure:</strong> Maintaining a tree structure with references to its <code class="docutils literal notranslate"><span class="pre">parent</span></code> and <code class="docutils literal notranslate"><span class="pre">root</span></code> control, allowing for complex, nested forms and path-based lookups (<code class="docutils literal notranslate"><span class="pre">getByPath</span></code>).</p></li>
+<li><p><strong>Observability:</strong> Exposing change events via observables (<code class="docutils literal notranslate"><span class="pre">valueChanges</span></code>, <code class="docutils literal notranslate"><span class="pre">statusChanges</span></code>) to allow other parts of the application to react to state changes.</p></li>
+<li><p><strong>UI Integration (Focus/Toggle):</strong> Providing methods and handlers (<code class="docutils literal notranslate"><span class="pre">focus</span></code>, <code class="docutils literal notranslate"><span class="pre">toggle</span></code>, <code class="docutils literal notranslate"><span class="pre">registerDoFocus</span></code>, <code class="docutils literal notranslate"><span class="pre">registerDoToggle</span></code>) to programmatically control the <em>view</em> component it represents.</p></li>
+</ul>
+<section id="reacting-to-value-changes">
+<h2>Reacting to Value Changes<a class="headerlink" href="#reacting-to-value-changes" title="Link to this heading"></a></h2>
+<p>When your editor receives the <code class="docutils literal notranslate"><span class="pre">valueControl</span></code>, subscribe to <code class="docutils literal notranslate"><span class="pre">valueChanges</span></code>:</p>
+<div class="highlight-tsx notranslate"><div class="highlight"><pre><span></span><span class="nx">useEffect</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">subscription</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">valueControl</span><span class="p">.</span><span class="nx">valueChanges</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">value</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">setLocalValue</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span><span class="w"> </span><span class="c1">// Update local state</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">subscription</span><span class="p">.</span><span class="nx">unsubscribe</span><span class="p">();</span><span class="w"> </span><span class="c1">// Cleanup on unmount</span>
+<span class="p">},</span><span class="w"> </span><span class="p">[</span><span class="nx">valueControl</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p>When the user edits the field, call:</p>
+<div class="highlight-tsx notranslate"><div class="highlight"><pre><span></span><span class="nx">valueControl</span><span class="p">.</span><span class="nx">setValue</span><span class="p">(</span><span class="nx">newValue</span><span class="p">);</span><span class="w"> </span><span class="c1">// it will trigger `valueControl.valueChanges` even if values are same (!)</span>
+</pre></div>
+</div>
+<p>The format and type of the value are described in <code class="docutils literal notranslate"><span class="pre">valueControl.schemaProperty</span></code>.</p>
+</section>
+<section id="handling-focus-events">
+<h2>Handling Focus Events<a class="headerlink" href="#handling-focus-events" title="Link to this heading"></a></h2>
+<p>Charon can request that your editor focuses the first interactive element. Use <code class="docutils literal notranslate"><span class="pre">registerDoFocus</span></code>:</p>
+<div class="highlight-tsx notranslate"><div class="highlight"><pre><span></span><span class="nx">useEffect</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">teardown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">valueControl</span><span class="p">.</span><span class="nx">registerDoFocus</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">inputRef</span><span class="p">.</span><span class="nx">current</span><span class="o">?</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">teardown</span><span class="p">();</span><span class="w"> </span><span class="c1">// Unregister on unmount or control change</span>
+<span class="p">},</span><span class="w"> </span><span class="p">[</span><span class="nx">valueControl</span><span class="p">]);</span>
+</pre></div>
+</div>
+</section>
+<section id="providing-custom-validators">
+<h2>Providing Custom Validators<a class="headerlink" href="#providing-custom-validators" title="Link to this heading"></a></h2>
+<p>To enable custom validation:</p>
+<ol class="arabic simple">
+<li><p>Register validators when <code class="docutils literal notranslate"><span class="pre">valueControl</span></code> is assigned.</p></li>
+<li><p>Clean them up when your component is destroyed or <code class="docutils literal notranslate"><span class="pre">valueControl</span></code> changes.</p></li>
+</ol>
+<p>Example:</p>
+<div class="highlight-tsx notranslate"><div class="highlight"><pre><span></span><span class="nx">useEffect</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">validateValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">control</span><span class="o">:</span><span class="w"> </span><span class="kt">ValueControl</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Object</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">isValidColor</span><span class="p">(</span><span class="nx">control</span><span class="p">.</span><span class="nx">value</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">ERROR_CUSTOM</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Invalid value for color in #XXXXXX format.&#39;</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">  </span><span class="p">};</span>
+
+<span class="w">  </span><span class="nx">valueControl</span><span class="p">.</span><span class="nx">addValidators</span><span class="p">(</span><span class="nx">validateValue</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">valueControl</span><span class="p">.</span><span class="nx">removeValidators</span><span class="p">(</span><span class="nx">validateValue</span><span class="p">);</span>
+<span class="p">},</span><span class="w"> </span><span class="p">[</span><span class="nx">valueControl</span><span class="p">]);</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

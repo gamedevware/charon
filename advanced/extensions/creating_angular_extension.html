@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creating a Custom Editor with Angular &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Working with Game Data</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_uecpp_code_.html">Working with Source Code (UE C++)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reset_preferences.html">Resetting UI Preferences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">UI Extensions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Creating a Custom Editor with Angular</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/advanced/extensions/creating_angular_extension.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="creating-a-custom-editor-with-angular">
+<h1>Creating a Custom Editor with Angular<a class="headerlink" href="#creating-a-custom-editor-with-angular" title="Link to this heading"></a></h1>
+<p>Charon is a flexible data modeling web application that supports user-defined custom editors for fields and documents. By leveraging <strong>Web Components</strong>, Charon allows developers to seamlessly integrate reusable UI components that can be packaged and distributed via NPM.</p>
+<p>This guide walks you through the process of preparing and packaging a Charon-compatible extension. It assumes proficiency with Angular and modern frontend tooling.</p>
+<section id="introduction-to-web-components">
+<h2>Introduction to Web Components<a class="headerlink" href="#introduction-to-web-components" title="Link to this heading"></a></h2>
+<p>Web Components are a set of standardized browser APIs that allow developers to create reusable and encapsulated HTML elements. Core technologies include:</p>
+<ul class="simple">
+<li><p><strong>Custom Elements</strong>: Define new HTML tags using JavaScript.</p></li>
+<li><p><strong>Shadow DOM</strong>: Encapsulate markup and styles.</p></li>
+<li><p><strong>HTML Templates</strong>: Define reusable markup structures.</p></li>
+</ul>
+<p>Web Components are framework-agnostic, making them ideal for embedding in applications like Charon.</p>
+<p>Charon loads user-defined Web Components dynamically at runtime. Each component is registered via a known selector and associated with supported data types and usage contexts (e.g., form property, grid column).</p>
+</section>
+<section id="step-by-step-building-a-color-picker-editor">
+<h2>Step-by-Step: Building a Color Picker Editor<a class="headerlink" href="#step-by-step-building-a-color-picker-editor" title="Link to this heading"></a></h2>
+<p>This guide uses a custom color picker field editor as an example. You can <a class="reference external" href="https://github.com/gamedevware/charon-extensions/tree/main/src/charon-color-picker">download and try</a> the example code referenced in this article.</p>
+<section id="install-the-latest-angular-cli">
+<h3>1. Install the Latest Angular CLI<a class="headerlink" href="#install-the-latest-angular-cli" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>uninstall<span class="w"> </span>-g<span class="w"> </span>@angular/cli
+npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@angular/cli@latest
+</pre></div>
+</div>
+</section>
+<section id="create-a-new-angular-project">
+<h3>2. Create a New Angular Project<a class="headerlink" href="#create-a-new-angular-project" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ng<span class="w"> </span>new<span class="w"> </span>charon-color-picker<span class="w"> </span>--standalone<span class="w"> </span><span class="nb">false</span><span class="w"> </span>--ssr<span class="w"> </span><span class="nb">false</span><span class="w"> </span>--style<span class="w"> </span>sass
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ensure SSR is disabled and SCSS is used for styling.</p>
+</div>
+</section>
+<section id="install-required-dependencies">
+<h3>3. Install Required Dependencies<a class="headerlink" href="#install-required-dependencies" title="Link to this heading"></a></h3>
+<p>Install Angular Elements for Web Component support, the Web Components polyfill (for broader compatibility), and the Charon extension types package.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>install<span class="w"> </span>@angular/elements<span class="w"> </span>--save
+npm<span class="w"> </span>install<span class="w"> </span>@webcomponents/custom-elements<span class="w"> </span>--save
+npm<span class="w"> </span>install<span class="w"> </span>charon-extension<span class="w"> </span>--save
+</pre></div>
+</div>
+</section>
+<section id="write-and-export-your-web-component">
+<h3>4. Write and Export Your Web Component<a class="headerlink" href="#write-and-export-your-web-component" title="Link to this heading"></a></h3>
+<p>Follow the official Angular guide to export your component as a custom element:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://angular.dev/guide/elements">Angular Elements Guide</a></p></li>
+<li><p><a class="reference external" href="https://github.com/gamedevware/charon-extensions/blob/main/src/charon-color-picker/src/app/color.picker/color.picker.component.ts">color.picker.component.ts</a></p></li>
+</ul>
+<p>Key points when writing your component:</p>
+<ul class="simple">
+<li><p>Implement the <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code> interface in your Angular component to accept input properties from the main application.</p></li>
+<li><p>Ensure you correctly subscribe and unsubscribe when <code class="docutils literal notranslate"><span class="pre">valueControl</span></code> or <code class="docutils literal notranslate"><span class="pre">documentControl</span></code> input values change, to avoid memory leaks.</p></li>
+<li><p>Export your component with a unique tag name (e.g., <code class="docutils literal notranslate"><span class="pre">ext-color-picker-editor</span></code>) that is <strong>not the same</strong> as the Angular component’s selector.</p></li>
+</ul>
+</section>
+<section id="modify-angular-json-for-packaging">
+<h3>5. Modify <code class="docutils literal notranslate"><span class="pre">angular.json</span></code> for Packaging<a class="headerlink" href="#modify-angular-json-for-packaging" title="Link to this heading"></a></h3>
+<p>Update the <code class="docutils literal notranslate"><span class="pre">angular.json</span></code> file:</p>
+<ul>
+<li><p>Set the build output path:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;outputPath&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dist&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Disable output hashing:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;outputHashing&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Change the project type to <code class="docutils literal notranslate"><span class="pre">library</span></code>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;projectType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;library&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optionally disable production optimizations during development:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;configurations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;production&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;optimizations&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="update-package-json-for-packaging">
+<h3>6. Update <code class="docutils literal notranslate"><span class="pre">package.json</span></code> for Packaging<a class="headerlink" href="#update-package-json-for-packaging" title="Link to this heading"></a></h3>
+<p>Ensure your <code class="docutils literal notranslate"><span class="pre">package.json</span></code> includes the following:</p>
+<ul>
+<li><p>A non-default version number (e.g., <code class="docutils literal notranslate"><span class="pre">1.0.0</span></code>).</p></li>
+<li><p>A <code class="docutils literal notranslate"><span class="pre">main</span></code> field pointing to your generated JS bundle (e.g., <code class="docutils literal notranslate"><span class="pre">main.js</span></code>).</p></li>
+<li><p>A <code class="docutils literal notranslate"><span class="pre">build</span></code> script for bundling and packaging:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;scripts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;build&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ng build &amp;&amp; copy package.json dist\\browser\\package.json &amp;&amp; cd dist\\browser &amp;&amp; npm pack&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Include your stylesheet(s) in the <code class="docutils literal notranslate"><span class="pre">files</span></code> array:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;files&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;styles.css&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Declare the Charon extension metadata using the <code class="docutils literal notranslate"><span class="pre">config.customEditors</span></code> section:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;customEditors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ext-color-picker&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;selector&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ext-color-picker-editor&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Color Picker&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Property&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Grid&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;dataTypes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Text&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Integer&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Add the Charon extension schema reference:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;$schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/gamedevware/charon-extensions/refs/heads/main/package.json.schema.json&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Remove the <code class="docutils literal notranslate"><span class="pre">&quot;private&quot;:</span> <span class="pre">true</span></code> flag before publishing.</p></li>
+<li><p>Fill in other metadata: <code class="docutils literal notranslate"><span class="pre">author</span></code>, <code class="docutils literal notranslate"><span class="pre">description</span></code>, <code class="docutils literal notranslate"><span class="pre">license</span></code>, etc.</p></li>
+</ul>
+</section>
+<section id="enable-standalone-zoneless-mode-performance">
+<h3>7. Enable Standalone/Zoneless Mode (Performance)<a class="headerlink" href="#enable-standalone-zoneless-mode-performance" title="Link to this heading"></a></h3>
+<p>Ensure your component runs independently of Angular’s <cite>zone.js</cite>. This improves performance and prevents interference between extensions. Refer to Angular documentation for zoneless application setup.</p>
+</section>
+</section>
+<section id="debugging-local-testing">
+<h2>Debugging &amp; Local Testing<a class="headerlink" href="#debugging-local-testing" title="Link to this heading"></a></h2>
+<section id="test-locally-in-charon">
+<h3>Test Locally in Charon<a class="headerlink" href="#test-locally-in-charon" title="Link to this heading"></a></h3>
+<p>Place the generated <code class="docutils literal notranslate"><span class="pre">.tgz</span></code> file in:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+Windows</label><div class="sd-tab-content docutils">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">PROGRAMDATA</span><span class="o">%</span>\<span class="n">Charon</span>\<span class="n">extensions</span>\
+<span class="n">C</span><span class="p">:</span>\<span class="n">ProgramData</span>\<span class="n">Charon</span>\<span class="n">extensions</span>\
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+MacOS</label><div class="sd-tab-content docutils">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">Users</span><span class="o">/&lt;</span><span class="n">username</span><span class="o">&gt;/.</span><span class="n">config</span><span class="o">/</span><span class="n">Charon</span><span class="o">/</span><span class="n">extensions</span><span class="o">/</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+Linux</label><div class="sd-tab-content docutils">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">home</span><span class="o">/&lt;</span><span class="n">username</span><span class="o">&gt;/.</span><span class="n">config</span><span class="o">/</span><span class="n">Charon</span><span class="o">/</span><span class="n">extensions</span><span class="o">/</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-3" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-3">
+Unity</label><div class="sd-tab-content docutils">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">project</span><span class="o">-</span><span class="n">directory</span><span class="o">&gt;/</span><span class="n">Library</span><span class="o">/</span><span class="n">Charon</span><span class="o">/</span><span class="n">extensions</span><span class="o">/</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-4" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-4">
+Unreal Engine</label><div class="sd-tab-content docutils">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">project</span><span class="o">-</span><span class="n">directory</span><span class="o">&gt;/</span><span class="n">Intermediate</span><span class="o">/</span><span class="n">Charon</span><span class="o">/</span><span class="n">extensions</span><span class="o">/</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This allows Charon to detect and load the extension during development, bypassing the NPM publication process.</p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/project_settings_extensions.png"><img alt="Project Settings Extensions" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/project_settings_extensions.png" width="800" />
+</a>
+</section>
+<section id="disable-optimizations-for-browser-debugging">
+<h3>Disable Optimizations for Browser Debugging<a class="headerlink" href="#disable-optimizations-for-browser-debugging" title="Link to this heading"></a></h3>
+<p>During debugging, set:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;optimizations&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+</pre></div>
+</div>
+<p>in the <code class="docutils literal notranslate"><span class="pre">production</span></code> build configuration to simplify source maps and runtime behavior.</p>
+</section>
+<section id="versioning">
+<h3>Versioning<a class="headerlink" href="#versioning" title="Link to this heading"></a></h3>
+<p>Always increment the <code class="docutils literal notranslate"><span class="pre">version</span></code> field in <code class="docutils literal notranslate"><span class="pre">package.json</span></code> between builds to ensure Charon detects updates.</p>
+</section>
+</section>
+<section id="publishing">
+<h2>Publishing<a class="headerlink" href="#publishing" title="Link to this heading"></a></h2>
+<p>Once your component is built, tested, and versioned, you can publish it to NPM and reference it in Charon’s <code class="docutils literal notranslate"><span class="pre">Project</span> <span class="pre">Settings</span> <span class="pre">→</span> <span class="pre">Extensions</span></code> tab.
+Your custom editor will then be available in the schema designer for relevant property types.</p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/schema_designer_select_extension_editor.png"><img alt="Schema Designer with Custom Editor" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/schema_designer_select_extension_editor.png" width="800" />
+</a>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

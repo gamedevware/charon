@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Types &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Date" href="all/date.html" />
+    <link rel="prev" title="Creating Document Type (Schema)" href="../creating_schema.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Working with Game Data</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../creating_schema.html">Creating Document Type (Schema)</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Data Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="all/date.html">Date</a></li>
+<li class="toctree-l3"><a class="reference internal" href="all/document.html">Document</a></li>
+<li class="toctree-l3"><a class="reference internal" href="all/document_collection.html">Document Collection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="all/formula.html">Formula</a></li>
+<li class="toctree-l3"><a class="reference internal" href="all/integer.html">Integer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="all/localized_text.html">Localized Text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="all/logical.html">Logical</a></li>
+<li class="toctree-l3"><a class="reference internal" href="all/multi_pick_list.html">Multi-Pick List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="all/number.html">Number</a></li>
+<li class="toctree-l3"><a class="reference internal" href="all/pick_list.html">Pick List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="all/reference.html">Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="all/reference_collection.html">Reference Collection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="all/text.html">Text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="all/time.html">Time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sub/asset.html">Asset Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sub/rectangle.html">Rectangle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sub/rectangle_int.html">Integer Rectangle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sub/tags.html">Tags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sub/vector.html">Vector 2/3/4</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sub/vector_int.html">Integer Vector 2/3/4</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#composite-types">Composite Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../schemas/schema.html">Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../schemas/specification.html">Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../properties/id_property.html">Id Property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../properties/property.html">Schema Property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../properties/shared_property.html">Shared Property</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_uecpp_code_.html">Working with Source Code (UE C++)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/extensions/overview.html">UI Extensions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../creating_schema.html">Creating Document Type (Schema)</a></li>
+      <li class="breadcrumb-item active">Data Types</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/gamedata/datatypes/list.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="data-types">
+<h1>Data Types<a class="headerlink" href="#data-types" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>Choosing the appropriate data type is essential for ensuring that game data is accurately structured, efficiently stored, and correctly interpreted by both the editor and runtime systems. Each data type serves a specific purpose and is designed to represent particular kinds of values or relationships.</p>
+<p>For instance, use the <span class="xref std std-doc">Text</span> data type for simple string values, or the <span class="xref std std-doc">LocalizedText</span> type when the same text must support multiple languages. For numeric data, <span class="xref std std-doc">Number</span> is suited for decimal values, while <span class="xref std std-doc">Integer</span> should be used for whole numbers.</p>
+<p>When a property should be selected from a defined set of options, <span class="xref std std-doc">PickList</span> and <span class="xref std std-doc">MultiPickList</span> are recommended for single or multiple selections, respectively. For more complex structures, use <span class="xref std std-doc">Document</span> to define an embedded object, or <span class="xref std std-doc">DocumentCollection</span> to represent a list of such objects.</p>
+<p>By selecting data types according to their intended purpose, developers can ensure better validation, clearer data organization, and more predictable behavior across tools and runtime systems.</p>
+<section id="id1">
+<h2>Data Types<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Data Type</p></td>
+<td><p>Description</p></td>
+<td><p>Example</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="all/text.html"><span class="doc">Text</span></a></p></td>
+<td><p>A line of text.</p></td>
+<td><p>“Hello, world!”</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="all/localized_text.html"><span class="doc">LocalizedText</span></a></p></td>
+<td><p>A localized text for multiple languages.</p></td>
+<td><p>{“en-US”: “Hello”, “fr-FR”: “Bonjour”}</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="all/logical.html"><span class="doc">Logical</span></a></p></td>
+<td><p>A true/false value.</p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="all/time.html"><span class="doc">Time</span></a></p></td>
+<td><p>A time duration (days, hours, etc.).</p></td>
+<td><p>“1.00:00:00”</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="all/date.html"><span class="doc">Date</span></a></p></td>
+<td><p>A calendar date and time.</p></td>
+<td><p>“2017-12-27T00:00:00.000Z”</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="all/number.html"><span class="doc">Number</span></a></p></td>
+<td><p>A decimal number.</p></td>
+<td><p>3.14</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="all/integer.html"><span class="doc">Integer</span></a></p></td>
+<td><p>A whole number.</p></td>
+<td><p>42</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="all/pick_list.html"><span class="doc">PickList</span></a></p></td>
+<td><p>A single value from a predefined list.</p></td>
+<td><p>“Red”</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="all/multi_pick_list.html"><span class="doc">MultiPickList</span></a></p></td>
+<td><p>Multiple values from a predefined list.</p></td>
+<td><p>“Apple, Banana, Cherry”</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="all/document.html"><span class="doc">Document</span></a></p></td>
+<td><p>An embedded structured object.</p></td>
+<td><p>{ “Id”: “Sword”, “Name”: “Rusty Sword” }</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="all/document_collection.html"><span class="doc">DocumentCollection</span></a></p></td>
+<td><p>A list of embedded structured objects.</p></td>
+<td><p>[{ “Id”: “Sword”, “Name”: “Rusty Sword” }]</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="all/reference.html"><span class="doc">Reference</span></a></p></td>
+<td><p>A pointer to another document by ID.</p></td>
+<td><p>{ “Id”: “Sword” }</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="all/reference_collection.html"><span class="doc">ReferenceCollection</span></a></p></td>
+<td><p>A list of pointers to other documents.</p></td>
+<td><p>[{ “Id”: “Sword” }]</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="all/formula.html"><span class="doc">Formula</span></a></p></td>
+<td><p>A C# expression evaluated at runtime.</p></td>
+<td><p>“target.HP &lt; 100”</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="composite-types">
+<h1>Composite Types<a class="headerlink" href="#composite-types" title="Link to this heading"></a></h1>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Composite Type</p></td>
+<td><p>Base Type</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sub/asset.html"><span class="doc">Asset Path</span></a></p></td>
+<td><p>Text</p></td>
+<td><p>A relative path to a single game asset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sub/vector.html"><span class="doc">Vector 2/3/4</span></a></p></td>
+<td><p>Text</p></td>
+<td><p>A group of 2, 3, or 4 decimal values (e.g., position or scale).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sub/vector_int.html"><span class="doc">Integer Vector 2/3/4</span></a></p></td>
+<td><p>Text</p></td>
+<td><p>A group of 2, 3, or 4 whole numbers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sub/rectangle.html"><span class="doc">Rectangle</span></a></p></td>
+<td><p>Text</p></td>
+<td><p>A rectangle with floating-point position and size.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sub/rectangle_int.html"><span class="doc">Integer Rectangle</span></a></p></td>
+<td><p>Text</p></td>
+<td><p>A rectangle with integer position and size.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sub/tags.html"><span class="doc">Tags</span></a></p></td>
+<td><p>Text</p></td>
+<td><p>A reusable set of tags shared across documents.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="use-cases-and-guidance">
+<h2>Use Cases and Guidance<a class="headerlink" href="#use-cases-and-guidance" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Use <strong>Text</strong> and <strong>LocalizedText</strong> for titles, descriptions, and UI content.</p></li>
+<li><p>Choose <strong>Integer</strong> or <strong>Number</strong> for quantities, rates, and stats.</p></li>
+<li><p>Use <strong>Document</strong> or <strong>Reference</strong> to include structured data or link to another entity.</p></li>
+<li><p>Use <strong>PickList</strong> or <strong>MultiPickList</strong> when the value should be selected from a known set.</p></li>
+<li><p>Use <strong>Asset Path</strong> or <strong>Asset Path Collection</strong> when referencing assets like textures, sounds, or prefabs by path.</p></li>
+<li><p>Use <strong>Formula</strong> to define runtime-calculated values, like damage formulas or dynamic prices.</p></li>
+<li><p>Use <strong>Tags</strong> when multiple documents share common descriptors (e.g., “fire”, “enemy”, “magic”).</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../creating_schema.html" class="btn btn-neutral float-left" title="Creating Document Type (Schema)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="all/date.html" class="btn btn-neutral float-right" title="Date" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

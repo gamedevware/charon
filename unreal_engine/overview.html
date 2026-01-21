@@ -1,0 +1,405 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unreal Engine Plugin Overview &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How to Create Game Data File" href="creating_game_data.html" />
+    <link rel="prev" title="Overview" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Working with Game Data</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_uecpp_code_.html">Working with Source Code (UE C++)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/overview.html">UI Extensions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Unreal Engine Plugin Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/unreal_engine/overview.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="unreal-engine-plugin-overview">
+<h1>Unreal Engine Plugin Overview<a class="headerlink" href="#unreal-engine-plugin-overview" title="Link to this heading"></a></h1>
+<p>For Unreal Engine developers, managing complex game data shouldn’t mean fighting with restricted DataTables or bloated Blueprints. The <a class="reference external" href="https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor">Charon Unreal Plugin</a> provides a robust, professional-grade database workflow designed to handle the scale and performance requirements of modern UE projects.</p>
+<hr class="docutils" />
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png"><img alt="Charon editor UI" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png" width="800" />
+</a>
+<hr class="docutils" />
+<section id="what-is-it">
+<h2>1. What is it?<a class="headerlink" href="#what-is-it" title="Link to this heading"></a></h2>
+<p>The <strong>Charon Unreal Plugin</strong> is a high-performance data management ecosystem integrated directly into the Unreal Editor. It replaces traditional, flat DataTables with a <strong>relational game database</strong> that supports complex nesting, cross-references, and multi-language text—all accessible via a native-feeling UI and backed by an automated C++ code generator.</p>
+</section>
+<section id="which-problem-does-it-solve">
+<h2>2. Which problem does it solve?<a class="headerlink" href="#which-problem-does-it-solve" title="Link to this heading"></a></h2>
+<p>While Unreal Engine is powerful, its default data tools often fall short in complex productions. Charon solves these specific pain points:</p>
+<ul class="simple">
+<li><p><strong>DataTable Limitations:</strong> Unlike standard DataTables, Charon handles deep hierarchies and complex relationships (like branching quest lines or intricate skill trees) without becoming a visual mess.</p></li>
+<li><p><strong>Boilerplate Fatigue:</strong> It automatically generates the <strong>C++ and Blueprint</strong> code required to access your data, eliminating the need to manually write struct definitions or parsing logic.</p></li>
+<li><p><strong>Data Fragility:</strong> With built-in validation checks, it catches errors (like broken links or out-of-range values) before they cause a crash in your build.</p></li>
+<li><p><strong>Content “Locked” in the Engine:</strong> It allows for easy import/export for spreadsheets and localization, making it easier to collaborate with external writers or translation agencies.</p></li>
+</ul>
+</section>
+<section id="for-whom">
+<h2>3. For whom?<a class="headerlink" href="#for-whom" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Technical Directors &amp; Programmers:</strong> Who need type-safe, performant C++ access to game data and a reliable pipeline for CI/CD and modding support.</p></li>
+<li><p><strong>Game &amp; Narrative Designers:</strong> Who require a structured environment to build massive game worlds, item economies, and dialogue systems without needing to know C++.</p></li>
+<li><p><strong>Live-Ops Teams:</strong> Who need the ability to dynamically load data updates or perform A/B testing without submitting a new build to storefronts.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Benefit to Your Workflow</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>C++/Blueprint Generation</strong></p></td>
+<td><p>Access your data instantly with full IDE auto-complete and Blueprint nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Relational Modeling</strong></p></td>
+<td><p>Interconnect tables (Items, Quests, NPCs) with ease within a single UI.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Hot Updates</strong></p></td>
+<td><p>Support for dynamic loading of game data for live-tuning and hotfixes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Modding Support</strong></p></td>
+<td><p>Give your community the same professional tools to create game mods.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Localization</strong></p></td>
+<td><p>Seamlessly export and import translation keys for global releases.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h1>
+<p>To begin using <a class="reference external" href="https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor">this</a> plugin, the initial step involves installing the plugin from the Unreal Engine Marketplace.
+Once installed, you’ll need to <a class="reference external" href="https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/">enable the plugin</a> for your project through the project settings.
+Following this, a rebuild of your project’s C++ code is necessary. The final step in the setup process is the creation of your first game data file.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<p>The Unreal Engine plugin is written in C++ but relies on <code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">charon</span></code>, a .NET Core application which runs on .NET 8.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+Windows</label><div class="sd-tab-content docutils">
+<ol class="arabic simple">
+<li><p>Download and install <a class="reference external" href="https://dotnet.microsoft.com/en-us/download">SDK NET 8+</a>.</p></li>
+<li><p>Make sure you have write access to <code class="docutils literal notranslate"><span class="pre">%PROGRAMDATA%/Charon</span></code>.</p></li>
+</ol>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+MacOS</label><div class="sd-tab-content docutils">
+<ol class="arabic simple">
+<li><p>Download and install <a class="reference external" href="https://dotnet.microsoft.com/en-us/download">SDK NET 8+</a>.</p></li>
+<li><p>Make sure you have write access to <code class="docutils literal notranslate"><span class="pre">/Users/&lt;username&gt;/.config/Charon</span></code>.</p></li>
+<li><p>Make sure <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> is available from <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>.</p></li>
+</ol>
+</div>
+</div>
+<div class="sd-tab-item docutils">
+<p class="sd-tab-label rubric">Linux</p>
+<div class="sd-tab-content docutils">
+<ol class="arabic simple">
+<li><p>Download and install <a class="reference external" href="https://dotnet.microsoft.com/en-us/download">NET SDK 8+</a>.</p></li>
+<li><p>Make sure you have write access to <code class="docutils literal notranslate"><span class="pre">/home/&lt;username&gt;/.config/Charon</span></code>.</p></li>
+<li><p>Make sure <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> is available from <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>.</p></li>
+</ol>
+</div>
+</div>
+<p><strong>Checking Available .NET SDK Versions</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># check for dotnet already installed</span>
+dotnet<span class="w"> </span>--list-sdks
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># output for dotnet --list-sdks</span>
+<span class="m">7</span>.0.120<span class="w"> </span><span class="o">[</span>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="se">\d</span>otnet<span class="se">\s</span>dk<span class="o">]</span>
+<span class="m">8</span>.0.206<span class="w"> </span><span class="o">[</span>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="se">\d</span>otnet<span class="se">\s</span>dk<span class="o">]</span>
+<span class="m">8</span>.0.414<span class="w"> </span><span class="o">[</span>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="se">\d</span>otnet<span class="se">\s</span>dk<span class="o">]</span><span class="w">  </span><span class="c1"># &lt;- this one is fine</span>
+<span class="m">9</span>.0.300<span class="w"> </span><span class="o">[</span>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="se">\d</span>otnet<span class="se">\s</span>dk<span class="o">]</span><span class="w">  </span><span class="c1"># &lt;- this one too</span>
+</pre></div>
+</div>
+</section>
+<section id="installation-from-marketplace">
+<h2>Installation from Marketplace<a class="headerlink" href="#installation-from-marketplace" title="Link to this heading"></a></h2>
+<div class="video_wrapper" style="">
+<iframe allowfullscreen="true" src="https://www.youtube.com/embed/aeQHWdbiodE" style="border: 0; height: 510px; width: 640px">
+</iframe></div><ol class="arabic simple">
+<li><p>Add to cart Charon plugin <a class="reference external" href="com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4">[Epic Launcher]</a> / <a class="reference external" href="https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor">[Fab.com Asset Page]</a> in the Unreal Engine Marketplace.</p></li>
+<li><p>Follow the <a class="reference external" href="https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/">instruction</a> on installing plugin into your project:</p></li>
+</ol>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li><p>Click <strong>Install to Engine</strong> and select the engine version.</p></li>
+<li><p>Open your project and go to <strong>Edit → Plugins…</strong> window.</p></li>
+<li><p>Type <strong>Charon</strong> in the <strong>Search</strong> bar.</p></li>
+<li><p>Check the checkbox near the plugin’s name to enable it.</p></li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>Rebuild project C++ code.</p></li>
+</ol>
+</section>
+<section id="building-from-source-code">
+<h2>Building from Source Code<a class="headerlink" href="#building-from-source-code" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Clone or download the <a class="reference external" href="https://github.com/gamedevware/charon-unreal-engine/tree/main">plugin source code</a> from the GitHub repository.</p></li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">&lt;project-dir&gt;/Plugins/Charon</span></code> directory.</p></li>
+<li><p>Copy the plugin files into this directory. Ensure <strong>Charon.uplugin</strong> is located at the path <code class="docutils literal notranslate"><span class="pre">&lt;project-dir&gt;/Plugins/Charon/Charon.uplugin</span></code> after copying.</p></li>
+<li><p>Remove the <code class="docutils literal notranslate"><span class="pre">&quot;EngineVersion&quot;</span></code> attribute if your engine doesn’t match the plugin’s engine version.</p></li>
+<li><p>Rebuild the project’s C++ code.</p></li>
+<li><p>Enable the plugin in <strong>Edit → Plugins…</strong> if needed.</p></li>
+</ol>
+</section>
+</section>
+<section id="core-concepts">
+<h1>Core Concepts<a class="headerlink" href="#core-concepts" title="Link to this heading"></a></h1>
+<section id="data-driven-design-principles">
+<h2>Data-Driven Design Principles<a class="headerlink" href="#data-driven-design-principles" title="Link to this heading"></a></h2>
+<p>Data-driven design emphasizes the control of gameplay through data, rather than source code/blueprints, with game mechanics and processes determined by structured data files.
+For instance, rather than embedding damage calculations directly in the game’s source code, these are defined by data specifying weapon effects and the rules for their application.
+Or for example, mission progression is not hardcoded; it’s outlined in editable text files, making these aspects of game design highly flexible.
+This approach not only facilitates quick adjustments during development but also simplifies adding modding support post-release.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://docs.unrealengine.com/5.3/en-US/data-driven-gameplay-elements-in-unreal-engine/">Data Driven Gameplay Elements (UE Documentation)</a></p></li>
+<li><p><a class="reference external" href="https://www.gdcvault.com/play/1024050/Modify-Everything-Data-Driven-Dynamic">Modify Everything! Data-Driven Dynamic Gameplay Effects on ‘For Honor’ (Video)</a></p></li>
+<li><p><a class="reference external" href="https://benui.ca/unreal/data-driven-design/">Data-driven Design in Unreal (Article)</a></p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="understanding-the-plugin-s-architecture">
+<h2>Understanding the Plugin’s Architecture<a class="headerlink" href="#understanding-the-plugin-s-architecture" title="Link to this heading"></a></h2>
+<p><strong>Plugin Assets</strong></p>
+<p>Working with data in this plugin is akin to how the built-in <em>DataTable</em> functions. There is a data source file, a module containing the code required to load the data,
+and an asset that will be utilized in the game. Whenever you edit a data source file, you need to re-import this data into the asset.
+Should the data structure in the source file change, then the C++ code must be regenerated.</p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/ue_plugin_assets.png"><img alt="Charon assets scheme in Unreal Engine" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/ue_plugin_assets.png" width="800" />
+</a>
+<p>For scenarios requiring dynamic loading of game data, this can be accomplished through the <code class="docutils literal notranslate"><span class="pre">TryLoad</span></code> method on the game data class, which accepts the source JSON file.</p>
+<p><strong>Plugin Modules</strong></p>
+<dl class="simple">
+<dt>The Charon plugin is structured into two modules:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CharonEditor</span></code> module acts as an Unreal Engine Editor extension. Extension points for the module are declared in the <code class="docutils literal notranslate"><span class="pre">ICharonEditorModule</span></code> class, and automation of game data processing is facilitated through the <code class="docutils literal notranslate"><span class="pre">FCharonCli</span></code> class.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Charon</span></code> module, houses the core logic and shared code crucial for handling game data files.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+<section id="working-with-the-plugin">
+<h1>Working with the Plugin<a class="headerlink" href="#working-with-the-plugin" title="Link to this heading"></a></h1>
+<div class="video_wrapper" style="">
+<iframe allowfullscreen="true" src="https://www.youtube.com/embed/Ofp5c3FSS6k" style="border: 0; height: 510px; width: 640px">
+</iframe></div><section id="creating-game-data">
+<h2>Creating Game Data<a class="headerlink" href="#creating-game-data" title="Link to this heading"></a></h2>
+<p>To create a new game data file within the Unreal Engine Editor, open the <strong>Content Drawer</strong>, right-click in the desired folder, and select in the <strong>Create Advanced Assets</strong> section <strong>Miscellaneous → Game Data</strong> menu option.
+Name your game data file and proceed according to the instructions in the dialog window that appears.</p>
+<p><a class="reference internal" href="creating_game_data.html"><span class="doc">Detailed guide on how to create game data.</span></a></p>
+</section>
+<section id="editing-game-data">
+<h2>Editing Game Data<a class="headerlink" href="#editing-game-data" title="Link to this heading"></a></h2>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/ue_editor_screenshot.png"><img alt="Charon UI in Unreal Engine editor" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/ue_editor_screenshot.png" width="800" />
+</a>
+<p>To edit a game data file in the Unreal Engine Editor, navigate to the <strong>Content Drawer</strong>, find the corresponding .uasset file, and double-click it.
+This action opens a new window featuring a user interface for editing the game data. Remember to reimport and, if necessary, regenerate the source
+code after completing your edits.</p>
+</section>
+<section id="refencing-game-data-in-blueprints">
+<h2>Refencing Game Data in Blueprints<a class="headerlink" href="#refencing-game-data-in-blueprints" title="Link to this heading"></a></h2>
+<p>Similar to the DataTable’s <code class="docutils literal notranslate"><span class="pre">FDataTableRowHandle</span></code>, the Charon plugin introduces a specific type for referencing documents within Blueprints,
+named <code class="docutils literal notranslate"><span class="pre">FGameDataDocumentReference</span></code>. This type is housed within the Charon module. Here is example of <strong>Game Data Document Reference</strong> used to resolve <em>Hero</em> document:</p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/ue_document_reference.png"><img alt="Charon document reference example screenshot" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/ue_document_reference.png" width="800" />
+</a>
+</section>
+</section>
+<section id="advanced-features">
+<h1>Advanced Features<a class="headerlink" href="#advanced-features" title="Link to this heading"></a></h1>
+<section id="localization-and-multi-language-support">
+<h2>Localization and Multi-Language Support<a class="headerlink" href="#localization-and-multi-language-support" title="Link to this heading"></a></h2>
+<p>Charon facilitates multi-language text support through the <code class="docutils literal notranslate"><span class="pre">Localizable</span> <span class="pre">Text</span></code> data type. When creating a <em>Schema</em>, properties can be defined with various data types, including <code class="docutils literal notranslate"><span class="pre">Localizable</span> <span class="pre">Text</span></code>.
+Initially, all localizable text defaults to <code class="docutils literal notranslate"><span class="pre">EN-us</span></code> (US English). Additional languages can be added via <strong>Project Settings → Internationalization → Translation Languages</strong> in the Charon UI.</p>
+<p><a class="reference internal" href="../advanced/internationalization.html"><span class="doc">Exporting/importing localizable data.</span></a></p>
+</section>
+<section id="referencing-unreal-engine-assets">
+<h2>Referencing Unreal Engine Assets<a class="headerlink" href="#referencing-unreal-engine-assets" title="Link to this heading"></a></h2>
+<p>To reference assets within the game, you can use a special <a class="reference internal" href="../gamedata/datatypes/sub/asset.html"><span class="doc">Asset</span></a> composite type. Create a property via <code class="docutils literal notranslate"><span class="pre">Composite</span> <span class="pre">Types</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Asset</span> <span class="pre">Path</span></code> menu options.</p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/schema_designer_select_editor.png"><img alt="Schema Designer with Custom Editor" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/schema_designer_select_editor.png" width="800" />
+</a>
+</section>
+<section id="feedback">
+<h2>Feedback<a class="headerlink" href="#feedback" title="Link to this heading"></a></h2>
+<p>We welcome and encourage feedback, particularly bug reports and suggestions, to help improve our tool. If you have any questions or would like to share your thoughts,
+please join our <a class="reference external" href="https://discord.gg/2quB5vXryd">Discord community</a> or reach out to us via email at <a class="reference external" href="mailto:support&#37;&#52;&#48;gamedevware&#46;com">support<span>&#64;</span>gamedevware<span>&#46;</span>com</a>.</p>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../gamedata/basics.html"><span class="doc">Basic Navigation and User Interface Overview</span></a></p></li>
+<li><p><a class="reference internal" href="../gamedata/creating_schema.html"><span class="doc">Creating Document Type (Schema)</span></a></p></li>
+<li><p><a class="reference internal" href="../gamedata/filling_documents.html"><span class="doc">Filling Documents</span></a></p></li>
+<li><p><a class="reference internal" href="../faq.html"><span class="doc">Frequently Asked Questions (FAQ)</span></a></p></li>
+<li><p><a class="reference internal" href="../glossary.html"><span class="doc">Glossary</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="creating_game_data.html" class="btn btn-neutral float-right" title="How to Create Game Data File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,392 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Standalone &amp; CLI Overview &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Web Application Overview" href="../web/overview.html" />
+    <link rel="prev" title="Migrating to Web Application" href="../unity/migrating_to_web.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Working with Game Data</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_uecpp_code_.html">Working with Source Code (UE C++)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/overview.html">UI Extensions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Standalone &amp; CLI Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/standalone/overview.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="standalone-cli-overview">
+<h1>Standalone &amp; CLI Overview<a class="headerlink" href="#standalone-cli-overview" title="Link to this heading"></a></h1>
+<p>For developers who require maximum control over their environment, Charon offers a flexible standalone distribution. This version is built for those who prefer working outside of a specific game engine or need to automate their data workflows.</p>
+<hr class="docutils" />
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png"><img alt="Charon editor UI" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png" width="800" />
+</a>
+<hr class="docutils" />
+<section id="what-is-it">
+<h2>1. What is it?<a class="headerlink" href="#what-is-it" title="Link to this heading"></a></h2>
+<p>The standalone version is a <strong>cross-platform .NET 8 CLI application</strong>. It operates as a dual-purpose tool:</p>
+<ul class="simple">
+<li><p><strong>Headless CLI:</strong> A powerful command-line interface for data manipulation and code generation.</p></li>
+<li><p><strong>Local HTTP Server:</strong> By launching a local server, it provides a high-performance <strong>browser-based UI</strong> for visual data modeling and editing without requiring an internet connection.</p></li>
+</ul>
+</section>
+<section id="which-problem-does-it-solve">
+<h2>2. Which problem does it solve?<a class="headerlink" href="#which-problem-does-it-solve" title="Link to this heading"></a></h2>
+<p>While the engine plugins are great for standard development, the Standalone/CLI version addresses specialized technical requirements:</p>
+<ul class="simple">
+<li><p><strong>Custom Pipeline Integration:</strong> Easily integrate game data validation and code generation into custom build scripts or tools.</p></li>
+<li><p><strong>CI/CD Automation:</strong> Run data integrity checks and generate source code automatically on build servers (GitHub Actions, Jenkins, etc.).</p></li>
+<li><p><strong>Modding Toolsets:</strong> Distribute a lightweight, engine-agnostic tool to your players, enabling them to create and edit game content safely.</p></li>
+<li><p><strong>Engine-Agnostic Workflows:</strong> Work on game data for custom engines or projects that don’t use Unity or Unreal.</p></li>
+</ul>
+</section>
+<section id="for-whom">
+<h2>3. For whom?<a class="headerlink" href="#for-whom" title="Link to this heading"></a></h2>
+<p>This version is tailored for <strong>advanced users and technical leads</strong> who are comfortable with the terminal. It is ideal for:</p>
+<ul class="simple">
+<li><p><strong>Tools Engineers</strong> building custom development pipelines.</p></li>
+<li><p><strong>Technical Designers</strong> who need a standalone environment for content creation.</p></li>
+<li><p><strong>Build Engineers</strong> automating game data processing in the cloud.</p></li>
+</ul>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png"><img alt="Charon editor UI" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png" width="800" />
+</a>
+</section>
+</section>
+<section id="prerequisites">
+<h1>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h1>
+<p>Standalone application uses <cite>dotnet-charon &lt;https://www.nuget.org/packages/dotnet-charon&gt;</cite> tool, which is a .NET Core application built for .NET 8.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+Windows</label><div class="sd-tab-content docutils">
+<ol class="arabic simple">
+<li><p>Download and install <a class="reference external" href="https://dotnet.microsoft.com/en-us/download">NET 8+</a>.</p></li>
+<li><p>Make sure you have write access to <code class="docutils literal notranslate"><span class="pre">%PROGRAMDATA%/Charon</span></code>.</p></li>
+</ol>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+MacOS</label><div class="sd-tab-content docutils">
+<ol class="arabic simple">
+<li><p>Download and install <a class="reference external" href="https://dotnet.microsoft.com/en-us/download">NET 8+</a>.</p></li>
+<li><p>Make sure you have write access to <code class="docutils literal notranslate"><span class="pre">/Users/&lt;username&gt;/.config/Charon</span></code>.</p></li>
+<li><p>Make sure <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> is available from <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>.</p></li>
+</ol>
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+Linux</label><div class="sd-tab-content docutils">
+<ol class="arabic simple">
+<li><p>Download and install <a class="reference external" href="https://dotnet.microsoft.com/en-us/download">NET 8+</a>.</p></li>
+<li><p>Make sure you have write access to <code class="docutils literal notranslate"><span class="pre">/home/&lt;username&gt;/.config/Charon</span></code>.</p></li>
+<li><p>Make sure <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> is available from <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>.</p></li>
+</ol>
+</div>
+</div>
+<p><strong>Checking Available .NET Versions</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># check for dotnet already installed</span>
+dotnet<span class="w"> </span>--list-runtimes
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># output for dotnet --list-runtimes</span>
+Microsoft.AspNetCore.App<span class="w"> </span><span class="m">6</span>.0.36<span class="w"> </span><span class="o">[</span>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="se">\d</span>otnet<span class="se">\s</span>hared<span class="se">\M</span>icrosoft.AspNetCore.App<span class="o">]</span>
+Microsoft.AspNetCore.App<span class="w"> </span><span class="m">7</span>.0.20<span class="w"> </span><span class="o">[</span>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="se">\d</span>otnet<span class="se">\s</span>hared<span class="se">\M</span>icrosoft.AspNetCore.App<span class="o">]</span>
+Microsoft.AspNetCore.App<span class="w"> </span><span class="m">8</span>.0.6<span class="w"> </span><span class="o">[</span>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="se">\d</span>otnet<span class="se">\s</span>hared<span class="se">\M</span>icrosoft.AspNetCore.App<span class="o">]</span>
+Microsoft.AspNetCore.App<span class="w"> </span><span class="m">9</span>.0.0<span class="w"> </span><span class="o">[</span>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="se">\d</span>otnet<span class="se">\s</span>hared<span class="se">\M</span>icrosoft.AspNetCore.App<span class="o">]</span>
+Microsoft.NETCore.App<span class="w"> </span><span class="m">6</span>.0.36<span class="w"> </span><span class="o">[</span>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="se">\d</span>otnet<span class="se">\s</span>hared<span class="se">\M</span>icrosoft.NETCore.App<span class="o">]</span>
+Microsoft.NETCore.App<span class="w"> </span><span class="m">7</span>.0.20<span class="w"> </span><span class="o">[</span>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="se">\d</span>otnet<span class="se">\s</span>hared<span class="se">\M</span>icrosoft.NETCore.App<span class="o">]</span>
+Microsoft.NETCore.App<span class="w"> </span><span class="m">8</span>.0.6<span class="w"> </span><span class="o">[</span>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="se">\d</span>otnet<span class="se">\s</span>hared<span class="se">\M</span>icrosoft.NETCore.App<span class="o">]</span><span class="w"> </span><span class="c1"># &lt;- this one is fine</span>
+Microsoft.NETCore.App<span class="w"> </span><span class="m">9</span>.0.0<span class="w"> </span><span class="o">[</span>C:<span class="se">\P</span>rogram<span class="w"> </span>Files<span class="se">\d</span>otnet<span class="se">\s</span>hared<span class="se">\M</span>icrosoft.NETCore.App<span class="o">]</span><span class="w"> </span><span class="c1"># &lt;- this one too</span>
+</pre></div>
+</div>
+</section>
+<section id="installation-and-updates">
+<h1>Installation and Updates<a class="headerlink" href="#installation-and-updates" title="Link to this heading"></a></h1>
+<p>You can use just two commands to install the command line tool, or use a bootstrap script that will check dependencies and installed software, and then download and run the tool for you.</p>
+<section id="dotnet-tool-recommended">
+<h2>dotnet tool (recommended)<a class="headerlink" href="#dotnet-tool-recommended" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># install charon globally (run it once)</span>
+dotnet<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>dotnet-charon
+
+<span class="c1"># update global tool</span>
+dotnet<span class="w"> </span>tool<span class="w"> </span>update<span class="w"> </span>-g<span class="w"> </span>dotnet-charon
+
+<span class="c1"># make empty game data file</span>
+<span class="w"> </span>charon<span class="w"> </span>INIT<span class="w"> </span>./gamedata.json
+
+<span class="c1"># run editor</span>
+<span class="w"> </span>charon<span class="w"> </span>./gamedata.json
+</pre></div>
+</div>
+</section>
+<section id="bootstrap-script">
+<h2>Bootstrap Script<a class="headerlink" href="#bootstrap-script" title="Link to this heading"></a></h2>
+<p>Two bootstrap scripts which download and run latest version of Charon on your PC:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RunCharon.bat</span></code> for Windows</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RunCharon.sh</span></code> for Linux or MacOS</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Bootstrap scripts require <strong>.NET SDK️</strong> to run, not only bare .NET Runtime.</p>
+</div>
+<p>Both scripts require the <a class="reference external" href="https://dotnet.microsoft.com/en-us/download/dotnet">dotnet</a> tool to be available in <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><dl class="simple">
+<dt>Download one of the scripts into a local folder <code class="docutils literal notranslate"><span class="pre">charon</span></code>.</dt><dd><ol class="loweralpha simple">
+<li><p><a class="reference external" href="https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat">RunCharon.bat (Windows)</a></p></li>
+<li><p><a class="reference external" href="https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.sh">RunCharon.sh (Linux, MacOS)</a></p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>Navigate to the local folder <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">charon</span></code>.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">RunCharon.bat</span></code> or <code class="docutils literal notranslate"><span class="pre">RunCharon.sh</span></code> depending on your OS.</p></li>
+<li><p>Wait for the script to automatically download and upgrade <code class="docutils literal notranslate"><span class="pre">dotnet-charon</span> <span class="pre">tool</span></code>, and display help text.</p></li>
+<li><p>Create an empty file named <code class="docutils literal notranslate"><span class="pre">RunCharon.bat</span> <span class="pre">INIT</span> <span class="pre">gamedata.json</span></code></p></li>
+<li><p>Run in standalone mode: <code class="docutils literal notranslate"><span class="pre">RunCharon.bat</span> <span class="pre">gamedata.json</span></code></p></li>
+</ol>
+</div></blockquote>
+<p>Or use following bootstrap script:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-3">
+Windows</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rem<span class="w"> </span><span class="c1">##### Load and run bootstrap script #####</span>
+
+@echo<span class="w"> </span>off
+mkdir<span class="w"> </span>Charon
+<span class="nb">cd</span><span class="w"> </span>Charon
+curl<span class="w"> </span>-O<span class="w"> </span>https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.bat
+./RunCharon.bat<span class="w"> </span>INIT<span class="w"> </span>./gamedata.json
+
+rem<span class="w"> </span><span class="c1">##### Start editor #####</span>
+
+./RunCharon.bat<span class="w"> </span>./gamedata.json<span class="w"> </span>--log<span class="w"> </span>out
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-4">
+Linux, MacOS</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">##### Load and run bootstrap script #####</span>
+
+mkdir<span class="w"> </span>Charon
+<span class="nb">cd</span><span class="w"> </span>Charon
+curl<span class="w"> </span>-O<span class="w"> </span>https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.sh
+chmod<span class="w"> </span>+x<span class="w"> </span>RunCharon.sh
+./RunCharon.sh<span class="w"> </span>INIT<span class="w"> </span>./gamedata.json
+
+<span class="c1">##### Start editor #####</span>
+
+./RunCharon.sh<span class="w"> </span>./gamedata.json<span class="w"> </span>--log<span class="w"> </span>out
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="creating-and-editing-game-data">
+<h1>Creating and Editing Game Data<a class="headerlink" href="#creating-and-editing-game-data" title="Link to this heading"></a></h1>
+<p>Any empty <strong>gamedata.json</strong> file could be used as starting point for standalone application launch.
+The editor will automatically fill the empty file with the initial data.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-5" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-5">
+Windows</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># charon INIT .\gamedata.json</span>
+<span class="c1"># or</span>
+<span class="c1"># copy /y NUL .\gamedata.json &gt;NUL</span>
+
+charon<span class="w"> </span>.<span class="se">\g</span>amedata.json<span class="w"> </span>--log<span class="w"> </span>out
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-6" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-6">
+Linux, MacOS</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># charon INIT ./gamedata.json</span>
+<span class="c1"># or</span>
+<span class="c1"># touch ./gamedata.json</span>
+
+charon<span class="w"> </span>./gamedata.json<span class="w"> </span>--log<span class="w"> </span>out
+</pre></div>
+</div>
+</div>
+</div>
+<p>After finishing your work, you could just terminate the process with <code class="docutils literal notranslate"><span class="pre">CTRL+C</span></code> keyboard shortcut or close terminal window.</p>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.nuget.org/packages/dotnet-charon">Nuget Package</a></p></li>
+<li><p><a class="reference external" href="https://github.com/gamedevware/charon/tree/main/scripts/bootstrap/">Bootstrap Scripts</a></p></li>
+<li><p><a class="reference internal" href="../gamedata/basics.html"><span class="doc">Basic Navigation and User Interface Overview</span></a></p></li>
+<li><p><a class="reference internal" href="../gamedata/creating_schema.html"><span class="doc">Creating Document Type (Schema)</span></a></p></li>
+<li><p><a class="reference internal" href="../gamedata/filling_documents.html"><span class="doc">Filling Documents</span></a></p></li>
+<li><p><a class="reference internal" href="../gamedata/publication.html"><span class="doc">Publication of Game Data</span></a></p></li>
+<li><p><a class="reference internal" href="../gamedata/generating_source_code.html"><span class="doc">Generating Source Code</span></a></p></li>
+<li><p><a class="reference internal" href="../faq.html"><span class="doc">Frequently Asked Questions (FAQ)</span></a></p></li>
+<li><p><a class="reference internal" href="../glossary.html"><span class="doc">Glossary</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../unity/migrating_to_web.html" class="btn btn-neutral float-left" title="Migrating to Web Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../web/overview.html" class="btn btn-neutral float-right" title="Web Application Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

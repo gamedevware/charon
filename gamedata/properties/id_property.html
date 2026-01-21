@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Id Property &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Schema Property" href="property.html" />
+    <link rel="prev" title="Specification" href="../schemas/specification.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Working with Game Data</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../creating_schema.html">Creating Document Type (Schema)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../datatypes/list.html">Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datatypes/list.html#composite-types">Composite Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../schemas/schema.html">Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../schemas/specification.html">Specification</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Id Property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="property.html">Schema Property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shared_property.html">Shared Property</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_uecpp_code_.html">Working with Source Code (UE C++)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/extensions/overview.html">UI Extensions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../creating_schema.html">Creating Document Type (Schema)</a></li>
+      <li class="breadcrumb-item active">Id Property</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/gamedata/properties/id_property.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id-property">
+<h1>Id Property<a class="headerlink" href="#id-property" title="Link to this heading"></a></h1>
+<p>Each schema includes an <code class="docutils literal notranslate"><span class="pre">Id</span></code> property that defines the unique identifier for a document.
+This property is always named <code class="docutils literal notranslate"><span class="pre">Id</span></code> and must satisfy the following constraints:</p>
+<ul class="simple">
+<li><p>Must be unique.</p></li>
+<li><p>Required and must be non-empty (for <code class="docutils literal notranslate"><span class="pre">Text</span></code> data type).</p></li>
+<li><p>Must use a data type with a stable text representation and comparison support, such as:</p>
+<ul>
+<li><p>Time</p></li>
+<li><p>Date</p></li>
+<li><p>Number</p></li>
+<li><p>Integer</p></li>
+<li><p>Text</p></li>
+<li><p>MultiPickList</p></li>
+<li><p>PickList</p></li>
+</ul>
+</li>
+</ul>
+<section id="generated-id">
+<h2>Generated Id<a class="headerlink" href="#generated-id" title="Link to this heading"></a></h2>
+<p>Schemas can specify that the <code class="docutils literal notranslate"><span class="pre">Id</span></code> property should be automatically generated.
+Based on the selected <code class="docutils literal notranslate"><span class="pre">Id</span> <span class="pre">Generator</span></code> type, an appropriate <code class="docutils literal notranslate"><span class="pre">Id</span></code> property will be added to the schema.</p>
+<p>Supported Id Generators:</p>
+<ul class="simple">
+<li><p>ObjectId</p></li>
+<li><p>Guid</p></li>
+<li><p>Sequence</p></li>
+<li><p>GlobalSequence</p></li>
+</ul>
+<section id="generated-objectid">
+<h3>Generated ObjectId<a class="headerlink" href="#generated-objectid" title="Link to this heading"></a></h3>
+<p>A BSON ObjectId is a 96-bit unique identifier derived from the machine name, process ID, and timestamp.
+It is always increasing and well-suited for sorting documents by creation time.</p>
+<p>Id property details:</p>
+<ul class="simple">
+<li><p><strong>Data Type:</strong> Text</p></li>
+<li><p><strong>Size:</strong> 24 characters</p></li>
+<li><p><strong>Requirement:</strong> Not Empty</p></li>
+<li><p><strong>Example:</strong> “049bc0604c363a980b000088”</p></li>
+</ul>
+</section>
+<section id="generated-guid">
+<h3>Generated Guid<a class="headerlink" href="#generated-guid" title="Link to this heading"></a></h3>
+<p>A GUID (Globally Unique Identifier) is a 128-bit identifier typically represented as a 32-character hexadecimal string.
+It ensures global uniqueness across systems.</p>
+<p>Id property details:</p>
+<ul class="simple">
+<li><p><strong>Data Type:</strong> Text</p></li>
+<li><p><strong>Size:</strong> 32 characters</p></li>
+<li><p><strong>Requirement:</strong> Not Empty</p></li>
+<li><p><strong>Example:</strong> “6fe4202b1b9c4565b439980138524112”</p></li>
+</ul>
+</section>
+<section id="generated-sequence">
+<h3>Generated Sequence<a class="headerlink" href="#generated-sequence" title="Link to this heading"></a></h3>
+<p>A sequential numeric identifier unique to each document within a specific schema.
+Documents from different schemas may share the same numeric <code class="docutils literal notranslate"><span class="pre">Id</span></code>.
+For globally unique numeric IDs, use <code class="docutils literal notranslate"><span class="pre">GlobalSequence</span></code>.</p>
+<p>Id property details:</p>
+<ul class="simple">
+<li><p><strong>Data Type:</strong> Integer</p></li>
+<li><p><strong>Size:</strong> 32-bit</p></li>
+<li><p><strong>Requirement:</strong> Not Null</p></li>
+<li><p><strong>Example:</strong> 1</p></li>
+</ul>
+</section>
+<section id="generated-global-sequence">
+<h3>Generated Global Sequence<a class="headerlink" href="#generated-global-sequence" title="Link to this heading"></a></h3>
+<p>A globally unique numeric identifier across all schemas and documents in the project.</p>
+<p>Id property details:</p>
+<ul class="simple">
+<li><p><strong>Data Type:</strong> Integer</p></li>
+<li><p><strong>Size:</strong> 32-bit</p></li>
+<li><p><strong>Requirement:</strong> Not Null</p></li>
+<li><p><strong>Example:</strong> 69</p></li>
+</ul>
+</section>
+</section>
+<section id="non-generated-id">
+<h2>Non-Generated Id<a class="headerlink" href="#non-generated-id" title="Link to this heading"></a></h2>
+<p>Schemas may also use a manually defined <code class="docutils literal notranslate"><span class="pre">Id</span></code> property by selecting the <code class="docutils literal notranslate"><span class="pre">None</span></code> option for the <code class="docutils literal notranslate"><span class="pre">Id</span> <span class="pre">Generator</span></code>.
+You can define the <code class="docutils literal notranslate"><span class="pre">Id</span></code> property using any supported data type listed above.</p>
+<p>All Id constraints will be automatically validated when saving the schema.
+You can change a schema’s <code class="docutils literal notranslate"><span class="pre">Id</span> <span class="pre">Generator</span></code> to <code class="docutils literal notranslate"><span class="pre">None</span></code> at any time, but you cannot switch back to a generator once this change is made.</p>
+</section>
+<section id="id-placeholder">
+<h2>Id Placeholder<a class="headerlink" href="#id-placeholder" title="Link to this heading"></a></h2>
+<p>If you want to assign a temporary value to the ID of a document being created—for example, for internal reference—you can use a placeholder string such as <code class="docutils literal notranslate"><span class="pre">_ID_XXX_ANY_UNIQUE_TEXT_HERE_XXX</span></code>.
+This placeholder will be automatically replaced with the actual generated ID during saving or importing.</p>
+<p>Before save:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_ID_ITEM_123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;Name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My New Item&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;ItemReference&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_ID_ITEM_123&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// self-reference</span>
+<span class="w">    </span><span class="nt">&quot;DisplayName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My New Item&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After save:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;Name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My New Item&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;ItemReference&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;DisplayName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My New Item&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../schemas/schema.html"><span class="doc">Schema</span></a></p></li>
+<li><p><a class="reference internal" href="property.html"><span class="doc">Property</span></a></p></li>
+<li><p><a class="reference internal" href="shared_property.html"><span class="doc">Shared Property</span></a></p></li>
+<li><p><a class="reference internal" href="../datatypes/list.html"><span class="doc">All Data Types</span></a></p></li>
+<li><p><a class="reference internal" href="../creating_schema.html"><span class="doc">Creating Document Type (Schema)</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../schemas/specification.html" class="btn btn-neutral float-left" title="Specification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="property.html" class="btn btn-neutral float-right" title="Schema Property" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

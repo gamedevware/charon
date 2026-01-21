@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Display Text Template &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Schema" href="schema.html" />
+    <link rel="prev" title="Integer Vector 2/3/4" href="../datatypes/sub/vector_int.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Working with Game Data</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../creating_schema.html">Creating Document Type (Schema)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../datatypes/list.html">Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datatypes/list.html#composite-types">Composite Types</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Display Text Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schema.html">Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="specification.html">Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../properties/id_property.html">Id Property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../properties/property.html">Schema Property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../properties/shared_property.html">Shared Property</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_uecpp_code_.html">Working with Source Code (UE C++)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/extensions/overview.html">UI Extensions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../creating_schema.html">Creating Document Type (Schema)</a></li>
+      <li class="breadcrumb-item active">Display Text Template</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/gamedata/schemas/display_text_template.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="display-text-template">
+<h1>Display Text Template<a class="headerlink" href="#display-text-template" title="Link to this heading"></a></h1>
+<p>When a document needs to be shown or referenced in the UI, a text representation is required. By default, Charon will use one of the following properties, in order of precedence: <code class="docutils literal notranslate"><span class="pre">DisplayName</span></code>, <code class="docutils literal notranslate"><span class="pre">Name</span></code>, <code class="docutils literal notranslate"><span class="pre">Title</span></code>, or <code class="docutils literal notranslate"><span class="pre">Id</span></code>. This fallback behavior can often result in uninformative or unclear document labels.</p>
+<p>For example, consider the following document:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;Description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bring 40 wolf skins&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;RepeatableQuest&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;Tasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="cm">/* ... */</span><span class="w"> </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>By default, this document would be displayed in UI lists simply as <code class="docutils literal notranslate"><span class="pre">&quot;1&quot;</span></code>. This can be improved by defining a custom <strong>Display Name Template</strong> for the <a class="reference internal" href="schema.html"><span class="doc">Schema</span></a>.</p>
+<p>For instance, the template:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Quest</span> <span class="pre">#{Id}:</span> <span class="pre">{Type}</span> <span class="pre">-</span> <span class="pre">{Description}</span></code></p>
+<p>would render the document’s label as:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Quest</span> <span class="pre">#1:</span> <span class="pre">RepeatableQuest</span> <span class="pre">-</span> <span class="pre">Bring</span> <span class="pre">40</span> <span class="pre">wolf</span> <span class="pre">skins</span></code></p>
+<section id="template-syntax">
+<h2>Template Syntax<a class="headerlink" href="#template-syntax" title="Link to this heading"></a></h2>
+<p>The display name template is a string that may include <em>replaceable expressions</em> enclosed in curly braces (<code class="docutils literal notranslate"><span class="pre">{}</span></code>). These expressions support a subset of C-style syntax and can reference any top-level or nested property of the document.</p>
+<section id="property-access">
+<h3>Property Access<a class="headerlink" href="#property-access" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Top-level properties can be accessed directly by name.</p></li>
+<li><p>Nested properties in embedded documents can be accessed using dot notation, e.g., <code class="docutils literal notranslate"><span class="pre">Item.Name</span></code>.</p></li>
+</ul>
+</section>
+<section id="supported-data-types">
+<h3>Supported Data Types<a class="headerlink" href="#supported-data-types" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>String</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;a</span> <span class="pre">string&quot;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Number</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code> or <code class="docutils literal notranslate"><span class="pre">3.14</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Boolean</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>null</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="unary-operators">
+<h3>Unary Operators<a class="headerlink" href="#unary-operators" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Operator</p></th>
+<th class="head"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Logical NOT</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">!CanWalk</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Bitwise Complement</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">~ResistanceTypes</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Negation</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-Damage</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="binary-operators">
+<h3>Binary Operators<a class="headerlink" href="#binary-operators" title="Link to this heading"></a></h3>
+<p>The following binary expressions are supported:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Operator</p></th>
+<th class="head"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Subtract</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TotalPrice</span> <span class="pre">-</span> <span class="pre">BasePrice</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BaseDamage</span> <span class="pre">+</span> <span class="pre">BonusDamage</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Concatenate</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;Quest</span> <span class="pre">#&quot;</span> <span class="pre">+</span> <span class="pre">Id</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Division</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CriticalChance</span> <span class="pre">/</span> <span class="pre">CurseDebuff</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Multiplication</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DropRate</span> <span class="pre">*</span> <span class="pre">100.0</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Power</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Damage</span> <span class="pre">**</span> <span class="pre">CriticalChance</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Modulo</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Slots</span> <span class="pre">%</span> <span class="pre">SlotPerPage</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Bitwise AND</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DamageFlags</span> <span class="pre">&amp;</span> <span class="pre">AdditionalDamageFlags</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Bitwise OR</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DamageTypes</span> <span class="pre">|</span> <span class="pre">ResistanceTypes</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Bitwise XOR</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ResistanceTypes</span> <span class="pre">^</span> <span class="pre">HealingTypes</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Bitwise Left Shift</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Flags</span> <span class="pre">&lt;&lt;</span> <span class="pre">1</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Bitwise Right Shift</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Flags</span> <span class="pre">&gt;&gt;</span> <span class="pre">1</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Logical AND (short-circuit)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CanWalk</span> <span class="pre">&amp;&amp;</span> <span class="pre">CanRun</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Logical OR (short-circuit)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">HasHead</span> <span class="pre">||</span> <span class="pre">CanBeHeadshoted</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Greater Than</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Count</span> <span class="pre">&gt;</span> <span class="pre">MaxCount</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Greater Than or Equal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Count</span> <span class="pre">&gt;=</span> <span class="pre">MaxCount</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Less Than</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">HP</span> <span class="pre">&lt;</span> <span class="pre">MaxHP</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Less Than or Equal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">HP</span> <span class="pre">&lt;=</span> <span class="pre">MaxHP</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Equal To</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Type</span> <span class="pre">==</span> <span class="pre">&quot;RepeatableQuest&quot;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Not Equal To</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Description</span> <span class="pre">!=</span> <span class="pre">null</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Coalesce</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Nickname</span> <span class="pre">??</span> <span class="pre">Name</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ternary-operator">
+<h3>Ternary Operator<a class="headerlink" href="#ternary-operator" title="Link to this heading"></a></h3>
+<p>Ternary expressions are supported using the standard syntax:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{Damage &gt;= 0 ? &quot;Total Damage&quot; : &quot;Total Heal&quot;}: {Damage}
+</pre></div>
+</div>
+<p>This will result in either “Total Damage: X” or “Total Heal: X”, depending on the value of <code class="docutils literal notranslate"><span class="pre">Damage</span></code>.</p>
+</section>
+<section id="operator-precedence">
+<h3>Operator Precedence<a class="headerlink" href="#operator-precedence" title="Link to this heading"></a></h3>
+<p>You can control expression evaluation order using parentheses. For example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Max Damage: {BaseDamage * (BaseCriticalChance + BonusCriticalChance)}
+</pre></div>
+</div>
+</section>
+<section id="boolean-coercion">
+<h3>Boolean Coercion<a class="headerlink" href="#boolean-coercion" title="Link to this heading"></a></h3>
+<p>Many types can be implicitly coerced to a Boolean value:</p>
+<ul class="simple">
+<li><p><strong>Numeric values</strong> are considered <code class="docutils literal notranslate"><span class="pre">true</span></code> if they are not equal to 0.</p></li>
+<li><p><strong>Documents</strong>, <strong>References</strong>, and <strong>Formulas</strong> are considered <code class="docutils literal notranslate"><span class="pre">true</span></code> if they are not null.</p></li>
+<li><p><strong>Collections</strong> (Document or Reference), <strong>Text</strong>, and <strong>Localized Text</strong> are <code class="docutils literal notranslate"><span class="pre">true</span></code> if they are not empty.</p></li>
+</ul>
+<p>Other types must be explicitly compared to a value to be evaluated as Boolean. These coercion rules apply to ternary expressions and unary logical negation (<cite>!</cite>).</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Has Items: {Items ? &quot;Yes&quot; : &quot;No&quot;}
+</pre></div>
+</div>
+</section>
+<section id="format-specifiers">
+<h3>Format Specifiers<a class="headerlink" href="#format-specifiers" title="Link to this heading"></a></h3>
+<p>Template expressions can include format specifiers, similar to C#’s formatting syntax. Add a colon and format string at the end of the substitution expression:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Resist Chance: {ResistChance * 100.0 :F2}
+</pre></div>
+</div>
+<p>This limits the precision to two decimal places.</p>
+<p><strong>Supported format specifiers:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code>: Fixed-point (decimal precision), e.g., <code class="docutils literal notranslate"><span class="pre">F2</span></code> for two decimal places.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">X</span></code> / <code class="docutils literal notranslate"><span class="pre">x</span></code>: Uppercase / lowercase hexadecimal (integers only), e.g., <code class="docutils literal notranslate"><span class="pre">X16</span></code> for hexadecimal string padded with zeroes to length of 16 characters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B</span></code>: Binary representation (integers only), e.g., <code class="docutils literal notranslate"><span class="pre">B32</span></code> for binary string padded with zeroes to length of 32 characters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">L</span></code>: String length limitation, e.g., <code class="docutils literal notranslate"><span class="pre">L12</span></code> for a string shorter than 12 characters nothing will change, but if it is longer than 12 it will be truncated to 12 and an ellipsis character <code class="docutils literal notranslate"><span class="pre">…</span></code> will be added.</p></li>
+</ul>
+</section>
+<section id="collection-accessors">
+<h3>Collection Accessors<a class="headerlink" href="#collection-accessors" title="Link to this heading"></a></h3>
+<p>Collections can be accessed by index using square brackets. If the index is out of bounds, the result is <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>First Item: {Items[0]}
+</pre></div>
+</div>
+<p>The number of items in a collection can be accessed using the <code class="docutils literal notranslate"><span class="pre">.Count</span></code> property:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Item Count: {Items.Count}
+</pre></div>
+</div>
+<p>To create a joined string from all items in a collection, use the <code class="docutils literal notranslate"><span class="pre">Join(separator:</span> <span class="pre">string)</span></code> method:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Items: {Items.Join(&quot; and &quot;)}
+</pre></div>
+</div>
+<p>This would produce output like:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Items:</span> <span class="pre">Sword</span> <span class="pre">and</span> <span class="pre">Shield</span> <span class="pre">and</span> <span class="pre">Armor</span></code></p>
+</section>
+<section id="string-manipulation-methods">
+<h3>String Manipulation Methods<a class="headerlink" href="#string-manipulation-methods" title="Link to this heading"></a></h3>
+<p>String expressions support several methods:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Trim()</span></code> — Removes leading and trailing whitespace.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Substring(start:</span> <span class="pre">int,</span> <span class="pre">count:</span> <span class="pre">int)</span></code> — Extracts a substring from a given position.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ToString()</span></code> — Converts any non-null value to its string representation.</p></li>
+</ul>
+<p>String concatenation is done using the <code class="docutils literal notranslate"><span class="pre">+</span></code> operator:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Damage: {Damage + &quot; [&quot; + DamageType + &quot;]&quot;}
+</pre></div>
+</div>
+<p>Result:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Damage:</span> <span class="pre">100</span> <span class="pre">[Fire]</span></code></p>
+</section>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="schema.html"><span class="doc">Schema</span></a></p></li>
+<li><p><a class="reference internal" href="../properties/property.html"><span class="doc">Property</span></a></p></li>
+<li><p><a class="reference internal" href="../properties/id_property.html"><span class="doc">Id Property</span></a></p></li>
+<li><p><a class="reference internal" href="../properties/shared_property.html"><span class="doc">Shared Property</span></a></p></li>
+<li><p><a class="reference internal" href="../datatypes/list.html"><span class="doc">All Data Types</span></a></p></li>
+<li><p><a class="reference internal" href="../creating_schema.html"><span class="doc">Creating Document Type (Schema)</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../datatypes/sub/vector_int.html" class="btn btn-neutral float-left" title="Integer Vector 2/3/4" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="schema.html" class="btn btn-neutral float-right" title="Schema" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

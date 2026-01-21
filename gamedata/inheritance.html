@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Implementing Inheritance &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Publishing Game Data" href="publication.html" />
+    <link rel="prev" title="Generating Source Code" href="generating_source_code.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Working with Game Data</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_uecpp_code_.html">Working with Source Code (UE C++)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/overview.html">UI Extensions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Implementing Inheritance</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/gamedata/inheritance.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="implementing-inheritance">
+<h1>Implementing Inheritance<a class="headerlink" href="#implementing-inheritance" title="Link to this heading"></a></h1>
+<p>Inheritance is a familiar tool for programmers when working with shared behavior or data. Unfortunately, it is not natively supported in Charon. However, you can achieve similar functionality using alternative approaches.</p>
+<p>For example, imagine you have three different document types: <code class="docutils literal notranslate"><span class="pre">Armor</span></code>, <code class="docutils literal notranslate"><span class="pre">Weapon</span></code>, and <code class="docutils literal notranslate"><span class="pre">Shield</span></code>. You want to include all these items in a <code class="docutils literal notranslate"><span class="pre">Shop</span></code> list of sellable goods. In traditional inheritance, you could create a base type to unify these documents and refer to it.</p>
+<figure class="align-default">
+<img alt="../_images/inheritance_start.png" src="../_images/inheritance_start.png" />
+</figure>
+<p>Without inheritance, here are three possible approaches:</p>
+<section id="composition">
+<h2>1. Composition<a class="headerlink" href="#composition" title="Link to this heading"></a></h2>
+<p>Extract the shared data from all sellable item types into a separate document type called <code class="docutils literal notranslate"><span class="pre">Item</span></code>. Each sellable document (e.g., <code class="docutils literal notranslate"><span class="pre">Armor</span></code>, <code class="docutils literal notranslate"><span class="pre">Weapon</span></code>, <code class="docutils literal notranslate"><span class="pre">Shield</span></code>) should include an embedded <code class="docutils literal notranslate"><span class="pre">Item</span></code> document containing store-relevant information. In the <code class="docutils literal notranslate"><span class="pre">Shop</span></code> list of sellable goods, you can store references to <code class="docutils literal notranslate"><span class="pre">Item</span></code> documents.</p>
+<figure class="align-default">
+<img alt="../_images/inheritance_composition.png" src="../_images/inheritance_composition.png" />
+</figure>
+</section>
+<section id="merging">
+<h2>2. Merging<a class="headerlink" href="#merging" title="Link to this heading"></a></h2>
+<p>Alternatively, combine the three document types (<code class="docutils literal notranslate"><span class="pre">Armor</span></code>, <code class="docutils literal notranslate"><span class="pre">Weapon</span></code>, and <code class="docutils literal notranslate"><span class="pre">Shield</span></code>) into a single document type called <code class="docutils literal notranslate"><span class="pre">Item</span></code>. This document will contain fields for all three original types, along with an additional <code class="docutils literal notranslate"><span class="pre">Type</span></code> field to specify the item’s category. The <code class="docutils literal notranslate"><span class="pre">Shop</span></code> list can then store references to these unified <code class="docutils literal notranslate"><span class="pre">Item</span></code> documents.</p>
+<figure class="align-default">
+<img alt="../_images/inheritance_merging.png" src="../_images/inheritance_merging.png" />
+</figure>
+</section>
+<section id="aggregation">
+<h2>3. Aggregation<a class="headerlink" href="#aggregation" title="Link to this heading"></a></h2>
+<p>As a less elegant alternative, introduce a <code class="docutils literal notranslate"><span class="pre">ShopItem</span></code> type with fields referencing all possible document types (<code class="docutils literal notranslate"><span class="pre">Armor</span></code>, <code class="docutils literal notranslate"><span class="pre">Weapon</span></code>, and <code class="docutils literal notranslate"><span class="pre">Shield</span></code>). In each <code class="docutils literal notranslate"><span class="pre">ShopItem</span></code> document, only one of these fields will be filled, depending on the item’s type. The <code class="docutils literal notranslate"><span class="pre">Shop</span></code> list can then reference <code class="docutils literal notranslate"><span class="pre">ShopItem</span></code> documents.</p>
+<figure class="align-default">
+<img alt="../_images/inheritance_aggregation.png" src="../_images/inheritance_aggregation.png" />
+</figure>
+</section>
+<section id="tagged-union-recommended">
+<h2>4. Tagged Union (Recommended)<a class="headerlink" href="#tagged-union-recommended" title="Link to this heading"></a></h2>
+<p>A more powerful and storage-efficient alternative to Aggregation is to use a Tagged Union Schema (also known as a Discriminated Union, Sum Type, or <code class="docutils literal notranslate"><span class="pre">$oneOf</span></code>). Tagged Unions allow documents of different shapes to coexist within the same collection or be embedded inside other documents, making them a natural fit when multiple heterogeneous document types must be handled together.</p>
+<p>Union Schemas have several important distinctions from Aggregation:</p>
+<ul class="simple">
+<li><p>They provide first-class support in the editor UI, making them more convenient to create and maintain than other inheritance alternatives.</p></li>
+<li><p>Unassigned properties within a Tagged Union document are not stored and therefore take no space.</p></li>
+</ul>
+<p>When used in this scenario, a <code class="docutils literal notranslate"><span class="pre">ShopItem</span></code> can be modeled as a Tagged Union that defines <code class="docutils literal notranslate"><span class="pre">Armor</span></code>, <code class="docutils literal notranslate"><span class="pre">Weapon</span></code>, and <code class="docutils literal notranslate"><span class="pre">Shield</span></code> as its possible variants.</p>
+<figure class="align-default">
+<img alt="../_images/inheritance_tagged_union.png" src="../_images/inheritance_tagged_union.png" />
+</figure>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Each of these methods has its trade-offs in terms of simplicity, flexibility, and performance. Choosing the right approach depends on your application’s requirements and the expected complexity of your data model.</p>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="creating_schema.html"><span class="doc">Creating Document Type (Schema)</span></a></p></li>
+<li><p><a class="reference internal" href="filling_documents.html"><span class="doc">Filling Documents</span></a></p></li>
+<li><p><a class="reference internal" href="publication.html"><span class="doc">Publishing Game Data</span></a></p></li>
+<li><p><a class="reference internal" href="generating_source_code.html"><span class="doc">Generating Source Code</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="generating_source_code.html" class="btn btn-neutral float-left" title="Generating Source Code" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="publication.html" class="btn btn-neutral float-right" title="Publishing Game Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
