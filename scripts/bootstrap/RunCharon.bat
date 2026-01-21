@@ -2,13 +2,7 @@
 setlocal
 
 :: Find current directory of the script
-
-SETLOCAL ENABLEDELAYEDEXPANSION
-set DRIVE_LETTER=%~d0
-FOR %%Z IN (A B C D E F G H I J K L M N O P Q R S T U V W X Y Z) DO SET DRIVE_LETTER=!DRIVE_LETTER:%%Z=%%Z!
-SETLOCAL DISABLEDELAYEDEXPANSION
-
-set "SCRIPT_DIR=%DRIVE_LETTER%%~p0"
+set "SCRIPT_DIR=%~dp0"
 
 :: Check if dotnet is installed
 :Check_Dotnet
@@ -33,9 +27,19 @@ if %MAJOR_VERSION% LSS 8 (
 :Install_Update_Charon_Tool
 
 pushd "%SCRIPT_DIR%"
-if NOT EXIST ".config\dotnet-tools.json" (
+IF NOT EXIST ".config\dotnet-tools.json" IF NOT EXIST "dotnet-tools.json" (
     dotnet new tool-manifest -o . >nul
 )
+
+:: Fix .NET SDK 10 behaviour with creating manifest in current directory
+if EXIST "dotnet-tools.json" (
+	:: Ensure the .config directory exists
+	if NOT EXIST ".config" mkdir .config
+	
+	:: Move the file to the expected location
+	move /Y "dotnet-tools.json" ".config\dotnet-tools.json" >nul
+)
+
 dotnet tool list --local | findstr /i /c:"dotnet-charon" >nul 2>&1
 if %ERRORLEVEL% EQU 0 (
     dotnet tool update dotnet-charon --local --tool-manifest .config/dotnet-tools.json >nul

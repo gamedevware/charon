@@ -5,7 +5,7 @@ export PATH=$PATH:/usr/local/bin:/usr/bin:/usr/sbin:/opt/homebrew/bin:/opt/local
 
 
 # Find the current directory of the script
-SCRIPT_DIR=$(cd "`dirname "$0"`" && pwd)
+SCRIPT_DIR=$(cd -- "$(dirname -- "$0")" && pwd)
 
 # Check if dotnet is installed
 check_dotnet() {
@@ -38,9 +38,19 @@ check_dotnet_version() {
 # Install/Update charon tool
 install_update_charon_tool() {
     pushd "$SCRIPT_DIR" > /dev/null || exit 1
-    if [ ! -f ".config/dotnet-tools.json" ]; then
+    if [ ! -f ".config/dotnet-tools.json" ] && [ ! -f "dotnet-tools.json" ]; then
         dotnet new tool-manifest -o . > /dev/null 2>&1;
     fi
+
+    # Fix .NET SDK 10 behaviour: Move manifest to .config if it was created in root
+    if [ -f "dotnet-tools.json" ]; then
+        # Ensure the .config directory exists (-p prevents error if it already exists)
+        mkdir -p .config
+        
+        # Move the file to the expected location
+        mv -f "dotnet-tools.json" ".config/dotnet-tools.json" > /dev/null 2>&1
+    fi
+
     if dotnet tool list --local | grep -q 'dotnet-charon'; then
         dotnet tool update dotnet-charon --local --tool-manifest .config/dotnet-tools.json > /dev/null 2>&1;
     else
