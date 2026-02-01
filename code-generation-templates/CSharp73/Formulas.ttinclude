@@ -145,18 +145,16 @@
 			/// <inheritdoc />
 			public override VariableValue Execute(FormulaExecutionContext context)
 			{
-				if (this.binaryOperationType == BinaryOperationType.Coalesce)
+				// ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
+				switch (this.binaryOperationType)
 				{
-					return this.ExecuteCoalesce(context);
-				}
-				else if (this.binaryOperationType == BinaryOperationType.AndAlso ||
-						this.binaryOperationType == BinaryOperationType.OrElse)
-				{
-					return this.ExecuteJunction(context);
-				}
-				else if (this.binaryOperationType == BinaryOperationType.Power)
-				{
-					return this.ExecutePower(context);
+					case BinaryOperationType.Coalesce:
+						return this.ExecuteCoalesce(context);
+					case BinaryOperationType.AndAlso:
+					case BinaryOperationType.OrElse:
+						return this.ExecuteJunction(context);
+					case BinaryOperationType.Power:
+						return this.ExecutePower(context);
 				}
 	
 				var leftValue = this.left.Execute(context);
@@ -229,7 +227,8 @@
 						{
 							return rightValue.ToBoolean() ? true : VariableValue.Null;
 						}
-					default: return this.ExecuteNullLifted(leftValue, rightValue);
+					default:
+						return this.ExecuteNullLifted(leftValue, rightValue);
 				}
 			}
 			private VariableValue ExecuteNullLifted(VariableValue leftValue, VariableValue rightValue)
@@ -313,8 +312,7 @@
 					return leftValue;
 				}
 	
-				var rightValue = this.right.Execute(context);
-				return leftValue.IsNull ? rightValue : leftValue;
+				return this.right.Execute(context);
 			}
 	
 			private static bool TryPromoteOperands(ref VariableValue leftValue, ref VariableValue rightValue, BinaryOperationType operationType)
@@ -2420,6 +2418,10 @@
 			{
 				throw new FormulaException($"Can't find member with name '{name}' on type '{targetType}'. List of available members: {string.Join(", ", availableNames)}." );
 			}
+			public static Exception CantFindStaticMember(ITypeDescription targetType, string name, IEnumerable<string> availableNames)
+			{
+				throw new FormulaException($"Can't find static member with name '{name}' on type '{targetType}'. List of available members: {string.Join(", ", availableNames)}." );
+			}
 			public static Exception UnableToResolveGlobalName(string name, IEnumerable<string> availableNames)
 			{
 				throw new FormulaException($"Unable to find parameter with name '{name}' or type starting from this name or member on global object. List of available parameters and global variables: {string.Join(", ", availableNames)}.");
@@ -3669,7 +3671,15 @@
 			/// <inheritdoc />
 			public override void BuildDebugView(StringBuilder stringBuilder)
 			{
+				if (!(this.expression is MemberExpression))
+				{
+					stringBuilder.Append("(");
+				}
 				this.expression.BuildDebugView(stringBuilder);
+				if (!(this.expression is MemberExpression))
+				{
+					stringBuilder.Append(")");
+				}
 				stringBuilder.Append("(");
 				foreach (var argument in this.arguments)
 				{
@@ -3711,7 +3721,7 @@
 			{
 				if (!targetTypeDescription.TryGetStaticMember(memberName, out var memberAccessor))
 				{
-					throw FormulaException.CantFindMember(targetTypeDescription, memberName, targetTypeDescription.StaticMethodNames);
+					throw FormulaException.CantFindStaticMember(targetTypeDescription, memberName, targetTypeDescription.StaticMethodNames);
 				}
 	
 				return this.ExecuteAnyMethod(VariableValue.Null, targetTypeDescription, memberAccessor, context);
@@ -4897,8 +4907,9 @@
 			{
 				var isNullPropagation = context.AutoNullPropagation || this.IsNullPropagationEnabled;
 	
+				var typeDescriptor = default(ITypeDescription);
 				if (this.TryGetTypeReferenceAndMemberName(out var typeReference, out var memberName) &&
-					context.TypeResolver.TryGetTypeDescription(typeReference, out var typeDescriptor) &&
+					context.TypeResolver.TryGetTypeDescription(typeReference, out typeDescriptor) &&
 					typeDescriptor.TryGetStaticMember(memberName, out var memberAccessor))
 				{
 					memberAccessor.TryInvoke(VariableValue.Null, callArguments: null, expectedType: null, typeArguments: null, out var result);
@@ -4944,6 +4955,10 @@
 				else if (this.TryGetGlobalMemberValue(out var globalMemberValue, context))
 				{
 					return globalMemberValue;
+				}
+				else if (typeDescriptor != null)
+				{
+					throw FormulaException.CantFindStaticMember(typeDescriptor, this.MemberName, typeDescriptor.StaticFieldNames.Concat(typeDescriptor.StaticPropertyNames).ToList());
 				}
 				else
 				{
@@ -5018,22 +5033,22 @@
 					return true;
 				}
 	
+				typeReference = null;
+	
 				if (this.useNullPropagation)
 				{
-					typeReference = null;
 					return false; // null propagation ?. is not type reference
 				}
 	
-				var baseTypeReference = default(FormulaTypeReference);
 				if (this.expression != null && !(this.expression is MemberExpression))
 				{
-					typeReference = null;
 					return false; // base expression is not member expression
 				}
 	
-				if (this.expression != null && ((MemberExpression)this.expression).TryGetTypeReference(out baseTypeReference, skipSelf: false) == false)
+				var baseTypeReference = default(FormulaTypeReference);
+				if (this.expression != null &&
+					!((MemberExpression)this.expression).TryGetTypeReference(out baseTypeReference, skipSelf: false))
 				{
-					typeReference = null;
 					return false; // base expression is not a type reference
 				}
 	
@@ -7546,7 +7561,7 @@
 				}
 				else if (value == null)
 				{
-					this.binaryValue = default;
+					this.binaryValue = 0;
 					this.refValue = null;
 					return;
 				}

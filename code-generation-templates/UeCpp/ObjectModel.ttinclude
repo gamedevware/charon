@@ -4101,7 +4101,10 @@
 				default: throw new ArgumentOutOfRangeException(nameof(sourceCodeLanguage), sourceCodeLanguage, null);
 			}
 		}
-
+		public string GetEditor()
+		{
+			return this.GetValues("editor").FirstOrDefault();
+		}
 		public Dictionary<string, string> GetPickListValues()
 		{
 			return this.pickListValues ?? EmptyPickListValues;

@@ -22,6 +22,7 @@
 #include "GameData/<#= context.TargetLanguage.DocumentClassName #>.h"
 #include "GameData/<#= context.TargetLanguage.DocumentReferenceClassName #>.h"
 #include "GameData/FLocalizedText.h"
+#include "GameData/UGameDataLibrary.h"
 #include "JsonObjectWrapper.h"
 
 <#+
@@ -72,7 +73,7 @@ public:
 	/**
 	  * De-referenced collection of documents for <#= propertyDef.Name #>. Should not be directly used.
 	  */
-	<#= propertyDef.Type #> <#= propertyDef.BackingField.Name #>Documents;
+	mutable <#= propertyDef.Type #> <#= propertyDef.BackingField.Name #>Documents;
 <#+
 			}
 			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.Reference)
@@ -81,7 +82,7 @@ public:
 	/**
 	  * De-referenced document of <#= propertyDef.Name #>. Should not be directly used.
 	  */
-	<#= propertyDef.Type #> <#= propertyDef.BackingField.Name #>Document;
+	mutable <#= propertyDef.Type #> <#= propertyDef.BackingField.Name #>Document;
 <#+
 			}
 		}
@@ -109,7 +110,7 @@ public:
 			{
 #>
 	UFUNCTION(BlueprintCallable)
-	<#= propertyDef.Type #> Get<#= propertyDef.Name #>();
+	<#= propertyDef.Type #> Get<#= propertyDef.Name #>() const;
 	/**
 	  * Raw value of <#= propertyDef.Name #>.
 	  */
@@ -127,7 +128,7 @@ public:
 			{
 #>
 	UFUNCTION(BlueprintCallable)
-	<#= propertyDef.Type #> Get<#= propertyDef.Name #>();
+	<#= propertyDef.Type #> Get<#= propertyDef.Name #>() const;
 	/**
 	  * Raw value of <#= propertyDef.Name #>.
 	  */
@@ -145,7 +146,7 @@ public:
 			{
 #>
 	UFUNCTION(BlueprintCallable)
-	<#= propertyDef.Type #> Get<#= propertyDef.Name #>();
+	<#= propertyDef.Type #> Get<#= propertyDef.Name #>() const;
 	/**
 	  * Raw value of <#= propertyDef.Name #>.
 	  */
@@ -180,6 +181,75 @@ public:
 #>
 	<#= propertyDef.Type #> <#= propertyDef.Name #>;
 <#+
+				switch(propertyDef.Specification.GetEditor())
+				{
+					case "vector4":
+					case "rectangle":
+#>
+	/**
+	  * <#= propertyDef.Description #>
+	  */
+	UFUNCTION(BlueprintCallable)
+	FVector4 GetParsed<#= propertyDef.Name #>() const;
+<#+
+						break;
+					case "vector3":
+#>
+	/**
+	  * <#= propertyDef.Description #>
+	  */
+	UFUNCTION(BlueprintCallable)
+	FVector GetParsed<#= propertyDef.Name #>() const;
+<#+
+						break;
+					case "vector2":
+#>
+	/**
+	  * <#= propertyDef.Description #>
+	  */
+	UFUNCTION(BlueprintCallable)
+	FVector2 GetParsed<#= propertyDef.Name #>() const;
+<#+
+						break;
+					case "int-vector2":
+#>
+	/**
+	  * <#= propertyDef.Description #>
+	  */
+	UFUNCTION(BlueprintCallable)
+	FIntVector2 GetParsed<#= propertyDef.Name #>() const;
+<#+
+						break;
+					case "int-vector3":
+#>
+	/**
+	  * <#= propertyDef.Description #>
+	  */
+	UFUNCTION(BlueprintCallable)
+	FIntVector GetParsed<#= propertyDef.Name #>() const;
+<#+
+						break;
+					case "int-rectangle":
+					case "int-vector4":
+#>
+	/**
+	  * <#= propertyDef.Description #>
+	  */
+	UFUNCTION(BlueprintCallable)
+	FIntVector4 GetParsed<#= propertyDef.Name #>() const;
+<#+
+						break;
+					case "tags":
+					case "tags-collection":
+#>
+	/**
+	  * <#= propertyDef.Description #>
+	  */
+	UFUNCTION(BlueprintCallable)
+	TArray<FString> GetParsed<#= propertyDef.Name #>() const;
+<#+
+						break;
+				}
 			}
 		}
 
@@ -261,16 +331,16 @@ const FString <#= typeDef #>::SchemaName = TEXT("<#= typeDef.Schema.Name #>");
 			if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.Reference)
 			{
 #>
-<#= propertyDef.Type #> <#= typeDef #>::Get<#= propertyDef.Name #>() {
-		<#= context.TargetLanguage.DocumentReferenceClassName #>::GetReferencedDocument(<#= propertyDef.RawName #>, <#= propertyDef.BackingField.Name #>Document);
-		return <#= propertyDef.BackingField.Name #>Document;
+<#= propertyDef.Type #> <#= typeDef #>::Get<#= propertyDef.Name #>() const {
+	<#= context.TargetLanguage.DocumentReferenceClassName #>::GetReferencedDocument(<#= propertyDef.RawName #>, <#= propertyDef.BackingField.Name #>Document);
+	return <#= propertyDef.BackingField.Name #>Document;
 }
 <#+
 			}
 			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.ReferenceCollection)
 			{
 #>
-<#= propertyDef.Type #> <#= typeDef #>::Get<#= propertyDef.Name #>() {
+<#= propertyDef.Type #> <#= typeDef #>::Get<#= propertyDef.Name #>() const {
 	<#= context.TargetLanguage.DocumentReferenceClassName #>::GetReferencedDocuments(<#= propertyDef.RawName #>, <#= propertyDef.BackingField.Name #>Documents);
 	return <#= propertyDef.BackingField.Name #>Documents;
 }
@@ -279,10 +349,75 @@ const FString <#= typeDef #>::SchemaName = TEXT("<#= typeDef.Schema.Name #>");
 			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.LocalizedText)
 			{
 #>
-<#= propertyDef.Type #> <#= typeDef #>::Get<#= propertyDef.Name #>() {
+<#= propertyDef.Type #> <#= typeDef #>::Get<#= propertyDef.Name #>() const {
 	return <#= propertyDef.RawName #>.GetCurrent();
 }
 <#+
+			}
+			else
+			{
+				switch(propertyDef.Specification.GetEditor())
+				{
+					case "vector4":
+					case "rectangle":
+#>
+FVector4 <#= typeDef #>::GetParsed<#= propertyDef.Name #>() const
+{
+	return UGameDataLibrary::ParseVector4(this-><#= propertyDef.Name #>);
+}
+<#+
+						break;
+					case "vector3":
+#>
+FVector <#= typeDef #>::GetParsed<#= propertyDef.Name #>() const
+{
+	return UGameDataLibrary::ParseVector3(this-><#= propertyDef.Name #>);
+}
+<#+
+						break;
+					case "vector2":
+#>
+FVector2 <#= typeDef #>::GetParsed<#= propertyDef.Name #>() const
+{
+	return UGameDataLibrary::ParseVector2(this-><#= propertyDef.Name #>);
+}
+<#+
+						break;
+					case "int-vector2":
+#>
+FIntVector2 <#= typeDef #>::GetParsed<#= propertyDef.Name #>() const
+{
+	return UGameDataLibrary::ParseIntVector2(this-><#= propertyDef.Name #>);
+}
+<#+
+						break;
+					case "int-vector3":
+#>
+FIntVector <#= typeDef #>::GetParsed<#= propertyDef.Name #>() const
+{
+	return UGameDataLibrary::ParseIntVector3(this-><#= propertyDef.Name #>);
+}
+<#+
+						break;
+					case "int-rectangle":
+					case "int-vector4":
+#>
+FIntVector4 <#= typeDef #>::GetParsed<#= propertyDef.Name #>() const
+{
+	return UGameDataLibrary::ParseIntVector4(this-><#= propertyDef.Name #>);
+}
+<#+
+						break;
+					case "tags":
+					case "tags-collection":
+#>
+TArray<FString> <#= typeDef #>::GetParsed<#= propertyDef.Name #>() const
+{
+	return UGameDataLibrary::ParseTags(this-><#= propertyDef.Name #>);
+}
+<#+
+						break;
+				}
 			}
 		}
 

@@ -12,15 +12,18 @@
 // ReSharper disable All
 
 #include "UObject/Class.h"
-#include "Dom/JsonObject.h"
+#include "UObject/StrongObjectPtr.h"
+#include "UObject/WeakFieldPtr.h"
+#include "UObject/UnrealType.h"
 #include "Templates/SharedPointer.h"
+#include "Dom/JsonObject.h"
 #include "JsonObjectWrapper.h"
-#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
-#include "GameData/Formulas/FFormulaExpression.h"
+#if defined(CHARON_FEATURE_FORMULAS_V2) && CHARON_FEATURE_FORMULAS_V2
+#include "GameData/Formulas/Expressions/FFormulaExpression.h"
 #include "GameData/Formulas/FExpressionBuildHelper.h"
 #include "GameData/Formulas/FFormulaTypeResolver.h"
 #include "GameData/Formulas/FFormulaExecutionContext.h"
-#include "GameData/Formulas/FFormulaVariableValue.h"
+#include "GameData/Formulas/FFormulaValue.h"
 #endif
 #if __has_include("<#= context.TargetLanguage.GameDataClassName #>FormulaTypes.h")
     #include "<#= context.TargetLanguage.GameDataClassName #>FormulaTypes.h"
@@ -39,9 +42,8 @@ class <#= context.CppLanguage.ApiName #> <#= formulaDef #> : public UObject
 	GENERATED_BODY()
 
 private:
-#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
-	TSharedPtr<TArray<TFieldPath<FProperty>>> InvokeParameters;
-	TSharedPtr<FFormulaExpression> Expression;
+#if defined(CHARON_FEATURE_FORMULAS_V2) && CHARON_FEATURE_FORMULAS_V2
+	TSharedPtr<FFormulaExpression> mutable Expression;
 #endif
 public:
 	/**
@@ -66,16 +68,13 @@ public:
 	  * Evaluates the formula and returns the resulting value.
 	  */
 	UFUNCTION()
-	<#= invokeReturnType #> Invoke(<#= invokeParameters #>);
+	<#= invokeReturnType #> Invoke(<#= invokeParameters #>) const;
 
-#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
+#if defined(CHARON_FEATURE_FORMULAS_V2) && CHARON_FEATURE_FORMULAS_V2
 	/**
 	  * Gets original formula expression for custom interpretation.
 	  */
-	TSharedPtr<FFormulaExpression> GetExpression();
-private:
-	TSharedPtr<TArray<TFieldPath<FProperty>>> GetOrCreateInvokeParameters();
-	FProperty* GetInvokeParameterAt(int32 Index);
+	TSharedPtr<FFormulaExpression> GetExpression() const;
 #endif
 };
 <#+
@@ -98,17 +97,11 @@ private:
 
 DEFINE_LOG_CATEGORY(Log<#= formulaDef #>);
 
-#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
-static TSharedPtr<FFormulaTypeResolver> __TypeResolver;
+#if defined(CHARON_FEATURE_FORMULAS_V2) && CHARON_FEATURE_FORMULAS_V2
 
-TSharedRef<FFormulaTypeResolver> GetOrCreateTypeResolver()
+static TSharedRef<FFormulaTypeResolver> GetOrCreateTypeResolver()
 {
-	if (__TypeResolver.IsValid())
-	{
-		return  __TypeResolver.ToSharedRef();
-	}
-
-	__TypeResolver = MakeShared<FFormulaTypeResolver>(<#= context.TargetLanguage.GameDataClassName #>::GetSharedFormulaTypeResolver(), TArray<UObject*> {
+	static TSharedRef<FFormulaTypeResolver> __TypeResolver = MakeShared<FFormulaTypeResolver>(<#= context.TargetLanguage.GameDataClassName #>::GetSharedFormulaTypeResolver(), TArray<UObject*> {
 <#+
 		foreach (var typeRef in formulaDef.GetReferenceTypes().Concat(formulaDef.GetReferencedExternalTypes()))
 		{
@@ -134,37 +127,53 @@ TSharedRef<FFormulaTypeResolver> GetOrCreateTypeResolver()
 #>
 	});
 
-	return __TypeResolver.ToSharedRef();
+	return __TypeResolver;
 }
 
-TSharedPtr<TArray<TFieldPath<FProperty>>> <#= formulaDef #>::GetOrCreateInvokeParameters()
+static UFunction* GetInvokeFunction()
 {
-	if (!InvokeParameters.IsValid())
+	static TWeakObjectPtr<UFunction> InvokeFunction = <#= formulaDef #>::StaticClass()->FindFunctionByName(GET_FUNCTION_NAME_CHECKED(<#= formulaDef #>, Invoke));
+
+	if (!InvokeFunction.IsValid())
 	{
-		UClass* __FormulaClass = <#= formulaDef #>::StaticClass();
-		UFunction* InvokeFunction = __FormulaClass->FindFunctionByName(GET_FUNCTION_NAME_CHECKED(<#= formulaDef #>, Invoke));
-		InvokeParameters = MakeShared<TArray<TFieldPath<FProperty>>>();
-		for (TFieldIterator<FProperty> It(InvokeFunction); It; ++It)
-		{
-			FProperty* Argument = *It;
-			InvokeParameters->Add(Argument);
-		}
-		InvokeParameters->Add(__FormulaClass->FindPropertyByName(GET_MEMBER_NAME_CHECKED(<#= formulaDef #>, Global)));
+		UE_LOG(Log<#= formulaDef #>, Error, TEXT("Failed to find required 'Invoke' function on '<#= formulaDef #>' type."));
 	}
-	return InvokeParameters;
+	return InvokeFunction.Get();
 }
-FProperty* <#= formulaDef #>::GetInvokeParameterAt(int32 Index)
+
+static FProperty* GetGlobalProperty()
 {
-	auto Parameters = GetOrCreateInvokeParameters();
-	Parameters->RangeCheck(Index);
-	auto ParameterFieldPath = Parameters->GetData()[Index];
+	static TWeakFieldPtr<FProperty> GlobalProperty = <#= formulaDef #>::StaticClass()->FindPropertyByName(GET_MEMBER_NAME_CHECKED(<#= formulaDef #>, Global));
 
-	check(ParameterFieldPath.Get() != nullptr);
-
-	return ParameterFieldPath.Get();
+	if (!GlobalProperty.IsValid())
+	{
+		UE_LOG(Log<#= formulaDef #>, Error, TEXT("Failed to find required 'Global' property on '<#= formulaDef #>' type."));
+	}
+	return GlobalProperty.Get();
 }
 
-<#= invokeReturnType #> <#= formulaDef #>::Invoke(<#= invokeParameters #>)
+static FProperty* GetInvokeParameterAt(int32 Index)
+{
+	static TArray<FProperty*> Parameters = []()
+	{
+		TArray<FProperty*> Params;
+		for (TFieldIterator<FProperty> It(GetInvokeFunction()); It; ++It)
+		{
+			FProperty* Prop = *It;
+
+			if (Prop->HasAnyPropertyFlags(CPF_Parm) && !Prop->HasAnyPropertyFlags(CPF_ReturnParm))
+			{
+				Params.Add(Prop);
+			}
+		}
+		return Params;
+	}();
+
+	check(Index >= 0 && Index < Parameters.Num());
+	return Parameters[Index];
+}
+
+<#= invokeReturnType #> <#= formulaDef #>::Invoke(<#= invokeParameters #>) const
 {
 <#+
 		for (var p = 0; p < formulaDef.ParameterNames.Length; p++)
@@ -174,39 +183,44 @@ FProperty* <#= formulaDef #>::GetInvokeParameterAt(int32 Index)
 <#+
 		}
 #>
-	const int32 RETURN_PARAMETER_INDEX = <#= formulaDef.ParameterNames.Length #>;
-	const int32 GLOBAL_PARAMETER_INDEX = <#= formulaDef.ParameterNames.Length + 1 #>;
 
-	TSharedPtr<FFormulaExpression> ParsedExpression = this->GetExpression();
+	auto __ParsedExpression = this->GetExpression();
+	auto __InvokeFunction = GetInvokeFunction();
+
 	<#= invokeReturnType #> __Result = {};
-	if (!ParsedExpression.IsValid())
+	if (!__ParsedExpression.IsValid() || !__InvokeFunction)
 	{
-		UE_LOG(Log<#= formulaDef #>, Error, TEXT("ExpressionTree is missing or invalid."));
+		UE_LOG(Log<#= formulaDef #>, Error, TEXT("The expression tree is missing or contains errors, or the function metadata is not available."));
 		return __Result; // default
 	}
 
-	const TMap<FString, FFormulaVariableValue> __Arguments = {
+	const TMap<FString, const TSharedRef<FFormulaValue>> __Arguments = {
 <#+
 		for (var p = 0; p < formulaDef.ParameterNames.Length; p++)
 		{
-#>		{ TEXT("<#= formulaDef.ParameterRawNames[p] #>"), FFormulaVariableValue(GetInvokeParameterAt(PARAMETER_<#= formulaDef.ParameterNames[p].ToUpperInvariant() #>_INDEX), &<#= formulaDef.ParameterNames[p] #> ) },
+#>		{ TEXT("<#= formulaDef.ParameterRawNames[p] #>"), MakeShared<FFormulaValue>(GetInvokeParameterAt(PARAMETER_<#= formulaDef.ParameterNames[p].ToUpperInvariant() #>_INDEX), &<#= formulaDef.ParameterNames[p] #> ) },
 <#+
 		}
 #>
 	};
 
-	const FFormulaVariableValue __Global = FFormulaVariableValue(GetInvokeParameterAt(GLOBAL_PARAMETER_INDEX), &this->Global);
-	const FFormulaExecutionContext __Context = FFormulaExecutionContext(this->AutoNullPropagation, __Arguments, __Global, GetOrCreateTypeResolver());
+	auto __Global = MakeShared<FFormulaValue>(GetGlobalProperty(), &this->Global);
+	auto __Context = FFormulaExecutionContext(this->AutoNullPropagation, __Arguments, __Global, GetOrCreateTypeResolver());
 
-	const FFormulaVariableValue __VariableResult = ParsedExpression->Invoke(__Context);
-	if (!__VariableResult.TryCopyCompleteValue(GetInvokeParameterAt(RETURN_PARAMETER_INDEX), &__Result))
+	auto __ReturnValueType = __InvokeFunction->GetReturnProperty();
+	auto __InvokeResult = __ParsedExpression->Execute(__Context, __ReturnValueType);
+	if (__InvokeResult.HasError())
 	{
-		UE_LOG(Log<#= formulaDef #>, Error, TEXT("Failed to convert Formula execution result %s to '<#= invokeReturnType #>' type."), *__VariableResult.ToString());
+		UE_LOG(Log<#= formulaDef #>, Error, TEXT("The formula [%s] execution failed. In this case, the default '<#= invokeReturnType #>' result will be returned. Error: %s"), *__ParsedExpression->ToString(), *__InvokeResult.GetError().Message);
+	}
+	else if (!__InvokeResult.GetValue()->TryCopyCompleteValue(__ReturnValueType, &__Result))
+	{
+		UE_LOG(Log<#= formulaDef #>, Error, TEXT("Failed to convert Formula execution result '%s' to '<#= invokeReturnType #>' type."), *__InvokeResult.GetValue()->ToString());
 	}
 	return __Result;
 }
 
-TSharedPtr<FFormulaExpression> <#= formulaDef #>::GetExpression()
+TSharedPtr<FFormulaExpression> <#= formulaDef #>::GetExpression() const
 {
 	if (!this->Expression.IsValid() && this->ExpressionTree.JsonObject.IsValid())
 	{
@@ -215,9 +229,9 @@ TSharedPtr<FFormulaExpression> <#= formulaDef #>::GetExpression()
 	return this->Expression;
 }
 #else
-<#= invokeReturnType #> <#= formulaDef #>::Invoke(<#= invokeParameters #>)
+<#= invokeReturnType #> <#= formulaDef #>::Invoke(<#= invokeParameters #>) const
 {
-	UE_LOG(Log<#= formulaDef #>, Error, TEXT("Formulas are not supported or disabled in this version of the plugin. Please update the Unreal Engine plugin to the latest version or enable the feature by adding the 'CHARON_FEATURE_FORMULAS=1' compilation constant."));
+	UE_LOG(Log<#= formulaDef #>, Error, TEXT("Formulas are not supported or disabled in this version of the plugin. Please update the Unreal Engine plugin to the latest version or enable the feature by adding the 'CHARON_FEATURE_FORMULAS_V2=1' compilation constant."));
 	return {}; // default
 }
 #endif

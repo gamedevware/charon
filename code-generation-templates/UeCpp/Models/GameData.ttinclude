@@ -23,7 +23,7 @@
 #include "GameData/FGameDataDocumentIdConvert.h"
 #include "GameData/Formatters/FGameDataReaderFactory.h"
 #include "GameData/Formatters/IGameDataReader.h"
-#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
+#if defined(CHARON_FEATURE_FORMULAS_V2) && CHARON_FEATURE_FORMULAS_V2
 #include "GameData/Formulas/FFormulaTypeResolver.h"
 #include "GameData/Formulas/UFormulaExpressionDefaultGlobal.h"
 #include "UObject/ReflectedTypeAccessors.h"
@@ -33,6 +33,7 @@
 #include "Serialization/JsonTypes.h"
 #include "Serialization/Archive.h"
 #include "Runtime/Launch/Resources/Version.h"
+#include "Misc/EngineVersionComparison.h"
 <#+
 		foreach (var typeDef in context.ObjectModel.Types)
 		{
@@ -125,8 +126,8 @@ public:
 		}
 #>
 
-#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
-	static TSharedPtr<FFormulaTypeResolver> GetSharedFormulaTypeResolver();
+#if defined(CHARON_FEATURE_FORMULAS_V2) && CHARON_FEATURE_FORMULAS_V2
+	static TSharedRef<FFormulaTypeResolver> GetSharedFormulaTypeResolver();
 #endif
 
 	virtual bool TryLoad(FArchive* const GameDataStream, EGameDataFormat Format) override;
@@ -206,17 +207,10 @@ private:
 
 DEFINE_LOG_CATEGORY(Log<#= context.TargetLanguage.GameDataClassName #>);
 
-#if defined(CHARON_FEATURE_FORMULAS) && CHARON_FEATURE_FORMULAS
-static TSharedPtr<FFormulaTypeResolver> SharedFormulaTypeResolver;
-
-TSharedPtr<FFormulaTypeResolver> <#= context.TargetLanguage.GameDataClassName #>::GetSharedFormulaTypeResolver()
+#if defined(CHARON_FEATURE_FORMULAS_V2) && CHARON_FEATURE_FORMULAS_V2
+TSharedRef<FFormulaTypeResolver> <#= context.TargetLanguage.GameDataClassName #>::GetSharedFormulaTypeResolver()
 {
-	if (SharedFormulaTypeResolver.IsValid())
-	{
-		return SharedFormulaTypeResolver;
-	}
-
-	SharedFormulaTypeResolver = MakeShared<FFormulaTypeResolver>(nullptr, TArray<UObject*> {
+	static TSharedRef<FFormulaTypeResolver> SharedFormulaTypeResolver = MakeShared<FFormulaTypeResolver>(nullptr, TArray<UObject*> {
 <#+
 		foreach (var typeDef in context.ObjectModel.Types)
 		{

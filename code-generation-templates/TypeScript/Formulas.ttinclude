@@ -2308,7 +2308,8 @@
 				case 'System.TimeSpan':
 					return DotNetTimeSpan;
 				case 'Date':
-				case 'System.Date':
+				case 'DateTime':
+				case 'System.DateTime':
 					return DotNetDate;
 				case 'Array':
 				case 'System.Array':
@@ -2357,9 +2358,9 @@
 				case 'Double':
 				case 'System.Double':
 					return DotNetFloat64;
+				case 'string':
 				case 'String':
 				case 'System.String':
-				case 'string':
 					return DotNetString;
 				case 'Enum':
 				case 'System.Enum':
