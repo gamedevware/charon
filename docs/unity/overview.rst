@@ -1,39 +1,70 @@
 Unity Plugin Overview
 =====================
 
-If you are building a data-heavy game in Unity, managing that data through Inspector overrides or massive ScriptableObjects can quickly become unmanageable. The `Charon Unity Plugin <https://assetstore.unity.com/packages/tools/visual-scripting/game-data-editor-charon-95117>`_ provides a professional-grade database workflow directly within your Unity project.
+You know the moment. Your project starts small — a few ScriptableObjects for enemy stats, a couple of prefabs with Inspector overrides.
+Clean, manageable, very Unity.
+
+Then six months in, you have 300 ``.asset`` files scattered across a dozen folders. A designer needs to change a damage multiplier and
+can't tell which one to open. A programmer renames a field and three of those assets silently break. A new team member spends an
+afternoon just trying to understand where the quest data actually lives.
+
+**ScriptableObjects were never designed to be a game database.** The `Charon Unity Plugin <https://assetstore.unity.com/packages/tools/visual-scripting/game-data-editor-charon-95117>`_ replaces that fragile patchwork with
+a structured, validated game database — embedded directly in your Unity project.
 
 ----------
 
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
   :width: 800
   :alt: Charon editor UI
-  
+
 ----------
 
-1. What is it?
+What is it?
+-----------
+
+The **Charon Unity Plugin** is a full data-driven design workflow embedded in the Unity Editor. It gives you:
+
+- A **structured game database** — one organized place for all your items, characters, quests, and abilities, with enforced relationships between them
+- A **visual editor** that opens from the Unity menu and runs in your browser — no external tools, no switching context
+- A **C# code generator** that turns your schema into type-safe classes, so your code reads ``hero.Stats.Hp`` instead of ``(float)data["stats"]["hp"]``
+
+Designers own the data. Programmers own the code. Charon keeps both in sync automatically.
+
+Which problem does it solve?
+-----------------------------
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
+
+   * - Pain Point
+     - How Charon Fixes It
+   * - **ScriptableObject sprawl**
+     - All entities live in one database file. No more hunting through hundreds of ``.asset`` files.
+   * - **Broken references**
+     - Deleting an item that a quest still references is a validation error, not a silent runtime bug.
+   * - **Boilerplate data code**
+     - Generated C# classes handle all loading, deserialization, and lookups — zero hand-written plumbing.
+   * - **Designer bottleneck**
+     - Designers edit data in a purpose-built UI without waiting on a programmer to change a value.
+   * - **Localization sprawl**
+     - All translatable text lives in one place, exportable to any translation pipeline in one click.
+
+Who is it for?
 --------------
 
-The **Charon Unity Plugin** is an integrated extension for the Unity Editor that bridges the gap between game design and implementation. It combines a **structured data editor** (accessible via an embedded or external browser) with a **native code generator**.
+**Unity Developers**
+  Stop writing data-loading boilerplate. Generated C# classes give you full IntelliSense,
+  compile-time safety, and zero magic strings. Plug into CI/CD with the CLI — validate data on every commit.
 
-Instead of manual data entry, it provides a centralized "Game Database" inside your project that behaves like a professional CMS but lives within your local assets.
+**Game & Narrative Designers**
+  A real editor, not a spreadsheet workaround. Define your own schemas, fill in data, and see
+  validation errors immediately — without touching a line of code or filing a ticket.
 
-2. Which problem does it solve?
--------------------------------
-
-Unity's built-in tools are often insufficient for complex game data. Charon solves the most common "data-driven" headaches:
-
-* **ScriptableObject Sprawl:** No more navigating hundreds of individual ``.asset`` files. All your items, NPCs, and quests are managed in one organized, searchable database.
-* **Lack of Type Safety:** Charon automatically generates the C# classes needed to load your data. This means you get **full IntelliSense support**—no more searching for strings or worrying about typos in your code.
-* **The "Designer-to-Developer" Gap:** It provides a user-friendly, non-technical UI for designers to balance numbers and write dialogue, while generating the clean, performant code that programmers expect.
-* **Localization Bottlenecks:** It includes built-in support for multi-language text, allowing you to swap languages or export translation keys without leaving the editor.
-
-3. For whom?
-------------
-
-* **Unity Developers:** Who want to stop writing boilerplate data-loading code and start using type-safe, optimized data structures.
-* **Game & Narrative Designers:** Who need a powerful, visual environment to model complex systems (like skill trees or quest branches) without touching a line of code.
-* **Production Teams:** Working on RPGs, CCGs, Strategy games, or any project where thousands of balanced data points are the core of the experience.
+**Production Teams**
+  Building an RPG, CCG, strategy game, or anything with hundreds of balanced entities?
+  Charon scales with you. It also supports modding out of the box — ship the editor alongside your game
+  so your community builds with the same tools you used.
 
 ----------
 
@@ -142,10 +173,19 @@ Core Concepts
 Data-Driven Design Principles
 -----------------------------
 
-Data-driven design emphasizes controlling gameplay through data rather than source code or blueprints. Game mechanics and processes are determined by structured data files.  
-For example, instead of embedding damage calculations directly in the game's source code, these are defined by data specifying weapon effects and the rules for their application.  
-Similarly, mission progression is not hardcoded; it is outlined in editable text files, making these aspects of game design highly flexible.  
-This approach not only facilitates quick adjustments during development but also simplifies adding modding support post-release.  
+The core idea is simple: **keep data out of code, and keep code out of data.**
+
+Instead of baking a weapon's damage range into a C# constant or a MonoBehaviour field, you define it in a schema and let designers
+own it. Instead of checking a quest's completion condition in a hardcoded switch statement, you describe it in structured data that
+the engine evaluates at runtime.
+
+This separation pays off at every stage:
+
+- **During production:** designers iterate without waiting for programmers; balance changes don't require rebuilds
+- **At launch:** every value is traceable, auditable, and diffable in version control
+- **Post-launch:** mods and live updates become data operations, not code deployments
+
+Further reading:
 
   - `Modify Everything! Data-Driven Dynamic Gameplay Effects in 'For Honor' (Video) <https://www.gdcvault.com/play/1024050/Modify-Everything-Data-Driven-Dynamic>`_
   - `Data-driven Design in Unreal (Article) <https://benui.ca/unreal/data-driven-design/>`_

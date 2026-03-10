@@ -1,7 +1,16 @@
 Unreal Engine Plugin Overview
 =============================
 
-For Unreal Engine developers, managing complex game data shouldn't mean fighting with restricted DataTables or bloated Blueprints. The `Charon Unreal Plugin <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ provides a robust, professional-grade database workflow designed to handle the scale and performance requirements of modern UE projects.
+DataTables work — until they don't.
+
+A flat CSV-backed table handles a list of weapons just fine. But the moment a Quest needs to reference
+three Items, each with variant stats that inherit from a base type, with display text in four languages —
+DataTables hit a wall. You end up with parallel tables held together by string row names, a Blueprint
+full of ``GetDataTableRow`` nodes, and struct definitions that go stale the moment a designer adds a field.
+
+**Unreal's data tools were built for simplicity, not for scale.** The `Charon Unreal Plugin <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ is built for exactly
+the kind of complex, relational, multi-language game data that real productions demand — with native
+C++ and Blueprint access and zero boilerplate.
 
 ----------
 
@@ -11,27 +20,55 @@ For Unreal Engine developers, managing complex game data shouldn't mean fighting
 
 ----------
 
-1. What is it?
+What is it?
+-----------
+
+The **Charon Unreal Plugin** is a relational game database embedded in the Unreal Editor. It gives you:
+
+- A **schema-driven data model** — define your ``Hero``, ``Item``, ``Quest`` types once, with typed fields, inheritance, and cross-references between them
+- A **visual editor** that opens directly from the Content Drawer — same workflow designers already know, no new tools to learn
+- **Automatic C++ and Blueprint generation** — every time your schema changes, your struct definitions and access code update themselves
+
+It is the data layer your game needs without the infrastructure you'd have to build to get there.
+
+Which problem does it solve?
+-----------------------------
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
+
+   * - Pain Point
+     - How Charon Fixes It
+   * - **DataTable limitations**
+     - Full relational model: nesting, inheritance, and cross-table references without string row-name fragility.
+   * - **Struct boilerplate**
+     - C++ structs and Blueprint nodes are generated automatically — change a field in the editor, not in code.
+   * - **Broken cross-references**
+     - Referencing a deleted row is a validation error, caught before the build, not at runtime.
+   * - **Designer bottleneck**
+     - A purpose-built UI lets designers tune values and write content without touching C++ or Blueprints.
+   * - **Localization complexity**
+     - ``Localizable Text`` fields export directly to your translation pipeline and re-import cleanly.
+   * - **Live-ops friction**
+     - Dynamic data loading via ``TryLoad`` supports hot updates and A/B testing without a full rebuild.
+
+Who is it for?
 --------------
 
-The **Charon Unreal Plugin** is a high-performance data management ecosystem integrated directly into the Unreal Editor. It replaces traditional, flat DataTables with a **relational game database** that supports complex nesting, cross-references, and multi-language text—all accessible via a native-feeling UI and backed by an automated C++ code generator.
+**Technical Directors & Programmers**
+  Generated C++ structs give you type-safe data access with full IDE support and no parsing logic.
+  The CLI and REST API plug directly into your CI/CD pipeline — validate data on every commit,
+  diff between versions, automate patch builds.
 
-2. Which problem does it solve?
--------------------------------
+**Game & Narrative Designers**
+  Build complex item economies, branching quest trees, and character progressions in a structured
+  editor — without writing a line of C++ or creating Blueprint spaghetti. Validation catches
+  broken references before they reach a programmer.
 
-While Unreal Engine is powerful, its default data tools often fall short in complex productions. Charon solves these specific pain points:
-
-* **DataTable Limitations:** Unlike standard DataTables, Charon handles deep hierarchies and complex relationships (like branching quest lines or intricate skill trees) without becoming a visual mess.
-* **Boilerplate Fatigue:** It automatically generates the **C++ and Blueprint** code required to access your data, eliminating the need to manually write struct definitions or parsing logic.
-* **Data Fragility:** With built-in validation checks, it catches errors (like broken links or out-of-range values) before they cause a crash in your build.
-* **Content "Locked" in the Engine:** It allows for easy import/export for spreadsheets and localization, making it easier to collaborate with external writers or translation agencies.
-
-3. For whom?
-------------
-
-* **Technical Directors & Programmers:** Who need type-safe, performant C++ access to game data and a reliable pipeline for CI/CD and modding support.
-* **Game & Narrative Designers:** Who require a structured environment to build massive game worlds, item economies, and dialogue systems without needing to know C++.
-* **Live-Ops Teams:** Who need the ability to dynamically load data updates or perform A/B testing without submitting a new build to storefronts.
+**Live-Ops Teams**
+  Load updated game data at runtime without a store submission. Roll back a bad balance change
+  in minutes. Ship localization updates as data patches, not engine builds.
 
 ----------
 
@@ -130,12 +167,24 @@ Core Concepts
 Data-Driven Design Principles
 -----------------------------
 
-Data-driven design emphasizes the control of gameplay through data, rather than source code/blueprints, with game mechanics and processes determined by structured data files.  
-For instance, rather than embedding damage calculations directly in the game's source code, these are defined by data specifying weapon effects and the rules for their application.  
-Or for example, mission progression is not hardcoded; it's outlined in editable text files, making these aspects of game design highly flexible.  
-This approach not only facilitates quick adjustments during development but also simplifies adding modding support post-release.  
+The rule is straightforward: **if a designer might want to change it, it belongs in data — not in C++ and not in a Blueprint.**
 
-  - `Data Driven Gameplay Elements (UE Documentation) <https://docs.unrealengine.com/5.3/en-US/data-driven-gameplay-elements-in-unreal-engine/>`_  
+Damage formulas, AI behavior thresholds, loot table weights, narrative branch conditions — when these live in code, every balance
+pass requires an engineer. When they live in structured data, a designer can iterate in an afternoon without touching the build.
+
+Unreal Engine has always encouraged this approach. DataTables, ``UDeveloperSettings``, and config files are all steps in that
+direction. Charon takes it further: a full relational model with validation, generated access code, and a UI that non-technical
+team members can use confidently.
+
+The payoff compounds over time:
+
+- **During production:** balance changes and content additions don't block engineering
+- **At ship:** every game value is version-controlled, auditable, and rollback-able
+- **Post-launch:** mods, live patches, and A/B tests are data operations, not code releases
+
+Further reading:
+
+  - `Data Driven Gameplay Elements (UE Documentation) <https://docs.unrealengine.com/5.3/en-US/data-driven-gameplay-elements-in-unreal-engine/>`_
   - `Modify Everything! Data-Driven Dynamic Gameplay Effects on 'For Honor' (Video) <https://www.gdcvault.com/play/1024050/Modify-Everything-Data-Driven-Dynamic>`_
   - `Data-driven Design in Unreal (Article) <https://benui.ca/unreal/data-driven-design/>`_
 
@@ -187,7 +236,7 @@ To edit a game data file in the Unreal Engine Editor, navigate to the **Content 
 This action opens a new window featuring a user interface for editing the game data. Remember to reimport and, if necessary, regenerate the source 
 code after completing your edits.  
 
-Refencing Game Data in Blueprints
+Referencing Game Data in Blueprints
 --------------------------------
 
 Similar to the DataTable's ``FDataTableRowHandle``, the Charon plugin introduces a specific type for referencing documents within Blueprints, 
