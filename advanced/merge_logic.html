@@ -1,0 +1,500 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document Merge Logic &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Internationalization (i18n)" href="internationalization.html" />
+    <link rel="prev" title="Importing and Exporting Data" href="import_export.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html#composite-types">Composite Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formula_expression_ast.html">Formula Expression AST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html#purpose-of-valuecontrol">Purpose of <code class="docutils literal notranslate"><span class="pre">ValueControl</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Document Merge Logic</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/advanced/merge_logic.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="document-merge-logic">
+<h1>Document Merge Logic<a class="headerlink" href="#document-merge-logic" title="Link to this heading"></a></h1>
+<p>When <code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">IMPORT</span></code> or <code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">APPLYPATCH</span></code> merges incoming (modified) data with the
+existing (original) data, it follows a set of deterministic rules per property type.
+Understanding these rules is essential for predicting the outcome of partial updates,
+patch application, and <code class="docutils literal notranslate"><span class="pre">SafeUpdate</span></code> operations.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#core-principle" id="id1">Core Principle</a></p></li>
+<li><p><a class="reference internal" href="#import-mode" id="id2">Import Mode</a></p></li>
+<li><p><a class="reference internal" href="#property-level-merge-rules" id="id3">Property-Level Merge Rules</a></p>
+<ul>
+<li><p><a class="reference internal" href="#scalar-properties" id="id4">Scalar Properties</a></p></li>
+<li><p><a class="reference internal" href="#localizedtext-properties" id="id5">LocalizedText Properties</a></p></li>
+<li><p><a class="reference internal" href="#inline-document-properties" id="id6">Inline Document Properties</a></p></li>
+<li><p><a class="reference internal" href="#document-collections" id="id7">Document Collections</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#the-partial-document-resurrection-caveat" id="id8">The Partial-Document Resurrection Caveat</a></p></li>
+<li><p><a class="reference internal" href="#merge-in-context" id="id9">Merge in Context</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id10">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="core-principle">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Core Principle</a><a class="headerlink" href="#core-principle" title="Link to this heading"></a></h2>
+<p>Every merge operation takes two document trees — <strong>original</strong> (left) and <strong>modified</strong>
+(right) — and produces a <strong>merged</strong> result. The fundamental rule is:</p>
+<ul class="simple">
+<li><p>If <strong>modified</strong> provides a value for a property → the merged result uses the modified value.</p></li>
+<li><p>If <strong>modified</strong> does not provide a value for a property → the merged result keeps the original value.</p></li>
+<li><p>Both absent → the property is omitted from the result.</p></li>
+</ul>
+<p>The rule applies recursively: properties that are themselves documents are merged
+property-by-property using the same rules, and collections are merged item-by-item
+using the document’s <code class="docutils literal notranslate"><span class="pre">Id</span></code> as the key.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>“Modified does not provide a value” means the property key is absent from the incoming
+document. A property present in modified with an explicit <code class="docutils literal notranslate"><span class="pre">null</span></code> value is treated as
+an intentional deletion, not a missing value.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="import-mode">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Import Mode</a><a class="headerlink" href="#import-mode" title="Link to this heading"></a></h2>
+<p>The merge behaviour is governed by the <strong>import mode</strong> passed to the operation. Two modes
+affect merge in particular:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">createAndUpdate</span></code> (default)</dt><dd><p>Modified values always win. Items absent from the modified collection are treated as
+deleted. This is the mode used by <code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">APPLYPATCH</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">safeUpdate</span></code></dt><dd><p>A restricted mode that prevents deletions. Items absent from the modified collection
+are left unchanged. The <code class="docutils literal notranslate"><span class="pre">Id</span></code> field of a document is never overwritten regardless of
+what modified supplies.</p>
+</dd>
+</dl>
+<p>Other modes (<code class="docutils literal notranslate"><span class="pre">create</span></code>, <code class="docutils literal notranslate"><span class="pre">update</span></code>, <code class="docutils literal notranslate"><span class="pre">replace</span></code>, <code class="docutils literal notranslate"><span class="pre">delete</span></code>) control <em>which</em> documents
+are eligible for merge, but once a document is selected, the merge rules below apply.</p>
+</section>
+<hr class="docutils" />
+<section id="property-level-merge-rules">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Property-Level Merge Rules</a><a class="headerlink" href="#property-level-merge-rules" title="Link to this heading"></a></h2>
+<section id="scalar-properties">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Scalar Properties</a><a class="headerlink" href="#scalar-properties" title="Link to this heading"></a></h3>
+<p>Applies to: <code class="docutils literal notranslate"><span class="pre">Text</span></code>, <code class="docutils literal notranslate"><span class="pre">Time</span></code>, <code class="docutils literal notranslate"><span class="pre">Date</span></code>, <code class="docutils literal notranslate"><span class="pre">Logical</span></code>, <code class="docutils literal notranslate"><span class="pre">Reference</span></code>, <code class="docutils literal notranslate"><span class="pre">Formula</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Number</span></code>, <code class="docutils literal notranslate"><span class="pre">Integer</span></code>, <code class="docutils literal notranslate"><span class="pre">PickList</span></code>, <code class="docutils literal notranslate"><span class="pre">MultiPickList</span></code>.</p>
+<p>If modified supplies a value, it overwrites the original unconditionally.
+If modified does not supply a value, the original is kept.</p>
+<p><strong>Special case — ``Id`` in SafeUpdate mode:</strong>
+The <code class="docutils literal notranslate"><span class="pre">Id</span></code> property is never overwritten when the import mode is <code class="docutils literal notranslate"><span class="pre">safeUpdate</span></code>.
+Even if modified provides an <code class="docutils literal notranslate"><span class="pre">Id</span></code> value, the original <code class="docutils literal notranslate"><span class="pre">Id</span></code> is preserved.
+This prevents accidental re-identification of documents when patching subsets of fields.</p>
+</section>
+<section id="localizedtext-properties">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">LocalizedText Properties</a><a class="headerlink" href="#localizedtext-properties" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">LocalizedText</span></code> values are merged <strong>per language</strong> rather than replaced wholesale:</p>
+<ol class="arabic simple">
+<li><p>For each language configured in Project Settings:</p>
+<ul class="simple">
+<li><p>If modified contains a value for that language → use the modified value.</p></li>
+<li><p>If modified does not contain that language key → keep the original value for
+that language.</p></li>
+</ul>
+</li>
+<li><p>If modified cannot be interpreted as a <code class="docutils literal notranslate"><span class="pre">LocalizedText</span></code> at all → the result is
+<code class="docutils literal notranslate"><span class="pre">null</span></code>.</p></li>
+<li><p>If original cannot be interpreted as a <code class="docutils literal notranslate"><span class="pre">LocalizedText</span></code> (e.g. property was empty
+before) → the modified value is used as-is with no per-language merging.</p></li>
+</ol>
+<p><strong>Translation notes</strong> are merged separately:</p>
+<ul class="simple">
+<li><p>The <strong>comment</strong> field: modified wins if it has a comment; otherwise the original comment
+is kept.</p></li>
+<li><p><strong>Stale translation flags</strong>: the union (OR) of both sets — a language that was stale in
+either original or modified remains stale. Stale flags are then automatically cleared for
+any language whose value was explicitly supplied by modified.</p></li>
+</ul>
+</section>
+<section id="inline-document-properties">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Inline Document Properties</a><a class="headerlink" href="#inline-document-properties" title="Link to this heading"></a></h3>
+<p>A property of type <code class="docutils literal notranslate"><span class="pre">Document</span></code> (an embedded sub-document) is merged recursively using
+the same rules applied to top-level documents.</p>
+<p>The four cases:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Original</p></th>
+<th class="head"><p>Modified</p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>absent / null</p></td>
+<td><p>document</p></td>
+<td><p>Merge(empty, modified) — see caveat</p></td>
+</tr>
+<tr class="row-odd"><td><p>document</p></td>
+<td><p>absent / null</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code> (deleted), <em>or</em> original in
+<code class="docutils literal notranslate"><span class="pre">safeUpdate</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>document</p></td>
+<td><p>document</p></td>
+<td><p>Recursive merge, property by property</p></td>
+</tr>
+<tr class="row-odd"><td><p>absent / null</p></td>
+<td><p>absent / null</p></td>
+<td><p>Property omitted from result</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="document-collections">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Document Collections</a><a class="headerlink" href="#document-collections" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">DocumentCollection</span></code> and <code class="docutils literal notranslate"><span class="pre">ReferenceCollection</span></code> properties are merged <strong>by document
+Id</strong>. The set of Ids to iterate depends on the mode:</p>
+<ul class="simple">
+<li><p><strong>createAndUpdate</strong> — iterates the <strong>modified</strong> Ids. Documents present in original but
+absent from modified are treated as deleted and dropped from the result.</p></li>
+<li><p><strong>safeUpdate</strong> — iterates the <strong>original</strong> Ids. Documents present in original but absent
+from modified are left unchanged. Items in modified not in original are ignored.</p></li>
+</ul>
+<p>Per-item resolution:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Original item</p></th>
+<th class="head"><p>Modified item</p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>exists</p></td>
+<td><p>absent (id not listed)</p></td>
+<td><p>Kept unchanged</p></td>
+</tr>
+<tr class="row-odd"><td><p>absent</p></td>
+<td><p>exists</p></td>
+<td><p>Created (added to result)</p></td>
+</tr>
+<tr class="row-even"><td><p>exists</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code> / not a doc</p></td>
+<td><p>Deleted (dropped), kept in <code class="docutils literal notranslate"><span class="pre">safeUpdate</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>exists</p></td>
+<td><p>exists</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DocumentCollection</span></code>: recursive merge
+<code class="docutils literal notranslate"><span class="pre">ReferenceCollection</span></code>: modified wins</p></td>
+</tr>
+</tbody>
+</table>
+<p>For <code class="docutils literal notranslate"><span class="pre">ReferenceCollection</span></code> items (which store a reference object, not full data), when
+both sides exist the modified reference object replaces the original without recursion —
+there are no meaningful sub-properties to merge.</p>
+<section id="null-optional-collections">
+<h4>Null optional collections<a class="headerlink" href="#null-optional-collections" title="Link to this heading"></a></h4>
+<p>If modified explicitly supplies <code class="docutils literal notranslate"><span class="pre">null</span></code> for an optional (non-required) collection property,
+the result is <code class="docutils literal notranslate"><span class="pre">null</span></code> regardless of what original contained. In <code class="docutils literal notranslate"><span class="pre">safeUpdate</span></code> mode, an
+empty modified collection means “no changes”, not “clear the collection”.</p>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="the-partial-document-resurrection-caveat">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">The Partial-Document Resurrection Caveat</a><a class="headerlink" href="#the-partial-document-resurrection-caveat" title="Link to this heading"></a></h2>
+<p>A subtle but important edge case arises when:</p>
+<ol class="arabic simple">
+<li><p>A document was <strong>deleted</strong> from the original (original is <code class="docutils literal notranslate"><span class="pre">null</span></code> or absent).</p></li>
+<li><p>A patch was created that <strong>adds or modifies</strong> that document (modified contains a
+partial document — only the properties that changed).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">APPLYPATCH</span></code> (<code class="docutils literal notranslate"><span class="pre">createAndUpdate</span></code> mode) applies the patch.</p></li>
+</ol>
+<p>In this case the merge calls <code class="docutils literal notranslate"><span class="pre">Merge(empty,</span> <span class="pre">partialModified,</span> <span class="pre">schema)</span></code>.
+Since <code class="docutils literal notranslate"><span class="pre">empty</span></code> provides no values, every property takes its value from <code class="docutils literal notranslate"><span class="pre">partialModified</span></code>
+where present — and is simply <strong>omitted</strong> where modified does not supply it.</p>
+<p>The resulting document exists in the data, but <strong>only contains the properties included in
+the patch</strong>. Required properties that were absent in the original document — and were not
+listed in the patch — will be missing from the result.</p>
+<p><strong>Example:</strong></p>
+<p>Original <code class="docutils literal notranslate"><span class="pre">Item/IronSword</span></code> was deleted. A patch contains:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Collections&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Item&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;IronSword&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IronSword&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Damage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the <code class="docutils literal notranslate"><span class="pre">Item</span></code> schema has a required <code class="docutils literal notranslate"><span class="pre">Name</span></code> field, the merged document will be:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IronSword&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Damage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Name</span></code> is absent. Subsequent validation (<code class="docutils literal notranslate"><span class="pre">checkRequirements</span></code>) will report this as an
+error.</p>
+<p><strong>How to avoid it:</strong></p>
+<ul>
+<li><p>When generating a patch for a <em>new</em> document, include <strong>all required fields</strong> in the
+patch, not only the diff.</p></li>
+<li><p>When applying a patch that resurrects deleted documents, pass stricter
+<code class="docutils literal notranslate"><span class="pre">--validationOptions</span></code> to catch missing required fields immediately:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>charon<span class="w"> </span>DATA<span class="w"> </span>APPLYPATCH<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span>target.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--input<span class="w"> </span>changes.patch.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--validationOptions<span class="w"> </span>repair<span class="w"> </span>checkRequirements<span class="w"> </span>checkReferences
+</pre></div>
+</div>
+</li>
+<li><p>If the resurrection is intentional but the document is expected to be incomplete,
+use <code class="docutils literal notranslate"><span class="pre">--validationOptions</span> <span class="pre">None</span></code> and fix the document via a follow-up import.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="merge-in-context">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Merge in Context</a><a class="headerlink" href="#merge-in-context" title="Link to this heading"></a></h2>
+<p>The merge logic is invoked by:</p>
+<ul class="simple">
+<li><p><strong>``DATA IMPORT``</strong> — for every document that matches both the import input and the
+target data (matched by <code class="docutils literal notranslate"><span class="pre">Id</span></code>). The mode is set by <code class="docutils literal notranslate"><span class="pre">--mode</span></code>.</p></li>
+<li><p><strong>``DATA APPLYPATCH``</strong> — always runs in <code class="docutils literal notranslate"><span class="pre">createAndUpdate</span></code> mode. The patch format
+uses <code class="docutils literal notranslate"><span class="pre">null</span></code> entries to express deletions, which interact directly with the merge rules
+described above.</p></li>
+<li><p><strong>``DATA UPDATE`` (single document)</strong> — runs in <code class="docutils literal notranslate"><span class="pre">createAndUpdate</span></code> mode on a single
+document.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="see-also">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="patch_diff.html"><span class="doc">Patch and Diff Workflow</span></a></p></li>
+<li><p><a class="reference internal" href="import_export.html"><span class="doc">Importing and Exporting Data</span></a></p></li>
+<li><p><a class="reference internal" href="validation.html"><span class="doc">Validation</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_import.html"><span class="doc">DATA IMPORT Command</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_apply_patch.html"><span class="doc">DATA APPLYPATCH Command</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="import_export.html" class="btn btn-neutral float-left" title="Importing and Exporting Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="internationalization.html" class="btn btn-neutral float-right" title="Internationalization (i18n)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

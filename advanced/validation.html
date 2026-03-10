@@ -1,0 +1,453 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Validation &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Backup and Restore" href="backup_restore.html" />
+    <link rel="prev" title="Internationalization (i18n)" href="internationalization.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html#composite-types">Composite Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formula_expression_ast.html">Formula Expression AST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html#purpose-of-valuecontrol">Purpose of <code class="docutils literal notranslate"><span class="pre">ValueControl</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Validation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/advanced/validation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="validation">
+<h1>Validation<a class="headerlink" href="#validation" title="Link to this heading"></a></h1>
+<p>Charon validates game data at several points in the editing lifecycle: on every document save,
+on import, and on demand via <code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">VALIDATE</span></code>. Understanding the flag system lets you control
+which checks run, how the system auto-repairs common problems, and how to tune validation for
+bulk workflows such as CI pipelines or large data migrations.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#when-validation-runs" id="id1">When Validation Runs</a></p></li>
+<li><p><a class="reference internal" href="#validation-flags" id="id2">Validation Flags</a></p>
+<ul>
+<li><p><a class="reference internal" href="#integrity-check-flags" id="id3">Integrity check flags</a></p></li>
+<li><p><a class="reference internal" href="#repair-flags" id="id4">Repair flags</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#validation-report-format" id="id5">Validation Report Format</a></p></li>
+<li><p><a class="reference internal" href="#exit-code-behaviour" id="id6">Exit Code Behaviour</a></p></li>
+<li><p><a class="reference internal" href="#common-recipes" id="id7">Common Recipes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#skip-all-checks-import-prototype-data" id="id8">Skip all checks (import prototype data)</a></p></li>
+<li><p><a class="reference internal" href="#auto-repair-full-check-on-import" id="id9">Auto-repair + full check on import</a></p></li>
+<li><p><a class="reference internal" href="#fix-union-conflicts-after-schema-refactor" id="id10">Fix union conflicts after schema refactor</a></p></li>
+<li><p><a class="reference internal" href="#check-for-untranslated-strings" id="id11">Check for untranslated strings</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#dry-run-vs-validate" id="id12">Dry Run vs Validate</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id13">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="when-validation-runs">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">When Validation Runs</a><a class="headerlink" href="#when-validation-runs" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Trigger</p></th>
+<th class="head"><p>Default preset</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Document save (UI / API CREATE or UPDATE)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DefaultForCreate</span></code> / <code class="docutils literal notranslate"><span class="pre">DefaultForUpdate</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">IMPORT</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DefaultForBulkChange</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">I18N</span> <span class="pre">IMPORT</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DefaultForBulkChange</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">VALIDATE</span></code> (on demand)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AllIntegrityChecks</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Server background check (web edition)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DefaultForBackgroundValidation</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>All defaults can be overridden with <code class="docutils literal notranslate"><span class="pre">--validationOptions</span></code> on the relevant command.</p>
+</section>
+<hr class="docutils" />
+<section id="validation-flags">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Validation Flags</a><a class="headerlink" href="#validation-flags" title="Link to this heading"></a></h2>
+<p>Flags are combined to form a validation profile. Pass multiple flags as space-separated values:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>charon<span class="w"> </span>DATA<span class="w"> </span>VALIDATE<span class="w"> </span>--dataBase<span class="w"> </span>gamedata.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--validationOptions<span class="w"> </span>checkRequirements<span class="w"> </span>checkReferences<span class="w"> </span>checkFormat
+</pre></div>
+</div>
+<section id="integrity-check-flags">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Integrity check flags</a><a class="headerlink" href="#integrity-check-flags" title="Link to this heading"></a></h3>
+<p>These flags <strong>report errors</strong> without modifying data.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">checkRequirements</span></code></dt><dd><p>Every property marked <strong>Not Null</strong> or <strong>Not Empty</strong> must have a value.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">checkFormat</span></code></dt><dd><p>Values must match the declared data type format — e.g. <code class="docutils literal notranslate"><span class="pre">Date</span></code> must be ISO 8601,
+<code class="docutils literal notranslate"><span class="pre">Number</span></code> must not be a string, <code class="docutils literal notranslate"><span class="pre">PickList</span></code> value must be in the defined list.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">checkUniqueness</span></code></dt><dd><p>Properties marked <strong>Unique</strong> or <strong>Unique In Collection</strong> must have no duplicates.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">checkReferences</span></code></dt><dd><p>Every <a class="reference internal" href="../gamedata/datatypes/all/reference.html"><span class="doc">Reference</span></a> and
+<a class="reference internal" href="../gamedata/datatypes/all/reference_collection.html"><span class="doc">ReferenceCollection</span></a> must point to a
+document that exists.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">checkSpecification</span></code></dt><dd><p>Values must satisfy constraints declared in the <a class="reference internal" href="../gamedata/schemas/specification.html"><span class="doc">Specification</span></a>
+field of the schema or property (used by extension editors and code-generation plugins).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">checkConstraints</span></code></dt><dd><p>Structural invariants: valid pick-list values, formula syntax, collection size limits
+defined via <code class="docutils literal notranslate"><span class="pre">Size</span></code> on the property.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">checkTranslation</span></code></dt><dd><p>Every <a class="reference internal" href="../gamedata/datatypes/all/localized_text.html"><span class="doc">LocalizedText</span></a> field must have a
+translation for each language declared in Project Settings. Detects untranslated strings
+before shipping.</p>
+</dd>
+</dl>
+</section>
+<section id="repair-flags">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Repair flags</a><a class="headerlink" href="#repair-flags" title="Link to this heading"></a></h3>
+<p>Repair flags <strong>automatically fix</strong> certain problem classes before integrity checks run.
+They modify the data in-place (or within the import transaction).</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">repair</span></code></dt><dd><p>Master switch — must be present alongside individual repair flags.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">deduplicateIds</span></code></dt><dd><p>If multiple documents in the same collection share the same <code class="docutils literal notranslate"><span class="pre">Id</span></code>, each duplicate gets
+a new auto-generated Id.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">repairRequiredWithDefaultValue</span></code></dt><dd><p>A missing required field is filled with the property’s <strong>Default Value</strong> if one is defined.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">eraseInvalidValues</span></code></dt><dd><p>A field whose value cannot be parsed as the declared data type is set to <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">resolveConflictingUnions</span></code></dt><dd><p>A <a class="reference internal" href="../gamedata/schemas/schema_types.html"><span class="doc">Union</span></a> document having a multiple variants is reset to the first available variant, documents having empty variants are nulled.</p>
+</dd>
+</dl>
+</section>
+</section>
+<hr class="docutils" />
+<section id="validation-report-format">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Validation Report Format</a><a class="headerlink" href="#validation-report-format" title="Link to this heading"></a></h2>
+<p>Both <code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">VALIDATE</span></code> and <code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">IMPORT</span></code> can emit a structured validation report:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;records&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;document-id&gt;&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;schemaId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;schema-id&gt;&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;schemaName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;schema-name&gt;&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;errors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;json-pointer to field&gt;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;human-readable description&gt;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;machine-readable error code&gt;&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Documents with no errors are omitted. An empty <code class="docutils literal notranslate"><span class="pre">records</span></code> array means the data is valid.</p>
+</section>
+<hr class="docutils" />
+<section id="exit-code-behaviour">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Exit Code Behaviour</a><a class="headerlink" href="#exit-code-behaviour" title="Link to this heading"></a></h2>
+<p>The exit code is <code class="docutils literal notranslate"><span class="pre">1</span></code> <strong>only when</strong> the report contains errors <strong>and</strong> <code class="docutils literal notranslate"><span class="pre">--output</span></code> is set
+to <code class="docutils literal notranslate"><span class="pre">err</span></code> (standard error). In all other cases the exit code is <code class="docutils literal notranslate"><span class="pre">0</span></code>, even if the report
+file contains errors.</p>
+<p>This design makes it easy to use validation in CI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fail the pipeline if there are any integrity errors</span>
+charon<span class="w"> </span>DATA<span class="w"> </span>VALIDATE<span class="w"> </span>--dataBase<span class="w"> </span>gamedata.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--validationOptions<span class="w"> </span>checkRequirements<span class="w"> </span>checkReferences<span class="w"> </span>checkFormat<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>err
+<span class="c1"># Exit code 1  →  CI step fails</span>
+
+<span class="c1"># Write report to a file without failing the step</span>
+charon<span class="w"> </span>DATA<span class="w"> </span>VALIDATE<span class="w"> </span>--dataBase<span class="w"> </span>gamedata.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>validation_report.json<span class="w"> </span>--outputFormat<span class="w"> </span>json
+<span class="c1"># Exit code 0  →  CI step passes; inspect the file separately</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="common-recipes">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Common Recipes</a><a class="headerlink" href="#common-recipes" title="Link to this heading"></a></h2>
+<section id="skip-all-checks-import-prototype-data">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Skip all checks (import prototype data)</a><a class="headerlink" href="#skip-all-checks-import-prototype-data" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>charon<span class="w"> </span>DATA<span class="w"> </span>IMPORT<span class="w"> </span>--dataBase<span class="w"> </span>gamedata.json<span class="w"> </span>--input<span class="w"> </span>prototype.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--validationOptions<span class="w"> </span>none
+</pre></div>
+</div>
+</section>
+<section id="auto-repair-full-check-on-import">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Auto-repair + full check on import</a><a class="headerlink" href="#auto-repair-full-check-on-import" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>charon<span class="w"> </span>DATA<span class="w"> </span>IMPORT<span class="w"> </span>--dataBase<span class="w"> </span>gamedata.json<span class="w"> </span>--input<span class="w"> </span>data.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--validationOptions<span class="w"> </span>repair<span class="w"> </span>deduplicateIds<span class="w"> </span>repairRequiredWithDefaultValue<span class="w"> </span><span class="se">\</span>
+<span class="w">                       </span>checkRequirements<span class="w"> </span>checkReferences<span class="w"> </span>checkFormat
+</pre></div>
+</div>
+</section>
+<section id="fix-union-conflicts-after-schema-refactor">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Fix union conflicts after schema refactor</a><a class="headerlink" href="#fix-union-conflicts-after-schema-refactor" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>charon<span class="w"> </span>DATA<span class="w"> </span>IMPORT<span class="w"> </span>--dataBase<span class="w"> </span>gamedata.json<span class="w"> </span>--input<span class="w"> </span>data.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--validationOptions<span class="w"> </span>repair<span class="w"> </span>resolveConflictingUnions
+</pre></div>
+</div>
+</section>
+<section id="check-for-untranslated-strings">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Check for untranslated strings</a><a class="headerlink" href="#check-for-untranslated-strings" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>charon<span class="w"> </span>DATA<span class="w"> </span>VALIDATE<span class="w"> </span>--dataBase<span class="w"> </span>gamedata.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--validationOptions<span class="w"> </span>checkTranslation<span class="w"> </span>--output<span class="w"> </span>out<span class="w"> </span>--outputFormat<span class="w"> </span>json
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="dry-run-vs-validate">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Dry Run vs Validate</a><a class="headerlink" href="#dry-run-vs-validate" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">VALIDATE</span></code> checks the <strong>current state</strong> of the database.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">IMPORT</span> <span class="pre">--dryRun</span></code> simulates the full import pipeline inside a transaction, then
+rolls back. Use this to preview the post-import state and catch referential errors before
+committing.</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="import_export.html"><span class="doc">Importing and Exporting Data</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_validate.html"><span class="doc">DATA VALIDATE Command</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_import.html"><span class="doc">DATA IMPORT Command</span></a></p></li>
+<li><p><a class="reference internal" href="../gamedata/schemas/schema_types.html"><span class="doc">Schema Types</span></a></p></li>
+<li><p><a class="reference internal" href="../gamedata/properties/property.html"><span class="doc">Property</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="internationalization.html" class="btn btn-neutral float-left" title="Internationalization (i18n)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="backup_restore.html" class="btn btn-neutral float-right" title="Backup and Restore" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

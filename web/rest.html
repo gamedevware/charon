@@ -1,0 +1,1042 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REST API &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Workspaces, Projects, and Branches" href="workspaces_and_projects.html" />
+    <link rel="prev" title="Roles and Permissions" href="permission_and_roles.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html#composite-types">Composite Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/formula_expression_ast.html">Formula Expression AST</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_property_editor.html#purpose-of-valuecontrol">Purpose of <code class="docutils literal notranslate"><span class="pre">ValueControl</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_property_editor.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">REST API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/web/rest.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rest-api">
+<h1>REST API<a class="headerlink" href="#rest-api" title="Link to this heading"></a></h1>
+<p>The web edition of Charon exposes a REST API at <code class="docutils literal notranslate"><span class="pre">https://charon.live/api/v1</span></code>.
+It covers the full feature set of the application — data CRUD, import/export,
+branch management, code generation, validation, and more.</p>
+<p>An interactive API explorer (Swagger UI) is available at
+<a class="reference external" href="https://charon.live/api/index.html">https://charon.live/api/index.html</a>.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#authentication" id="id3">Authentication</a></p></li>
+<li><p><a class="reference internal" href="#request-and-response-formats" id="id4">Request and Response Formats</a></p></li>
+<li><p><a class="reference internal" href="#finding-your-ids" id="id5">Finding Your IDs</a></p></li>
+<li><p><a class="reference internal" href="#response-envelope" id="id6">Response Envelope</a></p></li>
+<li><p><a class="reference internal" href="#error-responses" id="id7">Error Responses</a></p>
+<ul>
+<li><p><a class="reference internal" href="#error-code-reference" id="id8">Error code reference</a></p></li>
+<li><p><a class="reference internal" href="#handling-errors-in-code" id="id9">Handling errors in code</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#transactions" id="id10">Transactions</a></p></li>
+<li><p><a class="reference internal" href="#endpoint-quick-reference" id="id11">Endpoint Quick Reference</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id12">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="authentication">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Authentication</a><a class="headerlink" href="#authentication" title="Link to this heading"></a></h2>
+<p>All endpoints require a bearer token in the <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header.
+Two credential types are accepted:</p>
+<dl>
+<dt><strong>API Key (recommended for CI/CD and scripts)</strong></dt><dd><p>Obtain an API key from <strong>User Profile → API Keys → Generate API Key</strong>.
+Use it directly as the bearer value:</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="err">Authorization: Bearer &lt;api-key&gt;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>See <a class="reference internal" href="cli_access_to_web_project.html"><span class="doc">CLI Access to charon.live</span></a> for step-by-step instructions on
+generating one.</p>
+</section>
+<hr class="docutils" />
+<section id="request-and-response-formats">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Request and Response Formats</a><a class="headerlink" href="#request-and-response-formats" title="Link to this heading"></a></h2>
+<p>All endpoints default to <code class="docutils literal notranslate"><span class="pre">application/json</span></code>. Use the <code class="docutils literal notranslate"><span class="pre">Accept</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> headers to switch between supported formats.</p>
+<p>Most data endpoints also support these formats for both request bodies and
+responses. Prefer MessagePack for large payloads in performance-sensitive
+pipelines.</p>
+</section>
+<hr class="docutils" />
+<section id="finding-your-ids">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Finding Your IDs</a><a class="headerlink" href="#finding-your-ids" title="Link to this heading"></a></h2>
+<p>Most data endpoints require <code class="docutils literal notranslate"><span class="pre">projectId</span></code> and/or <code class="docutils literal notranslate"><span class="pre">dataSourceId</span></code>.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">projectId</span></code></dt><dd><p>Visible in the browser URL when you open a project:
+<code class="docutils literal notranslate"><span class="pre">https://charon.live/view/project/&lt;projectId&gt;/</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dataSourceId</span></code></dt><dd><p>Each branch has its own data source ID. Retrieve it via
+<code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/project/{projectId}/</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;https://charon.live/api/v1/project/{projectId}/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.result.branches[]&#39;</span>
+</pre></div>
+</div>
+<p>The response includes each branch name and its <code class="docutils literal notranslate"><span class="pre">id</span></code>, which is the
+<code class="docutils literal notranslate"><span class="pre">dataSourceId</span></code> used in all <code class="docutils literal notranslate"><span class="pre">/datasource/</span></code> endpoints.</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="response-envelope">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Response Envelope</a><a class="headerlink" href="#response-envelope" title="Link to this heading"></a></h2>
+<p>Every response — success or failure — shares the same top-level JSON structure:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;errors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>One of fields are always present in the response body:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">result</span></code> — contains the operation’s output on success. The shape varies by
+endpoint (a single document, a list, a backup payload, etc.). On failure the
+field is absent.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">errors</span></code> — an array of error objects. Absent on success; contains
+one or more entries on failure.</p></li>
+</ul>
+<p>The intended semantics are a discriminated union — either <code class="docutils literal notranslate"><span class="pre">result</span></code> carries
+meaningful data <strong>or</strong> <code class="docutils literal notranslate"><span class="pre">errors</span></code> is non-empty.</p>
+<p><strong>Success example</strong> — <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/datasource/{id}/collection/Item/</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;document&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sword&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Iron Sword&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Damage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;schemaId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;592fc86c983a36266c0912a0&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/Item/Sword&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>No-content success</strong> — some write operations (create branch, commit
+transaction, etc.) return HTTP <code class="docutils literal notranslate"><span class="pre">204</span></code> with no body.</p>
+<p>The simplest way to detect success in code is to check the HTTP status code
+first. A <code class="docutils literal notranslate"><span class="pre">2xx</span></code> status means the operation succeeded; anything else means at
+least one entry will be present in <code class="docutils literal notranslate"><span class="pre">errors</span></code>.</p>
+</section>
+<hr class="docutils" />
+<section id="error-responses">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Error Responses</a><a class="headerlink" href="#error-responses" title="Link to this heading"></a></h2>
+<p>Every failed response uses the same JSON envelope regardless of the HTTP status
+code:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;errors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;resourceNotFound&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Document with id &#39;Sword&#39; not found in collection &#39;Item&#39;.&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Fields:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">result</span></code> — is absent on error.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">errors</span></code> — array of one or more error objects. Each object has:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">code</span></code> <em>(string)</em> — machine-readable error code from the <code class="docutils literal notranslate"><span class="pre">ErrorCode</span></code> enum (see below).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">message</span></code> <em>(string)</em> — human-readable description of the problem.</p></li>
+<li><p>Additional fields may be present for specific error types (e.g. <code class="docutils literal notranslate"><span class="pre">parameterName</span></code>, <code class="docutils literal notranslate"><span class="pre">path</span></code>).</p></li>
+</ul>
+</li>
+</ul>
+<p>HTTP status codes and their typical error codes:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>HTTP</p></th>
+<th class="head"><p>Typical <code class="docutils literal notranslate"><span class="pre">code</span></code> value</p></th>
+<th class="head"><p>When it occurs</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="4"><p>400</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">invalidRequestBody</span></code></p></td>
+<td><p>Malformed JSON body</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidParameterValue</span></code></p></td>
+<td><p>Query/route parameter has wrong type or value</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">missingParameterValue</span></code></p></td>
+<td><p>Required parameter absent</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidImportData</span></code></p></td>
+<td><p>Imported document fails schema validation</p></td>
+</tr>
+<tr class="row-even"><td><p>401</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">authenticationFailed</span></code></p></td>
+<td><p>Missing or invalid <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><p>403</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">authorizationFailed</span></code></p></td>
+<td><p>Authenticated but lacks required permission</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">resourceReadOnly</span></code></p></td>
+<td><p>Target resource is read-only</p></td>
+</tr>
+<tr class="row-odd"><td><p>404</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">resourceNotFound</span></code></p></td>
+<td><p>Project, branch, or document does not exist</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><p>409</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">duplicateTransaction</span></code></p></td>
+<td><p>Transaction ID already in use</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">abortedTransaction</span></code></p></td>
+<td><p>Transaction was rolled back by the server</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">completedTransaction</span></code></p></td>
+<td><p>Transaction already committed or rolled back</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">duplicateUniqueValue</span></code></p></td>
+<td><p>Document violates a unique-value constraint</p></td>
+</tr>
+<tr class="row-even"><td><p>429</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tooManyRequests</span></code></p></td>
+<td><p>Rate limit exceeded</p></td>
+</tr>
+<tr class="row-odd"><td><p>503</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">serviceUnavailable</span></code></p></td>
+<td><p>Server temporarily unavailable</p></td>
+</tr>
+<tr class="row-even"><td><p>5xx</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">genericError</span></code></p></td>
+<td><p>Unexpected server-side error</p></td>
+</tr>
+</tbody>
+</table>
+<section id="error-code-reference">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Error code reference</a><a class="headerlink" href="#error-code-reference" title="Link to this heading"></a></h3>
+<p>The full set of <code class="docutils literal notranslate"><span class="pre">code</span></code> values, grouped by category:</p>
+<p><strong>General</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">genericError</span></code></p></td>
+<td><p>Unexpected server error.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">resourceNotFound</span></code></p></td>
+<td><p>Requested resource does not exist.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">serviceUnavailable</span></code></p></td>
+<td><p>Server is temporarily unavailable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">tooManyRequests</span></code></p></td>
+<td><p>Too many concurrent requests from this
+client.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">operationNotSupported</span></code></p></td>
+<td><p>Operation is not supported by this resource.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">authenticationFailed</span></code></p></td>
+<td><p>Credentials are missing or invalid.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">authorizationFailed</span></code></p></td>
+<td><p>Permission denied for this operation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">resourceReadOnly</span></code></p></td>
+<td><p>Target resource is read-only.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Request validation</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidRequestBody</span></code></p></td>
+<td><p>Request body could not be parsed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidParameterValue</span></code></p></td>
+<td><p>Parameter has an unacceptable value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">missingParameterValue</span></code></p></td>
+<td><p>Required parameter is absent.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidParameterPattern</span></code></p></td>
+<td><p>String parameter does not match the required
+pattern.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">parameterBelowMinValue</span></code>
+<code class="docutils literal notranslate"><span class="pre">parameterBelowMinValueInclusive</span></code></p></td>
+<td><p>Numeric parameter is below the minimum
+(exclusive / inclusive).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">parameterAboveMaxValue</span></code>
+<code class="docutils literal notranslate"><span class="pre">parameterAboveMaxValueInclusive</span></code></p></td>
+<td><p>Numeric parameter exceeds the maximum
+(exclusive / inclusive).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">parameterBelowMinLength</span></code></p></td>
+<td><p>String parameter is shorter than minimum
+length.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">parameterAboveMaxLength</span></code></p></td>
+<td><p>String parameter exceeds maximum length.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">parameterBelowMinSize</span></code></p></td>
+<td><p>Collection parameter has fewer items than
+the minimum.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">parameterAboveMaxSize</span></code></p></td>
+<td><p>Collection parameter exceeds maximum item
+count.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">duplicateParameterItems</span></code></p></td>
+<td><p>Collection parameter contains duplicate
+values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidImportData</span></code></p></td>
+<td><p>Import payload does not match the expected
+schema.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>JSON Patch</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidJsonPatchParameter</span></code></p></td>
+<td><p>Patch document is malformed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">jsonPatchTestFailed</span></code></p></td>
+<td><p>A <code class="docutils literal notranslate"><span class="pre">test</span></code> operation in the patch failed.</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p><a href="#id1"><span class="problematic" id="id2">``</span></a>forbiddenJsonPatchOperation``| Patch attempts a prohibited operation.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Data source / transaction</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">referencedSchemaDeleted</span></code></p></td>
+<td><p>Operation references a schema that has been
+deleted.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">protectedDocument</span></code></p></td>
+<td><p>Document is protected and cannot be modified
+or deleted.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nonRootDocument</span></code></p></td>
+<td><p>Operation requires a root document but an
+embedded document was supplied.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">abortedTransaction</span></code></p></td>
+<td><p>Transaction was aborted by the server (e.g.
+timeout or conflict).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">completedTransaction</span></code></p></td>
+<td><p>Transaction has already been committed or
+rolled back.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">duplicateTransaction</span></code></p></td>
+<td><p>A transaction with this ID already exists.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">missingTransaction</span></code></p></td>
+<td><p>The referenced transaction ID does not exist.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">failedMetadataLoad</span></code></p></td>
+<td><p>Schema/metadata could not be loaded.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Document value validation</strong></p>
+<p>These codes appear inside import or create/update responses when individual
+field values fail validation. They are also returned by the <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/validity/</span></code>
+endpoint.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidTimeFormat</span></code></p></td>
+<td><p>Value does not match the time format.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidDateFormat</span></code></p></td>
+<td><p>Value does not match the date format.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidLocalizedTextFormat</span></code></p></td>
+<td><p>Localized text value is malformed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidTextFormat</span></code></p></td>
+<td><p>Text value is malformed.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidLogicalFormat</span></code></p></td>
+<td><p>Boolean value is malformed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidNumberFormat</span></code></p></td>
+<td><p>Decimal number value is malformed.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidIntegerFormat</span></code></p></td>
+<td><p>Integer value is malformed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidPickListFormat</span></code></p></td>
+<td><p>Pick list value does not match any defined
+option.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidMultiPickListFormat</span></code></p></td>
+<td><p>Multi-pick list value is malformed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidDocumentFormat</span></code></p></td>
+<td><p>Embedded document value is malformed.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidDocumentCollectionFormat</span></code></p></td>
+<td><p>Embedded document collection is malformed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidReferenceFormat</span></code></p></td>
+<td><p>Reference value is malformed.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidReferenceCollectionFormat</span></code></p></td>
+<td><p>Reference collection is malformed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidFormulaFormat</span></code></p></td>
+<td><p>Formula expression is malformed.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nullValue</span></code></p></td>
+<td><p>Required field is null.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">emptyValue</span></code></p></td>
+<td><p>Required field is empty.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">overflowedValue</span></code></p></td>
+<td><p>Numeric value exceeds the type’s range.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">exceededValueLength</span></code></p></td>
+<td><p>String value exceeds maximum length.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">exceededCollectionSize</span></code></p></td>
+<td><p>Collection exceeds maximum item count.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">brokenReference</span></code></p></td>
+<td><p>Reference points to a non-existent document.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">missingTranslation</span></code></p></td>
+<td><p>Localized text is missing a required
+translation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">duplicateUniqueValue</span></code></p></td>
+<td><p>Value violates a unique constraint.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidIdFormat</span></code></p></td>
+<td><p>Document <code class="docutils literal notranslate"><span class="pre">Id</span></code> value is malformed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidGeneratedIdFormat</span></code></p></td>
+<td><p>Auto-generated ID does not match the schema’s
+ID generator format.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">documentsInRootCollection</span></code></p></td>
+<td><p>Embedded documents were supplied as root
+documents.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">missingSettingsDocument</span></code></p></td>
+<td><p>A required settings document is absent.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">duplicateSettingsDocument</span></code></p></td>
+<td><p>More than one settings document exists.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">emptyUnion</span></code></p></td>
+<td><p>Tagged union has no selected option.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">conflictingUnionOptions</span></code></p></td>
+<td><p>Tagged union has more than one selected
+option.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Schema / metadata validation</strong></p>
+<p>These codes appear when a schema definition itself is invalid (e.g. during
+schema create or update operations).</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidNameFormat</span></code></p></td>
+<td><p>Schema or property name is not a valid C
+identifier.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reservedName</span></code></p></td>
+<td><p>Name conflicts with a reserved keyword.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidSize</span></code></p></td>
+<td><p>Size value is out of the allowed range.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidLanguage</span></code></p></td>
+<td><p>Language code is not a valid BCP-47 tag.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">recursiveReferenceType</span></code></p></td>
+<td><p>Schema has a circular reference that is not
+allowed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidIdDataType</span></code></p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">Id</span></code> property uses a data type that is
+not allowed for identifiers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidDataTypeChange</span></code></p></td>
+<td><p>Changing a property’s data type in a way that
+would corrupt existing data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidIdGeneratorChange</span></code></p></td>
+<td><p>Changing the ID generator in an incompatible
+way.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidRequirementForDataType</span></code></p></td>
+<td><p>Requirement level is incompatible with the
+property’s data type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nonOptionalTaggedUnionProperty</span></code></p></td>
+<td><p>A tagged-union property must be optional.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Schema specification validation</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidIconFormat</span></code></p></td>
+<td><p>Icon specification is malformed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidDisplayTextTemplate</span></code></p></td>
+<td><p>Display text template expression is invalid.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidPickName</span></code></p></td>
+<td><p>Pick list option name is invalid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">duplicatePickName</span></code></p></td>
+<td><p>Pick list has duplicate option names.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidPickValue</span></code></p></td>
+<td><p>Pick list option value is invalid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidParameterName</span></code></p></td>
+<td><p>Formula parameter name is invalid.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">duplicateParameterName</span></code></p></td>
+<td><p>Formula has duplicate parameter names.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidTypeName</span></code></p></td>
+<td><p>Type name in specification is invalid.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidTypeReference</span></code></p></td>
+<td><p>Type reference cannot be resolved.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">invalidPrecision</span></code></p></td>
+<td><p>Decimal precision value is out of range.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">invalidRowCount</span></code></p></td>
+<td><p>Row count specification is out of range.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="handling-errors-in-code">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Handling errors in code</a><a class="headerlink" href="#handling-errors-in-code" title="Link to this heading"></a></h3>
+<p>Check the HTTP status code first, make sure check <cite>errors</cite> field exists, when inspect <code class="docutils literal notranslate"><span class="pre">errors[0].code</span></code> for
+programmatic handling. The <code class="docutils literal notranslate"><span class="pre">message</span></code> field is suitable for logging but should
+not be parsed — it may change between releases.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">&quot;https://charon.live/api/v1/datasource/</span><span class="si">{dataSourceId}</span><span class="s2">/collection/Item/&quot;</span><span class="p">,</span>
+    <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;uniqueSchemaPropertyNameOrId&quot;</span><span class="p">:</span> <span class="s2">&quot;Id&quot;</span><span class="p">,</span> <span class="s2">&quot;uniqueSchemaPropertyValue&quot;</span><span class="p">:</span> <span class="s2">&quot;Sword&quot;</span><span class="p">},</span>
+    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">api_key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">},</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">err</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;errors&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="k">if</span> <span class="n">err</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;resourceNotFound&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Document not found&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">err</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;authenticationFailed&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Check your API key&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error </span><span class="si">{</span><span class="n">err</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">err</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="transactions">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Transactions</a><a class="headerlink" href="#transactions" title="Link to this heading"></a></h2>
+<p>Transactions group multiple write operations into an atomic unit. If any
+step fails you can roll the whole set back.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Begin transaction</span>
+<span class="nv">TX_ID</span><span class="o">=</span><span class="s2">&quot;tx-</span><span class="k">$(</span>date<span class="w"> </span>+%s<span class="k">)</span><span class="s2">-</span><span class="k">$(</span>openssl<span class="w"> </span>rand<span class="w"> </span>-hex<span class="w"> </span><span class="m">8</span><span class="k">)</span><span class="s2">&quot;</span>
+curl<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span><span class="s2">&quot;https://charon.live/api/v1/datasource/{dataSourceId}/transaction/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;{</span>
+<span class="s2">    \&quot;id\&quot;: \&quot;</span><span class="nv">$TX_ID</span><span class="s2">\&quot;,</span>
+<span class="s2">    \&quot;executionTimeout\&quot;: \&quot;00:05:00\&quot;,</span>
+<span class="s2">    \&quot;startTimeout\&quot;: \&quot;00:00:10\&quot;</span>
+<span class="s2">  }&quot;</span>
+
+<span class="c1"># 2. Use the transaction ID in subsequent data operations</span>
+curl<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span><span class="s2">&quot;https://charon.live/api/v1/datasource/{dataSourceId}/collection/Item/?transaction=</span><span class="nv">$TX_ID</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{ &quot;Id&quot;: &quot;TxSword&quot;, &quot;Damage&quot;: 30 }&#39;</span>
+
+<span class="c1"># 3a. Commit on success</span>
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;https://charon.live/api/v1/datasource/{dataSourceId}/transaction/</span><span class="nv">$TX_ID</span><span class="s2">/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span>
+
+<span class="c1"># 3b. Roll back on failure</span>
+curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span><span class="s2">&quot;https://charon.live/api/v1/datasource/{dataSourceId}/transaction/</span><span class="nv">$TX_ID</span><span class="s2">/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p><strong>Transaction ID rules:</strong> 16–256 characters, must be sufficiently random
+(e.g., UUID or timestamp + random hex). Reuse of a transaction ID is not
+allowed — generate a new one for each transaction.</p>
+<p>Commit and rollback both return <code class="docutils literal notranslate"><span class="pre">204</span> <span class="pre">No</span> <span class="pre">Content</span></code>.</p>
+</section>
+<hr class="docutils" />
+<section id="endpoint-quick-reference">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Endpoint Quick Reference</a><a class="headerlink" href="#endpoint-quick-reference" title="Link to this heading"></a></h2>
+<p>Base URL: <code class="docutils literal notranslate"><span class="pre">https://charon.live/api/v1</span></code></p>
+<p><strong>Branches</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Path</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p>/project/{projectId}/</p></td>
+<td><p>Get project and branch list</p></td>
+</tr>
+<tr class="row-odd"><td><p>PUT</p></td>
+<td><p>/project/{projectId}/branch/</p></td>
+<td><p>Create branch</p></td>
+</tr>
+<tr class="row-even"><td><p>PUT</p></td>
+<td><p>/project/{projectId}/branch/{name}/</p></td>
+<td><p>Push branch into another branch</p></td>
+</tr>
+<tr class="row-odd"><td><p>POST</p></td>
+<td><p>/project/{projectId}/branch/{name}/</p></td>
+<td><p>Rename or reorder branch</p></td>
+</tr>
+<tr class="row-even"><td><p>DELETE</p></td>
+<td><p>/project/{projectId}/branch/{name}/</p></td>
+<td><p>Delete branch</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Backup / Restore</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Path</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p>/datasource/{id}/</p></td>
+<td><p>Download full backup (with envelope)</p></td>
+</tr>
+<tr class="row-odd"><td><p>GET</p></td>
+<td><p>/datasource/{id}/raw/</p></td>
+<td><p>Download full backup (raw, no envelope)</p></td>
+</tr>
+<tr class="row-even"><td><p>PUT</p></td>
+<td><p>/datasource/{id}/</p></td>
+<td><p>Restore from backup (replaces all content)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Export / Import</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Path</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p>/datasource/{id}/collections/</p></td>
+<td><p>Export collections (with envelope)</p></td>
+</tr>
+<tr class="row-odd"><td><p>GET</p></td>
+<td><p>/datasource/{id}/collections/raw/</p></td>
+<td><p>Export collections (raw)</p></td>
+</tr>
+<tr class="row-even"><td><p>PUT</p></td>
+<td><p>/datasource/{id}/collections/</p></td>
+<td><p>Import into collections</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Document CRUD</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Path</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p>/datasource/{id}/collection/{schema}/</p></td>
+<td><p>Find one document</p></td>
+</tr>
+<tr class="row-odd"><td><p>PUT</p></td>
+<td><p>/datasource/{id}/collection/{schema}/</p></td>
+<td><p>Create document</p></td>
+</tr>
+<tr class="row-even"><td><p>POST</p></td>
+<td><p>/datasource/{id}/collection/{schema}/</p></td>
+<td><p>Update document</p></td>
+</tr>
+<tr class="row-odd"><td><p>DELETE</p></td>
+<td><p>/datasource/{id}/collection/{schema}/</p></td>
+<td><p>Delete document</p></td>
+</tr>
+<tr class="row-even"><td><p>POST</p></td>
+<td><p>/datasource/{id}/collection/{schema}/documents/</p></td>
+<td><p>List / filter documents</p></td>
+</tr>
+<tr class="row-odd"><td><p>PUT</p></td>
+<td><p>/datasource/{id}/collection/{schema}/documents/</p></td>
+<td><p>Bulk create/update/delete</p></td>
+</tr>
+<tr class="row-even"><td><p>POST</p></td>
+<td><p>/datasource/{id}/documents/query/</p></td>
+<td><p>Fetch documents by unique key</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Validation and Statistics</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Path</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>POST</p></td>
+<td><p>/datasource/{id}/validity/</p></td>
+<td><p>Validate entire data source</p></td>
+</tr>
+<tr class="row-odd"><td><p>GET</p></td>
+<td><p>/datasource/{id}/stats/</p></td>
+<td><p>Document counts and error statistics</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Source Code Generation</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Path</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>POST</p></td>
+<td><p>/datasource/{id}/source-code/</p></td>
+<td><p>Generate and download source code ZIP</p></td>
+</tr>
+<tr class="row-odd"><td><p>GET</p></td>
+<td><p>/datasource/{id}/source-code/
+templates/</p></td>
+<td><p>Download T4 generation templates</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Transactions</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Path</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PUT</p></td>
+<td><p>/datasource/{id}/transaction/</p></td>
+<td><p>Begin transaction</p></td>
+</tr>
+<tr class="row-odd"><td><p>POST</p></td>
+<td><p>/datasource/{id}/transaction/{txId}/</p></td>
+<td><p>Commit transaction</p></td>
+</tr>
+<tr class="row-even"><td><p>DELETE</p></td>
+<td><p>/datasource/{id}/transaction/{txId}/</p></td>
+<td><p>Roll back transaction</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="see-also">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="cli_access_to_web_project.html"><span class="doc">CLI Access to charon.live</span></a></p></li>
+<li><p><a class="reference internal" href="workspaces_and_projects.html"><span class="doc">Workspaces, Projects, and Branches</span></a></p></li>
+<li><p><a class="reference internal" href="permission_and_roles.html"><span class="doc">Roles and Permissions</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/backup_restore.html"><span class="doc">Backup and Restore</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/import_export.html"><span class="doc">Importing and Exporting Data</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/cicd.html"><span class="doc">CI/CD Integration</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/patch_diff.html"><span class="doc">Patch and Diff Workflow</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="permission_and_roles.html" class="btn btn-neutral float-left" title="Roles and Permissions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="workspaces_and_projects.html" class="btn btn-neutral float-right" title="Workspaces, Projects, and Branches" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

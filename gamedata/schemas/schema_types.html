@@ -1,0 +1,480 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schema Types &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Specification" href="specification.html" />
+    <link rel="prev" title="Schema" href="schema.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../server/overview.html">Server Edition</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Schema</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datatypes/list.html">Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datatypes/list.html#composite-types">Composite Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/formula_expression_ast.html">Formula Expression AST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/extensions/implementing_property_editor.html#purpose-of-valuecontrol">Purpose of <code class="docutils literal notranslate"><span class="pre">ValueControl</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/extensions/implementing_property_editor.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../creating_schema.html">Creating Document Type (Schema)</a></li>
+      <li class="breadcrumb-item active">Schema Types</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/gamedata/schemas/schema_types.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="schema-types">
+<h1>Schema Types<a class="headerlink" href="#schema-types" title="Link to this heading"></a></h1>
+<p>Every <a class="reference internal" href="schema.html"><span class="doc">Schema</span></a> has a <strong>Type</strong> field that controls how its documents are created, stored, and navigated within the data model. Choosing the right type is fundamental to a well-structured data model.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#normal" id="id1">Normal</a></p></li>
+<li><p><a class="reference internal" href="#component" id="id2">Component</a></p></li>
+<li><p><a class="reference internal" href="#settings" id="id3">Settings</a></p></li>
+<li><p><a class="reference internal" href="#union-tagged-union" id="id4">Union (Tagged Union)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-union-instead-of-the-other-inheritance-patterns" id="id5">Why Union instead of the other inheritance patterns</a></p></li>
+<li><p><a class="reference internal" href="#defining-a-union-schema" id="id6">Defining a Union schema</a></p></li>
+<li><p><a class="reference internal" href="#storage-format" id="id7">Storage format</a></p></li>
+<li><p><a class="reference internal" href="#generated-source-code" id="id8">Generated source code</a></p></li>
+<li><p><a class="reference internal" href="#malformed-union-values" id="id9">Malformed Union values</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#see-also" id="id10">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="normal">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Normal</a><a class="headerlink" href="#normal" title="Link to this heading"></a></h2>
+<p><strong>Normal</strong> is the default type. Documents of a Normal schema can be:</p>
+<ul class="simple">
+<li><p>Created as standalone root-level entries, visible in the left navigation menu.</p></li>
+<li><p>Embedded inside other documents as <a class="reference internal" href="../datatypes/all/document.html"><span class="doc">Document</span></a> or
+<a class="reference internal" href="../datatypes/all/document_collection.html"><span class="doc">DocumentCollection</span></a> property values.</p></li>
+<li><p>Referenced from other documents via <a class="reference internal" href="../datatypes/all/reference.html"><span class="doc">Reference</span></a> or
+<a class="reference internal" href="../datatypes/all/reference_collection.html"><span class="doc">ReferenceCollection</span></a> properties.</p></li>
+</ul>
+<p>Use <strong>Normal</strong> for any entity that has an independent identity and may need to be listed,
+searched, and referenced across the project — items, characters, quests, abilities, etc.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sword&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Iron Sword&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Damage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="component">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Component</a><a class="headerlink" href="#component" title="Link to this heading"></a></h2>
+<p><strong>Component</strong> schemas model sub-objects that are <em>always embedded</em> inside another document
+and never exist as standalone root-level entries.</p>
+<ul class="simple">
+<li><p>Do <strong>not</strong> appear in the left navigation menu.</p></li>
+<li><p>Can only be used as a value for a <code class="docutils literal notranslate"><span class="pre">Document</span></code> or <code class="docutils literal notranslate"><span class="pre">DocumentCollection</span></code> property.</p></li>
+<li><p>Useful for reusable sub-structures with no independent identity.</p></li>
+</ul>
+<p>Typical examples: a <code class="docutils literal notranslate"><span class="pre">Stat</span></code> block inside a <code class="docutils literal notranslate"><span class="pre">Character</span></code>, a <code class="docutils literal notranslate"><span class="pre">DropEntry</span></code> inside a <code class="docutils literal notranslate"><span class="pre">LootTable</span></code>,
+a <code class="docutils literal notranslate"><span class="pre">BonusEffect</span></code> inside a <code class="docutils literal notranslate"><span class="pre">Weapon</span></code>.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hero_Arbalest&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;BaseStats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;HP&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Speed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Damage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="settings">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Settings</a><a class="headerlink" href="#settings" title="Link to this heading"></a></h2>
+<p><strong>Settings</strong> is a singleton type. Exactly <strong>one</strong> document of this schema may exist in the
+root-level collection. It cannot be embedded inside other documents.</p>
+<ul class="simple">
+<li><p>Created automatically on first access and cannot be deleted.</p></li>
+<li><p>Appears in the navigation menu as a direct link (no list page).</p></li>
+<li><p>Suited for project-wide configuration: <code class="docutils literal notranslate"><span class="pre">GameSettings</span></code>, <code class="docutils literal notranslate"><span class="pre">BalanceConfig</span></code>, <code class="docutils literal notranslate"><span class="pre">GlobalRules</span></code>.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;settings&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;DifficultyMultiplier&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;MaxPlayersPerRoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="union-tagged-union">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Union (Tagged Union)</a><a class="headerlink" href="#union-tagged-union" title="Link to this heading"></a></h2>
+<p>A <strong>Union</strong> schema — also known as a Discriminated Union, Sum Type, or <code class="docutils literal notranslate"><span class="pre">$oneOf</span></code> — lets a
+single collection slot or property hold documents of <strong>different shapes</strong> in a type-safe way.</p>
+<p>A Union schema does not define properties itself. Instead it declares a set of <strong>variant
+schemas</strong> (any Normal or Component schema).</p>
+<section id="why-union-instead-of-the-other-inheritance-patterns">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Why Union instead of the other inheritance patterns</a><a class="headerlink" href="#why-union-instead-of-the-other-inheritance-patterns" title="Link to this heading"></a></h3>
+<p>See <a class="reference internal" href="../inheritance.html"><span class="doc">Implementing Inheritance</span></a> for a full comparison, but in short:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pattern</p></th>
+<th class="head"><p>Storage cost</p></th>
+<th class="head"><p>UI</p></th>
+<th class="head"><p>Schema refactoring</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Composition</p></td>
+<td><p>Extra <code class="docutils literal notranslate"><span class="pre">Item</span></code> schema level</p></td>
+<td><p>Standard form</p></td>
+<td><p>Move fields to Item</p></td>
+</tr>
+<tr class="row-odd"><td><p>Merging</p></td>
+<td><p>All fields on every doc</p></td>
+<td><p>All fields always visible</p></td>
+<td><p>Edit one big schema</p></td>
+</tr>
+<tr class="row-even"><td><p>Aggregation</p></td>
+<td><p>Nullable ref per variant</p></td>
+<td><p>Multiple nullable refs</p></td>
+<td><p>Add a new ref field</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Union</strong></p></td>
+<td><p>Only active variant’s fields</p></td>
+<td><p>Type picker, sparse form</p></td>
+<td><p>Add a new variant</p></td>
+</tr>
+</tbody>
+</table>
+<p>Key properties of Union:</p>
+<ul class="simple">
+<li><p><strong>Sparse storage</strong> — unset variant fields are not written to disk; only the active variant’s
+properties are stored.</p></li>
+<li><p><strong>First-class UI</strong> — when editing a Union field the editor shows a type-selector dropdown
+and only renders the form for the chosen variant.</p></li>
+</ul>
+</section>
+<section id="defining-a-union-schema">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Defining a Union schema</a><a class="headerlink" href="#defining-a-union-schema" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Create the variant schemas (Normal or Component) with their own properties.</p></li>
+<li><p>Create a new schema, set <strong>Type</strong> to <strong>Union</strong>, and list the variant schemas in <strong>Variants</strong>.</p></li>
+<li><p>Use the Union schema as the <code class="docutils literal notranslate"><span class="pre">ReferenceType</span></code> of a <code class="docutils literal notranslate"><span class="pre">Reference</span></code>, <code class="docutils literal notranslate"><span class="pre">ReferenceCollection</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Document</span></code>, or <code class="docutils literal notranslate"><span class="pre">DocumentCollection</span></code> property on another schema.</p></li>
+</ol>
+</section>
+<section id="storage-format">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Storage format</a><a class="headerlink" href="#storage-format" title="Link to this heading"></a></h3>
+<p>Unlike many serialisation libraries that use a <code class="docutils literal notranslate"><span class="pre">&quot;$type&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;&#64;class&quot;</span></code> string field
+to tag the variant, Charon uses <strong>property-key presence</strong> as the discriminator.
+Each union slot is serialised as a <strong>single-key wrapper object</strong> whose key is the
+variant schema name and whose value is the document body:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Weapon&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sword01&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Damage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;WeaponType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Melee&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<span class="p">{</span><span class="w"> </span><span class="nt">&quot;Armor&quot;</span><span class="p">:</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Plate01&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Defense&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="w">                        </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<span class="p">{</span><span class="w"> </span><span class="nt">&quot;Shield&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Shield01&quot;</span><span class="p">,</span><span class="nt">&quot;BlockChance&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.25</span><span class="w">                 </span><span class="p">},</span><span class="w"> </span><span class="cm">/* Weapon: null, &quot;Armor&quot;: null, are ommited */</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The variant is identified by whichever key is present in the wrapper — <code class="docutils literal notranslate"><span class="pre">&quot;Weapon&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;Armor&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Shield&quot;</span></code>, etc. There is no <code class="docutils literal notranslate"><span class="pre">&quot;$type&quot;</span></code> string anywhere in the stored data; the schema name <em>is</em> the discriminator.</p>
+<p>A full collection of union documents therefore looks like:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Collections&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;ShopItem&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Weapon&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sword01&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Damage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;WeaponType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Melee&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Armor&quot;</span><span class="p">:</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Plate01&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Defense&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="w">                        </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Shield&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Shield01&quot;</span><span class="p">,</span><span class="nt">&quot;BlockChance&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.25</span><span class="w">                 </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="generated-source-code">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Generated source code</a><a class="headerlink" href="#generated-source-code" title="Link to this heading"></a></h3>
+<p>Union schemas generate a container type in the target language. Each variant is a
+nullable field inside that container; exactly one field is non-null at runtime.</p>
+</section>
+<section id="malformed-union-values">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Malformed Union values</a><a class="headerlink" href="#malformed-union-values" title="Link to this heading"></a></h3>
+<p>A Union value is <strong>well-formed</strong> when the wrapper object contains exactly two keys:
+<code class="docutils literal notranslate"><span class="pre">Id</span></code> and exactly one variant key. Two malformed states can occur — usually as a result
+of a bulk import, a hand-crafted JSON payload, or a patch applied to a Union field without
+accounting for the wrapper format.</p>
+<p><strong>Empty union</strong> — the <code class="docutils literal notranslate"><span class="pre">Id</span></code> is present but no variant key is set:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;item_01&quot;</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Conflicting union</strong> — two or more variant keys are set simultaneously:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;item_01&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Weapon&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Damage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nt">&quot;Potion&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;HP&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Both states are detected by the <code class="docutils literal notranslate"><span class="pre">checkConstraints</span></code> validation option (enabled by default)
+and reported as separate error codes in the validation report:</p>
+<ul class="simple">
+<li><p>Empty union → <code class="docutils literal notranslate"><span class="pre">emptyUnion</span></code> error</p></li>
+<li><p>Conflicting union → <code class="docutils literal notranslate"><span class="pre">conflictingUnionOptions</span></code> error, listing the conflicting variant names</p></li>
+</ul>
+<section id="repairing-malformed-unions">
+<h4>Repairing malformed unions<a class="headerlink" href="#repairing-malformed-unions" title="Link to this heading"></a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">resolveConflictingUnions</span></code> repair option fixes both cases automatically. It can be
+used with <a class="reference internal" href="../../advanced/commands/data_validate.html"><span class="doc">DATA VALIDATE</span></a> or
+<a class="reference internal" href="../../advanced/commands/data_import.html"><span class="doc">DATA IMPORT</span></a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># repair in-place</span>
+charon<span class="w"> </span>DATA<span class="w"> </span>VALIDATE<span class="w"> </span>--dataBase<span class="w"> </span><span class="s2">&quot;gamedata.json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--validationOptions<span class="w"> </span>repair<span class="w"> </span>resolveConflictingUnions
+
+<span class="c1"># repair while importing</span>
+charon<span class="w"> </span>DATA<span class="w"> </span>IMPORT<span class="w"> </span>--dataBase<span class="w"> </span><span class="s2">&quot;gamedata.json&quot;</span><span class="w"> </span>--input<span class="w"> </span><span class="s2">&quot;./patch.json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--validationOptions<span class="w"> </span>repair<span class="w"> </span>resolveConflictingUnions
+</pre></div>
+</div>
+<p>Repair behaviour:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Malformed state</p></th>
+<th class="head"><p>What the repair does</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Empty union</p></td>
+<td><p>Erases the union value entirely (sets it to <code class="docutils literal notranslate"><span class="pre">null</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p>Conflicting union</p></td>
+<td><p>Keeps the <strong>last</strong> variant in schema-property order;
+all other variant values are discarded.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The “last variant in schema-property order” is determined by the order of variant
+schemas as listed in the Union schema definition, not by the order of keys in the
+stored JSON. If the outcome of the automatic repair is not acceptable, correct the
+source data manually before importing.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Union</span></code> type is the recommended approach when you need heterogeneous collections
+and want first-class editor support. Prefer it over Aggregation for new designs.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="schema.html"><span class="doc">Schema</span></a></p></li>
+<li><p><a class="reference internal" href="../inheritance.html"><span class="doc">Implementing Inheritance</span></a></p></li>
+<li><p><a class="reference internal" href="specification.html"><span class="doc">Specification</span></a></p></li>
+<li><p><a class="reference internal" href="../datatypes/all/document.html"><span class="doc">Document</span></a></p></li>
+<li><p><a class="reference internal" href="../datatypes/all/reference.html"><span class="doc">Reference</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="schema.html" class="btn btn-neutral float-left" title="Schema" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specification.html" class="btn btn-neutral float-right" title="Specification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
