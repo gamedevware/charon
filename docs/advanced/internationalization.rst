@@ -98,6 +98,50 @@ Best Practices
 - Use **XLIFF** for integration with professional translation software or localization platforms.
 - Validate the translated data with a **dry run** before importing changes into production data.
 
+Working with Translation Teams
+================================
+
+The standard human-translation workflow with Charon:
+
+1. Designers fill the **primary language** (e.g. English) for all content.
+2. Export XLIFF for each target language:
+
+   .. code-block:: bash
+
+      charon DATA I18N EXPORT \
+          --dataBase "gamedata.json" \
+          --sourceLanguage en --targetLanguage fr \
+          --output en_fr.xliff --outputFormat xliff
+
+3. Send the ``.xliff`` file to your localization vendor or translation management system
+   (Crowdin, Lokalise, POEditor, or any XLIFF-compatible tool).
+4. Receive the translated file back from the vendor.
+5. Import the completed translation:
+
+   .. code-block:: bash
+
+      charon DATA I18N IMPORT \
+          --dataBase "gamedata.json" \
+          --input en_fr_translated.xliff
+
+6. Repeat for each target language. CI/CD scripts can automate steps 2 and 5 for
+   continuous localization pipelines.
+
+Machine Translation
+===================
+
+The cloud and server editions optionally integrate a machine translation service (e.g.
+Google Translate) to pre-populate target language fields as a **first draft** for
+translators to review. This speeds up the initial pass for teams with large amounts of
+text but does not replace professional translation for final copy.
+
+Machine translation is configured per-server by an Administrator. When enabled, a
+**Translate** button appears on ``LocalizedText`` fields in the editor. Translated text
+is inserted as a draft — it must be reviewed and approved before the document is saved.
+
+For studios without machine translation access, or for bulk text, the export/import
+workflow described above is the recommended path for all target languages.
+
 Unsupported Formats
 ===================
 

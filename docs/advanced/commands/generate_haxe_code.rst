@@ -170,7 +170,7 @@ See also
 --------
 
 - :doc:`Generating Source Code <../generating_source_code>`
-- :doc:`Working with Haxe Code <../../gamedata/source_code/haxe/working_with_haxe_code>`
+- :doc:`Working with Haxe Code <../../gamedata/working_with_haxe_code>`
 - :doc:`GENERATE CSHARPCODE <generate_csharp_code>`
 - :doc:`GENERATE TYPESCRIPTCODE <generate_typescript_code>`
 - :doc:`GENERATE UECPPCODE <generate_uecpp_code>`

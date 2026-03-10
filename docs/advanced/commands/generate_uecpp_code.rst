@@ -163,7 +163,7 @@ See also
 --------
 
 - :doc:`Generating Source Code <../generating_source_code>`
-- :doc:`Working with Unreal Engine C++ Code <../../gamedata/source_code/uecpp/working_with_uecpp_code_>`
+- :doc:`Working with Unreal Engine C++ Code <../../gamedata/working_with_uecpp_code>`
 - :doc:`GENERATE CSHARPCODE <generate_csharp_code>`
 - :doc:`GENERATE TYPESCRIPTCODE <generate_typescript_code>`
 - :doc:`GENERATE HAXECODE <generate_haxe_code>`
