@@ -49,4 +49,10 @@ Example
   
   { "Id": "Sword" }
   "Sword" // just raw Id is also accepted
-  
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Document <document>`
+- :doc:`Reference Collection <reference_collection>`

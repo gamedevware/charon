@@ -150,3 +150,13 @@ To display list of available commands add `--help` or `/?`.
    :glob:
 
    commands/*
+
+See also
+--------
+
+- :doc:`CI/CD Integration <cicd>`
+- :doc:`URL-based Input/Output <commands/remote_input_output>`
+- :doc:`Universal Parameters <commands/universal_parameters>`
+- :doc:`Game Data Structure <game_data_structure>`
+- `getopt syntax (Wikipedia) <https://en.wikipedia.org/wiki/Getopts>`_
+- `dotnet tool documentation <https://learn.microsoft.com/en-us/dotnet/core/tools/global-tools>`_

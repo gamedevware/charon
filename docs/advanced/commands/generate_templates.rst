@@ -40,3 +40,12 @@ These templates can be used with Visual Studio, Rider, Visual Studio Code with p
      
      # Relative path
      --outputDirectory "./templates"
+
+See also
+--------
+
+- :doc:`Generating Source Code <../generating_source_code>`
+- :doc:`GENERATE CSHARPCODE <generate_csharp_code>`
+- :doc:`GENERATE TYPESCRIPTCODE <generate_typescript_code>`
+- :doc:`GENERATE UECPPCODE <generate_uecpp_code>`
+- `T4 Text Templates <https://learn.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates>`_

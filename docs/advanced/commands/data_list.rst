@@ -200,6 +200,7 @@ This command supports :doc:`universal parameters <universal_parameters>`.
 
 The exported data follows the general :doc:`game data structure <../game_data_structure>`, but omits `ToolsVersion`, `RevisionHash`, and `ChangeNumber`.
 
+
 .. code-block:: json
   
   {
@@ -222,3 +223,9 @@ The exported data follows the general :doc:`game data structure <../game_data_st
     }
   }
 
+See also
+--------
+
+- :doc:`DATA FIND <data_find>`
+- :doc:`DATA EXPORT <data_export>`
+- :doc:`Game Data Structure <../game_data_structure>`

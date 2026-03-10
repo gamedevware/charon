@@ -51,4 +51,10 @@ Example
   
   [{ "Id": "Sword" }, { "Id": "Gold" }]
   ["Sword", "Gold"] // just raw Ids are also accepted
-  
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Reference <reference>`
+- :doc:`Document Collection <document_collection>`

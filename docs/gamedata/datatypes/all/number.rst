@@ -40,3 +40,10 @@ Example
   3.14
   0.21
   -3.14
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Integer <integer>`
+- :doc:`Formula <formula>`

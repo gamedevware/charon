@@ -105,3 +105,11 @@ Outputs the differences between two game datas as a file that can be used later 
    If this is not suitable, consider :doc:`downloading <data_backup>` the data locally and running this command on local files instead.
  
 This command supports :doc:`universal parameters <universal_parameters>`.
+
+See also
+--------
+
+- :doc:`Patch and Diff Workflow <../patch_diff>`
+- :doc:`DATA APPLYPATCH <data_apply_patch>`
+- :doc:`DATA BACKUP <data_backup>`
+- :doc:`CI/CD Integration <../cicd>`

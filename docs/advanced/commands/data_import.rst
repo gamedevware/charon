@@ -105,12 +105,23 @@ Imports documents from file to a game data.
      # no checks
      --validationOptions none
 
-     # repairs
+     # all repairs
      --validationOptions repair
+
+     # deduplicate documents with the same Id
      --validationOptions repair deduplicateIds
+
+     # fill required fields that have a default value
      --validationOptions repair repairRequiredWithDefaultValue
+
+     # erase values whose type does not match the property's data type
      --validationOptions repair eraseInvalidValue
-     
+
+     # fix malformed Union values:
+     #   empty union (no variant set)      → erased to null
+     #   conflicting union (2+ variants)   → last variant in schema order is kept
+     --validationOptions repair resolveConflictingUnions
+
      # checks (default)
      --validationOptions checkTranslation
      --validationOptions checkRequirements
@@ -272,7 +283,17 @@ A list of documents is accepted if only one name in ``--schemas`` is specified:
 And single document is accepted too if only one name in ``--schemas`` is specified:
 
    .. code-block:: js
-   
+
      {
        // <Document>
      }
+
+See also
+--------
+
+- :doc:`Importing and Exporting Data <../import_export>`
+- :doc:`DATA EXPORT <data_export>`
+- :doc:`DATA VALIDATE <data_validate>`
+- :doc:`DATA I18N IMPORT <data_i18n_import>`
+- :doc:`Game Data Structure <../game_data_structure>`
+- :doc:`CI/CD Integration <../cicd>`

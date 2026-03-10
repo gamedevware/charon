@@ -56,4 +56,10 @@ Example
   0
   "Yes"
   "No"
-  
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Integer <integer>`
+- :doc:`Pick List <pick_list>`

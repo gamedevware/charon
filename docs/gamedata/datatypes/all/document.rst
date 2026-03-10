@@ -53,4 +53,10 @@ For example, in a **Dialog**, each node can be a ``Document`` with dialog :doc:`
           }
       ]
   }
- 
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Document Collection <document_collection>`
+- :doc:`Reference <reference>`

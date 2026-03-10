@@ -76,3 +76,9 @@ Example
   "Assets/Textures/MyTexture.png"     // Unity
   "/Game/Textures/MyTexture"          // Unreal Engine
   "Textures/MyTexture.png"            // Standalone
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Text <../all/text>`

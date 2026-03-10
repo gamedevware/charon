@@ -32,7 +32,7 @@ In addition to the standard configuration redefinition `mechanism <https://learn
 using environment variables, the following environment variables are also supported.
 
 CHARON_API_KEY
-   The :doc:`API key <../../online/cli_access_to_your_project>` which is used to access the remote server. This environment variable is usually used in 
+   The :doc:`API key <../../web/cli_access_to_web_project>` which is used to access the remote server. This environment variable is usually used in 
    conjunction with ``--dataBase``, which points to a remote server.
    
    .. code-block:: bash
@@ -42,3 +42,11 @@ CHARON_API_KEY
      
      # OSX or Linux
      export CHARON_API_KEY=87758CC0D7C745D0948F2A8AFE61BC81
+
+See also
+--------
+
+- :doc:`Command Line Reference <../command_line>`
+- :doc:`CLI Access to charon.live <../../web/cli_access_to_web_project>`
+- :doc:`URL-based Input/Output <remote_input_output>`
+- :doc:`Working with Logs <../logs>`

@@ -29,3 +29,10 @@ Example
   
    // it is better not to store dates before this mark for compatibility reasons
   "1970-01-01T00:00:00.000Z"
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Time <time>`
+- :doc:`Text <text>`

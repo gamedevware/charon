@@ -128,3 +128,11 @@ Outputs the deleted document in its state at the time of deletion.
     
     /* rest of properties of deleted document */
   }
+
+See also
+--------
+
+- :doc:`DATA IMPORT <data_import>`
+- :doc:`DATA CREATE <data_create>`
+- :doc:`DATA UPDATE <data_update>`
+- :doc:`DATA FIND <data_find>`

@@ -40,3 +40,10 @@ Example
 
   1 // internaly stored as integers
   "Apple" // string values also valid
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Pick List <pick_list>`
+- :doc:`Reference Collection <reference_collection>`

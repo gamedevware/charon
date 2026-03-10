@@ -80,3 +80,10 @@ Restores game data from a file created by :doc:`DATA BACKUP <data_backup>` comma
    Additional options for specified format.
 
 This command supports :doc:`universal parameters <universal_parameters>`.
+
+See also
+--------
+
+- :doc:`Backup and Restore <../backup_restore>`
+- :doc:`DATA BACKUP <data_backup>`
+- :doc:`CI/CD Integration <../cicd>`

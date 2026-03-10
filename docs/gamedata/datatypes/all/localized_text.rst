@@ -26,3 +26,10 @@ Example
 .. code-block:: js
   
   {"en-US": "Hello", "fr-FR": "Bonjour"}
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Text <text>`
+- :doc:`Internationalization <../../../advanced/internationalization>`

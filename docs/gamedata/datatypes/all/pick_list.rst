@@ -40,3 +40,10 @@ Example
 
   1 // on-disk stored as integers
   "Apple" // string values also valid
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Multi Pick List <multi_pick_list>`
+- :doc:`Integer <integer>`

@@ -83,3 +83,11 @@ Use Cases and Guidance
 - Use **Asset Path** or **Asset Path Collection** when referencing assets like textures, sounds, or prefabs by path.
 - Use **Formula** to define runtime-calculated values, like damage formulas or dynamic prices.
 - Use **Tags** when multiple documents share common descriptors (e.g., "fire", "enemy", "magic").
+
+See also
+--------
+
+- :doc:`Game Data Structure <../../advanced/game_data_structure>`
+- :doc:`Text <all/text>`
+- :doc:`Integer <all/integer>`
+- :doc:`Reference <all/reference>`

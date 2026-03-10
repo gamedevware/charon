@@ -155,3 +155,13 @@ This command does not delete previously generated files, and it is the responsib
 
 This command supports :doc:`universal parameters <universal_parameters>`.
 
+See also
+--------
+
+- :doc:`Generating Source Code <../generating_source_code>`
+- :doc:`Working with TypeScript Code <../../gamedata/source_code/type_script/working_with_type_script_code>`
+- :doc:`GENERATE CSHARPCODE <generate_csharp_code>`
+- :doc:`GENERATE UECPPCODE <generate_uecpp_code>`
+- :doc:`GENERATE HAXECODE <generate_haxe_code>`
+- :doc:`Publication <../publication>`
+

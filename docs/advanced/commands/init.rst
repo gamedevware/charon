@@ -32,3 +32,10 @@ Initializes an empty or missing file with initial data. Path to game data should
    
      # local file
      --fileName "c:\my app\gamedata.json"
+
+See also
+--------
+
+- :doc:`Command Line Reference <../command_line>`
+- :doc:`Game Data Structure <../game_data_structure>`
+- :doc:`SERVER START <serve>`

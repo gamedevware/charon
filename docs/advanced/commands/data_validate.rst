@@ -48,12 +48,23 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
      # no checks
      --validationOptions none
 
-     # repairs
-     --validationOptions repair     
+     # all repairs
+     --validationOptions repair
+
+     # deduplicate documents with the same Id
      --validationOptions repair deduplicateIds
+
+     # fill required fields that have a default value
      --validationOptions repair repairRequiredWithDefaultValue
+
+     # erase values whose type does not match the property's data type
      --validationOptions repair eraseInvalidValue
-     
+
+     # fix malformed Union values:
+     #   empty union (no variant set)      → erased to null
+     #   conflicting union (2+ variants)   → last variant in schema order is kept
+     --validationOptions repair resolveConflictingUnions
+
      # checks (default)
      --validationOptions checkTranslation
      --validationOptions checkRequirements
@@ -199,3 +210,12 @@ or `JSON schema <https://json-schema.org/>`_:
          }
        }
      }
+
+See also
+--------
+
+- :doc:`Validation <../validation>`
+- :doc:`DATA IMPORT <data_import>`
+- :doc:`DATA EXPORT <data_export>`
+- :doc:`CI/CD Integration <../cicd>`
+- `JSON Schema specification <https://json-schema.org/specification>`_

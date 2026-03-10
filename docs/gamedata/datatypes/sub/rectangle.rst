@@ -69,3 +69,10 @@ Parsing
   var boundsString = uiElement.Bounds; // -> "50.0 100.0 200.5 25.0"
   var parts = boundsString.split(" ").map(Std.parseFloat);
   var bounds = { x: parts[0], y: parts[1], width: parts[2], height: parts[3] };
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Rectangle Int <rectangle_int>`
+- :doc:`Vector <vector>`

@@ -21,3 +21,9 @@ Gets version of ``charon`` application.
 ---------------
  
 This command supports :doc:`universal parameters <universal_parameters>`.
+
+See also
+--------
+
+- :doc:`Command Line Reference <../command_line>`
+- :doc:`Universal Parameters <universal_parameters>`

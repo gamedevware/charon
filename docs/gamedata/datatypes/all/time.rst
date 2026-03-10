@@ -32,3 +32,10 @@ Example
   120 // two minutes
   
   "-00:30:00" // could be negative
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Date <date>`
+- :doc:`Integer <integer>`

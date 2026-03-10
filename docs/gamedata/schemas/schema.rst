@@ -57,7 +57,7 @@ The **Id Generator** setting defines how the :doc:`Id Property <../properties/id
 Properties
 ----------
 
-A list of :doc:`Properties <property>` that define the fields associated with this schema.
+A list of :doc:`Properties <../properties/property>` that define the fields associated with this schema.
 
 See also
 --------

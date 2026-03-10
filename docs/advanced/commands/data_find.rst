@@ -129,3 +129,10 @@ Outputs the found document.
     /* rest of properties of found document */
   }
 
+See also
+--------
+
+- :doc:`DATA LIST <data_list>`
+- :doc:`DATA CREATE <data_create>`
+- :doc:`DATA UPDATE <data_update>`
+- :doc:`DATA DELETE <data_delete>`

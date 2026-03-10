@@ -30,9 +30,14 @@ Example
 Sub-Types
 ---------
  - :doc:`Asset Path <../sub/asset>`
- - :doc:`Asset Path Collection <../sub/asset_collection>`
  - :doc:`Vector 2/3/4 <../sub/vector>`
  - :doc:`Integer Vector 2/3/4<../sub/vector_int>`
  - :doc:`Rectangle<../sub/rectangle>`
  - :doc:`Integer Rectangle<../sub/rectangle_int>`
  - :doc:`Tags<../sub/tags>`
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Localized Text <localized_text>`

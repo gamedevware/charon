@@ -27,6 +27,7 @@ See also
 --------
 
 - `Charon Website <https://gamedevware.com>`_
+- :doc:`Workspaces, Projects, and Branches <workspaces_and_projects>`
 - :doc:`CLI Access to Web Project <cli_access_to_web_project>`
 - :doc:`Migrating to Web Application <migrating_to_web>`
 - :doc:`Basic Navigation and User Interface Overview <../gamedata/basics>`
@@ -34,8 +35,5 @@ See also
 - :doc:`Filling Documents <../gamedata/filling_documents>`
 - :doc:`Publication of Game Data <../gamedata/publication>`
 - :doc:`Generating Source Code <../gamedata/generating_source_code>`
-- :doc:`Working with Source Code (C# 4.0) <../gamedata/working_with_csharp_code_4_0>`
-- :doc:`Working with Source Code (C# 7.3) <../gamedata/working_with_csharp_code_7_3>`
-- :doc:`Working with Source Code (TypeScript) <../gamedata/working_with_type_script_code>`
 - :doc:`Frequently Asked Questions (FAQ) <../faq>`
 - :doc:`Glossary <../glossary>`

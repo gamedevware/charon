@@ -210,3 +210,13 @@ Import translated text from a specified file into game data.
    Allows you to run the command without actually making any changes to the game data, providing a preview of what would happen.
 
 This command supports :doc:`universal parameters <universal_parameters>`.
+
+See also
+--------
+
+- :doc:`Internationalization <../internationalization>`
+- :doc:`DATA I18N EXPORT <data_i18n_export>`
+- :doc:`DATA I18N LANGUAGES <data_i18n_languages>`
+- :doc:`DATA IMPORT <data_import>`
+- `XLIFF standard <https://en.wikipedia.org/wiki/XLIFF>`_
+- `BCP 47 language tags <https://en.wikipedia.org/wiki/IETF_language_tag>`_

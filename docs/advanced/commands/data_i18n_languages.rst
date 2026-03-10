@@ -99,4 +99,13 @@ Get a list of supported translation languages. Primary language always shows up 
 
 This command supports :doc:`universal parameters <universal_parameters>`.
 
+See also
+--------
+
+- :doc:`Internationalization <../internationalization>`
+- :doc:`DATA I18N EXPORT <data_i18n_export>`
+- :doc:`DATA I18N IMPORT <data_i18n_import>`
+- :doc:`DATA I18N ADDLANGUAGE <data_i18n_add_language>`
+- `BCP 47 language tags <https://en.wikipedia.org/wiki/IETF_language_tag>`_
+
 

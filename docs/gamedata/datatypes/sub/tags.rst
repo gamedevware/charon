@@ -30,3 +30,10 @@ Example
 
   "fire"
   "poison magical non-resistable"
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Text <../all/text>`
+- :doc:`Multi Pick List <../all/multi_pick_list>`

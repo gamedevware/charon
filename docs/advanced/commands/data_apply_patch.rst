@@ -86,3 +86,11 @@ Applies patch created with :doc:`DATA CREATEPATCH <data_create_patch>` command t
    Additional options for specified format.
  
 This command supports :doc:`universal parameters <universal_parameters>`.
+
+See also
+--------
+
+- :doc:`Patch and Diff Workflow <../patch_diff>`
+- :doc:`DATA CREATEPATCH <data_create_patch>`
+- :doc:`Merge Logic <../merge_logic>`
+- :doc:`CI/CD Integration <../cicd>`

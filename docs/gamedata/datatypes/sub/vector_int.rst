@@ -67,3 +67,10 @@ Parsing
   var gridPositionString = heroById.StartingLocation; // -> "10 20 5"
   var parts = gridPositionString.split(" ").map(Std.parseInt);
   var startingLocation = { x: parts[0], y: parts[1], z: parts[2] };
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Vector <vector>`
+- :doc:`Rectangle Int <rectangle_int>`

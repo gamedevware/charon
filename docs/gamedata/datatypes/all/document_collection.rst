@@ -41,3 +41,10 @@ One example use case for ``DocumentCollection`` is storing a list of items in a 
           }
       ]
   }
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Document <document>`
+- :doc:`Reference Collection <reference_collection>`

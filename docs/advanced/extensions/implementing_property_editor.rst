@@ -120,3 +120,12 @@ Example:
     valueControl.addValidators(validateValue);
     return () => valueControl.removeValidators(validateValue);
   }, [valueControl]);
+
+See also
+--------
+
+- :doc:`UI Extensions Overview <overview>`
+- :doc:`Creating a Custom Editor with React <creating_react_extension>`
+- :doc:`Creating a Custom Editor with Angular <creating_angular_extension>`
+- `charon-extensions package (NPM) <https://www.npmjs.com/package/charon-extensions>`_
+- `Web Components (MDN) <https://developer.mozilla.org/en-US/docs/Web/API/Web_components>`_

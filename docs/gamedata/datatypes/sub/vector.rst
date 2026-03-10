@@ -67,3 +67,10 @@ Parsing
   var startingLocationString = heroById.StartingLocation; // -> "120.1 56.3 30.0"
   var parts = startingLocationString.split(" ").map(Std.parseFloat);
   var startingLocation = { x: parts[0], y: parts[1], z: parts[2] };
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Vector Int <vector_int>`
+- :doc:`Rectangle <rectangle>`

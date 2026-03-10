@@ -28,5 +28,8 @@ Be sure to back up your local data before making any connections.
 See also
 --------
 
-- :doc:`Basics <basics>`
+- :doc:`Basics <../gamedata/basics>`
+- :doc:`Web Application Overview <../web/overview>`
+- :doc:`CLI Access to charon.live <../web/cli_access_to_web_project>`
+- :doc:`Workspaces, Projects and Branches <../web/workspaces_and_projects>`
 - `Charon Website <https://gamedevware.com>`_

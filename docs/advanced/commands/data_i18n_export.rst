@@ -150,3 +150,13 @@ This command supports :doc:`universal parameters <universal_parameters>`.
 ------------------
 
 The exported data follows the general :doc:`game data structure <../game_data_structure>`, but omits `ToolsVersion`, `RevisionHash`, and `ChangeNumber` fields.
+
+See also
+--------
+
+- :doc:`Internationalization <../internationalization>`
+- :doc:`DATA I18N IMPORT <data_i18n_import>`
+- :doc:`DATA I18N LANGUAGES <data_i18n_languages>`
+- :doc:`DATA EXPORT <data_export>`
+- `XLIFF standard <https://en.wikipedia.org/wiki/XLIFF>`_
+- `BCP 47 language tags <https://en.wikipedia.org/wiki/IETF_language_tag>`_

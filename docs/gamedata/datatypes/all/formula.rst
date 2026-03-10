@@ -54,3 +54,9 @@ Example
   "x != 0"
   "target.DoDamage(100)"
   "(weapon.Damage / target.DamageResistance) / 2"
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Formula Expression AST <../../../advanced/formula_expression_ast>`

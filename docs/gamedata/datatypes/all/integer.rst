@@ -29,3 +29,10 @@ Example
   0
   -1
   100
+
+See also
+--------
+
+- :doc:`Data Types <../list>`
+- :doc:`Number <number>`
+- :doc:`Pick List <pick_list>`

@@ -223,3 +223,13 @@ Your custom editor will then be available in the schema designer for relevant pr
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/schema_designer_select_extension_editor.png
   :width: 800
   :alt: Schema Designer with Custom Editor
+
+See also
+--------
+
+- :doc:`UI Extensions Overview <overview>`
+- :doc:`Implementing Property Editor Interface <implementing_property_editor>`
+- :doc:`Creating a Custom Editor with React <creating_react_extension>`
+- `charon-extensions package (NPM) <https://www.npmjs.com/package/charon-extensions>`_
+- `Example Projects (GitHub) <https://github.com/gamedevware/charon-extensions/>`_
+- `Web Components (MDN) <https://developer.mozilla.org/en-US/docs/Web/API/Web_components>`_

@@ -49,6 +49,15 @@ Examples
   
   # print languages for game data at remote server using API Key
   export CHARON_API_KEY=87758CC0D7C745D0948F2A8AFE61BC81
-  charon DATA I18N LANGUAGES --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"  
-  
-    
+  charon DATA I18N LANGUAGES --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"
+
+
+See also
+--------
+
+- :doc:`Command Line Reference <../command_line>`
+- :doc:`DATA EXPORT <data_export>`
+- :doc:`DATA IMPORT <data_import>`
+- :doc:`DATA I18N EXPORT <data_i18n_export>`
+- `URI (Wikipedia) <https://en.wikipedia.org/wiki/Uniform_Resource_Identifier>`_
+- `FTP protocol (Wikipedia) <https://en.wikipedia.org/wiki/File_Transfer_Protocol>`_
