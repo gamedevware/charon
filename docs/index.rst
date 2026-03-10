@@ -1,36 +1,83 @@
-Overview
-========
+Data-Driven Game Design with Charon
+=====================================
 
-Charon is a powerful data-driven game development tool designed to streamline the creation and management of static game data within your game. 
-It allows both developers and game designers to efficiently model and edit game entities such as characters, items, missions, quests, and more, directly within the Unity/Unreal Engine/Browser environment. 
-Charon simplifies the process of data manipulation, offering a user-friendly interface and automatic source code generation, which significantly reduces development time and minimizes manual coding errors.
-Charon also offers support for working with text in multiple languages, with easy loading and unloading of translated text. 
+Every game team hits the wall eventually.
 
-With Charon, game developers can focus on creating engaging gameplay experiences without worrying about the technical details of managing game data. It is available in three deployment variants, including a :doc:`standalone  <standalone/overview>` application, :doc:`web <web/overview>` application, :doc:`Unity <unity/overview>` plugin and :doc:`Unreal Engine </unreal_engine/overview>` plugin.  
-  
-**TLDR** Charon is an in-game database for your game, replacing spreadsheets or config files.  
+It starts small — a spreadsheet for item stats, another for enemy data, a few config files for quests.
+Then the game grows. Tabs multiply. Formulas break silently. A programmer renames a constant and three
+designer files now reference something that doesn't exist. A localization request arrives and no one knows
+where all the strings actually live.
 
-Why Choose Charon?
-------------------
+**This is the spreadsheet ceiling** — and most teams don't realize they've hit it until something breaks in production.
 
-Charon replaces traditional spreadsheets or config files with an in-game database, 
-offering a structured and efficient way to manage game data. It allows developers to focus on creating engaging gameplay 
-experiences without worrying about the technical details of data management.
+Charon exists to push that ceiling out of your way.
+
+----
+
+What is Data-Driven Game Design?
+---------------------------------
+
+Data-driven game design means your game's content lives in *structured, validated data* — not in source code,
+not in spreadsheets, not in a programmer's head. Designers define what a quest looks like. Programmers consume
+it through generated, type-safe code. The pipeline enforces that they stay in sync.
+
+When it works:
+
+- A designer changes a boss's phase thresholds without filing a ticket
+- Deleting a deprecated item immediately surfaces every quest that still references it
+- Adding a language is a data task, not a code task
+- Game balance is version-controlled, diff-able, and rollback-able
+
+**Charon is the tool that makes this practical.** It gives your team a shared language between design and engineering —
+a structured database, a visual editor, and a code generator that keeps both sides moving independently.
+
+**TLDR:** Charon is an in-game database for your game. It replaces spreadsheets and config files with a validated,
+schema-driven data layer that generates ready-to-use code for your engine.
+
+----
+
+Who Is This For?
+-----------------
+
+**Game Designers**
+  You get a real editor — schemas you define, forms that match your data, and validation that catches mistakes
+  before the next build does. No more pasting values into cells and hoping the formula still works.
+
+**Programmers**
+  You get generated, type-safe classes for your data. Instead of parsing raw JSON and casting strings,
+  you write ``gameData.Heroes.Find("Arbalest").Stats.Hp`` with full IDE autocomplete. The loading, validation,
+  and localization plumbing is already handled.
+
+**Technical Leads**
+  You get a pipeline. Charon has a CLI, a REST API, and CI/CD hooks. Validate data on every commit.
+  Diff game data between versions. Patch live data without a full rebuild. Distribute the editor with
+  your game for community modding.
+
+----
+
+Deployment Options
+-------------------
+
+Charon adapts to your workflow, not the other way around:
+
+- :doc:`Unity Plugin <unity/overview>` — edit game data directly inside the Unity editor
+- :doc:`Unreal Engine Plugin <unreal_engine/overview>` — native integration with the Unreal content pipeline
+- :doc:`Standalone App <standalone/overview>` — run the editor locally for any engine (C#, TypeScript, Haxe)
+- :doc:`Web / Cloud Edition <web/overview>` — collaborative editing for distributed teams
+
+----
 
 Is It Free?
------------
+------------
 
-The offline version, :doc:`CLI <advanced/command_line>` and plugins are completely free and have no restrictions. 
-They are distributed under a free license and allow you to distribute tools along with the game for modding games.  
+The offline CLI, standalone app, and engine plugins are **completely free** with no usage restrictions.
+They are open-licensed and can be bundled with your shipped game — so your players can build mods
+using the same tools you used to build the game.
 
-The online version, which allows working in large teams on shared game data, requires a subscription.
+The online collaborative edition, which enables shared editing across large teams with cloud hosting,
+requires a subscription.
 
-What is Charon
---------------
-
-It is a .NET 8 console application that can be used as a :doc:`command-line <advanced/command_line>` tool for performing CRUD operations with your game data, or as an HTTP Server to provide a UI for modeling and editing your game data. There are plugins for :doc:`Unity <unity/overview>` and :doc:`Unreal Engine </unreal_engine/overview>` that provide a more integrated experience while using Charon.  
-As with any modern .NET application, it can be launched as is on Windows, macOS and Linux and via `dotnet` tool.
-
+----
 
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/editor_screenshot.png
   :width: 600
@@ -39,10 +86,10 @@ As with any modern .NET application, it can be launched as is on Windows, macOS 
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/dashboard.png
   :width: 256
   :alt: Charon Dashboard
-  
+
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/document_collection.png
   :width: 256
-  :alt: Charon Documents
+  :alt: Charon Document List
 
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/document_form.png
   :width: 256
@@ -50,9 +97,11 @@ As with any modern .NET application, it can be launched as is on Windows, macOS 
 
 .. image:: https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/documents_import.png
   :width: 256
-  :alt: Charon Document Import 
-  
-Further reading
+  :alt: Charon Import
+
+----
+
+Further Reading
 ---------------
 
 .. toctree::
@@ -62,7 +111,6 @@ Further reading
 
    /unreal_engine/overview
    /unreal_engine/*
-
 
 .. toctree::
    :caption: Unity Quick Start
@@ -81,7 +129,7 @@ Further reading
    /standalone/*
 
 .. toctree::
-   :caption: Web Quick Start
+   :caption: Web / Cloud Edition
    :titlesonly:
    :glob:
 
@@ -89,19 +137,83 @@ Further reading
    /web/*
 
 .. toctree::
-   :caption: Working with Game Data
+   :caption: Server Edition
    :titlesonly:
-   :glob:
 
-   /gamedata/*
+   /server/overview
 
 .. toctree::
-   :caption: Advanced Features
+   :caption: Data Modeling
+   :titlesonly:
+
+   /gamedata/basics
+   /gamedata/creating_schema
+   /gamedata/filling_documents
+   /gamedata/inheritance
+   /gamedata/schemas/schema
+   /gamedata/schemas/schema_types
+   /gamedata/schemas/display_text_template
+   /gamedata/schemas/specification
+   /gamedata/properties/property
+   /gamedata/properties/id_property
+   /gamedata/properties/shared_property
+   /gamedata/datatypes/list
+
+.. toctree::
+   :caption: Source Code Generation
+   :titlesonly:
+
+   /gamedata/generating_source_code
+   /gamedata/working_with_csharp_code_7_3
+   /gamedata/working_with_csharp_code_4_0
+   /gamedata/working_with_type_script_code
+   /gamedata/working_with_uecpp_code
+   /gamedata/working_with_haxe_code
+
+.. toctree::
+   :caption: Data Workflows
+   :titlesonly:
+
+   /gamedata/publication
+   /advanced/import_export
+   /advanced/merge_logic
+   /advanced/internationalization
+   /advanced/validation
+   /advanced/backup_restore
+   /advanced/patch_diff
+   /advanced/cicd
+
+.. toctree::
+   :caption: Integration & Automation
+   :titlesonly:
+
+   /advanced/command_line
+   /advanced/game_data_structure
+   /advanced/formula_expression_ast
+   /web/rest
+
+.. toctree::
+   :caption: Extending Charon
+   :titlesonly:
+
+   /advanced/extensions/overview
+   /advanced/extensions/implementing_property_editor
+   /advanced/extensions/creating_react_extension
+   /advanced/extensions/creating_angular_extension
+
+.. toctree::
+   :caption: Configuration & Troubleshooting
+   :titlesonly:
+
+   /advanced/logs
+   /advanced/reset_preferences
+
+.. toctree::
+   :caption: CLI Command Reference
    :titlesonly:
    :glob:
 
-   /advanced/*
-   /advanced/extensions/overview
+   /advanced/commands/*
 
 .. toctree::
    :caption: Reference
