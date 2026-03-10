@@ -1225,10 +1225,10 @@
 					output.Append(Environment.NewLine);
 					for (var i = 0; i < System.Linq.Enumerable.Count(stack, t => t != ReaderToken.Member && t != ReaderToken.None) + endingTokenIndent; i++)
 					{
-						output.Append("\t");
+						output.Append('\t');
 					}
 				}
-				else output.Append(" ");
+				else output.Append(' ');
 
 				output.Append(strValue);
 

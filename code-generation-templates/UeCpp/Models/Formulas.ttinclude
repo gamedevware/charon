@@ -49,25 +49,25 @@ public:
 	/**
 	  * Gets or sets the Abstract Syntax Tree (AST) of the formula. Used internally.
 	  */
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	FJsonObjectWrapper ExpressionTree;
 	/**
 	  * Gets or sets the root provider for global identifiers. Properties and methods of this
 	  * object can be referenced directly within the formula without a qualifier.
 	  */
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UObject> Global;
 	/**
 	  * Gets or sets a value indicating whether null propagation should be applied
 	  * implicitly to this formula during evaluation or code generation.
 	  */
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	bool AutoNullPropagation;
 
 	/**
 	  * Evaluates the formula and returns the resulting value.
 	  */
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	<#= invokeReturnType #> Invoke(<#= invokeParameters #>) const;
 
 #if defined(CHARON_FEATURE_FORMULAS_V2) && CHARON_FEATURE_FORMULAS_V2
@@ -85,6 +85,7 @@ public:
 	{
 		var invokeParameters = string.Join(", ", formulaDef.ParameterNames.Select((name, i) => MakePtrTypeIfNeeded(formulaDef.ParameterTypes[i], context) + " " + name).ToArray());
 		var invokeReturnType = MakePtrTypeIfNeeded(formulaDef.ReturnType, context);
+		var hasReturnValue = !string.Equals(formulaDef.ReturnType.TypeName, "void", StringComparison.Ordinal);
 #>
 /* # move to Private/<#= formulaDef #>.cpp */
 <#+
@@ -99,7 +100,7 @@ DEFINE_LOG_CATEGORY(Log<#= formulaDef #>);
 
 #if defined(CHARON_FEATURE_FORMULAS_V2) && CHARON_FEATURE_FORMULAS_V2
 
-static TSharedRef<FFormulaTypeResolver> GetOrCreateTypeResolver()
+static TSharedRef<FFormulaTypeResolver> <#= formulaDef #>_GetOrCreateTypeResolver()
 {
 	static TSharedRef<FFormulaTypeResolver> __TypeResolver = MakeShared<FFormulaTypeResolver>(<#= context.TargetLanguage.GameDataClassName #>::GetSharedFormulaTypeResolver(), TArray<UObject*> {
 <#+
@@ -130,7 +131,7 @@ static TSharedRef<FFormulaTypeResolver> GetOrCreateTypeResolver()
 	return __TypeResolver;
 }
 
-static UFunction* GetInvokeFunction()
+static UFunction* <#= formulaDef #>_GetInvokeFunction()
 {
 	static TWeakObjectPtr<UFunction> InvokeFunction = <#= formulaDef #>::StaticClass()->FindFunctionByName(GET_FUNCTION_NAME_CHECKED(<#= formulaDef #>, Invoke));
 
@@ -141,7 +142,7 @@ static UFunction* GetInvokeFunction()
 	return InvokeFunction.Get();
 }
 
-static FProperty* GetGlobalProperty()
+static FProperty* <#= formulaDef #>_GetGlobalProperty()
 {
 	static TWeakFieldPtr<FProperty> GlobalProperty = <#= formulaDef #>::StaticClass()->FindPropertyByName(GET_MEMBER_NAME_CHECKED(<#= formulaDef #>, Global));
 
@@ -152,12 +153,12 @@ static FProperty* GetGlobalProperty()
 	return GlobalProperty.Get();
 }
 
-static FProperty* GetInvokeParameterAt(int32 Index)
+static FProperty* <#= formulaDef #>_GetInvokeParameterAt(int32 Index)
 {
 	static TArray<FProperty*> Parameters = []()
 	{
 		TArray<FProperty*> Params;
-		for (TFieldIterator<FProperty> It(GetInvokeFunction()); It; ++It)
+		for (TFieldIterator<FProperty> It(<#= formulaDef #>_GetInvokeFunction()); It; ++It)
 		{
 			FProperty* Prop = *It;
 
@@ -185,27 +186,33 @@ static FProperty* GetInvokeParameterAt(int32 Index)
 #>
 
 	auto __ParsedExpression = this->GetExpression();
-	auto __InvokeFunction = GetInvokeFunction();
+	auto __InvokeFunction = <#= formulaDef #>_GetInvokeFunction();
 
-	<#= invokeReturnType #> __Result = {};
+<#+
+		if (hasReturnValue)
+		{
+#>	<#= invokeReturnType #> __Result = {}; // default
+<#+
+		}
+#>
 	if (!__ParsedExpression.IsValid() || !__InvokeFunction)
 	{
 		UE_LOG(Log<#= formulaDef #>, Error, TEXT("The expression tree is missing or contains errors, or the function metadata is not available."));
-		return __Result; // default
+		return<#= ( hasReturnValue ? " __Result" : "") #>;
 	}
 
 	const TMap<FString, const TSharedRef<FFormulaValue>> __Arguments = {
 <#+
 		for (var p = 0; p < formulaDef.ParameterNames.Length; p++)
 		{
-#>		{ TEXT("<#= formulaDef.ParameterRawNames[p] #>"), MakeShared<FFormulaValue>(GetInvokeParameterAt(PARAMETER_<#= formulaDef.ParameterNames[p].ToUpperInvariant() #>_INDEX), &<#= formulaDef.ParameterNames[p] #> ) },
+#>		{ TEXT("<#= formulaDef.ParameterRawNames[p] #>"), MakeShared<FFormulaValue>(<#= formulaDef #>_GetInvokeParameterAt(PARAMETER_<#= formulaDef.ParameterNames[p].ToUpperInvariant() #>_INDEX), &<#= formulaDef.ParameterNames[p] #> ) },
 <#+
 		}
 #>
 	};
 
-	auto __Global = MakeShared<FFormulaValue>(GetGlobalProperty(), &this->Global);
-	auto __Context = FFormulaExecutionContext(this->AutoNullPropagation, __Arguments, __Global, GetOrCreateTypeResolver());
+	auto __Global = MakeShared<FFormulaValue>(<#= formulaDef #>_GetGlobalProperty(), &this->Global);
+	auto __Context = FFormulaExecutionContext(this->AutoNullPropagation, __Arguments, __Global, <#= formulaDef #>_GetOrCreateTypeResolver());
 
 	auto __ReturnValueType = __InvokeFunction->GetReturnProperty();
 	auto __InvokeResult = __ParsedExpression->Execute(__Context, __ReturnValueType);
@@ -213,11 +220,17 @@ static FProperty* GetInvokeParameterAt(int32 Index)
 	{
 		UE_LOG(Log<#= formulaDef #>, Error, TEXT("The formula [%s] execution failed. In this case, the default '<#= invokeReturnType #>' result will be returned. Error: %s"), *__ParsedExpression->ToString(), *__InvokeResult.GetError().Message);
 	}
-	else if (!__InvokeResult.GetValue()->TryCopyCompleteValue(__ReturnValueType, &__Result))
+<#+
+		if (hasReturnValue)
+		{
+#>	else if (!__InvokeResult.GetValue()->TryCopyCompleteValue(__ReturnValueType, &__Result))
 	{
 		UE_LOG(Log<#= formulaDef #>, Error, TEXT("Failed to convert Formula execution result '%s' to '<#= invokeReturnType #>' type."), *__InvokeResult.GetValue()->ToString());
 	}
 	return __Result;
+<#+
+		}
+#>
 }
 
 TSharedPtr<FFormulaExpression> <#= formulaDef #>::GetExpression() const

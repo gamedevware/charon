@@ -28,6 +28,7 @@
 		ARGUMENTS_ATTRIBUTE = 'arguments',
 		LEFT_ATTRIBUTE = 'left',
 		RIGHT_ATTRIBUTE = 'right',
+		INITIALIZERS_ATTRIBUTE = 'initializers',
 		TEST_ATTRIBUTE = 'test',
 		IF_TRUE_ATTRIBUTE = 'ifTrue',
 		IF_FALSE_ATTRIBUTE = 'ifFalse',
@@ -36,6 +37,8 @@
 		PROPERTY_OR_FIELD_NAME_ATTRIBUTE = 'propertyOrFieldName',
 		NAME_ATTRIBUTE = 'name',
 		USE_NULL_PROPAGATION_ATTRIBUTE = 'useNullPropagation',
+		NEW_ATTRIBUTE = 'new',
+		BINDINGS_ATTRIBUTE = 'bindings',
 		// expression types
 		EXPRESSION_TYPE_PROPERTY_OR_FIELD = 'PropertyOrField',
 		EXPRESSION_TYPE_MEMBER_RESOLVE = 'MemberResolve',
@@ -52,6 +55,14 @@
 		EXPRESSION_TYPE_DEFAULT = 'Default',
 		EXPRESSION_TYPE_NEW = 'New',
 		EXPRESSION_TYPE_NEW_ARRAY_BOUNDS = 'NewArrayBounds',
+		EXPRESSION_TYPE_NEW_ARRAY_INIT = 'NewArrayInit',
+		EXPRESSION_TYPE_MEMBER_INIT = 'MemberInit',
+		EXPRESSION_TYPE_LIST_INIT = 'ListInit',
+		EXPRESSION_TYPE_LIST_BINDING = 'ListBinding',
+		EXPRESSION_TYPE_MEMBER_BINDING = 'MemberBinding',
+		EXPRESSION_TYPE_ELEMENT_INIT_BINDING = 'ElementInitBinding',
+		EXPRESSION_TYPE_ASSIGNMENT_BINDING = 'AssignmentBinding',
+		EXPRESSION_TYPE_ASSIGNMENT_BINDING_ALT = 'Assignment',
 		EXPRESSION_TYPE_ADD = 'Add',
 		EXPRESSION_TYPE_ADD_CHECKED = 'AddChecked',
 		EXPRESSION_TYPE_SUBTRACT = 'Subtract',
@@ -149,6 +160,7 @@
 		Is,
 		As,
 		Colon,
+		Assignment,
 		Comma,
 		Coalesce,
 		New,
@@ -158,11 +170,15 @@
 		LeftParentheses,
 		RightParentheses,
 		LeftBracket,
+		LeftCurlyBracket,
+		RightCurlyBracket,
 		NullIndex,
 		RightBracket,
 		Lambda,
 		Call,
 		Arguments,
+		Initializers,
+		MemberOrListInit,
 		Convert,
 		Typeof,
 		Default,
@@ -256,6 +272,10 @@
 		OnesComplement = 82,
 		IsTrue = 83,
 		IsFalse = 84,
+		MemberBinding = 85,
+		MemberAssignmentBinding = 86,
+		MemberListInitBinding = 87,
+		ElementInitBinding = 87,
 		Noop = 255
 	}
 	export const expressionTypeByToken = new Map<TokenType, string>();
@@ -301,6 +321,7 @@
 	expressionTypeByToken.set(TokenType.New, FormulaConstants.EXPRESSION_TYPE_NEW);
 	expressionTypeByToken.set(TokenType.LeftBracket, FormulaConstants.EXPRESSION_TYPE_INDEX);
 	expressionTypeByToken.set(TokenType.Lambda, FormulaConstants.EXPRESSION_TYPE_LAMBDA);
+	expressionTypeByToken.set(TokenType.MemberOrListInit, FormulaConstants.EXPRESSION_TYPE_MEMBER_INIT);
 	export const typeAliases = new Map<string, string>();
 	typeAliases.set('void', FormulaConstants.KNOWN_TYPE_SYSTEM_VOID);
 	typeAliases.set('char', FormulaConstants.KNOWN_TYPE_SYSTEM_CHAR);
@@ -376,6 +397,7 @@
 		public static readonly EXCEPTION_BIND_UNABLETORESOLVETYPE: string = "Type '{0}' could not be resolved.";
 		public static readonly EXCEPTION_BIND_UNABLETORESOLVETYPEMULTIPLE: string = "Type '{0}' is ambiguous. Candidates: {1}.";
 		public static readonly EXCEPTION_BIND_UNKNOWNEXPRTYPE: string = "Unknown expression type '{0}'.";
+		public static readonly EXCEPTION_BIND_WRONGBINDINGTYPE: string = "Wrong binding type '{0}'. While '{1}' is expected.";
 		public static readonly EXCEPTION_BIND_VALIDDELEGATETYPEISEXPECTED: string = "Lambda type '{0}' must be a valid delegate type.";
 		// Bound Expression Errors
 		public static readonly EXCEPTION_BOUNDEXPR_ARGSDOESNTMATCHPARAMS: string = "Argument count does not match parameter count.";
@@ -394,8 +416,10 @@
 		// Execution Errors
 		public static readonly EXCEPTION_EXECUTION_CANTDONULLVALUE: string = "Cannot perform operation '{1}' on null value from expression '{0}'.";
 		public static readonly EXCEPTION_EXECUTION_EXPRESSIONGIVESNULLRESULT: string = "Expression '{0}' evaluated to null.";
-		public static readonly EXCEPTION_EXECUTION_INVALIDMEMBERFOREXPRESSION: string = "Member type '{0}' is not valid for MemberAccess expression.";
+		public static readonly EXCEPTION_EXECUTION_INVALIDTARGETFORMBMERACCESS: string = "Value of type '{0}' is not valid target for member access expression.";
+		public static readonly EXCEPTION_EXECUTION_INVALIDTARGETFORLISTINITIALIZER: string = "Value of type '{0}' is not valid target for list initializer.";
 		public static readonly EXCEPTION_EXECUTION_MULTIPARAMETERINDEXERNOTSUPPORTED: string = "Indexers with multiple parameters are not supported.";
+		public static readonly EXCEPTION_EXECUTION_APIISRESTRICTED: string = "Access to this API is restricted.";
 		// General Errors
 		public static readonly EXCEPTION_LIST_LISTISEMPTY: string = "List cannot be empty.";
 		// Parsing Errors
@@ -414,6 +438,8 @@
 		public static readonly EXCEPTION_PARSER_UNEXPECTEDTOKENTYPE: string = "Unexpected token type '{0}'.";
 		public static readonly EXCEPTION_PARSER_UNEXPECTEDTOKENWHILEBUILDINGTREE: string = "Unexpected node '{0}' encountered while building expression tree.";
 		public static readonly EXCEPTION_PARSER_UNEXPECTEDTOKENWHILEOTHEREXPECTED: string = "Expected one of: {0}.";
+		public static readonly EXCEPTION_PARSER_UNEXPECTEDMEMBERINITIALIZERINLISTINITIALIZERS: string = "Unexpected member initializer in list initializers collection.";
+		public static readonly EXCEPTION_PARSER_UNEXPECTEDLISTINITIALIZERINMEMBERINITIALIZERS: string = "Unexpected list initializer in member initializers collection.";
 		// Utility Errors
 		public static readonly EXCEPTION_STRINGUTILS_UNEXPECTEDESCAPESEQ: string = "Unknown escape sequence '{0}'.";
 		public static readonly EXCEPTION_TOKENIZER_INVALIDCHARLITERAL: string = "Invalid character literal.";
@@ -2141,7 +2167,7 @@
 		const tokenLength = parseInt(parts[2], 10);
 		if (parts.length !== 3 || typeof (lineNumber) !== 'number' ||
 			typeof (columnNumber) !== 'number' || typeof (tokenLength) !== 'number') {
-			throw new Error(`Invalid format of line position value "${position}". It should be "LINE:COLUMN+LENGTH".`);
+			throw new FormulaError(`Invalid format of line position value "${position}". It should be "LINE:COLUMN+LENGTH".`);
 		}
 		return { lineNumber, columnNumber, tokenLength };
 	}
@@ -2268,7 +2294,7 @@
 			if (argumentCollection.hasOwnProperty(argumentName)) {
 				const argument = argumentCollection[argumentName];
 				if (!argument) {
-					throw new Error(`Unexpected null type argument with name '${argumentName}'.`);
+					throw new FormulaError(`Unexpected null type argument with name '${argumentName}'.`);
 				}
 				typeArgumentCollection[argumentName] = FormulaTypeReference.create(argument);
 			}
@@ -2294,6 +2320,11 @@
 		}
 		return result;
 	}
+	/* eslint-disable @typescript-eslint/naming-convention */
+	const GeneratorFunction: Function = Object.getPrototypeOf(function* () { }).constructor;
+	const AsyncFunction: Function = Object.getPrototypeOf(async function () { }).constructor;
+	const AsyncGeneratorFunction: Function = Object.getPrototypeOf(async function* () { }).constructor;
+	/* eslint-eenable @typescript-eslint/naming-convention */
 	export class DotnetFormulaTypeResolver implements FormulaTypeResolver {
 		public resolveType(type: FormulaTypeReference): Function | undefined {
 			switch (type.getFullName()) {
@@ -2375,6 +2406,17 @@
 					return BigInt;
 				case 'Symbol':
 					return Symbol;
+				case 'List':
+				case 'System.Collections.Generic.List':
+					return List; // List is parameterless Array constructor
+				case 'Set':
+				case 'HashSet':
+				case 'System.Collections.Generic.HashSet':
+					return Set;
+				case 'Map':
+				case 'Dictionary':
+				case 'System.Collections.Generic.Dictionary':
+					return Map;
 				case 'DayOfWeek':
 				case 'System.DayOfWeek':
 					return createDotNetEnum(DayOfWeek);
@@ -2386,6 +2428,18 @@
 					return createDotNetEnum(StringSplitOptions);
 			}
 			return undefined;
+		}
+		public isRestrictedApi(objectOrFuncOrMember: any): boolean {
+			// eslint-disable-next-line no-eval
+			return objectOrFuncOrMember === eval || objectOrFuncOrMember === Function ||
+				objectOrFuncOrMember === GeneratorFunction || objectOrFuncOrMember === AsyncFunction ||
+				objectOrFuncOrMember === AsyncGeneratorFunction || objectOrFuncOrMember === Reflect ||
+				objectOrFuncOrMember === Object.getPrototypeOf || objectOrFuncOrMember === '__proto__';
+		}
+	}
+	class List<T> extends Array<T> {
+		constructor() {
+			super();
 		}
 	}
 	export class KnownTypeResolver extends DotnetFormulaTypeResolver {
@@ -2436,11 +2490,17 @@
 		public createSubContext(): FormulaExecutionContext {
 			return new FormulaExecutionContext(undefined, this.typeResolver, this.autoNullPropagation, this.globalObject, this);
 		}
-		resolveType(type: FormulaTypeReference): Function | undefined {
+		public resolveType(type: FormulaTypeReference): Function | undefined {
 			if (this.typeResolver) {
 				return this.typeResolver.resolveType(type);
 			}
 			return undefined;
+		}
+		public isRestrictedApi(objectOrFuncOrMember: any): boolean {
+			if (this.typeResolver) {
+				return this.typeResolver.isRestrictedApi(objectOrFuncOrMember);
+			}
+			return false;
 		}
 	}
 	export abstract class FormulaExpression implements LineInfo {
@@ -2495,10 +2555,405 @@
 		check(value, 'value').is.not.nullOrUndefined();
 		return value.toObject();
 	}
+	export function getTypeName(value: any): string {
+	    const typeName = typeof (value);
+	    if (value === null) {
+	        return 'null';
+	    } else if (typeName === 'object' &&
+	        'constructor' in value &&
+	        typeof value.constructor === 'function') {
+	        return value.constructor.name;
+	    }
+	    return typeName;
+	}
+	export class MemberAssignmentBinding extends FormulaExpression {
+	    public readonly expression: FormulaExpression;
+	    public readonly name: string;
+	    // eslint-disable-next-line max-len
+	    constructor(values: ExpressionObjOrImpl<FormulaMemberAssignmentBindingObj>) {
+	        check(values, 'values').not.nullOrUndefined();
+	        check(values.expressionType, 'values.expressionType').not.nullOrUndefined();
+	        check(values.expression, 'values.expression').not.nullOrUndefined();
+	        check(values.name, 'values.name').is.string().not.nullOrUndefined();
+	        super(ExpressionType.MemberAssignmentBinding, values);
+	        this.expression = FormulaExpression.create(values.expression);
+	        this.name = values.name;
+	    }
+	    public execute(context: FormulaExecutionContext, target?: any): void {
+	        if (target === null || target === undefined) {
+	            throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_EXPRESSIONGIVESNULLRESULT, 'target'));
+	        }
+	        if (ObjectUtils.isObject(target)) {
+	            if (context.isRestrictedApi(target) || context.isRestrictedApi(this.name)) {
+	                throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_APIISRESTRICTED, typeof target));
+	            }
+	            const memberValue = this.expression.execute(context);
+	            target[this.name] = memberValue;
+	            return;
+	        }
+	        throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_INVALIDTARGETFORMBMERACCESS,
+	            getTypeName(target)));
+	    }
+	    public toObject(): FormulaMemberAssignmentBindingObj & FormulaExpressionObj {
+	        return {
+	            // eslint-disable-next-line max-len
+	            [FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: this.expressionTypeName as FormulaConstants.EXPRESSION_TYPE_ASSIGNMENT_BINDING,
+	            [FormulaConstants.EXPRESSION_ATTRIBUTE]: this.expression.toObject(),
+	            [FormulaConstants.NAME_ATTRIBUTE]: this.name,
+	            [FormulaConstants.ORIGINAL_C_SHARP_CODE_ATTRIBUTE]: this.cSharpSourceCode,
+	            [FormulaConstants.POSITION_ATTRIBUTE]: this._pos,
+	        };
+	    }
+	    public toString(): string {
+	        if (this.cSharpSourceCode) {
+	            return this.cSharpSourceCode;
+	        }
+	        const result = this.name + ' = ' + this.expression.toString();
+	        return result;
+	    }
+	}
+	registerExpressionType(FormulaConstants.EXPRESSION_TYPE_ASSIGNMENT_BINDING, MemberAssignmentBinding);
+	registerExpressionType(FormulaConstants.EXPRESSION_TYPE_ASSIGNMENT_BINDING_ALT, MemberAssignmentBinding);
+	export class ElementInitBinding extends FormulaExpression {
+	    public readonly initializers: ArgumentCollection;
+	    // eslint-disable-next-line max-len
+	    constructor(values: ExpressionObjOrImpl<FormulaElementInitBindingObj>) {
+	        check(values, 'values').not.nullOrUndefined();
+	        check(values.expressionType, 'values.expressionType').not.nullOrUndefined();
+	        check(values.initializers, 'values.initializers').not.nullOrUndefined();
+	        super(ExpressionType.ElementInitBinding, values);
+	        this.initializers = objectToArguments(values.initializers);
+	    }
+	    public execute(context: FormulaExecutionContext, target?: any): void {
+	        const addValues = Object.values(this.initializers).map(initializer => initializer.execute(context));
+	        if (Array.isArray(target)) {
+	            if (addValues.length !== 1) {
+	                throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETOBINDMEMBER,
+	                    'push', 'Array'));
+	            }
+	            target.push(addValues[0]);
+	        } else if (target instanceof Set) {
+	            if (addValues.length !== 1) {
+	                throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETOBINDMEMBER,
+	                    'add', 'Set'));
+	            }
+	            target.add(addValues[0]);
+	        } else if (target instanceof Map) {
+	            if (addValues.length !== 2) {
+	                throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETOBINDMEMBER,
+	                    'set', 'Map'));
+	            }
+	            target.set(addValues[0], addValues[1]);
+	        } else if (typeof (target) == 'object' && 'add' in target && typeof (target.add) === 'function') {
+	            target.add.apply(target, addValues);
+	        } else if (typeof (target) == 'object' && 'Add' in target && typeof (target.Add) === 'function') {
+	            target.Add.apply(target, addValues);
+	        } else {
+	            throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_INVALIDTARGETFORLISTINITIALIZER,
+	                getTypeName(target)));
+	        }
+	    }
+	    public toObject(): FormulaElementInitBindingObj & FormulaExpressionObj {
+	        return {
+	            // eslint-disable-next-line max-len
+	            [FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: this.expressionTypeName as FormulaConstants.EXPRESSION_TYPE_ELEMENT_INIT_BINDING,
+	            [FormulaConstants.INITIALIZERS_ATTRIBUTE]: argumentsToObject(this.initializers),
+	            [FormulaConstants.ORIGINAL_C_SHARP_CODE_ATTRIBUTE]: this.cSharpSourceCode,
+	            [FormulaConstants.POSITION_ATTRIBUTE]: this._pos,
+	        };
+	    }
+	    public toString(): string {
+	        if (this.cSharpSourceCode) {
+	            return this.cSharpSourceCode;
+	        }
+	        let result = (Object.keys(this.initializers).length > 1) ? '{ ' : '';
+	        let isFirstArgument = true;
+	        for (const argumentName in this.initializers) {
+	            if (!this.initializers.hasOwnProperty(argumentName)) {
+	                continue;
+	            }
+	            if (!isFirstArgument) {
+	                result += ', ';
+	            }
+	            const argumentValue = this.initializers[argumentName];
+	            result += argumentValue === null ? 'null' : argumentValue.toString();
+	            isFirstArgument = false;
+	        }
+	        result += (Object.keys(this.initializers).length > 1) ? ' }' : '';
+	        return result;
+	    }
+	}
+	registerExpressionType(FormulaConstants.EXPRESSION_TYPE_ELEMENT_INIT_BINDING, ElementInitBinding);
+	export type ElementInitCollection = ElementInitBinding[];
+	export function elementInitializersToObjectIfNotNull(
+	    initializerCollection: ElementInitCollection | null | undefined
+	): FormulaElementInitCollectionObj | undefined {
+	    if (initializerCollection === null || initializerCollection === undefined) {
+	        return undefined;
+	    }
+	    return elementInitializersToObject(initializerCollection);
+	}
+	export function elementInitializersToObject(initializerCollection: ElementInitCollection): FormulaElementInitCollectionObj {
+	    check(initializerCollection, 'initializerCollection').is.not.nullOrUndefined();
+	    const result: FormulaElementInitCollectionObj = {};
+	    for (const initializerName in initializerCollection) {
+	        if (initializerCollection.hasOwnProperty(initializerName)) {
+	            const initializer = initializerCollection[initializerName];
+	            result[initializerName] = initializer.toObject();
+	        }
+	    }
+	    return result;
+	}
+	export function objectToElementInitializersIfNotNull(
+	    initializerCollection: ElementInitCollection | FormulaElementInitCollectionObj | FormulaElementInitBindingObj[] | null | undefined
+	): ElementInitCollection | undefined {
+	    if (initializerCollection === null || initializerCollection === undefined) {
+	        return undefined;
+	    }
+	    return objectToElementInitializers(initializerCollection);
+	}
+	export function objectToElementInitializers(
+	    initializerCollection: ElementInitCollection | FormulaElementInitCollectionObj | FormulaElementInitBindingObj[]
+	): ElementInitCollection {
+	    check(initializerCollection, 'initializerCollection').is.not.nullOrUndefined();
+	    const newInitializerCollection: ElementInitCollection = [];
+	    if (Array.isArray(initializerCollection)) {
+	        for (const initializer of initializerCollection) {
+	            if (initializer instanceof ElementInitBinding) {
+	                newInitializerCollection.push(initializer);
+	            } else {
+	                newInitializerCollection.push(new ElementInitBinding(initializer));
+	            }
+	        }
+	    } else {
+	        for (const initializerIndex in initializerCollection) {
+	            if (initializerCollection.hasOwnProperty(initializerIndex)) {
+	                const initializer = initializerCollection[initializerIndex];
+	                newInitializerCollection.push(createElementInitBinding(initializer));
+	            }
+	        }
+	    }
+	    return newInitializerCollection ?? initializerCollection;
+	}
+	function createElementInitBinding(initializer: ElementInitBinding | FormulaElementInitBindingObj): ElementInitBinding {
+	    if (initializer instanceof ElementInitBinding) {
+	        return initializer;
+	    } else if (initializer.expressionType === FormulaConstants.EXPRESSION_TYPE_ELEMENT_INIT_BINDING) {
+	        return new ElementInitBinding(initializer);
+	    } else {
+	        const expressionType = (initializer as FormulaElementInitBindingObj).expressionType;
+	        throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_WRONGBINDINGTYPE,
+	            expressionType, FormulaConstants.EXPRESSION_TYPE_ELEMENT_INIT_BINDING));
+	    }
+	}
+	export class MemberListBinding extends FormulaExpression {
+	    public readonly initializers: ElementInitCollection;
+	    public readonly name: string;
+	    // eslint-disable-next-line max-len
+	    constructor(values: ExpressionObjOrImpl<FormulaMemberListBindingObj>) {
+	        check(values, 'values').not.nullOrUndefined();
+	        check(values.expressionType, 'values.expressionType').not.nullOrUndefined();
+	        check(values.initializers, 'values.initializers').not.nullOrUndefined();
+	        check(values.name, 'values.name').is.string().not.nullOrUndefined();
+	        super(ExpressionType.MemberListInitBinding, values);
+	        this.initializers = objectToElementInitializers(values.initializers);
+	        this.name = values.name;
+	    }
+	    public execute(context: FormulaExecutionContext, target?: any): void {
+	        if (target === null || target === undefined) {
+	            throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_EXPRESSIONGIVESNULLRESULT, 'target'));
+	        }
+	        if (ObjectUtils.isObject(target)) {
+	            if (context.isRestrictedApi(target) || context.isRestrictedApi(this.name)) {
+	                throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_APIISRESTRICTED, typeof target));
+	            }
+	            const memberValue = target[this.name];
+	            for (const elementInit of this.initializers) {
+	                elementInit.execute(context, memberValue);
+	            }
+	            return;
+	        }
+	        throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_INVALIDTARGETFORMBMERACCESS,
+	            getTypeName(target)));
+	    }
+	    public toObject(): FormulaMemberListBindingObj & FormulaExpressionObj {
+	        return {
+	            // eslint-disable-next-line max-len
+	            [FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: this.expressionTypeName as FormulaConstants.EXPRESSION_TYPE_LIST_BINDING,
+	            [FormulaConstants.INITIALIZERS_ATTRIBUTE]: elementInitializersToObject(this.initializers),
+	            [FormulaConstants.NAME_ATTRIBUTE]: this.name,
+	            [FormulaConstants.ORIGINAL_C_SHARP_CODE_ATTRIBUTE]: this.cSharpSourceCode,
+	            [FormulaConstants.POSITION_ATTRIBUTE]: this._pos,
+	        };
+	    }
+	    public toString(): string {
+	        if (this.cSharpSourceCode) {
+	            return this.cSharpSourceCode;
+	        }
+	        let result = this.name + ' = { ';
+	        let isFirstArgument = true;
+	        for (const bindingName in this.initializers) {
+	            if (!this.initializers.hasOwnProperty(bindingName)) {
+	                continue;
+	            }
+	            if (!isFirstArgument) {
+	                result += ', ';
+	            }
+	            const argumentValue = this.initializers[bindingName];
+	            result += argumentValue === null ? 'null' : argumentValue.toString();
+	            isFirstArgument = false;
+	        }
+	        result += ' }';
+	        return result;
+	    }
+	}
+	registerExpressionType(FormulaConstants.EXPRESSION_TYPE_LIST_BINDING, MemberListBinding);
+	export class MemberMemberBinding extends FormulaExpression {
+	    public readonly bindings: BindingCollection;
+	    public readonly name: string;
+	    // eslint-disable-next-line max-len
+	    constructor(values: ExpressionObjOrImpl<FormulaMemberMemberBindingObj>) {
+	        check(values, 'values').not.nullOrUndefined();
+	        check(values.expressionType, 'values.expressionType').not.nullOrUndefined();
+	        check(values.bindings, 'values.bindings').not.nullOrUndefined();
+	        check(values.name, 'values.name').is.string().not.nullOrUndefined();
+	        super(ExpressionType.MemberBinding, values);
+	        this.bindings = objectToBindings(values.bindings);
+	        this.name = values.name;
+	    }
+	    public execute(context: FormulaExecutionContext, target?: any): void {
+	        if (target === null || target === undefined) {
+	            throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_EXPRESSIONGIVESNULLRESULT, 'target'));
+	        }
+	        if (ObjectUtils.isObject(target)) {
+	            if (context.isRestrictedApi(target) || context.isRestrictedApi(this.name)) {
+	                throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_APIISRESTRICTED, typeof target));
+	            }
+	            const memberValue = target[this.name];
+	            if (ObjectUtils.isObject(memberValue)) {
+	                for (const binding of this.bindings) {
+	                    binding.execute(context, memberValue);
+	                }
+	                return;
+	            }
+	            throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_INVALIDTARGETFORMBMERACCESS,
+	                getTypeName(memberValue)));
+	        }
+	        throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_INVALIDTARGETFORMBMERACCESS,
+	            getTypeName(target)));
+	    }
+	    public toObject(): FormulaMemberMemberBindingObj & FormulaExpressionObj {
+	        return {
+	            // eslint-disable-next-line max-len
+	            [FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: this.expressionTypeName as FormulaConstants.EXPRESSION_TYPE_MEMBER_BINDING,
+	            [FormulaConstants.BINDINGS_ATTRIBUTE]: bindingsToObject(this.bindings),
+	            [FormulaConstants.NAME_ATTRIBUTE]: this.name,
+	            [FormulaConstants.ORIGINAL_C_SHARP_CODE_ATTRIBUTE]: this.cSharpSourceCode,
+	            [FormulaConstants.POSITION_ATTRIBUTE]: this._pos,
+	        };
+	    }
+	    public toString(): string {
+	        if (this.cSharpSourceCode) {
+	            return this.cSharpSourceCode;
+	        }
+	        let result = this.name + ' = { ';
+	        let isFirstArgument = true;
+	        for (const bindingName in this.bindings) {
+	            if (!this.bindings.hasOwnProperty(bindingName)) {
+	                continue;
+	            }
+	            if (!isFirstArgument) {
+	                result += ', ';
+	            }
+	            const argumentValue = this.bindings[bindingName];
+	            result += argumentValue === null ? 'null' : argumentValue.toString();
+	            isFirstArgument = false;
+	        }
+	        result += ' }';
+	        return result;
+	    }
+	}
+	registerExpressionType(FormulaConstants.EXPRESSION_TYPE_MEMBER_BINDING, MemberMemberBinding);
+	type MemberBinding = MemberMemberBinding | MemberListBinding | MemberAssignmentBinding;
+	type MemberBindingObj = FormulaMemberMemberBindingObj | FormulaMemberListBindingObj | FormulaMemberAssignmentBindingObj;
+	export type BindingCollection = MemberBinding[];
+	export function bindingsToObjectIfNotNull(
+	    bindingCollection: BindingCollection | null | undefined
+	): FormulaMemberBindingCollectionObj | undefined {
+	    if (bindingCollection === null || bindingCollection === undefined) {
+	        return undefined;
+	    }
+	    return bindingsToObject(bindingCollection);
+	}
+	export function bindingsToObject(bindingCollection: BindingCollection): FormulaMemberBindingCollectionObj {
+	    check(bindingCollection, 'bindingCollection').is.not.nullOrUndefined();
+	    const result: FormulaMemberBindingCollectionObj = {};
+	    for (const bindingName in bindingCollection) {
+	        if (bindingCollection.hasOwnProperty(bindingName)) {
+	            const initializer = bindingCollection[bindingName];
+	            result[bindingName] = initializer.toObject();
+	        }
+	    }
+	    return result;
+	}
+	export function objectToBindingsIfNotNull(
+	    bindingCollection: BindingCollection | FormulaMemberBindingCollectionObj | MemberBindingObj[] | null | undefined
+	): BindingCollection | undefined {
+	    if (bindingCollection === null || bindingCollection === undefined) {
+	        return undefined;
+	    }
+	    return objectToBindings(bindingCollection);
+	}
+	export function objectToBindings(
+	    bindingCollection: BindingCollection | FormulaMemberBindingCollectionObj | MemberBindingObj[]
+	): BindingCollection {
+	    check(bindingCollection, 'bindingCollection').is.not.nullOrUndefined();
+	    const newBindingCollection: BindingCollection = [];
+	    if (Array.isArray(bindingCollection)) {
+	        for (const binding of bindingCollection) {
+	            if (binding instanceof FormulaExpression) {
+	                newBindingCollection.push(binding);
+	            } else {
+	                newBindingCollection.push(createMemberBinding(binding));
+	            }
+	        }
+	    } else {
+	        for (const bindingIndex in bindingCollection) {
+	            if (bindingCollection.hasOwnProperty(bindingIndex)) {
+	                const binding = bindingCollection[bindingIndex];
+	                if (binding instanceof FormulaExpression) {
+	                    newBindingCollection.push(binding);
+	                } else {
+	                    newBindingCollection.push(createMemberBinding(binding));
+	                }
+	            }
+	        }
+	    }
+	    return newBindingCollection ?? bindingCollection;
+	}
+	function createMemberBinding(binding: MemberBindingObj): MemberBinding {
+	    const expression = FormulaExpression.create(binding);
+	    switch (expression.expressionType) {
+	        case ExpressionType.MemberBinding:
+	        case ExpressionType.MemberAssignmentBinding:
+	        case ExpressionType.MemberListInitBinding:
+	            return expression as MemberBinding;
+	        default:
+	            const expectedTypes = [
+	                FormulaConstants.EXPRESSION_TYPE_MEMBER_BINDING,
+	                FormulaConstants.EXPRESSION_TYPE_LIST_BINDING,
+	                FormulaConstants.EXPRESSION_TYPE_ASSIGNMENT_BINDING,
+	            ].join(', ');
+	            throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_WRONGBINDINGTYPE,
+	                ExpressionType[expression.expressionType], expectedTypes));
+	    }
+	}
 	export type ExpressionObjOrImpl<ExpressionObjT> = {
 		readonly [key in keyof ExpressionObjT]: PickImplT<ExpressionObjT[key]>
 	};
 	type PickImplT<T> = T extends FormulaTypeReferenceObj ? T | FormulaTypeReference :
+		T extends FormulaElementInitCollectionObj ? T | ElementInitCollection :
+		T extends FormulaMemberBindingCollectionObj ? T | BindingCollection :
 		T extends FormulaArgumentCollectionObj ? T | ArgumentCollection :
 		T extends FormulaTypeArgumentCollectionObj ? T | TypeArgumentCollection :
 		T extends FormulaExpressionObj ? T | FormulaExpression :
@@ -2721,6 +3176,21 @@
 		[FormulaConstants.TYPE_ATTRIBUTE]: FormulaTypeReferenceObj | string;
 		[FormulaConstants.ARGUMENTS_ATTRIBUTE]: FormulaArgumentCollectionObj;
 	};
+	export interface FormulaNewArrayInitExpressionObj extends FormulaExpressionObj {
+		[FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: FormulaConstants.EXPRESSION_TYPE_NEW_ARRAY_INIT;
+		[FormulaConstants.TYPE_ATTRIBUTE]: FormulaTypeReferenceObj | string;
+		[FormulaConstants.INITIALIZERS_ATTRIBUTE]: FormulaArgumentCollectionObj;
+	};
+	export interface FormulaListInitExpressionObj extends FormulaExpressionObj {
+		[FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: FormulaConstants.EXPRESSION_TYPE_LIST_INIT;
+		[FormulaConstants.NEW_ATTRIBUTE]: FormulaNewExpressionObj;
+		[FormulaConstants.INITIALIZERS_ATTRIBUTE]: FormulaElementInitCollectionObj;
+	};
+	export interface FormulaMemberInitExpressionObj extends FormulaExpressionObj {
+		[FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: FormulaConstants.EXPRESSION_TYPE_MEMBER_INIT;
+		[FormulaConstants.NEW_ATTRIBUTE]: FormulaNewExpressionObj;
+		[FormulaConstants.BINDINGS_ATTRIBUTE]: FormulaMemberBindingCollectionObj;
+	};
 	export interface FormulaNewExpressionObj extends FormulaExpressionObj {
 		[FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: FormulaConstants.EXPRESSION_TYPE_NEW;
 		[FormulaConstants.TYPE_ATTRIBUTE]: FormulaTypeReferenceObj | string;
@@ -2741,11 +3211,36 @@
 		[FormulaConstants.EXPRESSION_ATTRIBUTE]?: FormulaTypeReferenceObj | string;
 		[FormulaConstants.ARGUMENTS_ATTRIBUTE]?: FormulaTypeArgumentCollectionObj;
 	}
+	export interface FormulaElementInitBindingObj extends Partial<FormulaExpressionObj> {
+		[FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: FormulaConstants.EXPRESSION_TYPE_ELEMENT_INIT_BINDING;
+		[FormulaConstants.INITIALIZERS_ATTRIBUTE]: FormulaArgumentCollectionObj;
+	}
+	export interface FormulaMemberMemberBindingObj extends Partial<FormulaExpressionObj> {
+		[FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: FormulaConstants.EXPRESSION_TYPE_MEMBER_BINDING;
+		[FormulaConstants.NAME_ATTRIBUTE]: string;
+		[FormulaConstants.BINDINGS_ATTRIBUTE]: FormulaMemberBindingCollectionObj;
+	}
+	export interface FormulaMemberListBindingObj extends Partial<FormulaExpressionObj> {
+		[FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: FormulaConstants.EXPRESSION_TYPE_LIST_BINDING;
+		[FormulaConstants.NAME_ATTRIBUTE]: string;
+		[FormulaConstants.INITIALIZERS_ATTRIBUTE]: FormulaElementInitCollectionObj;
+	}
+	export interface FormulaMemberAssignmentBindingObj extends Partial<FormulaExpressionObj> {
+		[FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: FormulaConstants.EXPRESSION_TYPE_ASSIGNMENT_BINDING;
+		[FormulaConstants.NAME_ATTRIBUTE]: string;
+		[FormulaConstants.EXPRESSION_ATTRIBUTE]: FormulaExpressionObj;
+	}
 	export interface FormulaTypeArgumentCollectionObj {
 		[name: string]: FormulaTypeReferenceObj | string;
 	}
 	export interface FormulaArgumentCollectionObj {
 		[name: string]: FormulaExpressionObj | null;
+	}
+	export interface FormulaElementInitCollectionObj {
+		[name: string]: FormulaElementInitBindingObj;
+	}
+	export interface FormulaMemberBindingCollectionObj {
+		[name: string]: FormulaMemberMemberBindingObj | FormulaMemberListBindingObj | FormulaMemberAssignmentBindingObj;
 	}
 	export class BinaryExpression extends FormulaExpression {
 		public readonly right: FormulaExpression;
@@ -3169,7 +3664,7 @@
 					} else if (typeof (value) === 'number') {
 						return String.fromCharCode(value);
 					} else {
-						throw new Error(formatString(ExpressionResources.EXCEPTION_COMPIL_NOCONVERTIONBETWEENTYPES,
+						throw new FormulaError(formatString(ExpressionResources.EXCEPTION_COMPIL_NOCONVERTIONBETWEENTYPES,
 							typeof value, this.type.toString()));
 					}
 				case FormulaConstants.KNOWN_TYPE_SYSTEM_BOOL: return value === 'true' || !!value;
@@ -3260,9 +3755,12 @@
 		}
 	}
 	registerExpressionType(FormulaConstants.EXPRESSION_TYPE_DEFAULT, DefaultExpression);
-	export function findMemberOnTarget(target: any, memberName: string): any {
+	export function findMemberOnTarget(target: any, memberName: string, context: FormulaExecutionContext): any {
 		if (target === null || target === undefined) {
 			return target[memberName]; // will throw exception
+		}
+		if (context.isRestrictedApi(target) || context.isRestrictedApi(memberName)) {
+			throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_APIISRESTRICTED, typeof target));
 		}
 		const targetIsObjectLike = (typeof (target) === 'object' || typeof (target) === 'function');
 		if (targetIsObjectLike && memberName in target) {
@@ -3287,7 +3785,8 @@
 			return instanceMember.value;
 		}
 		const allMembers = (targetIsObjectLike ? Object.keys(target) : []).join(', ');
-		throw Error(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETORESOLVEMEMBERONTYPE, memberName, targetType.name, allMembers));
+		throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETORESOLVEMEMBERONTYPE,
+			memberName, targetType.name, allMembers));
 	}
 	function getSurrogateTypeByConstructor(constructor: any) {
 		if (constructor === Number) {
@@ -3377,10 +3876,10 @@
 					if (isNullPropagation) {
 						return null;
 					}
-					throw Error(formatString(ExpressionResources.EXCEPTION_EXECUTION_CANTDONULLVALUE,
+					throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_CANTDONULLVALUE,
 						this.expression.toString(), ExpressionType[this.expressionType]));
 				}
-				const value = findMemberOnTarget(target, memberName);
+				const value = findMemberOnTarget(target, memberName, context);
 				return value;
 			} else if (rawMemberName === FormulaConstants.NOTATION_TRUE_STRING) {
 				return true;
@@ -3394,7 +3893,7 @@
 				return context.globalObject[memberName];
 			} else {
 				const allNames = [...context.argumentNames, ...Object.keys(context.globalObject ?? {})].join(', ');
-				throw Error(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETORESOLVENAME, memberName, allNames));
+				throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETORESOLVENAME, memberName, allNames));
 			}
 		}
 		public tryGetTypeReferenceAndMemberName() {
@@ -3512,7 +4011,7 @@
 					notAMemberExpression = true;
 				}
 				if (!notAMemberExpression) {
-					target = findMemberOnTarget(target, memberName);
+					target = findMemberOnTarget(target, memberName, context);
 				}
 			} else {
 				target = this.expression.execute(context);
@@ -3522,7 +4021,7 @@
 				if (isNullPropagation) {
 					return null;
 				} else {
-					throw Error(formatString(ExpressionResources.EXCEPTION_EXECUTION_CANTDONULLVALUE,
+					throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_CANTDONULLVALUE,
 						this.expression.toString(), ExpressionType[this.expressionType]));
 				}
 			}
@@ -3536,7 +4035,7 @@
 				indexes.push(value);
 			}
 			if (indexes.length === 0) {
-				throw Error(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETOBINDINDEXER,
+				throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETOBINDINDEXER,
 					typeof target === 'object' ? target.constructor.name : typeof target, ExpressionType[this.expressionType]));
 			}
 			let nextTarget = target;
@@ -3559,7 +4058,7 @@
 				} else if (isNullPropagation) {
 					nextTarget = null;
 				} else {
-					throw Error(formatString(ExpressionResources.EXCEPTION_EXECUTION_CANTDONULLVALUE,
+					throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_CANTDONULLVALUE,
 						this.expression.toString(), ExpressionType[this.expressionType]));
 				}
 			}
@@ -3646,15 +4145,15 @@
 						return null;
 					}
 					if (target === null || target === undefined) {
-						throw Error(formatString(ExpressionResources.EXCEPTION_EXECUTION_CANTDONULLVALUE,
+						throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_CANTDONULLVALUE,
 							this.expression.toString(), ExpressionType[this.expressionType]));
 					}
-					invokable = findMemberOnTarget(target, memberName);
+					invokable = findMemberOnTarget(target, memberName, context);
 					if ((invokable === null || invokable === undefined) && isNullPropagation) {
 						return null;
 					}
 					if (!(invokable instanceof Function)) {
-						throw Error(formatString(ExpressionResources.EXCEPTION_BIND_CALLMEMBERISNOTMETHOD,
+						throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_CALLMEMBERISNOTMETHOD,
 							memberName, target.constructor?.name));
 					}
 				}
@@ -3669,7 +4168,10 @@
 		}
 		private invokeTarget(invokable: any, target: any, context: FormulaExecutionContext) {
 			if (typeof invokable !== 'function') {
-				throw Error(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETOINVOKENONDELEG, typeof target));
+				throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETOINVOKENONDELEG, typeof target));
+			}
+			if (context.isRestrictedApi(invokable) || context.isRestrictedApi(target)) {
+				throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_APIISRESTRICTED, typeof target));
 			}
 			const parameterNames = getFunctionParameterNames(invokable);
 			const args = [];
@@ -3899,7 +4401,7 @@
 		public execute(context: FormulaExecutionContext) {
 			const ctr = context.resolveType(this.type);
 			if (!ctr) {
-				throw new Error(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETORESOLVETYPE, this.type));
+				throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETORESOLVETYPE, this.type));
 			}
 			const parameterNames = getFunctionParameterNames(ctr);
 			const args: any[] = [];
@@ -3977,7 +4479,7 @@
 			const typeFunction = context.resolveType(this.type);
 			const target = this.expression.execute(context);
 			if (!typeFunction) {
-				throw new Error(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETORESOLVETYPE, this.type));
+				throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETORESOLVETYPE, this.type));
 			}
 			if ('is' in typeFunction && typeof (typeFunction.is) === 'function') {
 				return typeFunction.is(target);
@@ -4174,6 +4676,7 @@
 		}
 	}
 	export interface FormulaTypeResolver {
+		isRestrictedApi(objectOrFuncOrMember: any): boolean;
 		resolveType(type: FormulaTypeReference): Function | undefined;
 	}
 	export function prepareClassOrEnum(type: Function | object): Function {
@@ -4182,9 +4685,165 @@
 		} else if (typeof (type) === 'object') {
 			return createDotNetEnum<any>(type);
 		} else {
-			throw new Error(`Unable to use object '${type}' as type for FormulaTypeResolver. Make sure it is enum(object) or function.`);
+			throw new FormulaError(`Unable to use object '${type}' as type for FormulaTypeResolver. Make sure it is enum(object) or function.`);
 		}
 	}
+	export class ListInitExpression extends FormulaExpression {
+		public readonly initializers: ElementInitCollection;
+		public readonly new: NewExpression;
+		// eslint-disable-next-line max-len
+		constructor(values: ExpressionObjOrImpl<FormulaListInitExpressionObj>) {
+			check(values, 'values').not.nullOrUndefined();
+			check(values.expressionType, 'values.expressionType').not.nullOrUndefined();
+			check(values.new, 'values.new').not.nullOrUndefined();
+			check(values.initializers, 'values.initializers').not.nullOrUndefined();
+			super(ExpressionType.ListInit, values);
+			this.initializers = objectToElementInitializers(values.initializers);
+			this.new = FormulaExpression.create(values.new) as NewExpression;
+		}
+		public execute(context: FormulaExecutionContext) {
+			const target = this.new.execute(context);
+			for (const initializer of this.initializers) {
+				initializer.execute(context, target);
+			}
+			return target;
+		}
+		public toObject(): FormulaListInitExpressionObj & FormulaExpressionObj {
+			return {
+				// eslint-disable-next-line max-len
+				[FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: this.expressionTypeName as FormulaConstants.EXPRESSION_TYPE_LIST_INIT,
+				[FormulaConstants.INITIALIZERS_ATTRIBUTE]: elementInitializersToObject(this.initializers),
+				[FormulaConstants.NEW_ATTRIBUTE]: this.new.toObject(),
+				[FormulaConstants.ORIGINAL_C_SHARP_CODE_ATTRIBUTE]: this.cSharpSourceCode,
+				[FormulaConstants.POSITION_ATTRIBUTE]: this._pos,
+			};
+		}
+		public toString(): string {
+			if (this.cSharpSourceCode) {
+				return this.cSharpSourceCode;
+			}
+			let result = this.new.toString() + ' { ';
+			let isFirstArgument = true;
+			for (const argumentName in this.initializers) {
+				if (!this.initializers.hasOwnProperty(argumentName)) {
+					continue;
+				}
+				if (!isFirstArgument) {
+					result += ', ';
+				}
+				const argumentValue = this.initializers[argumentName];
+				result += argumentValue === null ? 'null' : argumentValue.toString();
+				isFirstArgument = false;
+			}
+			result += ' }';
+			return result;
+		}
+	}
+	registerExpressionType(FormulaConstants.EXPRESSION_TYPE_LIST_INIT, ListInitExpression);
+	export class MemberInitExpression extends FormulaExpression {
+		public readonly bindings: BindingCollection;
+		public readonly new: NewExpression;
+		// eslint-disable-next-line max-len
+		constructor(values: ExpressionObjOrImpl<FormulaMemberInitExpressionObj>) {
+			check(values, 'values').not.nullOrUndefined();
+			check(values.expressionType, 'values.expressionType').not.nullOrUndefined();
+			check(values.new, 'values.new').not.nullOrUndefined();
+			check(values.bindings, 'values.bindings').not.nullOrUndefined();
+			super(ExpressionType.MemberInit, values);
+			this.bindings = objectToBindings(values.bindings);
+			this.new = FormulaExpression.create(values.new) as NewExpression;
+		}
+		public execute(context: FormulaExecutionContext) {
+			const target = this.new.execute(context);
+			for (const binding of this.bindings) {
+				binding.execute(context, target);
+			}
+			return target;
+		}
+		public toObject(): FormulaMemberInitExpressionObj & FormulaExpressionObj {
+			return {
+				// eslint-disable-next-line max-len
+				[FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: this.expressionTypeName as FormulaConstants.EXPRESSION_TYPE_MEMBER_INIT,
+				[FormulaConstants.BINDINGS_ATTRIBUTE]: bindingsToObject(this.bindings),
+				[FormulaConstants.NEW_ATTRIBUTE]: this.new.toObject(),
+				[FormulaConstants.ORIGINAL_C_SHARP_CODE_ATTRIBUTE]: this.cSharpSourceCode,
+				[FormulaConstants.POSITION_ATTRIBUTE]: this._pos,
+			};
+		}
+		public toString(): string {
+			if (this.cSharpSourceCode) {
+				return this.cSharpSourceCode;
+			}
+			let result = this.new.toString() + ' { ';
+			let isFirstArgument = true;
+			for (const argumentName in this.bindings) {
+				if (!this.bindings.hasOwnProperty(argumentName)) {
+					continue;
+				}
+				if (!isFirstArgument) {
+					result += ', ';
+				}
+				const argumentValue = this.bindings[argumentName];
+				result += argumentValue === null ? 'null' : argumentValue.toString();
+				isFirstArgument = false;
+			}
+			result += ' }';
+			return result;
+		}
+	}
+	registerExpressionType(FormulaConstants.EXPRESSION_TYPE_MEMBER_INIT, MemberInitExpression);
+	export class NewArrayInitExpression extends FormulaExpression {
+		public readonly initializers: ArgumentCollection;
+		public readonly type: FormulaTypeReference;
+		// eslint-disable-next-line max-len
+		constructor(values: ExpressionObjOrImpl<FormulaNewArrayInitExpressionObj>) {
+			check(values, 'values').not.nullOrUndefined();
+			check(values.expressionType, 'values.expressionType').not.nullOrUndefined();
+			check(values.initializers, 'values.initializers').not.nullOrUndefined();
+			check(values.type, 'values.type').not.nullOrUndefined();
+			super(ExpressionType.NewArrayInit, values);
+			this.initializers = objectToArguments(values.initializers);
+			this.type = FormulaTypeReference.create(values.type);
+		}
+		public execute(context: FormulaExecutionContext) {
+			const target: any[] = [];
+			for (const initializer of Object.values(this.initializers)) {
+				target.push(initializer.execute(context));
+			}
+			return target;
+		}
+		public toObject(): FormulaNewArrayInitExpressionObj & FormulaExpressionObj {
+			return {
+				// eslint-disable-next-line max-len
+				[FormulaConstants.EXPRESSION_TYPE_ATTRIBUTE]: this.expressionTypeName as FormulaConstants.EXPRESSION_TYPE_NEW_ARRAY_INIT,
+				[FormulaConstants.INITIALIZERS_ATTRIBUTE]: argumentsToObject(this.initializers),
+				[FormulaConstants.TYPE_ATTRIBUTE]: this.type.toObject(),
+				[FormulaConstants.ORIGINAL_C_SHARP_CODE_ATTRIBUTE]: this.cSharpSourceCode,
+				[FormulaConstants.POSITION_ATTRIBUTE]: this._pos,
+			};
+		}
+		public toString(): string {
+			if (this.cSharpSourceCode) {
+				return this.cSharpSourceCode;
+			}
+			let result = 'new ' + this.type.toString() + '[] { ';
+			let isFirstArgument = true;
+			for (const argumentName in this.initializers) {
+				if (!this.initializers.hasOwnProperty(argumentName)) {
+					continue;
+				}
+				if (!isFirstArgument) {
+					result += ', ';
+				}
+				const argumentValue = this.initializers[argumentName];
+				result += argumentValue === null ? 'null' : argumentValue.toString();
+				isFirstArgument = false;
+			}
+			result += ' }';
+			return result;
+		}
+	}
+	registerExpressionType(FormulaConstants.EXPRESSION_TYPE_NEW_ARRAY_INIT, NewArrayInitExpression);
 	/* eslint-disable @typescript-eslint/naming-convention */
 	export enum TypeNameFormattingOptions {
 		None = 0,

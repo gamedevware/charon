@@ -24,6 +24,7 @@
 #include "GameData/FLocalizedText.h"
 #include "GameData/UGameDataLibrary.h"
 #include "JsonObjectWrapper.h"
+#include "Misc/EngineVersionComparison.h"
 
 <#+
 		foreach (var typeRef in typeDef.GetReferenceTypes().Where(typeRef => typeRef is EnumDefinition || typeRef is FormulaDefinition))
@@ -73,6 +74,7 @@ public:
 	/**
 	  * De-referenced collection of documents for <#= propertyDef.Name #>. Should not be directly used.
 	  */
+	UPROPERTY()
 	mutable <#= propertyDef.Type #> <#= propertyDef.BackingField.Name #>Documents;
 <#+
 			}
@@ -82,6 +84,7 @@ public:
 	/**
 	  * De-referenced document of <#= propertyDef.Name #>. Should not be directly used.
 	  */
+	UPROPERTY()
 	mutable <#= propertyDef.Type #> <#= propertyDef.BackingField.Name #>Document;
 <#+
 			}
@@ -208,7 +211,7 @@ public:
 	  * <#= propertyDef.Description #>
 	  */
 	UFUNCTION(BlueprintCallable)
-	FVector2 GetParsed<#= propertyDef.Name #>() const;
+	FVector2D GetParsed<#= propertyDef.Name #>() const;
 <#+
 						break;
 					case "int-vector2":
@@ -217,7 +220,7 @@ public:
 	  * <#= propertyDef.Description #>
 	  */
 	UFUNCTION(BlueprintCallable)
-	FIntVector2 GetParsed<#= propertyDef.Name #>() const;
+	FIntPoint GetParsed<#= propertyDef.Name #>() const;
 <#+
 						break;
 					case "int-vector3":
@@ -377,7 +380,7 @@ FVector <#= typeDef #>::GetParsed<#= propertyDef.Name #>() const
 						break;
 					case "vector2":
 #>
-FVector2 <#= typeDef #>::GetParsed<#= propertyDef.Name #>() const
+FVector2D <#= typeDef #>::GetParsed<#= propertyDef.Name #>() const
 {
 	return UGameDataLibrary::ParseVector2(this-><#= propertyDef.Name #>);
 }
@@ -385,9 +388,9 @@ FVector2 <#= typeDef #>::GetParsed<#= propertyDef.Name #>() const
 						break;
 					case "int-vector2":
 #>
-FIntVector2 <#= typeDef #>::GetParsed<#= propertyDef.Name #>() const
+FIntPoint <#= typeDef #>::GetParsed<#= propertyDef.Name #>() const
 {
-	return UGameDataLibrary::ParseIntVector2(this-><#= propertyDef.Name #>);
+	return UGameDataLibrary::ParseFIntPoint(this-><#= propertyDef.Name #>);
 }
 <#+
 						break;

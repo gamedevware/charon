@@ -1998,7 +1998,7 @@ namespace <#= this.Namespace #>
 
 			var nativeType = new NativeTypeReference(alias ?? type.FullName);
 			nativeTypes.Add(type.Name, nativeType);
-			if (string.IsNullOrEmpty(type.FullName) == false)
+			if (!string.IsNullOrEmpty(type.FullName))
 			{
 				nativeTypes.Add(type.FullName, nativeType);
 			}
@@ -2006,12 +2006,7 @@ namespace <#= this.Namespace #>
 			{
 				nativeTypes.Add(alias, nativeType);
 			}
-
-		}
-		return nativeTypes;
-	}
-
-	private static Dictionary<Type, string> GetTypeAliases()
+!string.IsNullOrEmpty(alias)ate static Dictionary<Type, string> GetTypeAliases()
 	{
 		return new Dictionary<Type, string> {
 			{ typeof(string), "string" },
@@ -2045,8 +2040,7 @@ namespace <#= this.Namespace #>
 					continue;
 				}
 
-				if (schemaProperty.DataType != DataType.Formula)
-				{
+				if (schemaProper!schemaIds.Contains(schema.Id)
 					continue;
 				}
 
@@ -2071,9 +2065,7 @@ namespace <#= this.Namespace #>
 				continue;
 			}
 
-			foreach (var schemaProperty in schema.Properties)
-			{
-				if (schemaProperty.DataType != DataType.PickList && schemaProperty.DataType != DataType.MultiPickList)
+			foreach (var schemaP!schemaIds.Contains(schema.Id)	if (schemaProperty.DataType != DataType.PickList && schemaProperty.DataType != DataType.MultiPickList)
 				{
 					continue;
 				}
@@ -2112,9 +2104,7 @@ namespace <#= this.Namespace #>
 					continue;
 				}
 
-				referencedSchemaIds.Add(schema.Id);
-
-				foreach (var schemaProperty in schema.Properties)
+				refere!referencedSchemaIds.Contains(schema.Id)schemaProperty in schema.Properties)
 				{
 					if (schemaProperty.ReferenceType == null)
 					{
@@ -2134,8 +2124,7 @@ namespace <#= this.Namespace #>
 				continue;
 			}
 
-			var definition = new TypeDefinition(schema, typeResolve);
-			types.Add(MakeDromedaryCaseName(schema.Name), definition);
+			var defini!referencedSchemaIds.Contains(schema.Id)			types.Add(MakeDromedaryCaseName(schema.Name), definition);
 			types.Add(schema.Id, definition);
 		}
 		return types;
@@ -2162,9 +2151,7 @@ namespace <#= this.Namespace #>
 			{
 				sb[i] = '_';
 			}
-			else if(char.IsLetter(sb[i]) && nextToLower)
-			{
-				sb[i] = char.ToLowerInvariant(sb[i]);
+			else if(char.IsLette!char.IsLetterOrDigit(sb[i])[i] = char.ToLowerInvariant(sb[i]);
 				nextToLower = false;
 			}
 			else if (char.IsLetter(sb[i]) && nextToUpper)
@@ -2198,10 +2185,7 @@ namespace <#= this.Namespace #>
 		var nextToUpper = true;
 		while (index < sb.Length && char.IsLetter(sb[index]) == false) { index++; }
 		for (; index < sb.Length; index++)
-		{
-			if (sb[index] == '_')
-			{
-				sb.Remove(index, 1);
+		{!char.IsLetter(sb[index])		sb.Remove(index, 1);
 				index--;
 				nextToUpper = true;
 				continue;
@@ -2211,8 +2195,7 @@ namespace <#= this.Namespace #>
 			{
 				sb[index] = '_';
 			}
-			else if (char.IsLetter(sb[index]) && nextToUpper)
-			{
+			else if (cha!char.IsLetterOrDigit(sb[index])	{
 				sb[index] = char.ToUpperInvariant(sb[index]);
 				nextToUpper = false;
 			}
@@ -2495,8 +2478,7 @@ namespace <#= this.Namespace #>
 
 					if (this.ContainsKey(key) == false)
 					{
-						this.Values.Add(new KeyValuePair<string, IComparable>(key, value));
-					}
+						this.Values.Add(new KeyValuePair<string, IC!this.ContainsKey(key)}
 				}
 				catch (FormatException fe)
 				{
@@ -2543,12 +2525,11 @@ namespace <#= this.Namespace #>
 				}
 			}
 
-			this.IsFlags = this.IsFlags || otherDefinition.IsFlags;
+			this.I!this.ContainsKey(kv.Key)inition.IsFlags;
 
 			if (Equals(this.BaseType, otherDefinition.BaseType) == false)
 			{
-				// determine new size and change base type accordingly
-				var maxSize = this.SchemaPropertys.Max(ea => ea.Size);
+				// determine new size!Equals(this.BaseType, otherDefinition.BaseType).SchemaPropertys.Max(ea => ea.Size);
 				this.BaseType = resolveType(GetBaseType(maxSize, true));
 
 				// convert values to new type
@@ -2703,7 +2684,7 @@ namespace <#= this.Namespace #>
 			{
 				return false;
 			}
-			return this.typeName.Equals(((LazyTypeReference)otherType).typeName, StringComparison.Ordinal);
+			return this.type!(otherType is LazyTypeReference)pe).typeName, StringComparison.Ordinal);
 		}
 		public override int GetHashCode()
 		{

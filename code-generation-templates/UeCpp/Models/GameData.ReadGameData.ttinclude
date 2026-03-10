@@ -101,15 +101,14 @@ TSharedRef<IGameDataReader> <#= context.TargetLanguage.GameDataClassName #>::Cre
 	}
 }
 
-PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #if UE_VERSION_NEWER_THAN(5, 4, -1)
-static constexpr EObjectFlags GARBAGE_FLAG = EObjectFlags::RF_MirroredGarbage;
+static constexpr EObjectFlags <#= context.TargetLanguage.GameDataClassName #>_GARBAGE_FLAG = static_cast<EObjectFlags>(0x40000000); /* EObjectFlags::RF_MirroredGarbage */
 #else
-static constexpr EObjectFlags GARBAGE_FLAG = EObjectFlags::RF_Garbage;
-#endif
-PRAGMA_ENABLE_DEPRECATION_WARNINGS
+static constexpr EObjectFlags <#= context.TargetLanguage.GameDataClassName #>_GARBAGE_FLAG = static_cast<EObjectFlags>(0x40000000); /* EObjectFlags::RF_Garbage */
 
-static UObject* FindDocumentByUniqueName(const FString& ObjectName, TSharedPtr<TMap<FString, UObject*>> DocumentsById)
+#endif
+
+static UObject* <#= context.TargetLanguage.GameDataClassName #>_FindDocumentByUniqueName(const FString& ObjectName, TSharedPtr<TMap<FString, UObject*>> DocumentsById)
 {
 	if (!DocumentsById)
 	{
@@ -123,13 +122,13 @@ static UObject* FindDocumentByUniqueName(const FString& ObjectName, TSharedPtr<T
 	}
 
 	UObject* FoundObject = const_cast<UObject*>(*ConstFoundObject);
-	if (FoundObject->HasAnyFlags(GARBAGE_FLAG))
+	if (FoundObject->HasAnyFlags(<#= context.TargetLanguage.GameDataClassName #>_GARBAGE_FLAG))
 	{
 		return nullptr; // object has been marked for deletion
 	}
 	return FoundObject;
 }
-static void FillDocumentByUniqueNameMap(UObject* Outer, TSharedPtr<TMap<FString, UObject*>>& DocumentsById)
+static void <#= context.TargetLanguage.GameDataClassName #>_FillDocumentByUniqueNameMap(UObject* Outer, TSharedPtr<TMap<FString, UObject*>>& DocumentsById)
 {
 	if (!Outer) {
 		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Can't fill documents by unique name map for `null` Outer."));
@@ -149,7 +148,7 @@ static void FillDocumentByUniqueNameMap(UObject* Outer, TSharedPtr<TMap<FString,
 	ForEachObjectWithOuter(Outer, [DocumentsById](UObject* Child)
 	{
 		// skip already deleted or non-document objects
-		if (Child->HasAnyFlags(GARBAGE_FLAG) ||
+		if (Child->HasAnyFlags(<#= context.TargetLanguage.GameDataClassName #>_GARBAGE_FLAG) ||
 			!Cast<<#= context.TargetLanguage.DocumentClassName #>>(Child))
 		{
 			return;
@@ -165,7 +164,7 @@ static void FillDocumentByUniqueNameMap(UObject* Outer, TSharedPtr<TMap<FString,
 	},
 	/* bIncludeNested */ true);
 }
-static void ClearDocumentByUniqueNameMap(TSharedPtr<TMap<FString, UObject*>> DocumentsById)
+static void <#= context.TargetLanguage.GameDataClassName #>_ClearDocumentByUniqueNameMap(TSharedPtr<TMap<FString, UObject*>> DocumentsById)
 {
 	if (!DocumentsById)
 	{
@@ -175,7 +174,7 @@ static void ClearDocumentByUniqueNameMap(TSharedPtr<TMap<FString, UObject*>> Doc
 }
 
 template <typename DocumentType>
-static FString MakeUniqueDocumentName(DocumentType* Document)
+static FString <#= context.TargetLanguage.GameDataClassName #>_MakeUniqueDocumentName(DocumentType* Document)
 {
 	if (!Document) {
 		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Can't make unique name for `null` document."));
@@ -189,7 +188,21 @@ static FString MakeUniqueDocumentName(DocumentType* Document)
 	return DocumentUniqueName;
 }
 
-static void TryRenameDocument(UObject* Document, const TCHAR* NewName)
+static UObject* <#= context.TargetLanguage.GameDataClassName #>_ResetDocumentToDefaultState(UObject* Document)
+{
+	if (!Document)
+	{
+		return nullptr;
+	}
+
+	UObject* DefaultObj = Document->GetClass()->GetDefaultObject();
+	// Copy all UPROPERTY values from the default object to 'Document'
+    UEngine::CopyPropertiesForUnrelatedObjects(DefaultObj, Document);
+
+	return Document;
+}
+
+static void <#= context.TargetLanguage.GameDataClassName #>_TryRenameDocument(UObject* Document, const TCHAR* NewName)
 {
 	if (!Document) {
 		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Can't rename `null` document."));
@@ -207,7 +220,7 @@ static void TryRenameDocument(UObject* Document, const TCHAR* NewName)
 	}
 }
 
-static void TryDeleteDocument(UObject* Document)
+static void <#= context.TargetLanguage.GameDataClassName #>_TryDeleteDocument(UObject* Document)
 {
 	if (!Document) {
 		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Can't delete `null` document."));
@@ -217,7 +230,7 @@ static void TryDeleteDocument(UObject* Document)
 	Document->Rename(nullptr, GetTransientPackage(), REN_DontCreateRedirectors | REN_NonTransactional | REN_ForceNoResetLoaders);
 }
 
-static void MarkChildDocumentsForDeletion(UObject* Document)
+static void <#= context.TargetLanguage.GameDataClassName #>_MarkChildDocumentsForDeletion(UObject* Document)
 {
 	if (!Document) {
 		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Can't mark as orphand children for deletion for `null` document."));
@@ -237,7 +250,7 @@ static void MarkChildDocumentsForDeletion(UObject* Document)
 	/* bIncludeNested */ false);
 }
 
-static void SweepMarkedChildDocuments(UObject* Document)
+static void <#= context.TargetLanguage.GameDataClassName #>_SweepMarkedChildDocuments(UObject* Document)
 {
 	if (!Document) {
 		UE_LOG(Log<#= context.TargetLanguage.GameDataClassName #>, Error, TEXT("Can't sweep orphained children for `null` document."));
@@ -248,7 +261,7 @@ static void SweepMarkedChildDocuments(UObject* Document)
 	ForEachObjectWithOuter(Document, [&](UObject* Child)
 	{
 		// skip already deleted or non-document objects
-		if (Child->HasAnyFlags(GARBAGE_FLAG) ||
+		if (Child->HasAnyFlags(<#= context.TargetLanguage.GameDataClassName #>_GARBAGE_FLAG) ||
 			!Cast<<#= context.TargetLanguage.DocumentClassName #>>(Child) ||
 			!Child->HasAnyFlags(EObjectFlags::RF_TagGarbageTemp))
 		{
@@ -277,8 +290,8 @@ bool <#= context.TargetLanguage.GameDataClassName #>::ReadGameData(const TShared
 		return false;
 	}
 
-	FillDocumentByUniqueNameMap(this, this->NameLookupDuringLoading);
-	MarkChildDocumentsForDeletion(this);
+	<#= context.TargetLanguage.GameDataClassName #>_FillDocumentByUniqueNameMap(this, this->NameLookupDuringLoading);
+	<#= context.TargetLanguage.GameDataClassName #>_MarkChildDocumentsForDeletion(this);
 
 	while (Reader->GetNotation() != EJsonNotation::ObjectEnd)
 	{
@@ -378,8 +391,8 @@ bool <#= context.TargetLanguage.GameDataClassName #>::ReadGameData(const TShared
 		return false;
 	}
 
-	ClearDocumentByUniqueNameMap(this->NameLookupDuringLoading);
-	SweepMarkedChildDocuments(this);
+	<#= context.TargetLanguage.GameDataClassName #>_ClearDocumentByUniqueNameMap(this->NameLookupDuringLoading);
+	<#= context.TargetLanguage.GameDataClassName #>_SweepMarkedChildDocuments(this);
 
 	return true;
 }
@@ -529,11 +542,12 @@ bool <#= context.TargetLanguage.GameDataClassName #>::ReadDocument
 					if (propertyDef.SchemaProperty.Name == "Id")
 					{
 #>
-			FString NewName = MakeUniqueDocumentName(Document);
-			UObject* ExistingObject = FindDocumentByUniqueName(NewName, this->NameLookupDuringLoading);
+			FString NewName = <#= context.TargetLanguage.GameDataClassName #>_MakeUniqueDocumentName(Document);
+			UObject* ExistingObject = <#= context.TargetLanguage.GameDataClassName #>_FindDocumentByUniqueName(NewName, this->NameLookupDuringLoading);
 			<#= typeDef #>* ExistingDocument = Cast<<#= typeDef #>>(ExistingObject);
 			if (ExistingDocument)
 			{
+				<#= context.TargetLanguage.GameDataClassName #>_ResetDocumentToDefaultState(ExistingDocument);
 <#+
 						foreach (var propertyNameToCopy in typeDef.Properties.Select(propertyDefToCopy => propertyDefToCopy.RawName ?? propertyDefToCopy.Name))
 						{
@@ -543,20 +557,20 @@ bool <#= context.TargetLanguage.GameDataClassName #>::ReadDocument
 						}
 #>
 
-				TryDeleteDocument(Document);
+				<#= context.TargetLanguage.GameDataClassName #>_TryDeleteDocument(Document);
 				Document->MarkAsGarbage();
 				Document = ExistingDocument;
 
-				MarkChildDocumentsForDeletion(ExistingDocument);
+				<#= context.TargetLanguage.GameDataClassName #>_MarkChildDocumentsForDeletion(ExistingDocument);
 			}
 			else if (ExistingObject)
 			{
-				TryDeleteDocument(ExistingObject);
-				TryRenameDocument(Document, *NewName);
+				<#= context.TargetLanguage.GameDataClassName #>_TryDeleteDocument(ExistingObject);
+				<#= context.TargetLanguage.GameDataClassName #>_TryRenameDocument(Document, *NewName);
 			}
 			else
 			{
-				TryRenameDocument(Document, *NewName);
+				<#= context.TargetLanguage.GameDataClassName #>_TryRenameDocument(Document, *NewName);
 			}
 <#+
 					}
@@ -590,7 +604,7 @@ bool <#= context.TargetLanguage.GameDataClassName #>::ReadDocument
 			}
 #>
 
-	SweepMarkedChildDocuments(Document);
+	<#= context.TargetLanguage.GameDataClassName #>_SweepMarkedChildDocuments(Document);
 
 	return true;
 }

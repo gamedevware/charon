@@ -7,6 +7,7 @@
 			expressionGenericArguments[parameterIndex] = formulaDef.ParameterTypes[parameterIndex].TypeName;
 		}
 		expressionGenericArguments[expressionGenericArguments.Length - 1] = formulaDef.ReturnType.TypeName;
+		var hasReturnValue = !string.Equals(formulaDef.ReturnType.TypeName, "void", StringComparison.Ordinal);
 		var functionType = "Func<" + string.Join(", ", expressionGenericArguments) + ">";
 		var invokeParameters = string.Join(", ", formulaDef.ParameterNames.Select((n, i) => formulaDef.ParameterTypes[i] + " " + n).ToArray());
 		var lambdaExpressionType = "Expression<" + functionType + ">";
@@ -49,7 +50,7 @@
 			var parameters = new ParameterExpression[]
 			{
 <#+
-		for(var p = 0; p < formulaDef.ParameterNames.Length; p++)
+		for (var p = 0; p < formulaDef.ParameterNames.Length; p++)
 		{
 #>
 				Expression.Parameter(typeof(<#= formulaDef.ParameterTypes[p] #>), "<#= formulaDef.ParameterRawNames[p] #>"),
@@ -65,7 +66,7 @@
 			if (typeof(object).Name == string.Empty)
 			{
 <#+
-		foreach(var knownType in formulaDef.Specification.GetKnownTypes())
+		foreach (var knownType in formulaDef.Specification.GetKnownTypes())
 		{
 #>
 				new System.Runtime.CompilerServices.StrongBox<<#= knownType #>>(default(<#= knownType #>));
@@ -80,7 +81,7 @@
 			if (expressionTree == null) throw new ArgumentNullException(nameof(expressionTree));
 
 			var syntaxTreeNode = new GameDevWare.Dynamic.Expressions.SyntaxTreeNode((IDictionary<string, object>)expressionTree);
-			this.expression = (<#=lambdaExpressionType#>)<#= formulaDef #>.ExpressionBinder.Bind(syntaxTreeNode, this.globalExpression);
+			this.expression = (<#= lambdaExpressionType #>)<#= formulaDef #>.ExpressionBinder.Bind(syntaxTreeNode, this.globalExpression);
 		}
 
 		/// <summary>
@@ -95,7 +96,7 @@
 		public <#= formulaDef.ReturnType #> Invoke(<#= invokeParameters #>)
 		{
 			var __fn = this.CompileAot();
-			return __fn.Invoke(<#= string.Join(", ", formulaDef.ParameterNames) #>);
+			<#= ( hasReturnValue ? "return " : "") #>__fn.Invoke(<#= string.Join(", ", formulaDef.ParameterNames) #>);
 		}
 
 		public <#= functionType #> CompileAot()
@@ -198,7 +199,13 @@
 			var __globalObject = new Formulas.VariableValue(this.globalObject);
 			var __executionContext = new Formulas.FormulaExecutionContext(__lambdaArguments, typeResolver: <#= formulaDef #>.TypeResolver, global: __globalObject, autoNullPropagation: this.AutoNullPropagation);
 			var __result = this.expression.Execute(__executionContext);
-			return __result.To<<#= formulaDef.ReturnType #>>();
+<#+
+		if (hasReturnValue)
+		{
+#>			return __result.To<<#= formulaDef.ReturnType #>>();
+<#+
+		}
+#>
 		}
 #else
 		public <#= formulaDef #>(IReadOnlyDictionary<string, object> expressionTree)

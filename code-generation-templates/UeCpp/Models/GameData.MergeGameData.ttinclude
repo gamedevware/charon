@@ -109,7 +109,7 @@ TSharedPtr<FJsonObject> <#= context.TargetLanguage.GameDataClassName #>::MergeGa
 	return MergedGameData;
 }
 
-struct ToIdMapper
+struct <#= context.TargetLanguage.GameDataClassName #>_ToIdMapper
 {
 	static TSharedPtr<FJsonObject> ToDocumentById(TSharedRef<FJsonValue> Collection)
 	{
@@ -158,8 +158,8 @@ struct ToIdMapper
 template <typename DocumentType>
 TSharedPtr<FJsonValue> <#= context.TargetLanguage.GameDataClassName #>::MergeDocumentCollection(TSharedRef<FJsonValue> OriginalCollection, TSharedRef<FJsonValue> ModifiedCollection, bool PurgeRest)
 {
-	auto OriginalCollectionById = ToIdMapper::ToDocumentById(OriginalCollection);
-	auto ModifiedCollectionById = ToIdMapper::ToDocumentById(ModifiedCollection);
+	auto OriginalCollectionById = <#= context.TargetLanguage.GameDataClassName #>_ToIdMapper::ToDocumentById(OriginalCollection);
+	auto ModifiedCollectionById = <#= context.TargetLanguage.GameDataClassName #>_ToIdMapper::ToDocumentById(ModifiedCollection);
 	auto MergedCollectionById = MakeShared<FJsonObject>();
 	auto DocumentIds = PurgeRest ? MergeKeys(ModifiedCollectionById->Values, TMap<FString, TSharedPtr<FJsonValue>>()) : MergeKeys(OriginalCollectionById->Values, ModifiedCollectionById->Values);
 

@@ -133,7 +133,7 @@
 					continue;
 
 				var value = default(object);
-				if (document.TryGetValue(schemaProperty.Name, out value) == false || value == null)
+				if (!document.TryGetValue(schemaProperty.Name, out value) || value == null)
 					continue;
 
 				var subSchema = this.metaData.GetSchema(schemaProperty.ReferenceType.Id);

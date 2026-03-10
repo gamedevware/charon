@@ -630,11 +630,16 @@
 			var nativeTypes = new Dictionary<string, NativeTypeReference>();
 			foreach (var typeWithNativeName in types)
 			{
+				var type = typeWithNativeName.Key;
 				var nativeType = new NativeTypeReference(typeWithNativeName.Value);
-				nativeTypes.Add(typeWithNativeName.Key.Name, nativeType);
-				if (!string.IsNullOrEmpty(typeWithNativeName.Key.FullName))
+				nativeTypes.Add(type.Name, nativeType);
+				if (!string.IsNullOrEmpty(type.FullName))
 				{
-					nativeTypes.Add(typeWithNativeName.Key.FullName, nativeType);
+					nativeTypes.Add(type.FullName, nativeType);
+				}
+				if (CSharpLanguage.TryGetAliasFor(type, out var alias))
+				{
+					nativeTypes.Add(alias, nativeType);
 				}
 			}
 			return nativeTypes;
@@ -862,7 +867,7 @@
 			return nativeTypes;
 		}
 
-		private static bool TryGetAliasFor(Type type, out string alias)
+		public static bool TryGetAliasFor(Type type, out string alias)
 		{
 			return AliasByType.TryGetValue(type, out alias);
 		}
@@ -1758,11 +1763,16 @@
 			var nativeTypes = new Dictionary<string, NativeTypeReference>();
 			foreach (var typeWithNativeName in types)
 			{
+				var type = typeWithNativeName.Key;
 				var nativeType = new NativeTypeReference(typeWithNativeName.Value);
-				nativeTypes.Add(typeWithNativeName.Key.Name, nativeType);
-				if (!string.IsNullOrEmpty(typeWithNativeName.Key.FullName))
+				nativeTypes.Add(type.Name, nativeType);
+				if (!string.IsNullOrEmpty(type.FullName))
 				{
-					nativeTypes.Add(typeWithNativeName.Key.FullName, nativeType);
+					nativeTypes.Add(type.FullName, nativeType);
+				}
+				if (CSharpLanguage.TryGetAliasFor(type, out var alias))
+				{
+					nativeTypes.Add(alias, nativeType);
 				}
 			}
 			return nativeTypes;
@@ -1999,12 +2009,16 @@
 			var nativeTypes = new Dictionary<string, NativeTypeReference>();
 			foreach (var typeWithNativeName in types)
 			{
+				var type = typeWithNativeName.Key;
 				var nativeType = new NativeTypeReference(typeWithNativeName.Value);
-				nativeTypes.Add(typeWithNativeName.Key.Name, nativeType);
-
-				if (!string.IsNullOrEmpty(typeWithNativeName.Key.FullName))
+				nativeTypes.Add(type.Name, nativeType);
+				if (!string.IsNullOrEmpty(type.FullName))
 				{
-					nativeTypes.Add(typeWithNativeName.Key.FullName, nativeType);
+					nativeTypes.Add(type.FullName, nativeType);
+				}
+				if (CSharpLanguage.TryGetAliasFor(type, out var alias))
+				{
+					nativeTypes.Add(alias, nativeType);
 				}
 			}
 
@@ -2477,12 +2491,16 @@
 			var nativeTypes = new Dictionary<string, NativeTypeReference>();
 			foreach (var typeWithNativeName in types)
 			{
+				var type = typeWithNativeName.Key;
 				var nativeType = new NativeTypeReference(typeWithNativeName.Value);
-				nativeTypes.Add(typeWithNativeName.Key.Name, nativeType);
-
-				if (!string.IsNullOrEmpty(typeWithNativeName.Key.FullName))
+				nativeTypes.Add(type.Name, nativeType);
+				if (!string.IsNullOrEmpty(type.FullName))
 				{
-					nativeTypes.Add(typeWithNativeName.Key.FullName, nativeType);
+					nativeTypes.Add(type.FullName, nativeType);
+				}
+				if (CSharpLanguage.TryGetAliasFor(type, out var alias))
+				{
+					nativeTypes.Add(alias, nativeType);
 				}
 			}
 
@@ -3127,11 +3145,16 @@
 			var nativeTypes = new Dictionary<string, NativeTypeReference>();
 			foreach (var typeWithNativeName in types)
 			{
+				var type = typeWithNativeName.Key;
 				var nativeType = new NativeTypeReference(typeWithNativeName.Value);
-				nativeTypes.Add(typeWithNativeName.Key.Name, nativeType);
-				if (!string.IsNullOrEmpty(typeWithNativeName.Key.FullName))
+				nativeTypes.Add(type.Name, nativeType);
+				if (!string.IsNullOrEmpty(type.FullName))
 				{
-					nativeTypes.Add(typeWithNativeName.Key.FullName, nativeType);
+					nativeTypes.Add(type.FullName, nativeType);
+				}
+				if (CSharpLanguage.TryGetAliasFor(type, out var alias))
+				{
+					nativeTypes.Add(alias, nativeType);
 				}
 			}
 			return nativeTypes;
@@ -3322,7 +3345,17 @@
 		{
 			if (fieldName == null) throw new ArgumentNullException(nameof(fieldName));
 
-			return ValidateCppIdentifier("_" + MakePascalCaseIdentifier(fieldName));
+			int underscoreCount = 0;
+			for (int charIndex = 0; charIndex < fieldName.Length; charIndex++)
+			{
+				if (fieldName[charIndex] != '_')
+				{
+					break;
+				}
+				underscoreCount++;
+			}
+
+			return ValidateCppIdentifier(new String('_', Math.Max(1, underscoreCount)) + MakeDromedaryCaseName(fieldName.Substring(underscoreCount)));
 		}
 		/// <inheritdoc />
 		public override string MakePropertyName(string propertyName)
@@ -3394,11 +3427,16 @@
 			var nativeTypes = new Dictionary<string, NativeTypeReference>();
 			foreach (var typeWithNativeName in types)
 			{
+				var type = typeWithNativeName.Key;
 				var nativeType = new NativeTypeReference(typeWithNativeName.Value);
-				nativeTypes.Add(typeWithNativeName.Key.Name, nativeType);
-				if (!string.IsNullOrEmpty(typeWithNativeName.Key.FullName))
+				nativeTypes.Add(type.Name, nativeType);
+				if (!string.IsNullOrEmpty(type.FullName))
 				{
-					nativeTypes.Add(typeWithNativeName.Key.FullName, nativeType);
+					nativeTypes.Add(type.FullName, nativeType);
+				}
+				if (CSharpLanguage.TryGetAliasFor(type, out var alias))
+				{
+					nativeTypes.Add(alias, nativeType);
 				}
 			}
 			return nativeTypes;
@@ -5367,10 +5405,10 @@
 					output.Append(Environment.NewLine);
 					for (var i = 0; i < System.Linq.Enumerable.Count(stack, t => t != ReaderToken.Member && t != ReaderToken.None) + endingTokenIndent; i++)
 					{
-						output.Append("\t");
+						output.Append('\t');
 					}
 				}
-				else output.Append(" ");
+				else output.Append(' ');
 
 				output.Append(strValue);
 
