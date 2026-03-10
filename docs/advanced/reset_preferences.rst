@@ -19,6 +19,5 @@ CLI Example:
 See also
 --------
 
-- :doc:`Configuration Reference <configuration>`
 - :doc:`Working with Logs <logs>`
 - :doc:`Command Line Reference <command_line>`

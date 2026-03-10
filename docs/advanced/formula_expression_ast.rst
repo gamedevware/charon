@@ -113,8 +113,8 @@ Reference implementations exist for C#, TypeScript, and C++.
 
     .. tab-item:: TypeScript Interfaces
 
-        .. code-block:: json
-        
+        .. code-block:: typescript
+
             export type FormulaExpressionObj = UnaryExpressionObj | BinaryExpressionObj | ConditionExpressionObj | ConstantExpressionObj |
                 ConvertExpressionObj | DefaultExpressionObj | IndexExpressionObj | InvokeExpressionObj | LambdaExpressionObj | MemberExpressionObj |
                 NewArrayBoundExpressionObj | NewArrayInitExpressionObj | ListInitExpressionObj | MemberInitExpressionObj | NewExpressionObj |
