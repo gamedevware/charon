@@ -49,16 +49,105 @@ Or you can access specific documents by their ``Id`` or *Unique* properties:
 Formulas
 --------
 
-Formulas are executed with Invoke method:
+Each formula property in your schema generates a dedicated ``partial class`` — for example
+a property named ``LevelUpConditionsCheck`` with return type ``bool`` and one parameter
+``stats`` of type ``HeroStats`` produces:
 
 .. code-block:: csharp
 
-  var reward = gameData.LootSettings.RewardFormula.Invoke()  // -> int
+  // Formula Signature: (HeroStats stats) -> bool
+  public partial class LevelUpConditionsCheckFormula
+  {
+      public bool Invoke(HeroStats stats);
+  }
 
-Formula's parameters are passed as arguments of ``Invoke`` method.
+Calling a Formula
+^^^^^^^^^^^^^^^^^
+
+Formula properties are stored as read-only properties on the owning document. Call
+``Invoke`` with the required arguments to evaluate the expression:
+
+.. code-block:: csharp
+
+  var hero = gameData.AllHeroes.Get("hero_01");
+  if (hero?.LevelUpConditionsCheck != null)
+  {
+      // formula: stats.Experience >= this.Levels[stats.Level].ExperienceToLevelUp
+      // where `this` is a reference to the Hero document
+      bool result = hero.LevelUpConditionsCheck.Invoke(heroStats);
+  }
+
+If evaluation or compilation fails, ``Invoke`` throws ``FormulaException`` with
+a message describing the failure and the formula expression that caused it.
+
+Formula Scope
+^^^^^^^^^^^^^
+
+Every formula expression has two implicit identifiers available without a qualifier:
+
+- ``this`` — the document instance that declares the formula property. For a formula property
+  defined on the ``Hero`` schema, ``this`` refers to the ``Hero`` object being evaluated.
+- ``GameData`` — the root ``GameData`` instance, giving access to all other documents and
+  settings.
+
+Consider a ``Hero`` schema with a numeric property ``BaseDamage`` and a formula property
+``DamageFormula`` with signature ``(int multiplier) -> int``. The formula expression can
+reference ``this.BaseDamage`` directly:
+
+.. code-block:: none
+
+  this.BaseDamage * multiplier
+
+When ``hero.DamageFormula.Invoke(/* multiplier */ 5)`` is called on a ``Hero`` whose
+``BaseDamage`` is ``10``, the expression evaluates ``10 * 5`` and returns ``50``.
+
+Formula Syntax
+^^^^^^^^^^^^^^
+
+Formula expressions use **C# 3.5 syntax** with several extensions:
+
+- ``?.`` — null-conditional member access (``this.Target?.Health``)
+- ``?[`` — null-conditional index access (``list?[0]``)
+- ``??`` — null-coalescing operator (``value ?? 0``)
+- ``**`` — exponentiation operator (``base ** exponent``)
+
+Unlike the UE C++ generator, **lambda expressions and explicit generic type arguments are
+fully supported**:
+
+.. code-block:: none
+
+  items.Where(x => x.Active).Sum(x => x.Value)
+
+Member and method dispatch is **dynamic**: property and method names are resolved at
+evaluation time against the actual object instance. This means type mismatches surface at
+runtime (as an ``FormulaException``) rather than at compile time.
+
+Supported value types are the standard .NET primitives (``bool``, ``int``, ``long``,
+``float``, ``double``, ``string``, ``DateTime``, ``TimeSpan``) plus any type explicitly
+registered in the formula's known-types list via the ``Specification`` field of the schema
+property.
+
+Generated Code Contract
+-----------------------
+
+The generated C# API is **read-only by design**:
+
+- Document classes expose only public *getters* — there are no public property setters.
+- Collections are typed as ``IReadOnlyList<T>`` or ``IReadOnlyDictionary<TKey, TValue>``.
+- After the ``GameData`` constructor returns, all documents and collections are **frozen**. Attempting to modify internal state via reflection or unsafe casts will corrupt the object graph.
+- Some properties — notably resolved cross-document references and formula results — are computed lazily on first access and cached internally. This is an implementation detail; the observable value never changes after load.
+
+The intended usage pattern is: **load once, read many times, never write**.
+
+.. note::
+   Do not assign to, replace, or clear any collection or document property obtained from
+   ``GameData`` or its documents. To add computed or derived data, extend the generated
+   classes with :ref:`partial classes <partial-classes>` instead.
 
 Extension of Generated Code
 -------------------------
+
+.. _partial-classes:
 
 Partial Classes and Methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

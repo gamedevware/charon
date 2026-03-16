@@ -54,7 +54,124 @@ You can access your documents as a list:
 Formulas
 --------
 
-Formulas are currently not supported.
+Formulas are supported when the plugin has the ``CHARON_FEATURE_FORMULAS_V2=1`` compilation
+constant enabled (available since plugin version 2025.2.x).
+
+Each formula property in your schema generates a dedicated ``UObject`` subclass — for example
+a property named ``LevelUpConditionsCheck`` with return type ``System.Boolean`` and one parameter
+``stats`` of type ``UObject`` produces:
+
+.. code-block:: cpp
+
+  // Formula Signature: (UObject stats) -> System.Boolean
+  UCLASS(BlueprintType)
+  class ULevelUpConditionsCheckFormula : public UObject
+  {
+      GENERATED_BODY()
+  public:
+      UFUNCTION(BlueprintCallable)
+      bool Invoke(UObject* Stats) const;
+  };
+
+The generated ``Invoke`` method is ``BlueprintCallable``, so it is usable both from C++ and
+from Blueprint graphs without any additional work.
+
+Calling a Formula
+^^^^^^^^^^^^^^^^^
+
+Formula properties are stored as ``UPROPERTY`` pointers on the owning document. Call
+``Invoke`` with the required arguments to evaluate the expression:
+
+.. code-block:: cpp
+
+  UHeroStats* Stats; // context for level condition checks
+  UHero* Hero = GameData->AllHeroes.FindRef(TEXT("hero_01"));
+  if (Hero && Hero->LevelUpConditionsCheck)
+  {
+      // for example formula is: Stats.Experience >= this.Levels[Stats.Level].ExperienceToLevelUp
+      // where `this` is a reference to the `UHero` document.
+      bool bCheckResult = Hero->LevelUpConditionsCheck->Invoke(Stats /* UObject* Stats */);
+  }
+
+If the formula's expression tree is missing, or if evaluation fails at runtime, ``Invoke``
+logs an error to the formula's dedicated log category and returns the default value for the
+return type (e.g. ``false`` for ``bool``, ``0`` for numeric types).
+
+Formula Scope
+^^^^^^^^^^^^^
+
+Every formula expression has two implicit identifiers available without a qualifier:
+
+- ``this`` — the document instance that declares the formula property. For a formula property
+  defined on the ``Hero`` schema, ``this`` refers to the ``UHero`` object being
+  evaluated.
+- ``GameData`` — the root ``UGameData`` instance, giving access to all other documents and
+  settings.
+
+Consider a ``Hero`` schema with a numeric property ``BaseDamage`` and a formula property
+``DamageFormula`` with signature ``(int32 Multiplier) -> int32``. The formula expression
+can reference ``this.BaseDamage`` directly:
+
+.. code-block:: none
+
+  this.BaseDamage * Multiplier
+
+When ``Hero->DamageFormula->Invoke(/* Multiplier */ 5)`` is called on a ``Hero`` whose ``BaseDamage`` is ``10``, the expression
+evaluates ``10 * 5`` and returns ``50``.
+
+Formula Syntax
+^^^^^^^^^^^^^^
+
+Formula expressions use **C# 3.5 syntax** with several extensions:
+
+- ``?.`` — null-conditional member access (``this.Target?.Health``)
+- ``?[`` — null-conditional index access (``list?[0]``)
+- ``??`` — null-coalescing operator (``value ?? 0``)
+- ``**`` — exponentiation operator (``base ** exponent``)
+
+The following C# features are **not supported**:
+
+- Lambda expressions (``x => expr``) — see below.
+- Generic type arguments (``SomeMethod<T>()``) — type arguments cannot be specified
+  explicitly.
+
+Member and method dispatch is **dynamic**: property and method names are resolved at
+evaluation time against the actual ``UObject`` (or ``UStruct``) instance passed as an
+argument. Any ``UObject`` that has an ``Invoke(...)``
+``UFUNCTION`` is treated as a callable. This means type mismatches surface at runtime
+rather than at compile time.
+
+Supported value types are the standard Blueprint primitives (``bool``, ``int32``, ``int64``,
+``float``, ``double``, ``FString``, ``FText``, ``FTimespan``, ``FDateTime``) plus any
+``UObject*`` and ``UStruct`` registered with Unreal Engine's reflection system.
+
+Lambda Expressions
+^^^^^^^^^^^^^^^^^^
+
+Lambda expressions (``x => expr``, ``(x, y) => expr``) are parsed but are **not
+implemented** — calling ``Invoke`` on a formula that contains a lambda returns the default
+value and logs an ``UnsupportedExpression`` error.
+
+Generated Code Contract
+-----------------------
+
+Document properties are declared as public ``UPROPERTY`` fields and collections as
+``TArray<T*>`` / ``TMap<FString, T*>``. These are intentionally mutable for two reasons:
+
+- **Blueprint compatibility** — Blueprint nodes read and write ``UPROPERTY`` fields
+  directly; getter-only accessors are not reachable from Blueprints.
+- **UObject lifecycle** — UE's garbage collector tracks references through ``UPROPERTY``
+  metadata, which requires fields to be declared in the standard way.
+
+Treat the loaded data as **logically read-only** even though the language does not
+enforce it. Do not assign to, replace, or clear any field or collection on a document
+obtained from a loaded ``UGameData`` instance — mutating loaded data produces undefined
+behaviour and is not persisted to the source file.
+
+.. note::
+   To add derived or cached per-document state, subclass the relevant document class or
+   keep a separate runtime data structure. Do not write to the generated fields after
+   ``TryLoad`` returns.
 
 Extension of Generated Code
 -------------------------
