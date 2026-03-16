@@ -188,6 +188,7 @@ Further Reading
    :titlesonly:
 
    /advanced/command_line
+   /advanced/mcp
    /advanced/game_data_structure
    /advanced/formula_expression_ast
    /web/rest
