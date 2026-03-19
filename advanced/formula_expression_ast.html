@@ -1,0 +1,1140 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formula Expression AST &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="UI Extensions" href="extensions/overview.html" />
+    <link rel="prev" title="Game Data Structure" href="game_data_structure.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html#composite-types">Composite Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Formula Expression AST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html#purpose-of-valuecontrol">Purpose of <code class="docutils literal notranslate"><span class="pre">ValueControl</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Formula Expression AST</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/advanced/formula_expression_ast.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="formula-expression-ast">
+<h1>Formula Expression AST<a class="headerlink" href="#formula-expression-ast" title="Link to this heading"></a></h1>
+<p>Formula values are stored as a JSON-encoded Abstract Syntax Tree (AST). Each node in the tree represents an expression and is identified by the <code class="docutils literal notranslate"><span class="pre">expressionType</span></code> field, which acts as a discriminator for the node type. An interpreter recursively evaluates the tree starting from the root node.</p>
+<p>Reference implementations exist for C#, TypeScript, and C++.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+Diagram</label><div class="sd-tab-content docutils">
+<div class="graphviz"><img src="../_images/graphviz-bb33483807172db16356982113df6334dc49c7ba.png" alt="digraph ExpressionAST {
+    rankdir=TB;
+    graph [fontname=&quot;Helvetica&quot;, fontsize=11, bgcolor=&quot;#f8f9fa&quot;, pad=0.4, nodesep=0.3, ranksep=0.5, splines=polyline];
+    node  [fontname=&quot;Helvetica&quot;, fontsize=10, shape=box, style=&quot;filled,rounded&quot;, height=0.3, width=1.6, fixedsize=false];
+    edge  [fontname=&quot;Helvetica&quot;, fontsize=8, arrowsize=0.6];
+
+    // Root union
+    FormulaExpressionObj [fillcolor=&quot;#4a90d9&quot;, fontcolor=&quot;white&quot;, color=&quot;#2c6fad&quot;, penwidth=2];
+
+    // Expression nodes
+    node [fillcolor=&quot;#c8e6c9&quot;, color=&quot;#388e3c&quot;];
+    UnaryExpressionObj
+    BinaryExpressionObj
+    ConditionExpressionObj
+    ConstantExpressionObj
+    ConvertExpressionObj
+    DefaultExpressionObj
+    IndexExpressionObj
+    InvokeExpressionObj
+    LambdaExpressionObj
+    MemberExpressionObj
+    NewArrayBoundExpressionObj
+    NewArrayInitExpressionObj
+    ListInitExpressionObj
+    MemberInitExpressionObj
+    NewExpressionObj
+    TypeIsExpressionObj
+    TypeOfExpressionObj
+
+    // Collection / ref types
+    node [fillcolor=&quot;#ffe082&quot;, color=&quot;#f57f17&quot;];
+    TypeReferenceObj
+    ArgumentCollectionObj
+    TypeArgumentCollectionObj
+    ElementInitCollectionObj
+    MemberBindingCollectionObj
+
+    // Binding types
+    node [fillcolor=&quot;#ce93d8&quot;, color=&quot;#6a1b9a&quot;];
+    ElementInitBindingObj
+    MemberMemberBindingObj
+    MemberListBindingObj
+    MemberAssignmentBindingObj
+
+    // ── Union membership (dashed blue) ──
+    edge [style=dashed, arrowhead=onormal, color=&quot;#4a90d9&quot;];
+    FormulaExpressionObj -&gt; {
+        UnaryExpressionObj BinaryExpressionObj ConditionExpressionObj
+        ConstantExpressionObj ConvertExpressionObj DefaultExpressionObj
+        IndexExpressionObj InvokeExpressionObj LambdaExpressionObj
+        MemberExpressionObj NewArrayBoundExpressionObj NewArrayInitExpressionObj
+        ListInitExpressionObj MemberInitExpressionObj NewExpressionObj
+        TypeIsExpressionObj TypeOfExpressionObj
+    }
+
+    // ── Composition (solid dark) ──
+    edge [style=solid, arrowhead=vee, color=&quot;#333333&quot;];
+
+    // → ArgumentCollectionObj
+    IndexExpressionObj         -&gt; ArgumentCollectionObj
+    InvokeExpressionObj        -&gt; ArgumentCollectionObj
+    LambdaExpressionObj        -&gt; ArgumentCollectionObj
+    NewArrayBoundExpressionObj -&gt; ArgumentCollectionObj
+    NewArrayInitExpressionObj  -&gt; ArgumentCollectionObj
+    NewExpressionObj           -&gt; ArgumentCollectionObj
+    ElementInitBindingObj      -&gt; ArgumentCollectionObj
+
+    // → TypeArgumentCollectionObj
+    MemberExpressionObj -&gt; TypeArgumentCollectionObj
+    TypeReferenceObj    -&gt; TypeArgumentCollectionObj
+
+    // → FormulaExpressionObj (back-refs, gray)
+    edge [color=&quot;#999999&quot;, style=dashed, arrowhead=vee];
+    ArgumentCollectionObj      -&gt; FormulaExpressionObj
+    MemberAssignmentBindingObj -&gt; FormulaExpressionObj
+
+    // → TypeReferenceObj (back-refs)
+    TypeArgumentCollectionObj -&gt; TypeReferenceObj
+    TypeReferenceObj          -&gt; TypeReferenceObj [label=&quot;self&quot;]
+
+    // Compound nodes
+    edge [style=solid, color=&quot;#333333&quot;, arrowhead=vee];
+    ListInitExpressionObj   -&gt; NewExpressionObj
+    ListInitExpressionObj   -&gt; ElementInitCollectionObj
+    MemberInitExpressionObj -&gt; NewExpressionObj
+    MemberInitExpressionObj -&gt; MemberBindingCollectionObj
+
+    // Collections → binding types
+    edge [style=dashed, color=&quot;#999999&quot;, arrowhead=vee];
+    ElementInitCollectionObj   -&gt; ElementInitBindingObj
+    MemberBindingCollectionObj -&gt; MemberMemberBindingObj
+    MemberBindingCollectionObj -&gt; MemberListBindingObj
+    MemberBindingCollectionObj -&gt; MemberAssignmentBindingObj
+
+    // Binding recursive refs
+    edge [style=solid, color=&quot;#333333&quot;, arrowhead=vee];
+    MemberMemberBindingObj -&gt; MemberBindingCollectionObj
+    MemberListBindingObj   -&gt; ElementInitCollectionObj
+}" class="graphviz" /></div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+TypeScript Interfaces</label><div class="sd-tab-content docutils">
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">UnaryExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">BinaryExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">ConditionExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">ConstantExpressionObj</span><span class="w"> </span><span class="o">|</span>
+<span class="w">    </span><span class="nx">ConvertExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">DefaultExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">IndexExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">InvokeExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">LambdaExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">MemberExpressionObj</span><span class="w"> </span><span class="o">|</span>
+<span class="w">    </span><span class="nx">NewArrayBoundExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">NewArrayInitExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">ListInitExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">MemberInitExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">NewExpressionObj</span><span class="w"> </span><span class="o">|</span>
+<span class="w">    </span><span class="nx">TypeIsExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">TypeOfExpressionObj</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">UnaryExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;UncheckedScope&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;CheckedScope&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;Group&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;UnaryPlus&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;Negate&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;NegateChecked&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;Not&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;Complement&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;expression&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">BinaryExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Divide&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;MultiplyChecked&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;Multiply&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;Power&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;Modulo&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;AddChecked&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;Add&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;SubtractChecked&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;Subtract&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;LeftShift&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;RightShift&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;GreaterThan&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;GreaterThanOrEqual&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;LessThan&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;LessThanOrEqual&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;Equal&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;NotEqual&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;And&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;Or&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;ExclusiveOr&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;AndAlso&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;OrElse&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;Coalesce&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;left&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;right&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">ConditionExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Condition&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;test&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;ifTrue&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;ifFalse&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">ConstantExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Constant&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;type&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">TypeReferenceObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;value&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">any</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">ConvertExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;TypeAs&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;Convert&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;ConvertChecked&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;type&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">TypeReferenceObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;expression&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">DefaultExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Default&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;type&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">TypeReferenceObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">IndexExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Index&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;expression&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;arguments&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">ArgumentCollectionObj</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;useNullPropagation&#39;</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">InvokeExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Invoke&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;expression&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;arguments&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">ArgumentCollectionObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">LambdaExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Lambda&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;arguments&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">ArgumentCollectionObj</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;expression&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">MemberExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;MemberResolve&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;name&#39;</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;arguments&#39;</span><span class="nx">?</span><span class="o">:</span><span class="w"> </span><span class="kt">TypeArgumentCollectionObj</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;expression&#39;</span><span class="nx">?</span><span class="o">:</span><span class="w"> </span><span class="kt">FormulaExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;useNullPropagation&#39;</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">NewArrayBoundExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;NewArrayBounds&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;type&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">TypeReferenceObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;arguments&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">ArgumentCollectionObj</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">NewArrayInitExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;NewArrayInit&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;type&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">TypeReferenceObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;initializers&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">ArgumentCollectionObj</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">ListInitExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;ListInit&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;new&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">NewExpressionObj</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;initializers&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">ElementInitCollectionObj</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">MemberInitExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;MemberInit&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;new&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">NewExpressionObj</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;bindings&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">MemberBindingCollectionObj</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">NewExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;New&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;type&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">TypeReferenceObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;arguments&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">ArgumentCollectionObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">TypeIsExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;TypeIs&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;type&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">TypeReferenceObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;expression&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">TypeOfExpressionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;TypeOf&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;type&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">TypeReferenceObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">TypeReferenceObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;name&#39;</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">?:</span><span class="w"> </span><span class="s1">&#39;MemberResolve&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;expression&#39;</span><span class="nx">?</span><span class="o">:</span><span class="w"> </span><span class="kt">TypeReferenceObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;arguments&#39;</span><span class="nx">?</span><span class="o">:</span><span class="w"> </span><span class="kt">TypeArgumentCollectionObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">ElementInitBindingObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;ElementInitBinding&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;initializers&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">ArgumentCollectionObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">MemberMemberBindingObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;MemberBinding&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;name&#39;</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;bindings&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">MemberBindingCollectionObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">MemberListBindingObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;ListBinding&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;name&#39;</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;initializers&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">ElementInitCollectionObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">MemberAssignmentBindingObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s1">&#39;expressionType&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;AssignmentBinding&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;name&#39;</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">    </span><span class="s1">&#39;expression&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">TypeArgumentCollectionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">[</span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="nx">TypeReferenceObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">ArgumentCollectionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">[</span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="nx">FormulaExpressionObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">ElementInitCollectionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">[</span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="nx">ElementInitBindingObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">MemberBindingCollectionObj</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">[</span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="nx">MemberMemberBindingObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">MemberListBindingObj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">MemberAssignmentBindingObj</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="structure">
+<h2>Structure<a class="headerlink" href="#structure" title="Link to this heading"></a></h2>
+<p>Every AST node is a JSON object with at least one field:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code> — a string that identifies the node type and determines which other fields are present.</p></li>
+</ul>
+<p>Nodes that refer to types use either a plain string (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;System.Int32&quot;</span></code>) or a <a class="reference internal" href="#type-reference"><span class="std std-ref">TypeReference</span></a> object for generic or nested types.</p>
+<p>Argument collections (<code class="docutils literal notranslate"><span class="pre">ArgumentCollectionObj</span></code>) are JSON objects where each key is either a zero-based positional index (<code class="docutils literal notranslate"><span class="pre">&quot;0&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;1&quot;</span></code>, …) or a named parameter, and each value is a child expression node (or <code class="docutils literal notranslate"><span class="pre">null</span></code> for omitted optional arguments).</p>
+</section>
+<section id="typereference">
+<span id="type-reference"></span><h2>TypeReference<a class="headerlink" href="#typereference" title="Link to this heading"></a></h2>
+<p>A type reference describes a type, including generic types. It is used wherever a type is needed (e.g. <code class="docutils literal notranslate"><span class="pre">Constant</span></code>, <code class="docutils literal notranslate"><span class="pre">Convert</span></code>, <code class="docutils literal notranslate"><span class="pre">New</span></code>).</p>
+<section id="fields">
+<h3>Fields<a class="headerlink" href="#fields" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> <em>(string)</em> — The simple or fully-qualified type name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code> <em>(string, optional)</em> — When set to <code class="docutils literal notranslate"><span class="pre">&quot;MemberResolve&quot;</span></code>, the type is resolved relative to <code class="docutils literal notranslate"><span class="pre">expression</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expression</span></code> <em>(TypeReference or string, optional)</em> — The containing namespace or type from which <code class="docutils literal notranslate"><span class="pre">name</span></code> is resolved.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arguments</span></code> <em>(object, optional)</em> — A map of generic type arguments, where keys are type parameter names and values are TypeReference objects or strings.</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">List&lt;int&gt;</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;List&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Collections.Generic&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;T&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="expression-types">
+<h2>Expression Types<a class="headerlink" href="#expression-types" title="Link to this heading"></a></h2>
+<section id="constant">
+<h3>Constant<a class="headerlink" href="#constant" title="Link to this heading"></a></h3>
+<p>Represents a literal value of a known type.</p>
+<section id="id1">
+<h4>Fields<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;Constant&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> — The type of the value (TypeReference or string).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code> — The literal value. The JSON type matches the declared type (number, string, boolean, null, etc.).</p></li>
+</ul>
+<p>Example: the integer literal <code class="docutils literal notranslate"><span class="pre">42</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Example: the string literal <code class="docutils literal notranslate"><span class="pre">&quot;hello&quot;</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.String&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="memberresolve">
+<h3>MemberResolve<a class="headerlink" href="#memberresolve" title="Link to this heading"></a></h3>
+<p>Resolves a named member (variable, property, field, method, or type) optionally relative to another expression. This is also used to reference formula parameters by name.</p>
+<section id="id2">
+<h4>Fields<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;MemberResolve&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> <em>(string)</em> — The member name to resolve.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expression</span></code> <em>(FormulaExpression or null, optional)</em> — The target object. When <code class="docutils literal notranslate"><span class="pre">null</span></code> or absent, the name is resolved in the current scope (e.g. a formula parameter or a known type).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arguments</span></code> <em>(object, optional)</em> — Generic type arguments for the member, keyed by type parameter name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">useNullPropagation</span></code> <em>(boolean)</em> — When <code class="docutils literal notranslate"><span class="pre">true</span></code>, the access uses null-safe semantics (equivalent to <code class="docutils literal notranslate"><span class="pre">?.</span></code> in C#). If <code class="docutils literal notranslate"><span class="pre">expression</span></code> evaluates to null, the result is null instead of throwing.</p></li>
+</ul>
+<p>Example: accessing <code class="docutils literal notranslate"><span class="pre">target.HP</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;HP&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;target&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Example: null-safe access <code class="docutils literal notranslate"><span class="pre">target?.HP</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;HP&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;target&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="unary">
+<h3>Unary<a class="headerlink" href="#unary" title="Link to this heading"></a></h3>
+<p>Applies a unary operator to a single operand.</p>
+<section id="id3">
+<h4>Fields<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code> — One of:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;UnaryPlus&quot;</span></code> — identity (<code class="docutils literal notranslate"><span class="pre">+x</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;Negate&quot;</span></code> — arithmetic negation (<code class="docutils literal notranslate"><span class="pre">-x</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;NegateChecked&quot;</span></code> — arithmetic negation with overflow checking</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;Not&quot;</span></code> — logical NOT (<code class="docutils literal notranslate"><span class="pre">!x</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;Complement&quot;</span></code> — bitwise complement (<code class="docutils literal notranslate"><span class="pre">~x</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;Group&quot;</span></code> — grouping parentheses, no operation change (<code class="docutils literal notranslate"><span class="pre">(x)</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;UncheckedScope&quot;</span></code> — disables overflow checking for the inner expression (<code class="docutils literal notranslate"><span class="pre">unchecked(x)</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;CheckedScope&quot;</span></code> — enables overflow checking for the inner expression (<code class="docutils literal notranslate"><span class="pre">checked(x)</span></code>)</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expression</span></code> <em>(FormulaExpression)</em> — The operand.</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">-x</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Negate&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="binary">
+<h3>Binary<a class="headerlink" href="#binary" title="Link to this heading"></a></h3>
+<p>Applies a binary operator to two operands.</p>
+<section id="id4">
+<h4>Fields<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code> — One of:</p>
+<ul class="simple">
+<li><p>Arithmetic: <code class="docutils literal notranslate"><span class="pre">&quot;Add&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;AddChecked&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Subtract&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;SubtractChecked&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Multiply&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;MultiplyChecked&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Divide&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Modulo&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Power&quot;</span></code></p></li>
+<li><p>Bitwise / Shift: <code class="docutils literal notranslate"><span class="pre">&quot;And&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Or&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ExclusiveOr&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;LeftShift&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;RightShift&quot;</span></code></p></li>
+<li><p>Comparison: <code class="docutils literal notranslate"><span class="pre">&quot;Equal&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;NotEqual&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;LessThan&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;LessThanOrEqual&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;GreaterThan&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;GreaterThanOrEqual&quot;</span></code></p></li>
+<li><p>Logical short-circuit: <code class="docutils literal notranslate"><span class="pre">&quot;AndAlso&quot;</span></code> (<code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code>), <code class="docutils literal notranslate"><span class="pre">&quot;OrElse&quot;</span></code> (<code class="docutils literal notranslate"><span class="pre">||</span></code>)</p></li>
+<li><p>Null coalescing: <code class="docutils literal notranslate"><span class="pre">&quot;Coalesce&quot;</span></code> (<code class="docutils literal notranslate"><span class="pre">??</span></code>)</p></li>
+</ul>
+<p>Variants with <code class="docutils literal notranslate"><span class="pre">Checked</span></code> suffix perform overflow-checked arithmetic.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">left</span></code> <em>(FormulaExpression)</em> — The left operand.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">right</span></code> <em>(FormulaExpression)</em> — The right operand.</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">weaponPower</span> <span class="pre">*</span> <span class="pre">targetResistance</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Multiply&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;left&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;weaponPower&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;right&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;targetResistance&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="condition">
+<h3>Condition<a class="headerlink" href="#condition" title="Link to this heading"></a></h3>
+<p>A conditional (ternary) expression: <code class="docutils literal notranslate"><span class="pre">test</span> <span class="pre">?</span> <span class="pre">ifTrue</span> <span class="pre">:</span> <span class="pre">ifFalse</span></code>.</p>
+<section id="id5">
+<h4>Fields<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;Condition&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test</span></code> <em>(FormulaExpression)</em> — The boolean condition.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ifTrue</span></code> <em>(FormulaExpression)</em> — Evaluated when <code class="docutils literal notranslate"><span class="pre">test</span></code> is true.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ifFalse</span></code> <em>(FormulaExpression)</em> — Evaluated when <code class="docutils literal notranslate"><span class="pre">test</span></code> is false.</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&gt;</span> <span class="pre">0</span> <span class="pre">?</span> <span class="pre">x</span> <span class="pre">:</span> <span class="pre">-x</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Condition&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;test&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GreaterThan&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;left&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;right&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;ifTrue&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;ifFalse&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Negate&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="convert-typeas">
+<h3>Convert / TypeAs<a class="headerlink" href="#convert-typeas" title="Link to this heading"></a></h3>
+<p>Converts or casts an expression to a different type.</p>
+<section id="id6">
+<h4>Fields<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code> — One of:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;Convert&quot;</span></code> — explicit cast; throws on failure.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ConvertChecked&quot;</span></code> — explicit cast with overflow checking.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;TypeAs&quot;</span></code> — safe cast; returns null if the object is not of the target type (equivalent to <code class="docutils literal notranslate"><span class="pre">as</span></code> in C#).</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> — The target type (TypeReference or string).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expression</span></code> <em>(FormulaExpression)</em> — The expression to convert.</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">(float)damage</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Convert&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Single&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;damage&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="default">
+<h3>Default<a class="headerlink" href="#default" title="Link to this heading"></a></h3>
+<p>Produces the default value for a type (e.g. <code class="docutils literal notranslate"><span class="pre">0</span></code> for numeric types, <code class="docutils literal notranslate"><span class="pre">null</span></code> for reference types).</p>
+<section id="id7">
+<h4>Fields<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;Default&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> — The type whose default value to produce (TypeReference or string).</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">default(Int32)</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Default&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Int32&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="typeis">
+<h3>TypeIs<a class="headerlink" href="#typeis" title="Link to this heading"></a></h3>
+<p>Tests whether an expression is of a given type (equivalent to <code class="docutils literal notranslate"><span class="pre">is</span></code> in C#). Evaluates to a boolean.</p>
+<section id="id8">
+<h4>Fields<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;TypeIs&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> — The type to test against (TypeReference or string).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expression</span></code> <em>(FormulaExpression)</em> — The expression whose type is tested.</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">obj</span> <span class="pre">is</span> <span class="pre">Enemy</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TypeIs&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Enemy&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;obj&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="typeof">
+<h3>TypeOf<a class="headerlink" href="#typeof" title="Link to this heading"></a></h3>
+<p>Returns the runtime type descriptor for the given type (equivalent to <code class="docutils literal notranslate"><span class="pre">typeof(T)</span></code> in C#).</p>
+<section id="id9">
+<h4>Fields<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;TypeOf&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> — The type to retrieve (TypeReference or string).</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">typeof(String)</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TypeOf&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;String&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="index">
+<h3>Index<a class="headerlink" href="#index" title="Link to this heading"></a></h3>
+<p>Accesses an element of an indexable object (array, list, dictionary, or any type with an indexer).</p>
+<section id="id10">
+<h4>Fields<a class="headerlink" href="#id10" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;Index&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expression</span></code> <em>(FormulaExpression)</em> — The collection or indexable object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arguments</span></code> <em>(ArgumentCollectionObj)</em> — The index arguments, keyed by positional index (<code class="docutils literal notranslate"><span class="pre">&quot;0&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;1&quot;</span></code>, …).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">useNullPropagation</span></code> <em>(boolean)</em> — When <code class="docutils literal notranslate"><span class="pre">true</span></code>, the access is null-safe (<code class="docutils literal notranslate"><span class="pre">?[...]</span></code>). Returns null if <code class="docutils literal notranslate"><span class="pre">expression</span></code> is null.</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">items[0]</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Index&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;items&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Int32&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="invoke">
+<h3>Invoke<a class="headerlink" href="#invoke" title="Link to this heading"></a></h3>
+<p>Calls a method or invokes a delegate/function. The method itself is resolved as a <code class="docutils literal notranslate"><span class="pre">MemberResolve</span></code> node in the <code class="docutils literal notranslate"><span class="pre">expression</span></code> field.</p>
+<section id="id11">
+<h4>Fields<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;Invoke&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expression</span></code> <em>(FormulaExpression)</em> — The callable to invoke (typically a <code class="docutils literal notranslate"><span class="pre">MemberResolve</span></code> node).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arguments</span></code> <em>(ArgumentCollectionObj)</em> — Arguments passed to the call, keyed by positional index (<code class="docutils literal notranslate"><span class="pre">&quot;0&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;1&quot;</span></code>, …) or parameter name.</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">target.DoDamage(100)</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Invoke&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DoDamage&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;target&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Int32&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="lambda">
+<h3>Lambda<a class="headerlink" href="#lambda" title="Link to this heading"></a></h3>
+<p>Defines an anonymous function (lambda). The <code class="docutils literal notranslate"><span class="pre">arguments</span></code> field declares the parameters; <code class="docutils literal notranslate"><span class="pre">expression</span></code> is the body.</p>
+<section id="id12">
+<h4>Fields<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;Lambda&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arguments</span></code> <em>(ArgumentCollectionObj)</em> — Parameter declarations. Keys are parameter names; values are <code class="docutils literal notranslate"><span class="pre">null</span></code> (parameter type is inferred from context) or a <code class="docutils literal notranslate"><span class="pre">MemberResolve</span></code> expression denoting the declared type.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expression</span></code> <em>(FormulaExpression)</em> — The lambda body.</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=&gt;</span> <span class="pre">x</span> <span class="pre">*</span> <span class="pre">2</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Lambda&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Multiply&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;left&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;useNullPropagation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;right&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="new">
+<h3>New<a class="headerlink" href="#new" title="Link to this heading"></a></h3>
+<p>Instantiates a new object of a given type by calling a constructor.</p>
+<section id="id13">
+<h4>Fields<a class="headerlink" href="#id13" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;New&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> — The type to instantiate (TypeReference or string).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arguments</span></code> <em>(ArgumentCollectionObj)</em> — Constructor arguments, keyed by positional index (<code class="docutils literal notranslate"><span class="pre">&quot;0&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;1&quot;</span></code>, …) or parameter name.</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">Vector2(1.0,</span> <span class="pre">0.5)</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;New&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vector2&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Single&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Single&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="newarraybounds">
+<h3>NewArrayBounds<a class="headerlink" href="#newarraybounds" title="Link to this heading"></a></h3>
+<p>Creates a new array with specified dimension sizes but without initializers.</p>
+<section id="id14">
+<h4>Fields<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;NewArrayBounds&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> — The element type of the array (TypeReference or string).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arguments</span></code> <em>(ArgumentCollectionObj)</em> — Dimension size expressions, keyed by dimension index (<code class="docutils literal notranslate"><span class="pre">&quot;0&quot;</span></code> for one-dimensional arrays).</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">int[10]</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NewArrayBounds&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="newarrayinit">
+<h3>NewArrayInit<a class="headerlink" href="#newarrayinit" title="Link to this heading"></a></h3>
+<p>Creates a new single-dimensional array and initializes it with a list of values.</p>
+<section id="id15">
+<h4>Fields<a class="headerlink" href="#id15" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;NewArrayInit&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> — The element type of the array (TypeReference or string).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initializers</span></code> <em>(ArgumentCollectionObj)</em> — Element expressions, keyed by positional index (<code class="docutils literal notranslate"><span class="pre">&quot;0&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;1&quot;</span></code>, …).</p></li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">int[]</span> <span class="pre">{</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3</span> <span class="pre">}</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NewArrayInit&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;initializers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="memberinit">
+<h3>MemberInit<a class="headerlink" href="#memberinit" title="Link to this heading"></a></h3>
+<p>Creates a new object and initializes its members. Combines a <code class="docutils literal notranslate"><span class="pre">New</span></code> node with a set of member bindings.</p>
+<section id="id16">
+<h4>Fields<a class="headerlink" href="#id16" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;MemberInit&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">new</span></code> <em>(NewExpression)</em> — The object construction node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bindings</span></code> <em>(MemberBindingCollectionObj)</em> — A map of member bindings, keyed by member name. Each value is one of:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">AssignmentBinding</span></code> — assigns an expression to a member.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MemberBinding</span></code> — recursively initializes members of a nested object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ListBinding</span></code> — adds elements to a collection member.</p></li>
+</ul>
+</li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">Vector2</span> <span class="pre">{</span> <span class="pre">X</span> <span class="pre">=</span> <span class="pre">1.0,</span> <span class="pre">Y</span> <span class="pre">=</span> <span class="pre">0.5</span> <span class="pre">}</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberInit&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;new&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;New&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vector2&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;bindings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;X&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AssignmentBinding&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;X&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Single&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;Y&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AssignmentBinding&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Y&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Single&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="listinit">
+<h3>ListInit<a class="headerlink" href="#listinit" title="Link to this heading"></a></h3>
+<p>Creates a new collection object and populates it using an initializer list. Each element is added by calling the collection’s <code class="docutils literal notranslate"><span class="pre">Add</span></code> method (or equivalent).</p>
+<section id="id17">
+<h4>Fields<a class="headerlink" href="#id17" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;ListInit&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">new</span></code> <em>(NewExpression)</em> — The collection construction node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initializers</span></code> <em>(ElementInitCollectionObj)</em> — A map of element initializers, keyed by positional index. Each value is an <code class="docutils literal notranslate"><span class="pre">ElementInitBinding</span></code> object with:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;ElementInitBinding&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initializers</span></code> <em>(ArgumentCollectionObj)</em> — Arguments passed to the Add method for this element.</p></li>
+</ul>
+</li>
+</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">new</span> <span class="pre">List&lt;int&gt;</span> <span class="pre">{</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3</span> <span class="pre">}</span></code></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ListInit&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;new&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;New&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;List&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Collections.Generic&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MemberResolve&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;T&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;initializers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ElementInitBinding&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;initializers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ElementInitBinding&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;initializers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ElementInitBinding&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;initializers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;expressionType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;System.Int32&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="member-bindings">
+<h2>Member Bindings<a class="headerlink" href="#member-bindings" title="Link to this heading"></a></h2>
+<p>Member bindings are used inside <code class="docutils literal notranslate"><span class="pre">MemberInit</span></code> nodes to specify how object members are initialized.</p>
+<section id="assignmentbinding">
+<h3>AssignmentBinding<a class="headerlink" href="#assignmentbinding" title="Link to this heading"></a></h3>
+<p>Assigns a value to a named member.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;AssignmentBinding&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> <em>(string)</em> — Member name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expression</span></code> <em>(FormulaExpression)</em> — The value to assign.</p></li>
+</ul>
+</section>
+<section id="memberbinding">
+<h3>MemberBinding<a class="headerlink" href="#memberbinding" title="Link to this heading"></a></h3>
+<p>Recursively initializes the members of a nested object member without reassigning the member itself.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;MemberBinding&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> <em>(string)</em> — Member name of the nested object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bindings</span></code> <em>(MemberBindingCollectionObj)</em> — Nested bindings applied to the member’s sub-members.</p></li>
+</ul>
+</section>
+<section id="listbinding">
+<h3>ListBinding<a class="headerlink" href="#listbinding" title="Link to this heading"></a></h3>
+<p>Adds elements to a collection member using element initializers.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expressionType</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;ListBinding&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> <em>(string)</em> — Member name of the collection.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">initializers</span></code> <em>(ElementInitCollectionObj)</em> — Elements to add, keyed by positional index.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="implementing-an-interpreter">
+<h2>Implementing an Interpreter<a class="headerlink" href="#implementing-an-interpreter" title="Link to this heading"></a></h2>
+<p>An interpreter for this AST typically consists of a recursive <code class="docutils literal notranslate"><span class="pre">evaluate(node,</span> <span class="pre">context)</span></code> function that dispatches on <code class="docutils literal notranslate"><span class="pre">expressionType</span></code>. The <code class="docutils literal notranslate"><span class="pre">context</span></code> holds the current scope: parameter values, known types, and available members.</p>
+<p>Suggested steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Dispatch</strong> — read <code class="docutils literal notranslate"><span class="pre">expressionType</span></code> from the node and select the appropriate handler.</p></li>
+<li><p><strong>Recurse</strong> — evaluate child nodes before computing the current node’s result (bottom-up evaluation).</p></li>
+<li><p><strong>Scope</strong> — maintain a variable scope for formula parameters; <code class="docutils literal notranslate"><span class="pre">MemberResolve</span></code> with a null <code class="docutils literal notranslate"><span class="pre">expression</span></code> looks up names in this scope first, then in known types.</p></li>
+<li><p><strong>Type resolution</strong> — map type names (strings or TypeReference objects) to concrete types in your runtime. Built-in types follow .NET naming conventions (e.g. <code class="docutils literal notranslate"><span class="pre">System.Int32</span></code>, <code class="docutils literal notranslate"><span class="pre">System.String</span></code>).</p></li>
+<li><p><strong>Null propagation</strong> — for <code class="docutils literal notranslate"><span class="pre">MemberResolve</span></code> and <code class="docutils literal notranslate"><span class="pre">Index</span></code> nodes with <code class="docutils literal notranslate"><span class="pre">useNullPropagation:</span> <span class="pre">true</span></code>, short-circuit and return null when the target expression is null.</p></li>
+<li><p><strong>Overflow checking</strong> — <code class="docutils literal notranslate"><span class="pre">Checked</span></code> variants of arithmetic operators should raise an error on integer overflow; <code class="docutils literal notranslate"><span class="pre">UncheckedScope</span></code> / <code class="docutils literal notranslate"><span class="pre">CheckedScope</span></code> change the checking mode for a sub-tree.</p></li>
+</ol>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="game_data_structure.html"><span class="doc">Game Data Structure</span></a></p></li>
+<li><p><a class="reference internal" href="../gamedata/datatypes/list.html"><span class="doc">Data Types</span></a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">Abstract Syntax Tree (Wikipedia)</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Expression_(computer_science)">Expression tree pattern</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="game_data_structure.html" class="btn btn-neutral float-left" title="Game Data Structure" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="extensions/overview.html" class="btn btn-neutral float-right" title="UI Extensions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

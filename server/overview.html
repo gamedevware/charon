@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Server Edition &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Basic Navigation and User Interface Overview" href="../gamedata/basics.html" />
+    <link rel="prev" title="Workspaces, Projects, and Branches" href="../web/workspaces_and_projects.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Server Edition</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html#composite-types">Composite Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/formula_expression_ast.html">Formula Expression AST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_property_editor.html#purpose-of-valuecontrol">Purpose of <code class="docutils literal notranslate"><span class="pre">ValueControl</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_property_editor.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Server Edition</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/server/overview.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="server-edition">
+<h1>Server Edition<a class="headerlink" href="#server-edition" title="Link to this heading"></a></h1>
+<p>The <strong>Charon Server Edition</strong> is the team collaboration layer built on top of the standalone
+editor. It gives studios a shared, version-controlled game data repository that every
+designer, developer, and QA engineer accesses through a browser — no local installation
+required.</p>
+<p>It is available as a hosted cloud service at <a class="reference external" href="https://charon.live">charon.live</a> or
+self-hosted on your own infrastructure for studios with data-residency or security
+requirements.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#why-teams-need-it" id="id2">Why Teams Need It</a></p></li>
+<li><p><a class="reference internal" href="#feature-comparison" id="id3">Feature Comparison</a></p></li>
+<li><p><a class="reference internal" href="#collaboration-model" id="id4">Collaboration Model</a></p></li>
+<li><p><a class="reference internal" href="#authentication-and-enterprise-integration" id="id5">Authentication and Enterprise Integration</a></p></li>
+<li><p><a class="reference internal" href="#access-control" id="id6">Access Control</a></p></li>
+<li><p><a class="reference internal" href="#deployment-options" id="id7">Deployment Options</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id8">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="why-teams-need-it">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Why Teams Need It</a><a class="headerlink" href="#why-teams-need-it" title="Link to this heading"></a></h2>
+<p>The standalone editor is designed for a single user working locally. As soon as a second
+designer touches the same data file, the team is managing conflicts in spreadsheets or
+shared drives. The server edition eliminates that problem:</p>
+<ul class="simple">
+<li><p><strong>Single source of truth</strong> — all designers edit the same live data; no more “who has
+the latest version?” questions.</p></li>
+<li><p><strong>Branch-based workflows</strong> — feature branches let designers work in isolation and merge
+changes only when ready, the same way engineers use Git.</p></li>
+<li><p><strong>Full audit trail</strong> — every data change is attributed to a user with a timestamp,
+satisfying compliance and post-mortem requirements.</p></li>
+<li><p><strong>Works with existing pipelines</strong> — the CLI and REST API are the same as the standalone
+edition, so CI/CD scripts, engine plugins, and code generation workflows require no
+changes.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="feature-comparison">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Feature Comparison</a><a class="headerlink" href="#feature-comparison" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Standalone</p></th>
+<th class="head"><p>Server</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Game data editing UI</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-odd"><td><p>CLI access (all DATA / GENERATE commands)</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-even"><td><p>Local file storage</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-odd"><td><p>Multi-user real-time collaboration</p></td>
+<td></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-even"><td><p>Workspaces, Projects, Branches</p></td>
+<td></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-odd"><td><p>Role-based access control</p></td>
+<td></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-even"><td><p>Enterprise SSO (OAuth2, SAML, AD)</p></td>
+<td></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-odd"><td><p>API key management</p></td>
+<td></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-even"><td><p>Audit logs (auth events, command traces)</p></td>
+<td></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-odd"><td><p>On-premises / private cloud deployment</p></td>
+<td></td>
+<td><p>✓</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="collaboration-model">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Collaboration Model</a><a class="headerlink" href="#collaboration-model" title="Link to this heading"></a></h2>
+<p>Game data is organised in a three-level hierarchy:
+<strong>Workspace → Project → Branch</strong>.</p>
+<p>Designers work on named branches (e.g. <code class="docutils literal notranslate"><span class="pre">feature/new-enemies</span></code>) and merge changes to a
+shared <code class="docutils literal notranslate"><span class="pre">main</span></code> branch using Charon’s patch/diff tooling — a workflow familiar to any
+engineer who uses Git, adapted for non-technical designers who never touch the terminal.</p>
+<p>See <a class="reference internal" href="../web/workspaces_and_projects.html"><span class="doc">Workspaces, Projects, and Branches</span></a> for the full collaboration guide.</p>
+</section>
+<hr class="docutils" />
+<section id="authentication-and-enterprise-integration">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Authentication and Enterprise Integration</a><a class="headerlink" href="#authentication-and-enterprise-integration" title="Link to this heading"></a></h2>
+<p>The server edition supports multiple identity models to fit into your studio’s existing
+infrastructure:</p>
+<ul class="simple">
+<li><p><strong>Email + password</strong> with optional <strong>TOTP two-factor authentication</strong> — suitable for
+small teams or studios without a central directory.</p></li>
+<li><p><strong>OAuth2</strong> — delegate authentication to any standards-compliant identity provider,
+including Google Workspace, GitHub, or an in-house IdP.</p></li>
+<li><p><strong>SAML 2.0 / Active Directory</strong> — for enterprise studios that require single sign-on
+through their corporate directory. Users log in with their existing company credentials;
+no separate Charon account needed.</p></li>
+<li><p><strong>API keys</strong> — generated per user for CLI and REST API access in automated pipelines.</p></li>
+</ul>
+<p>Contact <code class="docutils literal notranslate"><span class="pre">support&#64;gamedevware.com</span></code> to discuss SSO integration options for your studio.</p>
+</section>
+<hr class="docutils" />
+<section id="access-control">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Access Control</a><a class="headerlink" href="#access-control" title="Link to this heading"></a></h2>
+<p>Fine-grained roles control what each team member can do within a project:
+<strong>Viewer, Editor, Designer, Administrator</strong>.</p>
+<p>See <a class="reference internal" href="../web/permission_and_roles.html"><span class="doc">Roles and Permissions</span></a> for the full role and permission matrix.</p>
+</section>
+<hr class="docutils" />
+<section id="deployment-options">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Deployment Options</a><a class="headerlink" href="#deployment-options" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>Cloud (charon.live)</dt><dd><p>The fastest way to get started. No infrastructure to manage. Game data is stored on
+<a class="reference external" href="https://charon.live">charon.live</a> servers. Suitable for teams without strict
+data-residency requirements.</p>
+</dd>
+<dt>On-premises / Private Cloud</dt><dd><p>Deploy the server on your own infrastructure — on-premises servers, private cloud VPC,
+or an air-gapped environment. You retain full control over where game data is stored and
+who can reach the service. See <a class="reference internal" href="on_premises.html"><span class="doc">On-Premises Deployment</span></a> for deployment guidance.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Files created by the server edition are fully compatible with the standalone CLI and
+engine plugins. Any branch can be downloaded at any time and opened locally — teams are
+never locked in to the hosted service.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="see-also">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../web/overview.html"><span class="doc">Web Application Overview</span></a></p></li>
+<li><p><a class="reference internal" href="../web/workspaces_and_projects.html"><span class="doc">Workspaces, Projects, and Branches</span></a></p></li>
+<li><p><a class="reference internal" href="../web/permission_and_roles.html"><span class="doc">Roles and Permissions</span></a></p></li>
+<li><p><a class="reference internal" href="../web/rest.html"><span class="doc">REST API</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../web/workspaces_and_projects.html" class="btn btn-neutral float-left" title="Workspaces, Projects, and Branches" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../gamedata/basics.html" class="btn btn-neutral float-right" title="Basic Navigation and User Interface Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

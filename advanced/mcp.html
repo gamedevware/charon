@@ -1,0 +1,470 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCP Server (AI Assistant Integration) &mdash; Charon 2026.1.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d6e1456"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Game Data Structure" href="game_data_structure.html" />
+    <link rel="prev" title="Get Charon Version" href="commands/version.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html#composite-types">Composite Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formula_expression_ast.html">Formula Expression AST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html#purpose-of-valuecontrol">Purpose of <code class="docutils literal notranslate"><span class="pre">ValueControl</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">MCP Server (AI Assistant Integration)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/advanced/mcp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mcp-server-ai-assistant-integration">
+<h1>MCP Server (AI Assistant Integration)<a class="headerlink" href="#mcp-server-ai-assistant-integration" title="Link to this heading"></a></h1>
+<p>Charon ships a built-in <a class="reference external" href="https://modelcontextprotocol.io/">Model Context Protocol (MCP)</a> server that
+lets AI assistants — Claude, Cursor, GitHub Copilot, and others — read and write game data directly.
+The server communicates over <strong>stdio</strong> using the standard JSON-RPC MCP transport, so no network port
+is opened and no extra infrastructure is required.</p>
+<p>With the MCP server running, an AI assistant can:</p>
+<ul class="simple">
+<li><p>Discover and inspect schemas</p></li>
+<li><p>Query, create, update, and delete game data documents</p></li>
+<li><p>Import and export data in multiple formats</p></li>
+<li><p>Generate typed source code (C#, TypeScript, Unreal C++, Haxe)</p></li>
+<li><p>Manage localization (XLIFF / JSON round-trips)</p></li>
+<li><p>Compare and patch game data between two sources</p></li>
+</ul>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#prerequisites" id="id1">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#starting-the-mcp-server" id="id2">Starting the MCP Server</a></p></li>
+<li><p><a class="reference internal" href="#logging" id="id3">Logging</a></p></li>
+<li><p><a class="reference internal" href="#configuring-ai-clients" id="id4">Configuring AI Clients</a></p>
+<ul>
+<li><p><a class="reference internal" href="#claude-desktop" id="id5">Claude Desktop</a></p></li>
+<li><p><a class="reference internal" href="#claude-code-cli" id="id6">Claude Code (CLI)</a></p></li>
+<li><p><a class="reference internal" href="#cursor" id="id7">Cursor</a></p></li>
+<li><p><a class="reference internal" href="#vs-code-github-copilot" id="id8">VS Code (GitHub Copilot)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#authentication-for-remote-sources" id="id9">Authentication for Remote Sources</a></p></li>
+<li><p><a class="reference internal" href="#data-sources" id="id10">Data Sources</a></p></li>
+<li><p><a class="reference internal" href="#available-tools" id="id11">Available Tools</a></p></li>
+<li><p><a class="reference internal" href="#limitations-and-remote-only-use-case" id="id12">Limitations and Remote-Only Use Case</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="prerequisites">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Prerequisites</a><a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<p>Install .NET 8 or later and the <code class="docutils literal notranslate"><span class="pre">dotnet-charon</span></code> tool:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dotnet<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>dotnet-charon
+</pre></div>
+</div>
+<p>Verify the installation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>charon<span class="w"> </span>VERSION
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="starting-the-mcp-server">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Starting the MCP Server</a><a class="headerlink" href="#starting-the-mcp-server" title="Link to this heading"></a></h2>
+<p>Run the <code class="docutils literal notranslate"><span class="pre">MCP</span></code> verb with no additional arguments:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>charon<span class="w"> </span>MCP
+</pre></div>
+</div>
+<p>The process stays running and communicates over <strong>stdin / stdout</strong>.
+Do not write anything else to stdout while the server is active — the transport is
+the raw MCP JSON-RPC stream and any extra output will corrupt the protocol.</p>
+<p>All diagnostic logging should be going to a log file (see <a class="reference internal" href="#logging">Logging</a> below),
+so it never interferes with the transport.</p>
+</section>
+<hr class="docutils" />
+<section id="logging">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Logging</a><a class="headerlink" href="#logging" title="Link to this heading"></a></h2>
+<p>Because stdout is reserved for the MCP transport, use the <code class="docutils literal notranslate"><span class="pre">--log</span></code> option to write
+diagnostics to a file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>charon<span class="w"> </span>MCP<span class="w"> </span>--log<span class="w"> </span>/tmp/charon-mcp.log
+</pre></div>
+</div>
+<p>Pass <code class="docutils literal notranslate"><span class="pre">--verbose</span></code> to include debug-level messages:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>charon<span class="w"> </span>MCP<span class="w"> </span>--log<span class="w"> </span>/tmp/charon-mcp.log<span class="w"> </span>--verbose
+</pre></div>
+</div>
+<p>Specifying <code class="docutils literal notranslate"><span class="pre">--log</span> <span class="pre">con</span></code> or <code class="docutils literal notranslate"><span class="pre">--log</span> <span class="pre">out</span></code> in MCP mode is silently ignored to protect
+the transport.</p>
+</section>
+<hr class="docutils" />
+<section id="configuring-ai-clients">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Configuring AI Clients</a><a class="headerlink" href="#configuring-ai-clients" title="Link to this heading"></a></h2>
+<section id="claude-desktop">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Claude Desktop</a><a class="headerlink" href="#claude-desktop" title="Link to this heading"></a></h3>
+<p>Add the following entry to your <code class="docutils literal notranslate"><span class="pre">claude_desktop_config.json</span></code>
+(usually at <code class="docutils literal notranslate"><span class="pre">~/Library/Application</span> <span class="pre">Support/Claude/claude_desktop_config.json</span></code> on macOS
+or <code class="docutils literal notranslate"><span class="pre">%APPDATA%\Claude\claude_desktop_config.json</span></code> on Windows):</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;charon&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;charon&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;MCP&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Restart Claude Desktop after editing the file.</p>
+</section>
+<section id="claude-code-cli">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Claude Code (CLI)</a><a class="headerlink" href="#claude-code-cli" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>claude<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>--transport<span class="w"> </span>stdio<span class="w"> </span>charon<span class="w"> </span>--<span class="w"> </span>charon<span class="w"> </span>MCP
+</pre></div>
+</div>
+</section>
+<section id="cursor">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Cursor</a><a class="headerlink" href="#cursor" title="Link to this heading"></a></h3>
+<p>Open <strong>Settings → MCP → Add MCP Server</strong> and fill in:</p>
+<ul class="simple">
+<li><p><strong>Command</strong>: <code class="docutils literal notranslate"><span class="pre">charon</span></code></p></li>
+<li><p><strong>Arguments</strong>: <code class="docutils literal notranslate"><span class="pre">MCP</span></code></p></li>
+</ul>
+</section>
+<section id="vs-code-github-copilot">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">VS Code (GitHub Copilot)</a><a class="headerlink" href="#vs-code-github-copilot" title="Link to this heading"></a></h3>
+<p>Add to your workspace <code class="docutils literal notranslate"><span class="pre">.vscode/mcp.json</span></code>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;servers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;charon&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;stdio&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;charon&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;MCP&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="authentication-for-remote-sources">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Authentication for Remote Sources</a><a class="headerlink" href="#authentication-for-remote-sources" title="Link to this heading"></a></h2>
+<p>When a tool’s <code class="docutils literal notranslate"><span class="pre">dataBase</span></code> parameter points to a remote Charon service URL
+(e.g. <code class="docutils literal notranslate"><span class="pre">https://charon.live/view/data/MyGame/main</span></code>), set the <code class="docutils literal notranslate"><span class="pre">CHARON_API_KEY</span></code>
+environment variable before starting the server:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">CHARON_API_KEY</span><span class="o">=</span>your_api_key_here
+charon<span class="w"> </span>MCP
+</pre></div>
+</div>
+<p>In client configuration files you can pass the variable directly:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;charon&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;charon&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;MCP&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;CHARON_API_KEY&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your_api_key_here&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Local file sources do not require an API key.</p>
+</section>
+<hr class="docutils" />
+<section id="data-sources">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Data Sources</a><a class="headerlink" href="#data-sources" title="Link to this heading"></a></h2>
+<p>Every tool accepts a <code class="docutils literal notranslate"><span class="pre">dataBase</span></code> parameter that identifies the game data source.</p>
+<p><strong>Local file</strong> — pass an absolute or relative path:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>/home/user/project/gamedata.json
+C:\Projects\MyGame\gamedata.gdjs
+./data/gamedata.msgpack
+</pre></div>
+</div>
+<p>Supported file extensions:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Format</p></th>
+<th class="head"><p>Extensions</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>JSON</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.json</span></code>, <code class="docutils literal notranslate"><span class="pre">.gdjs</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MessagePack</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.msgpack</span></code>, <code class="docutils literal notranslate"><span class="pre">.msgpkg</span></code>, <code class="docutils literal notranslate"><span class="pre">.gdmp</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>BSON</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.bson</span></code>, <code class="docutils literal notranslate"><span class="pre">.gdbs</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Gzip-compressed (any of the above)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.json.gz</span></code>, <code class="docutils literal notranslate"><span class="pre">.gdjs.gz</span></code>, <code class="docutils literal notranslate"><span class="pre">.msgpack.gz</span></code>, etc.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Remote URL</strong> — pass the project URL from <code class="docutils literal notranslate"><span class="pre">charon.live</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>https://charon.live/view/data/RPG_Game/development
+</pre></div>
+</div>
+<p>Remote sources require <code class="docutils literal notranslate"><span class="pre">CHARON_API_KEY</span></code> to be set. Unlike local files, remote
+connections are not pooled and are not reused between tool calls.</p>
+</section>
+<hr class="docutils" />
+<section id="available-tools">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Available Tools</a><a class="headerlink" href="#available-tools" title="Link to this heading"></a></h2>
+<p>Use the following command to inspect the MCP server:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>npx<span class="w"> </span>@modelcontextprotocol/inspector<span class="w"> </span>charon<span class="w"> </span>MCP
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="limitations-and-remote-only-use-case">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Limitations and Remote-Only Use Case</a><a class="headerlink" href="#limitations-and-remote-only-use-case" title="Link to this heading"></a></h2>
+<p>The built-in MCP server works with <strong>local files</strong> and with <strong>remote Charon service URLs</strong> that
+are reachable from the machine running the <code class="docutils literal notranslate"><span class="pre">charon</span></code> process. The game data file is loaded
+locally by the CLI tool.</p>
+<p>If you need a <strong>fully-remote</strong> MCP setup where Charon itself runs as a cloud service and the
+CLI is not installed on the AI client’s machine, the MCP server cannot be used directly.
+As a fallback, <code class="docutils literal notranslate"><span class="pre">charon.live</span></code> exposes its full API through an OpenAPI 3 specification:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>https://charon.live/api/v1/open.api.server.yml
+</pre></div>
+</div>
+<p>AI clients that support OpenAPI-based tool use (such as those using function-calling from
+an OpenAPI schema) can configure that URL as an API tool source. Authentication is done
+with a bearer token equal to your <code class="docutils literal notranslate"><span class="pre">CHARON_API_KEY</span></code> value.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../web/rest.html"><span class="doc">REST API</span></a> — REST API reference for the <code class="docutils literal notranslate"><span class="pre">charon.live</span></code> service</p></li>
+<li><p><a class="reference internal" href="command_line.html"><span class="doc">Command Line Interface (CLI)</span></a> — full CLI reference, including all <code class="docutils literal notranslate"><span class="pre">DATA</span></code> and <code class="docutils literal notranslate"><span class="pre">GENERATE</span></code> verbs</p></li>
+<li><p><a class="reference internal" href="cicd.html"><span class="doc">CI/CD Integration</span></a> — using Charon in automated pipelines</p></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="commands/version.html" class="btn btn-neutral float-left" title="Get Charon Version" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="game_data_structure.html" class="btn btn-neutral float-right" title="Game Data Structure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
