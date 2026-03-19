@@ -1,6 +1,6 @@
 **PRIVACY POLICY**
 
-**Last updated October 16, 2023**
+**Last updated March 19, 2026**
 
 This privacy notice for Denis Zykov, IČO 19662360, ("**we**," "**us**," or "**our**"), describes how and why we might collect, store, use, and/or share ("**process**") your information when you use our services ("**Services**"), such as when you:
 
@@ -75,7 +75,7 @@ We collect personal information that you voluntarily provide to us when you regi
 
 **Payment Data.** We may collect data necessary to process your payment if you make purchases, such as your payment instrument number, and the security code associated with your payment instrument. All payment data is stored by Stripe. You may find their privacy notice link(s) here: [https://stripe.com/en-cz/privacy](https://stripe.com/en-cz/privacy).
 
-**Social Media Login Data.** We may provide you with the option to register with us using your existing social media account details, like your Facebook, Twitter, or other social media account. If you choose to register in this way, we will collect the information described in the section called "HOW DO WE HANDLE YOUR SOCIAL LOGINS?" below.
+**Social Media Login Data.** We may provide you with the option to register with us using your existing social media account details, such as your Google, GitHub, or Microsoft account. If you choose to register in this way, we will collect the information described in the section called "HOW DO WE HANDLE YOUR SOCIAL LOGINS?" below.
 
 All personal information that you provide to us must be true, complete, and accurate, and you must notify us of any changes to such personal information.
 
@@ -191,9 +191,41 @@ We also may need to share your personal information in the following situations:
 
 **In Short:** If you choose to register or log in to our Services using a social media account, we may have access to certain information about you.
 
-Our Services offer you the ability to register and log in using your third-party social media account details (like your Facebook or Twitter logins). Where you choose to do this, we will receive certain profile information about you from your social media provider. The profile information we receive may vary depending on the social media provider concerned, but will often include your name, email address, friends list, and profile picture, as well as other information you choose to make public on such a social media platform.
+Our Services offer you the ability to register and log in using your third-party account details (like your Google, GitHub, or Microsoft account). Where you choose to do this, we will receive certain profile information about you from your authentication provider. The specific information we receive depends on the provider, as described below.
 
-We will use the information we receive only for the purposes that are described in this privacy notice or that are otherwise made clear to you on the relevant Services. Please note that we do not control, and are not responsible for, other uses of your personal information by your third-party social media provider. We recommend that you review their privacy notice to understand how they collect, use, and share your personal information, and how you can set your privacy preferences on their sites and apps.
+**Google Sign-In**
+
+When you choose to sign in or register using your Google account, we request access to your Google account data using the following OAuth 2.0 scopes: `profile`, `email`, and `openid`. From the information Google provides, we access and store only the following:
+
+*   **Email address** — used as your account identifier and for account-related communications.
+*   **Email verification status** — used to confirm that your Google email address is verified.
+*   **Display name** — used as your initial display name within the Services. If no name is provided by Google, we derive a display name from your email address.
+*   **Unique identifier (sub)** — an opaque identifier provided by Google, used to link your Google account to your account in our Services.
+
+We do **not** access or store your Google profile picture, contacts, friends list, or any other Google account data beyond what is listed above.
+
+**Google API Services User Data Policy — Limited Use Disclosure**
+
+Our use of information received from Google APIs adheres to the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements. Specifically:
+
+*   We only use Google user data to provide and improve the user-facing features of our Services that are visible to you (account creation, authentication, and session maintenance).
+*   We do **not** transfer Google user data to third parties, except (a) as necessary to provide or improve user-facing features that are prominent in the requesting application's user interface, (b) to comply with applicable laws, or (c) as part of a merger, acquisition, or sale of assets with notice to users.
+*   We do **not** use Google user data for serving advertisements.
+*   We do **not** allow humans to read Google user data, except with your affirmative consent for specific messages, for security purposes (e.g., investigating abuse), to comply with applicable law, or when the data is aggregated and anonymized for internal operations.
+
+**OAuth Tokens**
+
+When you authenticate via Google (or another OAuth 2.0 provider), we receive and securely store an access token and a refresh token. These tokens are used **solely** to maintain your authenticated session with our Services. The refresh token is used only to obtain a new access token when the current one expires. We do not use these tokens to access any additional Google services or data on your behalf beyond the initial authentication.
+
+**Other Providers (GitHub, Microsoft)**
+
+When you sign in using GitHub or Microsoft, we similarly receive only your name, email address, and a unique account identifier. The specific data received depends on the provider's OAuth implementation. We use this information solely for account creation and authentication.
+
+**Data Deletion for Social Login Accounts**
+
+When you delete your account, all social login data — including your name, email address, unique identifiers, and stored OAuth tokens — is permanently removed or anonymized. Your profile is anonymized and all login credentials, including OAuth tokens, are deleted. See section 6 for more details on data retention.
+
+We will use the information we receive from any social login provider only for the purposes that are described in this privacy notice or that are otherwise made clear to you on the relevant Services. Please note that we do not control, and are not responsible for, other uses of your personal information by your third-party authentication provider. We recommend that you review their privacy notice to understand how they collect, use, and share your personal information, and how you can set your privacy preferences on their sites and apps.
 
 **6\. HOW LONG DO WE KEEP YOUR INFORMATION?**
 

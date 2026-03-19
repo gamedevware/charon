@@ -1,6 +1,6 @@
 **TERMS OF SERVICE**
 
-**Last updated** **October 16, 2023**
+**Last updated** **March 19, 2026**
 
 **AGREEMENT TO OUR LEGAL TERMS**
 
@@ -85,15 +85,14 @@ Any breach of these Intellectual Property Rights will constitute a material brea
 
 Please review this section and the "PROHIBITED ACTIVITIES" section carefully prior to using our Services to understand the (a) rights you give us and (b) obligations you have when you post or upload any content through the Services.
 
-**Submissions:** By directly sending us any question, comment, suggestion, idea, feedback, or other information about the Services ("Submissions"), you agree to assign to us all intellectual property rights in such Submission. You agree that we shall own this Submission and be entitled to its unrestricted use and dissemination for any lawful purpose, commercial or otherwise, without acknowledgment or compensation to you.
+**Submissions:** By directly sending us any question, comment, suggestion, idea, feedback, or other information about the Services ("Submissions"), you grant us a perpetual, irrevocable, non-exclusive, royalty-free, worldwide license to use, reproduce, modify, and incorporate such Submission for any lawful purpose related to operating, improving, and promoting the Services, without acknowledgment or compensation to you. You retain all intellectual property rights in your Submissions except to the extent of the license granted here.
 
 **Contributions:** The Services may invite you to chat, contribute to, or participate in blogs, message boards, online forums, and other functionality during which you may create, submit, post, display, transmit, publish, distribute, or broadcast content and materials to us or through the Services, including but not limited to text, writings, video, audio, photographs, music, graphics, comments, reviews, rating suggestions, personal information, or other material ("Contributions"). Any Submission that is publicly posted shall also be treated as a Contribution.
 
 You understand that Contributions may be viewable by other users of the Services and possibly through third-party websites.
 
-**When you post Contributions, you grant us a license (including use of your name, trademarks, and logos):** By posting any Contributions, you grant us an unrestricted, unlimited, irrevocable, perpetual, non-exclusive, transferable, royalty-free, fully-paid, worldwide right, and license to: use, copy, reproduce, distribute, sell, resell, publish, broadcast, retitle, store, publicly perform, publicly display, reformat, translate, excerpt (in whole or in part), and exploit your Contributions (including, without limitation, your image, name, and voice) for storage and analytics purpose, commercial, advertising, or otherwise, to prepare derivative works of, or incorporate into other works, your Contributions, and to sublicense the licenses granted in this section. Our use and distribution may occur in any media formats and through any media channels. If your are lawyer reading this TOS you are obliged to 
+**When you post Contributions, you grant us a license:** By posting any Contributions, you grant us a limited, non-exclusive, non-transferable, royalty-free, worldwide license to host, store, cache, publicly display, and reformat your Contributions solely for the purpose of operating, improving, and providing the Services. This license does not permit us to sell, resell, sublicense, or otherwise distribute your Contributions for commercial or advertising purposes beyond the Services themselves. See section 10 ("Contribution License") for the full terms of this license.
 
-This license includes our use of your name, company name, and franchise name, as applicable, and any of the trademarks, service marks, trade names, logos, and personal and commercial images you provide.
 
 **You are responsible for what you post or upload:** By sending us Submissions and/or posting Contributions through any part of the Services or making Contributions accessible through the Services by linking your account through the Services to any of your social networking accounts, you:
 
@@ -218,6 +217,12 @@ We reserve the right, but not the obligation, to: (1) monitor the Services for v
 ******13.**** PRIVACY POLICY**
 
 We care about data privacy and security. By using the Services, you agree to be bound by our Privacy Policy posted on the Services, which is incorporated into these Legal Terms. Please be advised the Services are hosted in Germany. If you access the Services from any other region of the world with laws or other requirements governing personal data collection, use, or disclosure that differ from applicable laws in Germany, then through your continued use of the Services, you are transferring your data to Germany, and you expressly consent to have your data transferred to and processed in Germany.
+
+**Third-Party Authentication Services**
+
+The Services allow you to create an account and authenticate using third-party providers, including Google, GitHub, and Microsoft. When you authenticate using any of these providers, we access only the minimum data necessary for account creation and authentication (your name, email address, and a unique account identifier). We do not access any additional data from your third-party account.
+
+Our use of information received from Google APIs adheres to the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements. We use Google user data solely for providing authentication and account management features within the Services. We do not use Google user data for advertising, and we do not transfer it to third parties except as described in our Privacy Policy. For full details on how we handle data from social logins, please refer to section 5 of our Privacy Policy ("How Do We Handle Your Social Logins?").
 
 ********14.****** COPYRIGHT INFRINGEMENTS**
 
