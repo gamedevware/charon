@@ -2,7 +2,7 @@ MCP Server (AI Assistant Integration)
 ======================================
 
 Charon ships a built-in `Model Context Protocol (MCP) <https://modelcontextprotocol.io/>`_ server that
-lets AI assistants — Claude, Cursor, GitHub Copilot, and others — read and write game data directly.
+lets AI assistants — Claude, Cursor, GitHub Copilot, Windsurf, Cline, Zed, and others — read and write game data directly.
 The server communicates over **stdio** using the standard JSON-RPC MCP transport, so no network port
 is opened and no extra infrastructure is required.
 
@@ -132,6 +132,76 @@ Add to your workspace ``.vscode/mcp.json``:
      }
    }
 
+Windsurf
+^^^^^^^^
+
+Add to ``~/.codeium/windsurf/mcp_config.json``
+(or open **Windsurf Settings → Cascade → Model Context Protocol**):
+
+.. code-block:: json
+
+   {
+     "mcpServers": {
+       "charon": {
+         "command": "charon",
+         "args": ["MCP"]
+       }
+     }
+   }
+
+JetBrains IDEs (Rider, IntelliJ IDEA, WebStorm, etc.)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Open **Settings → Tools → AI Assistant → Model Context Protocol (MCP)**, click **Add**,
+and paste the following configuration:
+
+.. code-block:: json
+
+   {
+     "mcpServers": {
+       "charon": {
+         "command": "charon",
+         "args": ["MCP"]
+       }
+     }
+   }
+
+.. note::
+   MCP client support requires JetBrains AI Assistant plugin and IDE version 2025.1 or later.
+
+Cline (VS Code Extension)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Open the **MCP Servers** panel in Cline, click **Configure**, then **Configure MCP Servers**,
+and add the following to ``cline_mcp_settings.json``:
+
+.. code-block:: json
+
+   {
+     "mcpServers": {
+       "charon": {
+         "command": "charon",
+         "args": ["MCP"]
+       }
+     }
+   }
+
+Zed
+^^^
+
+Add to your Zed settings file (open with **Zed → Settings → Open Settings** or :kbd:`Cmd+,`):
+
+.. code-block:: json
+
+   {
+     "context_servers": {
+       "charon": {
+         "command": "charon",
+         "args": ["MCP"]
+       }
+     }
+   }
+
 ----
 
 Authentication for Remote Sources
@@ -146,7 +216,8 @@ environment variable before starting the server:
    export CHARON_API_KEY=your_api_key_here
    charon MCP
 
-In client configuration files you can pass the variable directly:
+In client configuration files you can pass the variable directly.
+Most clients (Claude Desktop, Windsurf, Cursor, Cline, JetBrains) use the same ``env`` block:
 
 .. code-block:: json
 
@@ -162,48 +233,40 @@ In client configuration files you can pass the variable directly:
      }
    }
 
+For **VS Code (GitHub Copilot)**, add the ``env`` field inside the server entry in ``.vscode/mcp.json``:
+
+.. code-block:: json
+
+   {
+     "servers": {
+       "charon": {
+         "type": "stdio",
+         "command": "charon",
+         "args": ["MCP"],
+         "env": {
+           "CHARON_API_KEY": "your_api_key_here"
+         }
+       }
+     }
+   }
+
+For **Zed**, add the ``env`` field inside your ``context_servers`` entry:
+
+.. code-block:: json
+
+   {
+     "context_servers": {
+       "charon": {
+         "command": "charon",
+         "args": ["MCP"],
+         "env": {
+           "CHARON_API_KEY": "your_api_key_here"
+         }
+       }
+     }
+   }
+
 Local file sources do not require an API key.
-
-----
-
-Data Sources
-------------
-
-Every tool accepts a ``dataBase`` parameter that identifies the game data source.
-
-**Local file** — pass an absolute or relative path:
-
-.. code-block:: text
-
-   /home/user/project/gamedata.json
-   C:\Projects\MyGame\gamedata.gdjs
-   ./data/gamedata.msgpack
-
-Supported file extensions:
-
-.. list-table::
-   :header-rows: 1
-   :widths: 30 70
-
-   * - Format
-     - Extensions
-   * - JSON
-     - ``.json``, ``.gdjs``
-   * - MessagePack
-     - ``.msgpack``, ``.msgpkg``, ``.gdmp``
-   * - BSON
-     - ``.bson``, ``.gdbs``
-   * - Gzip-compressed (any of the above)
-     - ``.json.gz``, ``.gdjs.gz``, ``.msgpack.gz``, etc.
-
-**Remote URL** — pass the project URL from ``charon.live``:
-
-.. code-block:: text
-
-   https://charon.live/view/data/RPG_Game/development
-
-Remote sources require ``CHARON_API_KEY`` to be set. Unlike local files, remote
-connections are not pooled and are not reused between tool calls.
 
 ----
 

@@ -1,5 +1,5 @@
 Implementing ``CharonPropertyEditorElement``
---------------------------------------------
+============================================
 
 Each custom property editor must implement the ``CharonPropertyEditorElement`` interface from the `charon-extensions <https://www.npmjs.com/package/charon-extensions>`_ package:
 
@@ -18,7 +18,7 @@ When the editor is rendered, Charon sets ``valueControl`` to allow your componen
 - Respond to focus events.
 
 ``ValueControl``
-^^^^^^^^^^^^^^^
+----------------
 
 The ``ValueControl`` interface loosely mirrors Angular’s `AbstractControl <https://angular.dev/api/forms/AbstractControl>`_. Here's a simplified definition:
 
@@ -42,7 +42,7 @@ The ``ValueControl`` interface loosely mirrors Angular’s `AbstractControl <htt
   }
   
 Purpose of ``ValueControl``
------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The primary purpose of the ValueControl<TValue> interface is to act as a centralized, stateful container that manages a single piece of data (a form field's value) along with all its associated metadata, lifecycle, and interaction states.
 
