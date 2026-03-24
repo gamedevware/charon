@@ -62,7 +62,7 @@ You shouldn't need to open a code editor to change a damage value. Charon gives 
 
 ### Programmers
 
-You shouldn't be writing boilerplate to parse JSON. Charon reads your data schema and generates type-safe code in your language — so instead of `data["hero"]["stats"]["hp"]`, you write `gameData.Heroes.Find("Arbalest").Stats.Hp`. That's it.
+You shouldn't be writing boilerplate to parse JSON. Charon reads your data schema and generates type-safe code in your language — so instead of `data["Arbalest"]["stats"]["hp"]`, you write `gameData.Heroes.Find("Arbalest").Stats.Hp`. That's it.
 
 - No more magic strings or silent null dereferences from stale IDs
 - Data loading, validation, and localization handled by generated code
