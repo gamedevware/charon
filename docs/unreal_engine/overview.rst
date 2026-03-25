@@ -138,10 +138,6 @@ The Unreal Engine plugin is written in C++ but relies on ``dotnet charon``, a .N
 Installation from Marketplace
 -----------------------------
 
-.. youtube:: aeQHWdbiodE
-   :width: 640
-   :height: 480
-
 1. Add to cart Charon plugin `[Epic Launcher] <com.epicgames.launcher://ue/marketplace/product/b4231a79707e491ba96b9842d971e6f4>`_ / `[Fab.com Asset Page] <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ in the Unreal Engine Marketplace.
 2. Follow the `instruction <https://docs.unrealengine.com/5.2/en-US/working-with-plugins-in-unreal-engine/>`_ on installing plugin into your project:
   a. Click **Install to Engine** and select the engine version.
@@ -149,6 +145,10 @@ Installation from Marketplace
   c. Type **Charon** in the **Search** bar.
   d. Check the checkbox near the plugin's name to enable it.
 3. Rebuild project C++ code.
+
+.. youtube:: aeQHWdbiodE
+   :width: 640
+   :height: 480
 
 Building from Source Code
 -------------------------
@@ -213,17 +213,17 @@ The Charon plugin is structured into two modules:
 Working with the Plugin
 =======================
 
-.. youtube:: Ofp5c3FSS6k
-   :width: 640
-   :height: 480
-
 Creating Game Data
 ------------------
 
-To create a new game data file within the Unreal Engine Editor, open the **Content Drawer**, right-click in the desired folder, and select in the **Create Advanced Assets** section **Miscellaneous → Game Data** menu option. 
-Name your game data file and proceed according to the instructions in the dialog window that appears.  
-  
+To create a new game data file within the Unreal Engine Editor, open the **Content Drawer**, right-click in the desired folder, and select in the **Create Advanced Assets** section **Miscellaneous → Game Data** menu option.
+Name your game data file and proceed according to the instructions in the dialog window that appears.
+
 :doc:`Detailed guide on how to create game data. <creating_game_data>`
+
+.. youtube:: Ofp5c3FSS6k
+   :width: 640
+   :height: 480
 
 Editing Game Data
 ------------------

@@ -130,22 +130,18 @@ Microsoft.WindowsDesktop.App 9.0.0 [C:\Program Files\dotnet\shared\Microsoft.Win
 Installation from OpenUPM (recommended)
 ---------------------------------------
 
-.. youtube:: xJLR5lkDYb8
-   :width: 640
-   :height: 480
-
 1. Install the required software for your operating system.
 2. Ensure your Unity version is 2021.3 or later.
 3. Open the `OpenUPM <https://openupm.com/packages/com.gamedevware.charon/>`_ page for the plugin.
 4. Click the **Manual Installation** button in the upper right corner and follow the instructions.
 
+.. youtube:: xJLR5lkDYb8
+   :width: 640
+   :height: 480
+
 
 Installation from Unity Asset Store
 -----------------------------------
-
-.. youtube:: MoklxNzt_aY
-   :width: 640
-   :height: 480
 
 1. Install the required software for your operating system.
 2. Ensure your Unity version is 2021.3 or later.
@@ -155,6 +151,10 @@ Installation from Unity Asset Store
 6. Wait for the package manager to populate the list.
 7. Select **My Assets** from the dropdown in the top left corner.
 8. Select **Charon** from the list and click **Download**. If it’s already downloaded, you will see an **Import** option.
+
+.. youtube:: MoklxNzt_aY
+   :width: 640
+   :height: 480
 
 
 Installation from GitHub
@@ -213,20 +213,20 @@ Whenever there is a modification in the data structure within a JSON file, it is
 Working with the Plugin
 =======================
 
-.. youtube:: EZ0oEEVuEug
-   :width: 640
-   :height: 480
-
 Creating Game Data
 ------------------
 
-To create a new game data file within the Unity Editor, open the **Project** window, right-click in the desired folder, and select the **Create → Game Data** menu option. 
+To create a new game data file within the Unity Editor, open the **Project** window, right-click in the desired folder, and select the **Create → Game Data** menu option.
 
 1. Open the **Project** window and navigate to the desired folder.
 2. Right-click in the **Project** window and select **Create → Game Data**.
 3. Name your game data file and click the **Create** button.
 4. Wait for the source code and assets to be created in the specified folder and for the editor to recompile the scripts.
 5. Double-click the created *.asset* or *.gdjs* file to start editing.
+
+.. youtube:: EZ0oEEVuEug
+   :width: 640
+   :height: 480
 
 
 Editing Game Data
