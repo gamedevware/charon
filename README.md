@@ -4,7 +4,7 @@ Charon — Data-Driven Game Design, Done Right
 
 <img width="894" alt="dashboard" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/cover_github.png"/>
 
-[Documentation](https://gamedevware.github.io/charon/) [[PDF]](https://gamedevware.github.io/charon/pdf/documentation.pdf) • [Discord](https://discord.gg/2quB5vXryd) • [Website](https://www.gamedevware.com/) • [Changelog](https://www.gamedevware.com/changelog) • [Issues](https://github.com/gamedevware/charon/issues)
+[Documentation](https://gamedevware.github.io/charon/) [[PDF]](https://gamedevware.github.io/charon/pdf/documentation.pdf) • [Discord](https://discord.gg/2quB5vXryd) • [Website](https://www.gamedevware.com/) • [Changelog](https://www.gamedevware.com/whats-new) • [Issues](https://github.com/gamedevware/charon/issues)
 
 Plugins
 -------
@@ -17,7 +17,7 @@ Plugins
 Standalone
 ----------
 
-[How to start with a custom engine](https://gamedevware.github.io/charon/standalone/overview.html) → [C#](https://gamedevware.github.io/charon/gamedata/working_with_csharp_code_7_3.html) • [TypeScript](https://gamedevware.github.io/charon/gamedata/working_with_type_script_code.html) • [Haxe](https://gamedevware.github.io/charon/gamedata/working_with_haxe_code.html)
+[How to start with a custom engine](https://gamedevware.github.io/charon/standalone/overview.html) → [C#](https://gamedevware.github.io/charon/gamedata/working_with_csharp_code_7_3.html) • [TypeScript](https://gamedevware.github.io/charon/gamedata/working_with_type_script_code.html) • [C++ (Unreal Engine)](https://gamedevware.github.io/charon/gamedata/working_with_uecpp_code.html) • [Haxe](https://gamedevware.github.io/charon/gamedata/working_with_haxe_code.html)
 
 ---
 
@@ -62,7 +62,7 @@ You shouldn't need to open a code editor to change a damage value. Charon gives 
 
 ### Programmers
 
-You shouldn't be writing boilerplate to parse JSON. Charon reads your data schema and generates type-safe code in your language — so instead of `data["Arbalest"]["stats"]["hp"]`, you write `gameData.Heroes.Find("Arbalest").Stats.Hp`. That's it.
+You shouldn't be writing boilerplate to parse JSON. Charon reads your data schema and generates type-safe code in your language — so instead of `data["Crossbower"]["stats"]["hp"]`, you write `gameData.Heroes.Find("Crossbower").Stats.Hp`. That's it.
 
 - No more magic strings or silent null dereferences from stale IDs
 - Data loading, validation, and localization handled by generated code
@@ -96,7 +96,7 @@ Import the generated code and data file into your project. Designers keep editin
 Quick Start
 ===========
 
-Install the standalone version (requires [.NET runtime](https://dotnet.microsoft.com/en-us/download)):
+Install the standalone version (requires [.NET SDK 8+](https://dotnet.microsoft.com/en-us/download)):
 
 ```bash
 dotnet tool install dotnet-charon --global
@@ -127,7 +127,7 @@ using var fileStream = File.OpenRead("gamedata.json");
 var gameData = new GameData(fileStream, new Formatters.GameDataLoadOptions { Format = Formatters.Format.Json });
 
 var heroes = gameData.Heroes.AsList;               // -> IReadOnlyList<Hero>
-var hero   = gameData.AllHeroes.Find("Arbalest");  // -> Hero | null
+var hero   = gameData.AllHeroes.Find("Crossbower");  // -> Hero | null
 ```
 
 ### C++ (Unreal Engine)
@@ -139,7 +139,7 @@ TSoftObjectPtr<UGameData> GameDataPtr = TEXT("/Game/Content/GameData");
 auto GameData = GameDataPtr.LoadSynchronous();  // -> UGameData*
 
 auto Heroes  = GameData->Heroes;                            // -> TMap<FString, UHero*>
-auto HeroById = GameData->Heroes.Find(TEXT("Arbalest"));   // -> UHero**
+auto HeroById = GameData->Heroes.Find(TEXT("Crossbower"));   // -> UHero**
 ```
 
 ### TypeScript
@@ -152,7 +152,7 @@ const gameDataStream = readFileSync(gameDataFilePath);
 const gameData = new GameData(gameDataStream, { format: Formatters.GameDataFormat.Json });
 
 let heroes = gameData.heroes;                        // -> readonly Hero[]
-let hero   = gameData.heroesAll.find("Arbalest");   // -> Hero | undefined
+let hero   = gameData.heroesAll.find("Crossbower");   // -> Hero | undefined
 ```
 
 ### Haxe
@@ -167,7 +167,7 @@ options.format = GameDataFormat.Json;
 var gameData = new GameData(input, options);
 
 var heroes = gameData.heroesAll.list;             // -> ReadOnlyArray<Hero>
-var hero   = gameData.heroesAll.get("Arbalest"); // -> Hero
+var hero   = gameData.heroesAll.get("Crossbower"); // -> Hero
 ```
 
 ---
