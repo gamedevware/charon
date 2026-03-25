@@ -96,7 +96,7 @@ Import the generated code and data file into your project. Designers keep editin
 Quick Start
 ===========
 
-Install the standalone version (requires [.NET runtime](https://dotnet.microsoft.com/en-us/download)):
+Install the standalone version (requires [.NET SDK](https://dotnet.microsoft.com/en-us/download)):
 
 ```bash
 dotnet tool install dotnet-charon --global

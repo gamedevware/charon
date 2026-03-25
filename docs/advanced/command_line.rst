@@ -9,7 +9,7 @@ You should be familiar with terminal on your OS to fully tap potential of CLI.
 Installation
 ------------
 
-Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+Download and install `.NET SDK 8+ <https://dotnet.microsoft.com/en-us/download>`_.
 
 Option 1: dotnet tool (recommended)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
