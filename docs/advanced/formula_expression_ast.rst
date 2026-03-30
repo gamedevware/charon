@@ -288,8 +288,6 @@ TypeReference
 
 A type reference describes a type, including generic types. It is used wherever a type is needed (e.g. ``Constant``, ``Convert``, ``New``).
 
-Fields
-~~~~~~
 
 - ``name`` *(string)* — The simple or fully-qualified type name.
 - ``expressionType`` *(string, optional)* — When set to ``"MemberResolve"``, the type is resolved relative to ``expression``.
@@ -319,8 +317,6 @@ Constant
 
 Represents a literal value of a known type.
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"Constant"``
 - ``type`` — The type of the value (TypeReference or string).
@@ -353,8 +349,6 @@ MemberResolve
 
 Resolves a named member (variable, property, field, method, or type) optionally relative to another expression. This is also used to reference formula parameters by name.
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"MemberResolve"``
 - ``name`` *(string)* — The member name to resolve.
@@ -401,8 +395,6 @@ Unary
 
 Applies a unary operator to a single operand.
 
-Fields
-^^^^^^
 
 - ``expressionType`` — One of:
 
@@ -438,8 +430,6 @@ Binary
 
 Applies a binary operator to two operands.
 
-Fields
-^^^^^^
 
 - ``expressionType`` — One of:
 
@@ -481,8 +471,6 @@ Condition
 
 A conditional (ternary) expression: ``test ? ifTrue : ifFalse``.
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"Condition"``
 - ``test`` *(FormulaExpression)* — The boolean condition.
@@ -519,8 +507,6 @@ Convert / TypeAs
 
 Converts or casts an expression to a different type.
 
-Fields
-^^^^^^
 
 - ``expressionType`` — One of:
 
@@ -553,8 +539,6 @@ Default
 
 Produces the default value for a type (e.g. ``0`` for numeric types, ``null`` for reference types).
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"Default"``
 - ``type`` — The type whose default value to produce (TypeReference or string).
@@ -575,8 +559,6 @@ TypeIs
 
 Tests whether an expression is of a given type (equivalent to ``is`` in C#). Evaluates to a boolean.
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"TypeIs"``
 - ``type`` — The type to test against (TypeReference or string).
@@ -604,8 +586,6 @@ TypeOf
 
 Returns the runtime type descriptor for the given type (equivalent to ``typeof(T)`` in C#).
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"TypeOf"``
 - ``type`` — The type to retrieve (TypeReference or string).
@@ -626,8 +606,6 @@ Index
 
 Accesses an element of an indexable object (array, list, dictionary, or any type with an indexer).
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"Index"``
 - ``expression`` *(FormulaExpression)* — The collection or indexable object.
@@ -659,8 +637,6 @@ Invoke
 
 Calls a method or invokes a delegate/function. The method itself is resolved as a ``MemberResolve`` node in the ``expression`` field.
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"Invoke"``
 - ``expression`` *(FormulaExpression)* — The callable to invoke (typically a ``MemberResolve`` node).
@@ -695,8 +671,6 @@ Lambda
 
 Defines an anonymous function (lambda). The ``arguments`` field declares the parameters; ``expression`` is the body.
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"Lambda"``
 - ``arguments`` *(ArgumentCollectionObj)* — Parameter declarations. Keys are parameter names; values are ``null`` (parameter type is inferred from context) or a ``MemberResolve`` expression denoting the declared type.
@@ -725,8 +699,6 @@ New
 
 Instantiates a new object of a given type by calling a constructor.
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"New"``
 - ``type`` — The type to instantiate (TypeReference or string).
@@ -752,8 +724,6 @@ NewArrayBounds
 
 Creates a new array with specified dimension sizes but without initializers.
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"NewArrayBounds"``
 - ``type`` — The element type of the array (TypeReference or string).
@@ -778,8 +748,6 @@ NewArrayInit
 
 Creates a new single-dimensional array and initializes it with a list of values.
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"NewArrayInit"``
 - ``type`` — The element type of the array (TypeReference or string).
@@ -806,8 +774,6 @@ MemberInit
 
 Creates a new object and initializes its members. Combines a ``New`` node with a set of member bindings.
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"MemberInit"``
 - ``new`` *(NewExpression)* — The object construction node.
@@ -849,8 +815,6 @@ ListInit
 
 Creates a new collection object and populates it using an initializer list. Each element is added by calling the collection's ``Add`` method (or equivalent).
 
-Fields
-^^^^^^
 
 - ``expressionType``: ``"ListInit"``
 - ``new`` *(NewExpression)* — The collection construction node.
