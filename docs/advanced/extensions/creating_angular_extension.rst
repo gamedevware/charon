@@ -51,7 +51,7 @@ Install Angular Elements for Web Component support, the Web Components polyfill 
 
     npm install @angular/elements --save
     npm install @webcomponents/custom-elements --save
-    npm install charon-extension --save
+    npm install charon-extensions --save
 
 4. Write and Export Your Web Component
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

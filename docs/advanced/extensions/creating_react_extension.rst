@@ -46,7 +46,7 @@ Install SASS, RxJS (recommended), the Web Components polyfill (for broader compa
     npm install sass --save
     npm install rxjs --save
     npm install @webcomponents/custom-elements --save
-    npm install charon-extension --save
+    npm install charon-extensions --save
 
 3. Write and Export Your Web Component
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
