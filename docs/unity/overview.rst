@@ -125,7 +125,6 @@ Unity plugin uses ``dotnet charon`` tool, which is a .NET Core application built
     8.0.414 [C:\Program Files\dotnet\sdk]  # <- this one is fine
     9.0.300 [C:\Program Files\dotnet\sdk]  # <- this one too
 
-Microsoft.WindowsDesktop.App 9.0.0 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
 
 Installation from OpenUPM (recommended)
 ---------------------------------------
