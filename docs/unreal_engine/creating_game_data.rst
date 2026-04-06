@@ -20,7 +20,7 @@ Step By Step
 11. **Choose Game Data Class:** Select the *Game Data* class, which should match the game data file name. If it's not listed, return to step 7.
 12. **Save .uasset File:** Save the newly created *.uasset* file after completing the import process.
 
-.. youtube:: Ofp5c3FSS6k
+.. youtube:: ZqLPxXE7vhA
    :width: 640
    :height: 480
 

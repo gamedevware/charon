@@ -135,10 +135,9 @@ Installation from OpenUPM (recommended)
 3. Open the `OpenUPM <https://openupm.com/packages/com.gamedevware.charon/>`_ page for the plugin.
 4. Click the **Manual Installation** button in the upper right corner and follow the instructions.
 
-.. youtube:: xJLR5lkDYb8
+.. youtube:: jJ6KEd4dKuc
    :width: 640
    :height: 480
-
 
 Installation from Unity Asset Store
 -----------------------------------
@@ -152,10 +151,9 @@ Installation from Unity Asset Store
 7. Select **My Assets** from the dropdown in the top left corner.
 8. Select **Charon** from the list and click **Download**. If it’s already downloaded, you will see an **Import** option.
 
-.. youtube:: MoklxNzt_aY
+.. youtube:: _wm1WQmRpmw
    :width: 640
    :height: 480
-
 
 Installation from GitHub
 ------------------------
@@ -224,7 +222,7 @@ To create a new game data file within the Unity Editor, open the **Project** win
 4. Wait for the source code and assets to be created in the specified folder and for the editor to recompile the scripts.
 5. Double-click the created *.asset* or *.gdjs* file to start editing.
 
-.. youtube:: EZ0oEEVuEug
+.. youtube:: TIvS8oLQ4Hk
    :width: 640
    :height: 480
 

@@ -146,7 +146,7 @@ Installation from Marketplace
   d. Check the checkbox near the plugin's name to enable it.
 3. Rebuild project C++ code.
 
-.. youtube:: aeQHWdbiodE
+.. youtube:: QL6KYQRj_j8
    :width: 640
    :height: 480
 
@@ -221,7 +221,7 @@ Name your game data file and proceed according to the instructions in the dialog
 
 :doc:`Detailed guide on how to create game data. <creating_game_data>`
 
-.. youtube:: Ofp5c3FSS6k
+.. youtube:: ZqLPxXE7vhA
    :width: 640
    :height: 480
 

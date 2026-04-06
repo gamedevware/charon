@@ -107,6 +107,10 @@ dotnet tool (recommended)
   # run editor
    charon ./gamedata.json
 
+.. youtube:: TOBmJEkNb2U
+   :width: 640
+   :height: 480
+
 Bootstrap Script
 ----------------
 
