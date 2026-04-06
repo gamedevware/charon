@@ -1,0 +1,502 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CI/CD Integration &mdash; Charon 2026.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2b694ea4"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Command Line Interface (CLI)" href="command_line.html" />
+    <link rel="prev" title="Patch and Diff Workflow" href="patch_diff.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html#composite-types">Composite Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formula_expression_ast.html">Formula Expression AST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">CI/CD Integration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/advanced/cicd.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ci-cd-integration">
+<h1>CI/CD Integration<a class="headerlink" href="#ci-cd-integration" title="Link to this heading"></a></h1>
+<p>Charon’s CLI supports full automation of game data workflows — validation, export, translation,
+code generation, and backup — making it straightforward to integrate into any continuous
+integration or deployment pipeline.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#installation-in-ci" id="id1">Installation in CI</a></p></li>
+<li><p><a class="reference internal" href="#authentication" id="id2">Authentication</a></p></li>
+<li><p><a class="reference internal" href="#exit-codes" id="id3">Exit Codes</a></p></li>
+<li><p><a class="reference internal" href="#common-pipeline-recipes" id="id4">Common Pipeline Recipes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#validate-on-every-pull-request" id="id5">Validate on every pull request</a></p></li>
+<li><p><a class="reference internal" href="#export-and-publish-on-tag" id="id6">Export and publish on tag</a></p></li>
+<li><p><a class="reference internal" href="#apply-a-patch-on-merge" id="id7">Apply a patch on merge</a></p></li>
+<li><p><a class="reference internal" href="#export-translation-files-for-a-localization-vendor" id="id8">Export translation files for a localization vendor</a></p></li>
+<li><p><a class="reference internal" href="#import-translated-files-from-a-vendor" id="id9">Import translated files from a vendor</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#recommended-pipeline-structure" id="id10">Recommended Pipeline Structure</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id11">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="installation-in-ci">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Installation in CI</a><a class="headerlink" href="#installation-in-ci" title="Link to this heading"></a></h2>
+<p>Install the <code class="docutils literal notranslate"><span class="pre">dotnet-charon</span></code> tool as part of your pipeline setup step. The tool requires the
+.NET 8 (or later) runtime to be present.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+GitHub Actions</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Setup .NET</span>
+<span class="w">  </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-dotnet@v4</span>
+<span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">dotnet-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;8.x&#39;</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install Charon</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dotnet tool install -g dotnet-charon</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+GitLab CI</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">before_script</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apt-get install -y dotnet-sdk-8.0</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dotnet tool install -g dotnet-charon</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">export PATH=&quot;$PATH:$HOME/.dotnet/tools&quot;</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+Shell script (any runner)</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dotnet<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>dotnet-charon
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PATH</span><span class="s2">:</span><span class="nv">$HOME</span><span class="s2">/.dotnet/tools&quot;</span>
+charon<span class="w"> </span>VERSION
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="authentication">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Authentication</a><a class="headerlink" href="#authentication" title="Link to this heading"></a></h2>
+<p>Provide the API key for remote data sources via the <code class="docutils literal notranslate"><span class="pre">CHARON_API_KEY</span></code> environment variable.
+Store it as a CI secret; never hard-code it in pipeline files.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># GitHub Actions — secrets.CHARON_API_KEY defined in repository settings</span>
+<span class="nt">env</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">CHARON_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.CHARON_API_KEY }}</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Shell — set before running any charon command</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">CHARON_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-api-key-here&quot;</span>
+charon<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span>--dataBase<span class="w"> </span><span class="s2">&quot;https://charon.live/view/data/MyGame/main/&quot;</span><span class="w"> </span>...
+</pre></div>
+</div>
+<p>Alternatively, pass credentials explicitly with <code class="docutils literal notranslate"><span class="pre">--credentials</span></code>. The environment variable
+takes precedence when both are supplied.</p>
+</section>
+<hr class="docutils" />
+<section id="exit-codes">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Exit Codes</a><a class="headerlink" href="#exit-codes" title="Link to this heading"></a></h2>
+<p>Charon exits with <code class="docutils literal notranslate"><span class="pre">0</span></code> on success. It exits with <code class="docutils literal notranslate"><span class="pre">1</span></code> or any positive code in these cases:</p>
+<ul class="simple">
+<li><p>A fatal error occurred (bad parameters, file not found, network failure).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">VALIDATE</span></code> produced errors <strong>and</strong> <code class="docutils literal notranslate"><span class="pre">--output</span></code> was set to <code class="docutils literal notranslate"><span class="pre">err</span></code>.</p></li>
+</ul>
+<p>All other cases — including a validation report that contains errors written to a file —
+exit with <code class="docutils literal notranslate"><span class="pre">0</span></code>. Design your pipeline steps accordingly.</p>
+</section>
+<hr class="docutils" />
+<section id="common-pipeline-recipes">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Common Pipeline Recipes</a><a class="headerlink" href="#common-pipeline-recipes" title="Link to this heading"></a></h2>
+<section id="validate-on-every-pull-request">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Validate on every pull request</a><a class="headerlink" href="#validate-on-every-pull-request" title="Link to this heading"></a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># .github/workflows/validate.yml</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Validate game data</span>
+
+<span class="nt">on</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">pull_request</span><span class="p p-Indicator">]</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">validate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-dotnet@v4</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> dotnet-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;8.x&#39;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dotnet tool install -g dotnet-charon</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Validate integrity</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">charon DATA VALIDATE \</span>
+<span class="w">            </span><span class="no">--dataBase gamedata.json \</span>
+<span class="w">            </span><span class="no">--validationOptions checkRequirements checkReferences checkFormat \</span>
+<span class="w">            </span><span class="no">--output err</span>
+<span class="w">        </span><span class="c1"># Exits 1 and fails the workflow if errors are found</span>
+</pre></div>
+</div>
+</section>
+<section id="export-and-publish-on-tag">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Export and publish on tag</a><a class="headerlink" href="#export-and-publish-on-tag" title="Link to this heading"></a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># .github/workflows/publish.yml</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Publish game data</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;v*&#39;</span><span class="p p-Indicator">]</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">publish</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">CHARON_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.CHARON_API_KEY }}</span>
+
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-dotnet@v4</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> dotnet-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;8.x&#39;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dotnet tool install -g dotnet-charon</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Backup before publish</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">charon DATA BACKUP \</span>
+<span class="w">            </span><span class="no">--dataBase &quot;https://charon.live/view/data/MyGame/main/&quot; \</span>
+<span class="w">            </span><span class="no">--output backup_${{ github.ref_name }}.zip</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Validate</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">charon DATA VALIDATE \</span>
+<span class="w">            </span><span class="no">--dataBase &quot;https://charon.live/view/data/MyGame/main/&quot; \</span>
+<span class="w">            </span><span class="no">--validationOptions checkRequirements checkReferences \</span>
+<span class="w">            </span><span class="no">--output err</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Export published data (JSON)</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">charon DATA EXPORT \</span>
+<span class="w">            </span><span class="no">--dataBase &quot;https://charon.live/view/data/MyGame/main/&quot; \</span>
+<span class="w">            </span><span class="no">--mode publication \</span>
+<span class="w">            </span><span class="no">--output StreamingAssets/gamedata.json \</span>
+<span class="w">            </span><span class="no">--outputFormat json</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate C# source code</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">charon GENERATE CSHARPCODE \</span>
+<span class="w">            </span><span class="no">--dataBase &quot;https://charon.live/view/data/MyGame/main/&quot; \</span>
+<span class="w">            </span><span class="no">--namespace MyGame.Parameters \</span>
+<span class="w">            </span><span class="no">--outputDirectory Assets/Scripts/Generated \</span>
+<span class="w">            </span><span class="no">--clearOutputDirectory</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Commit generated files</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">git config user.name &quot;CI Bot&quot;</span>
+<span class="w">          </span><span class="no">git config user.email &quot;ci@example.com&quot;</span>
+<span class="w">          </span><span class="no">git add Assets/Scripts/Generated StreamingAssets/gamedata.json</span>
+<span class="w">          </span><span class="no">git commit -m &quot;chore: regenerate game data for ${{ github.ref_name }}&quot;</span>
+<span class="w">          </span><span class="no">git push</span>
+</pre></div>
+</div>
+</section>
+<section id="apply-a-patch-on-merge">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Apply a patch on merge</a><a class="headerlink" href="#apply-a-patch-on-merge" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># In a merge script or CI job</span>
+charon<span class="w"> </span>DATA<span class="w"> </span>APPLYPATCH<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span>gamedata.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--input<span class="w"> </span>feature_changes.patch.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--validationOptions<span class="w"> </span>repair<span class="w"> </span>checkRequirements<span class="w"> </span>checkReferences
+
+charon<span class="w"> </span>DATA<span class="w"> </span>VALIDATE<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span>gamedata.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--validationOptions<span class="w"> </span>checkRequirements<span class="w"> </span>checkReferences<span class="w"> </span>checkFormat<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>err<span class="w">   </span><span class="c1"># Fail CI if post-merge data is invalid</span>
+</pre></div>
+</div>
+</section>
+<section id="export-translation-files-for-a-localization-vendor">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Export translation files for a localization vendor</a><a class="headerlink" href="#export-translation-files-for-a-localization-vendor" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span>lang<span class="w"> </span><span class="k">in</span><span class="w"> </span>de<span class="w"> </span>fr<span class="w"> </span>ja<span class="w"> </span>ko<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>charon<span class="w"> </span>DATA<span class="w"> </span>I18N<span class="w"> </span>EXPORT<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span>gamedata.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--sourceLanguage<span class="w"> </span>en<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--targetLanguage<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$lang</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span><span class="s2">&quot;translations/en_</span><span class="si">${</span><span class="nv">lang</span><span class="si">}</span><span class="s2">.xliff&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--outputFormat<span class="w"> </span>xliff
+<span class="k">done</span>
+</pre></div>
+</div>
+</section>
+<section id="import-translated-files-from-a-vendor">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Import translated files from a vendor</a><a class="headerlink" href="#import-translated-files-from-a-vendor" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span>file<span class="w"> </span><span class="k">in</span><span class="w"> </span>translations/en_*.xliff<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>charon<span class="w"> </span>DATA<span class="w"> </span>I18N<span class="w"> </span>IMPORT<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span>gamedata.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--input<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dryRun<span class="w">   </span><span class="c1"># Preview first</span>
+
+<span class="w">  </span>charon<span class="w"> </span>DATA<span class="w"> </span>I18N<span class="w"> </span>IMPORT<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span>gamedata.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--input<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="recommended-pipeline-structure">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Recommended Pipeline Structure</a><a class="headerlink" href="#recommended-pipeline-structure" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[PR open]
+  └─ DATA VALIDATE (checkRequirements + checkReferences + checkFormat → err)
+
+[Merge to main]
+  └─ DATA BACKUP
+  └─ DATA VALIDATE (as above)
+  └─ GENERATE &lt;LANG&gt;CODE --clearOutputDirectory
+  └─ commit generated files
+
+[Release tag]
+  └─ DATA BACKUP (tagged archive)
+  └─ DATA EXPORT --mode publication
+  └─ upload to CDN / game build
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="command_line.html"><span class="doc">Command Line Interface</span></a></p></li>
+<li><p><a class="reference internal" href="validation.html"><span class="doc">Validation</span></a></p></li>
+<li><p><a class="reference internal" href="backup_restore.html"><span class="doc">Backup and Restore</span></a></p></li>
+<li><p><a class="reference internal" href="patch_diff.html"><span class="doc">Patch and Diff Workflow</span></a></p></li>
+<li><p><a class="reference internal" href="internationalization.html"><span class="doc">Internationalization</span></a></p></li>
+<li><p><a class="reference internal" href="commands/universal_parameters.html"><span class="doc">Universal Parameters</span></a></p></li>
+<li><p><a class="reference internal" href="commands/remote_input_output.html"><span class="doc">URL-based I/O</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="patch_diff.html" class="btn btn-neutral float-left" title="Patch and Diff Workflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="command_line.html" class="btn btn-neutral float-right" title="Command Line Interface (CLI)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
