@@ -1,6 +1,9 @@
 Working with Source Code (UE C++)
 =================================
 
+.. note::
+   **Tier 1 Support:** The UE C++ code generator provides complete Tier 1 support. This includes full formula execution (interpreter), patching during load, and language idiomatic features.
+
 .. warning::
     The source code for Unreal Engine requires a `plugin <https://www.fab.com/listings/8cdfd7af-e1e9-4c97-b28d-d4b196767824>`_ to be installed to function. If you get compilation errors, make sure the plugin is `installed and enabled <../unreal_engine/overview>`_.
 

@@ -1,7 +1,7 @@
-Generate Haxe Source Code
+Generate Lua Source Code
 ========================
 
-Generates Haxe source code for game data into output directory.
+Generates Lua source code for game data into output directory.
 
 By default, this command does not delete previously generated files. Use the ``--clearOutputDirectory`` parameter to automatically remove prior generated files before creating new ones.
 
@@ -17,10 +17,10 @@ By default, this command does not delete previously generated files. Use the ``-
 .. code-block:: bash
 
   # local game data (windows)
-   charon GENERATE HAXE --dataBase "c:\my app\gamedata.json" --packageName "" --outputDirectory "c:\my app\scripts"
+   charon GENERATE LUA --dataBase "c:\my app\gamedata.json" --outputDirectory "c:\my app\scripts"
 
   # remote game data
-   charon GENERATE HAXE --dataBase "https://charon.live/view/data/My_Game/develop/" --packageName "" --outputDirectory "./scripts" --credentials "<API-Key>"
+   charon GENERATE LUA --dataBase "https://charon.live/view/data/My_Game/develop/" --outputDirectory "./scripts" --credentials "<API-Key>"
   
 ---------------
  Parameters
@@ -60,10 +60,10 @@ By default, this command does not delete previously generated files. Use the ``-
    .. code-block:: bash
    
      # name (default)
-     --documentClassName Document
+     --documentClassName GameDataDocument
      
      # in case of name collision
-     --documentClassName GameDataDocument
+     --documentClassName MyDocument
      
 --gameDataClassName
    Name for class containing whole in-memory game data.
@@ -75,18 +75,6 @@ By default, this command does not delete previously generated files. Use the ``-
      
      # in case of name collision
      --gameDataClassName MyGameData
-     
---packageName
-   Package name for all generated classes.
-   
-   .. code-block:: bash
-
-     # empty package (default)
-     --packageName ""
-   
-     # named
-     --packageName GameParameters
-     
 
 --indentation
    Indentation style for generated code.
@@ -114,7 +102,7 @@ By default, this command does not delete previously generated files. Use the ``-
      --lineEndings Unix
      
 --splitFiles
-   Set this flag to lay out generated classes into separate files. If not set, then one giant file with the name of ``--gameDataClassName``.hx will be generated.
+   Set this flag to lay out generated classes into separate files. If not set, then one giant file with the name of ``--gameDataClassName``.lua will be generated. Default is true.
 
 --optimizations
    List of enabled optimization in generated code.
@@ -169,10 +157,10 @@ This command supports :doc:`universal parameters <universal_parameters>`.
 See also
 --------
 
-- :doc:`Generating Source Code <../generating_source_code>`
-- :doc:`Working with Haxe Code <../../gamedata/working_with_haxe_code>`
+- :doc:`Generating Source Code <../../gamedata/generating_source_code>`
+- :doc:`Working with Lua Code <../../gamedata/working_with_lua_code>`
 - :doc:`GENERATE CSHARPCODE <generate_csharp_code>`
 - :doc:`GENERATE TYPESCRIPTCODE <generate_typescript_code>`
-- :doc:`GENERATE UECPPCODE <generate_uecpp_code>`
+- :doc:`GENERATE UECPP <generate_uecpp_code>`
+- :doc:`GENERATE HAXE <generate_haxe_code>`
 - :doc:`Publication <../publication>`
-

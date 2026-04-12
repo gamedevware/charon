@@ -1,7 +1,12 @@
-Feature,C#,TypeScript,C++ (UE),Haxe
-JSON Format,x,x,x,x
-MessagePack Format,x,x,x,x
-Language Switch,x,x,x,x
+Feature,C#,TypeScript,C++ (UE),Haxe,Lua
+Classes,x,x,x,x,x
+Enums,x,x,x,x,x
+Build-in Formatters,x,x,x,x,
+• JSON,x,x,x,x,
+• MessagePack,x,x,x,x,
+Localization,x,x,x,x,x
 Patching,x,x,x,x
-Formulas,x,x,,
-By Unique Value Indexing,x,,,x
+Formulas,x,x,x,x,
+• Parsed AST,x,x,x,x,
+• Interpeter,x,x,x,,
+• Lambdas,x,x,,,

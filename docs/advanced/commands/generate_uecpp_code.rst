@@ -3,7 +3,7 @@ Generate Unreal Engine C++ Source Code
 
 Generates C++ for Unreal Engine source code for game data into output directory.
 
-This command does not delete previously generated files, and it is the responsibility of the user to ensure that any previous files are removed before running the command again.
+By default, this command does not delete previously generated files. Use the ``--clearOutputDirectory`` parameter to automatically remove prior generated files before creating new ones.
 
 - :ref:`CLI Installation <CommandLine_Installation>`
 - :ref:`Commands Reference <CommandLine_Commands>`

@@ -1,6 +1,9 @@
 Working with Source Code (C# 7.3)
 =================================
 
+.. note::
+   **Tier 1 Support:** The C# 7.3 code generator provides complete Tier 1 support. This includes full formula execution (interpreter), patching during load, and language idiomatic features.
+
 Accessing game data during runtime is possible by utilizing the generated source code.
 
 This section provides examples using default class names, but it is possible to customize class names during the source code generation process. Additionally, this customization allows to avoid naming collisions with existing code.

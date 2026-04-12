@@ -1,6 +1,9 @@
 Working with Source Code (Haxe)
 =================================
 
+.. note::
+   **Tier 2 Support:** The Haxe code generator provides Tier 2 support. This includes built-in JSON/MessagePack readers, comprehensive helper classes, and formulas parsed into AST (without interpreter).
+
 Accessing game data during runtime is possible by utilizing the generated source code.
 
 This section provides examples using default class names, but it is possible to customize class names during the source code generation process. Additionally, this customization allows to avoid naming collisions with existing code.

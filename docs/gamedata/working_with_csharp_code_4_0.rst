@@ -1,6 +1,9 @@
 Working with Source Code (C# 4.0)
 =============================
 
+.. note::
+   **Tier 1 Support:** The C# 4.0 code generator provides complete Tier 1 support. This includes full formula execution (interpreter), patching during load, and language idiomatic features.
+
 .. warning::
     This is deprecated code generator and shouldn't be used in new projects.
 

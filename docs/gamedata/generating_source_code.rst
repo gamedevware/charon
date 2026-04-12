@@ -3,6 +3,14 @@ Generating Source Code
 
 The process of generating source code allows game data to be used inside a game. This process involves specifying the language (e.g. C#) and various generation parameters/optimizations. It can be done from both the project's dashboard user interface and the command-line interface (CLI).
 
+Language Support Tiers
+-----------------------
+
+The source code generation system is organized into three support tiers:
+
+- **Tier 3 (Basic):** Schema types/enums are generated, basic game data class, localization language selection, document references, and built-in JSON reader.
+- **Tier 2 (Advanced):** Includes all Tier 3 features, plus: formulas parsed into AST (no interpreter), built-in Json/MessagePack reader, full game data class with helper functions/classes, and union types. Supported by **Haxe**.
+- **Tier 1 (Complete):** Includes all Tier 2 features, plus: full formulas support (ASP interpreter), patching during load support, and language idiomatic features. Supported by **C# 4.0**, **C# 7.3**, **TypeScript**, and **UE C++**.
 
 .. csv-table:: Features
    :file: source_code_features.csv
@@ -52,6 +60,7 @@ See also
 - :doc:`Working with Source Code (TypeScript) <working_with_type_script_code>`
 - :doc:`Working with Source Code (UE C++) <working_with_uecpp_code>`
 - :doc:`Working with Source Code (Haxe) <working_with_haxe_code>`
+- :doc:`Working with Source Code (Lua) <working_with_lua_code>`
 - :doc:`Command Line Interface (CLI) <../advanced/command_line>`
 - :doc:`GENERATE CSHARPCODE Command <../advanced/commands/generate_csharp_code>`
 - :doc:`GENERATE TYPESCRIPTCODE Command <../advanced/commands/generate_typescript_code>`
