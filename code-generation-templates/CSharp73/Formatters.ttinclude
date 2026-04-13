@@ -1330,7 +1330,7 @@
 			get => this.dictionary[key];
 			set
 			{
-				if (this.dictionary.ContainsKey(key) == false) this.keys.Add(key);
+				if (!this.dictionary.ContainsKey(key)) this.keys.Add(key);
 				this.dictionary[key] = value;
 			}
 		}
@@ -1534,7 +1534,7 @@
 		}
 		bool ICollection<KeyValuePair<KeyT, ValueT>>.Remove(KeyValuePair<KeyT, ValueT> item)
 		{
-			if (((ICollection<KeyValuePair<KeyT, ValueT>>)this).Contains(item) == false)
+			if (!((ICollection<KeyValuePair<KeyT, ValueT>>)this).Contains(item))
 			{
 				return false;
 			}

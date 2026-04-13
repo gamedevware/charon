@@ -220,7 +220,7 @@
 		/// <inheritdoc />
 		public override bool Equals(object value)
 		{
-			if (value is <#= typeDef #> == false)
+			if (!(value is <#= typeDef #>))
 			{
 				return false;
 			}
@@ -283,7 +283,7 @@
 		}
 		public static bool operator !=(<#= typeDef #> value1, <#= typeDef #> value2)
 		{
-			return Equals(value1, value2) == false;
+			return !Equals(value1, value2);
 		}
 
 		private int ComputeHashCode()

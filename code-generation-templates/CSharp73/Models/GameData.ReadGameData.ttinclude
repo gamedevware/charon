@@ -14,12 +14,12 @@
 			switch(options.Format)
 			{
 <#+
-		if (context.DisableJsonSerialization == false)
+		if (!context.DisableJsonSerialization)
 		{
 #>				case Formatters.GameDataFormat.Json: return new Formatters.JsonGameDataReader(gameDataStream, leaveOpen: options.LeaveStreamsOpen, useStringPooling: <#= context.DisableStringPooling ? "false" : "true" #>);
 <#+
 		}
-		if (context.DisableMessagePackSerialization == false)
+		if (!context.DisableMessagePackSerialization)
 		{
 #>				case Formatters.GameDataFormat.MessagePack: return new Formatters.MessagePackGameDataReader(gameDataStream, leaveOpen: options.LeaveStreamsOpen, useStringPooling: <#= context.DisableStringPooling ? "false" : "true" #>);
 <#+
@@ -66,7 +66,7 @@
 			{
 				var rootDocsCount = 100;
 
-				if (context.Statistics.RootDocumentCount.TryGetValue(typeDef.Schema, out rootDocsCount) == false)
+				if (!context.Statistics.RootDocumentCount.TryGetValue(typeDef.Schema, out rootDocsCount))
 				{
 					rootDocsCount = 100;
 				}
@@ -126,7 +126,7 @@
 			}
 
 			var languages = new List<String>(projectSettings.Languages.Split(";,| ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
-			if (string.IsNullOrEmpty(projectSettings.PrimaryLanguage) == false)
+			if (!string.IsNullOrEmpty(projectSettings.PrimaryLanguage))
 			{
 				this.languageSwitcher.PrimaryLanguageId = projectSettings.PrimaryLanguage;
 			}

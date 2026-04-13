@@ -104,7 +104,7 @@
 			foreach (var schemaName in collections.Keys)
 			{
 				var schema = default(Schema);
-				if (metaData.TryGetSchema(schemaName, out schema) == false)
+				if (!metaData.TryGetSchema(schemaName, out schema))
 					continue;
 
 				var documents = (collections[schemaName] as IEnumerable ?? Enumerable.Empty<Dictionary<string, object>>()).Cast<Dictionary<string, object>>();

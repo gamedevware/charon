@@ -28,6 +28,9 @@
 #if __has_include("<#= context.TargetLanguage.GameDataClassName #>FormulaTypes.h")
     #include "<#= context.TargetLanguage.GameDataClassName #>FormulaTypes.h"
 #endif
+/*
+	To use your custom structs/classes in formula parameters, create a file "<#= context.TargetLanguage.GameDataClassName #>FormulaTypes.h" in this folder, in which you can declare your classes or structs.
+*/
 
 DECLARE_LOG_CATEGORY_EXTERN(Log<#= formulaDef #>, Log, All);
 

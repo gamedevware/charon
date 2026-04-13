@@ -1984,6 +1984,7 @@
 
 			return ValidateLuaIdentifier(MakeDromedaryCaseName(enumLiteralName));
 		}
+
 		/// <inheritdoc />
 		public override Dictionary<string, NativeTypeReference> GetNativeTypes()
 		{
@@ -3710,7 +3711,7 @@
 			}
 
 			var allLanguages = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-			if (string.IsNullOrWhiteSpace(this.Languages) == false)
+			if (!string.IsNullOrWhiteSpace(this.Languages))
 			{
 				foreach(var lang in this.Languages.Split(LanguageListSeparator, StringSplitOptions.RemoveEmptyEntries))
 					allLanguages.Add(lang);
@@ -3827,7 +3828,7 @@
 		{
 			if (propertyIdOrName == null) throw new ArgumentNullException(nameof(propertyIdOrName));
 
-			if (this.propertiesById.TryGetValue(propertyIdOrName, out var schemaProperty) == false && this.propertiesByName.TryGetValue(propertyIdOrName, out schemaProperty) == false)
+			if (!this.propertiesById.TryGetValue(propertyIdOrName, out var schemaProperty) && !this.propertiesByName.TryGetValue(propertyIdOrName, out schemaProperty))
 				throw new ArgumentException($"Unable to find property with id or name '{propertyIdOrName}' on schema '{this.Name}'.");
 			return schemaProperty;
 		}
@@ -4058,7 +4059,7 @@
 
 		public bool IsPickList => this.pickListValues != null;
 
-		public bool HasCustomTypeName => this.values.ContainsKey("typeName") && this.values["typeName"].Count > 0 && string.IsNullOrEmpty(this.values["typeName"].FirstOrDefault()) == false;
+		public bool HasCustomTypeName => this.values.ContainsKey("typeName") && this.values["typeName"].Count > 0 && !string.IsNullOrEmpty(this.values["typeName"].FirstOrDefault());
 		public string CustomTypeName => this.HasCustomTypeName ? this.values["typeName"].FirstOrDefault() : string.Empty;
 
 		public SpecificationDictionary()
@@ -4082,7 +4083,7 @@
 				{
 					var pickName = key.Substring(5);
 					if (this.pickListValues == null) this.pickListValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-					if (value.Length > 0 && long.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var pickValue))
+					if (value.Length > 0 && long.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var _))
 					{
 						this.pickListValues[pickName] = value;
 					}
@@ -4096,7 +4097,7 @@
 					continue;
 				}
 
-				if (this.values.TryGetValue(key, out var list) == false)
+				if (!this.values.TryGetValue(key, out var list))
 					this.values[key] = list = new List<string>();
 				list.Add(value);
 			}
@@ -4106,7 +4107,7 @@
 		{
 			if (key == null) throw new ArgumentNullException(nameof(key));
 
-			if (this.values.TryGetValue(key, out var list) == false)
+			if (!this.values.TryGetValue(key, out var list))
 				this.values[key] = list = new List<string>();
 			return list;
 		}
@@ -5510,7 +5511,7 @@
 			get => this.dictionary[key];
 			set
 			{
-				if (this.dictionary.ContainsKey(key) == false) this.keys.Add(key);
+				if (!this.dictionary.ContainsKey(key)) this.keys.Add(key);
 				this.dictionary[key] = value;
 			}
 		}
@@ -5714,7 +5715,7 @@
 		}
 		bool ICollection<KeyValuePair<KeyT, ValueT>>.Remove(KeyValuePair<KeyT, ValueT> item)
 		{
-			if (((ICollection<KeyValuePair<KeyT, ValueT>>)this).Contains(item) == false)
+			if (!((ICollection<KeyValuePair<KeyT, ValueT>>)this).Contains(item))
 			{
 				return false;
 			}

@@ -30,7 +30,7 @@
 			if (ReferenceEquals(value1, value2)) return false;
 			if (ReferenceEquals(value1, null) || ReferenceEquals(value2, null)) return true;
 
-			return Equals(value1, value2) == false;
+			return !Equals(value1, value2);
 		}
 
 		protected static void SetParent(<#= context.TargetLanguage.DocumentClassName #> document, <#= context.TargetLanguage.DocumentClassName #> parent)
@@ -587,12 +587,12 @@
 
 			for (var i = 0; i < this.keys.Length; i++)
 			{
-				if (LanguageIdComparer.Equals(this.keys[i], other.keys[i]) == false)
+				if (!LanguageIdComparer.Equals(this.keys[i], other.keys[i]))
 				{
 					return false;
 				}
 
-				if (string.Equals(this.values[i], other.values[i], StringComparison.OrdinalIgnoreCase) == false)
+				if (!string.Equals(this.values[i], other.values[i], StringComparison.OrdinalIgnoreCase))
 				{
 					return false;
 				}
@@ -666,7 +666,7 @@
 		}
 		public static bool operator !=(LocalizedText value1, LocalizedText value2)
 		{
-			return Equals(value1, value2) == false;
+			return !Equals(value1, value2);
 		}
 
 		public override string ToString()

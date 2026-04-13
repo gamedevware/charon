@@ -1673,7 +1673,8 @@
 		public static is(value: any): boolean {
 			return typeof (value) === 'string';
 		}
-		public CompareTo(value: any): number {
+		public CompareTo(value: any, comparisonType?: StringComparison): number {
+			value = changeStringCasing(String(value), comparisonType) ?? '';
 			return this.toString().localeCompare(value);
 		}
 		public Contains(value: string, comparisonType?: StringComparison): boolean {
@@ -4480,6 +4481,9 @@
 			const target = this.expression.execute(context);
 			if (!typeFunction) {
 				throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETORESOLVETYPE, this.type));
+			}
+			if(target === null) {
+				return false; // // null is X -> always false, except `null is null`, which is C# 8
 			}
 			if ('is' in typeFunction && typeof (typeFunction.is) === 'function') {
 				return typeFunction.is(target);

@@ -6,13 +6,13 @@
 	private function createReader(gameData:Input, options:GameDataLoadOptions):GameDataReader {
 		switch (options.format) {
 <#+
-		if (context.DisableJsonSerialization == false)
+		if (!context.DisableJsonSerialization)
 		{
 #>			case Json:
 				return new JsonGameDataReader(gameData, options.leaveInputsOpen, <#= context.DisableStringPooling ? "false" : "true" #>);
 <#+
 		}
-		if (context.DisableMessagePackSerialization == false)
+		if (!context.DisableMessagePackSerialization)
 		{
 #>			case MessagePack:
 				return new MessagePackGameDataReader(gameData, options.leaveInputsOpen, <#= context.DisableStringPooling ? "false" : "true" #>);

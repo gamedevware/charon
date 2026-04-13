@@ -98,12 +98,12 @@
 
 	private void CheckTypeNames(CodeGenerationContext context)
 	{
-		if (context.TargetLanguage.DocumentClassName.StartsWith("U", StringComparison.Ordinal) == false)
+		if (!context.TargetLanguage.DocumentClassName.StartsWith("U", StringComparison.Ordinal))
 		{
 			context.TargetLanguage.DocumentClassName = "U" + UeCppLanguage.TrimTypePrefix(context.TargetLanguage.DocumentClassName);
 			context.TargetLanguage.DocumentReferenceClassName = "F" + UeCppLanguage.TrimTypePrefix(context.TargetLanguage.DocumentClassName) + "Reference";
 		}
-		if (context.TargetLanguage.GameDataClassName.StartsWith("U", StringComparison.Ordinal) == false)
+		if (!context.TargetLanguage.GameDataClassName.StartsWith("U", StringComparison.Ordinal))
 		{
 			context.TargetLanguage.GameDataClassName = "U" + UeCppLanguage.TrimTypePrefix(context.TargetLanguage.GameDataClassName);
 		}

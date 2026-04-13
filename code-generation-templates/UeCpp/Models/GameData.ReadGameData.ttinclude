@@ -80,14 +80,14 @@ TSharedRef<IGameDataReader> <#= context.TargetLanguage.GameDataClassName #>::Cre
 	switch (Options.Format)
 	{
 <#+
-		if (context.DisableJsonSerialization == false)
+		if (!context.DisableJsonSerialization)
 		{
 #>
 	case EGameDataFormat::Json:
 		return FGameDataReaderFactory::CreateJsonReader(GameDataStream);
 <#+
 		}
-		if (context.DisableMessagePackSerialization == false)
+		if (!context.DisableMessagePackSerialization)
 		{
 #>
 	case EGameDataFormat::MessagePack:
@@ -342,7 +342,7 @@ bool <#= context.TargetLanguage.GameDataClassName #>::ReadGameData(const TShared
 			{
 				var rootDocsCount = 100;
 
-				if (context.Statistics.RootDocumentCount.TryGetValue(typeDef.Schema, out rootDocsCount) == false)
+				if (!context.Statistics.RootDocumentCount.TryGetValue(typeDef.Schema, out rootDocsCount))
 				{
 					rootDocsCount = 100;
 				}

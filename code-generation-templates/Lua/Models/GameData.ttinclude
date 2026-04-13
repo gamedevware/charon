@@ -1,0 +1,287 @@
+<#+
+	private void WriteGameDataClass(CodeGenerationContext context)
+	{
+#>
+	-- GameData module
+	-- Preload all used classes and enums
+	local <#= context.TargetLanguage.DocumentClassName #> = require("<#= MakeLuaFileName(context.TargetLanguage.DocumentClassName) #>")
+	local <#= context.TargetLanguage.LocalizedTextClassName #> = require("<#= MakeLuaFileName(context.TargetLanguage.LocalizedTextClassName) #>")
+	local <#= context.TargetLanguage.DocumentReferenceClassName #> = require("<#= MakeLuaFileName(context.TargetLanguage.DocumentReferenceClassName) #>")
+<#+
+		foreach (var enumDef in context.ObjectModel.Enums)
+		{
+#>	local <#= enumDef #> = require("<#= MakeLuaFileName(enumDef.TypeName) #>")
+<#+
+		}
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>	local <#= typeDef #> = require("<#= MakeLuaFileName(typeDef.TypeName) #>")
+<#+
+		}
+#>
+
+	--- @class gameData
+	local gameData = {}
+	gameData.__index = gameData
+
+	--- Create a new GameData instance from a decoded data table
+	--- @param rawData table Decoded JSON/MsgPack table from game data file
+	--- @return gameData
+	function gameData.new(rawData)
+		local self = setmetatable({}, gameData)
+
+		self.changeNumber = rawData.ChangeNumber or 0
+		self.revisionHash = rawData.RevisionHash or nil
+
+		local allByType = {} -- later is used in indexDocument() for fast document collection lookup
+<#+
+		// Per-type collection initialization
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		self._all<#= typeDef.CollectionName #> = {}  -- collection for <#= typeDef.Schema.Name #>
+		self._root<#= typeDef.CollectionName #> = {}  -- collection for <#= typeDef.Schema.Name #>
+		allByType[<#= typeDef #>] = self._all<#= typeDef.CollectionName #>
+<#+
+		}
+#>
+
+		-- Read all collections from rawData
+		if rawData.Collections then
+			local findDocument = function(schema, id)
+			    return self:findDocument(schema, id)
+			end
+			-- Extract supported languages from ProjectSettings
+			local supportedLanguages, primaryLanguageId = self:_extractSupportedLanguages(rawData)
+			self.supportedLanguages = supportedLanguages
+
+			-- Create language switcher with extracted settings
+			self._languageSwitcher = <#= context.TargetLanguage.LocalizedTextClassName #>.newLanguageSwitcher(
+				primaryLanguageId,
+				primaryLanguageId,
+				primaryLanguageId,
+				<#= context.TargetLanguage.LocalizedTextClassName #>.FallbackOption.OnNull
+			)
+
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+			if rawData.Collections.<#= typeDef.Schema.Name #> then
+				for _, itemData in  pairs(rawData.Collections.<#= typeDef.Schema.Name #>) do
+					local doc = <#= typeDef.TypeName #>.new(itemData, findDocument, self._languageSwitcher)
+					self._root<#= typeDef.CollectionName #>[doc.id] = doc
+				end
+			end
+<#+
+		}
+#>
+			local indexDocument = function(document)
+				local collection = allByType[getmetatable(document)];
+				if not collection or type(collection) ~= "table" then
+					return;
+				end
+				collection[document.id] = document
+			end
+			self:visit(indexDocument);
+		end
+
+		return self
+	end
+
+<#+
+		// Getter methods for each collection
+		foreach (var typeDef in context.ObjectModel.Types.Where(t => !t.IsSettings))
+		{
+#>
+	--- Get all <#= typeDef.Schema.Name #> by ID
+	--- @return table<any, <#= typeDef #>> Map of Id -> <#= typeDef #>
+	function gameData:get<#= context.TargetLanguage.MakeTypeName(typeDef.CollectionName) #>()
+		return self._root<#= typeDef.CollectionName #>
+	end
+
+<#+
+		}
+#>
+
+<#+
+		// Settings type getters (single instance)
+		foreach (var typeDef in context.ObjectModel.Types.Where(t => t.IsSettings))
+		{
+#>
+	--- Get the singleton <#= typeDef.Schema.Name #> settings instance
+	--- @return <#= typeDef #> | nil
+	function gameData:get<#= context.TargetLanguage.MakeTypeName(typeDef.Schema.Name) #>()
+		local collection = self._root<#= typeDef.CollectionName #>
+		for _, document in pairs(collection) do
+			return document  -- return first (only) instance
+		end
+		return nil
+	end
+
+<#+
+		}
+#>
+
+	--- Set the language for localized text resolution
+	--- @param languageId string The language ID to set (e.g. "en-US", "ru-RU")
+	--- @param fallbackLanguageId string | nil Optional fallback language ID (defaults to "<#= context.Metadata.ProjectSettings?.PrimaryLanguage ?? "en-US" #>")
+	--- @param fallbackOption string | nil Optional fallback option ('OnNull', 'OnEmpty', 'OnNotDefined', defaults to 'OnNull')
+	function gameData:setLanguage(languageId, fallbackLanguageId, fallbackOption)
+		if not languageId or languageId == '' then
+			error("languageId must be a non-empty string")
+		end
+		fallbackLanguageId = fallbackLanguageId or "<#= context.Metadata.ProjectSettings?.PrimaryLanguage ?? "en-US" #>"
+		fallbackOption = fallbackOption or <#= context.TargetLanguage.LocalizedTextClassName #>.FallbackOption.OnNull
+
+		self._languageSwitcher.currentLanguageId = languageId
+		self._languageSwitcher.fallbackLanguageId = fallbackLanguageId
+		self._languageSwitcher.fallbackOption = fallbackOption
+	end
+
+	--- Find a document by ID across all collections
+	--- @param documentId any The document ID to find
+	--- @param schemaIdOrName string The document schema ID or name
+	--- @return gameDataDocument | nil The found document, or nil
+	function gameData:findDocument(schemaIdOrName, documentId)
+		if documentId == nul or not schemaIdOrName then
+			return nil
+		end
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		if schemaIdOrName == "<#= typeDef.Schema.Id #>" or schemaIdOrName == "<#= typeDef.Schema.Name #>" then
+			return self._all<#= typeDef.CollectionName #>[documentId]
+		end
+<#+
+		}
+#>
+		return nil
+	end
+
+	--- Visit all documents across all collections
+	--- @param visitorFn Function Function accepting each document
+	function gameData:visit(visitorFn)
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+		for _, document in pairs(self._root<#= typeDef.CollectionName #>) do
+			self:_visit<#= typeDef #>(document, visitorFn);
+		end
+<#+
+		}
+#>
+	end
+
+	--- Get all documents across all collections
+	--- @return table<any, gameDataDocument>
+	function gameData:getAllDocuments()
+		local result = {}
+		self:visit(function(document) table.insert(result, document) end)
+		return result
+	end
+
+	--- Extract supported languages from ProjectSettings
+	--- @param rawData table Raw game data with Collections
+	--- @return table languages list, string primaryLanguageId
+	function gameData:_extractSupportedLanguages(rawData)
+		local languages = {}
+		local primaryLanguageId = "<#= context.Metadata.ProjectSettings?.PrimaryLanguage ?? "en-US" #>"
+
+		-- Try to get languages from ProjectSettings
+<#+
+		var projectSettingsTypeDef = context.ObjectModel.Types.FirstOrDefault(t => t.Schema.Name == "ProjectSettings");
+		if (projectSettingsTypeDef != null)
+		{
+#>
+		if rawData.Collections and rawData.Collections.<#= projectSettingsTypeDef.Schema.Name #> then
+			-- Get first ProjectSettings item
+			local projectSettingsList = rawData.Collections.<#= projectSettingsTypeDef.Schema.Name #>
+			if projectSettingsList[1] then
+				local projectSettings = projectSettingsList[1]
+				-- Extract languages string from ProjectSettings
+				if projectSettings.languages then
+					local languagesStr = projectSettings.languages
+					-- Split by common delimiters: ; , | or whitespace
+					for lang in languagesStr:gmatch("[^;,|%s]+") do
+						table.insert(languages, lang)
+					end
+				end
+				-- Use primaryLanguage from ProjectSettings if available
+				if projectSettings.primaryLanguage and projectSettings.primaryLanguage ~= '' then
+					primaryLanguageId = projectSettings.primaryLanguage
+				elseif #languages > 0 then
+					primaryLanguageId = languages[1]
+				end
+			end
+		end
+<#+
+		}
+#>
+
+		-- Ensure primary language is in the list
+		if #languages == 0 then
+			languages = { primaryLanguageId }
+		else
+			local found = false
+			for _, lang in ipairs(languages) do
+				if lang == primaryLanguageId then
+					found = true
+					break
+				end
+			end
+			if not found then
+				table.insert(languages, primaryLanguageId)
+			end
+		end
+
+		return languages, primaryLanguageId
+	end
+
+
+<#+
+		foreach (var typeDef in context.ObjectModel.Types)
+		{
+#>
+	function gameData:_visit<#= typeDef #>(document, visitorFn)
+		if type(document) ~= "table" or type(visitorFn) ~= "function" then
+			return;
+		end
+
+		visitorFn(document);
+
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if (propertyDef.DataType == DataType.Document)
+			{
+#>
+		if type(document.<#= propertyDef.RawName #>) == "table" then
+			self:_visit<#= propertyDef.DocumentOrReferenceType #>(document.<#= propertyDef.RawName #>, visitorFn)
+		end
+<#+
+			}
+			else  if (propertyDef.DataType == DataType.DocumentCollection)
+			{
+#>
+		if type(document.<#= propertyDef.RawName #>) == "table" then
+			for _, subDocument in pairs(document.<#= propertyDef.RawName #>) do
+				self:_visit<#= propertyDef.DocumentOrReferenceType #>(subDocument, visitorFn);
+			end
+		end
+<#+
+			}
+		}
+#>
+	end
+<#+
+		}
+#>
+
+	return gameData
+<#+
+	}
+#>

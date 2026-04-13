@@ -353,7 +353,7 @@
 				this.Copyright = string.Empty;
 
 			var allLanguages = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-			if (!string.IsNullOrWhiteSpace(this.Languages))
+			if (string.IsNullOrWhiteSpace(this.Languages) == false)
 			{
 				foreach(var lang in this.Languages.Split(LanguageListSeparator, StringSplitOptions.RemoveEmptyEntries))
 					allLanguages.Add(lang);
@@ -405,7 +405,8 @@
 
 		public bool IsPickList { get { return this.pickListValues != null; } }
 
-		public bool HasCustomTypeName { get { return this.values.ContainsKey("typeName") && this.values["typeName"].Count > 0 && string.IsNullOrEmpty(this.values!string.IsNullOrEmpty(this.values["typeName"].FirstOrDefault())Name { get { return this.HasCustomTypeName ? this.values["typeName"].FirstOrDefault() : string.Empty; } }
+		public bool HasCustomTypeName { get { return this.values.ContainsKey("typeName") && this.values["typeName"].Count > 0 && string.IsNullOrEmpty(this.values["typeName"].FirstOrDefault()) == false; } }
+		public string CustomTypeName { get { return this.HasCustomTypeName ? this.values["typeName"].FirstOrDefault() : string.Empty; } }
 
 		public SpecificationDictionary()
 		{
@@ -440,7 +441,8 @@
 				}
 
 				var list = default(HashSet<string>);
-				if (this.values.TryGetValue(key, out!this.values.TryGetValue(key, out list) new HashSet<string>();
+				if (this.values.TryGetValue(key, out list) == false)
+					this.values[key] = list = new HashSet<string>();
 				list.Add(value);
 			}
 		}
@@ -450,7 +452,8 @@
 			if (key == null) throw new ArgumentNullException("key");
 
 			var list = default(HashSet<string>);
-			if (this.values.TryGetValue(key, out!this.values.TryGetValue(key, out list)new HashSet<string>();
+			if (this.values.TryGetValue(key, out list) == false)
+				this.values[key] = list = new HashSet<string>();
 			return list;
 		}
 		public string MapPickList(string pickListName)
@@ -460,7 +463,8 @@
 
 			pickListName = pickListName.Trim();
 			var pickListValue = default(string);
-			if (this.pickListValues.TryGetValue(!this.pickListValues.TryGetValue(pickListName, out pickListValue)me;
+			if (this.pickListValues.TryGetValue(pickListName, out pickListValue) == false)
+				pickListValue = pickListName;
 
 			return pickListValue;
 		}
@@ -477,7 +481,8 @@
 			{
 				var value = MapPickList(flag);
 				var valueNum = default(long);
-				if (long.TryParse(value, NumberStyle!long.TryParse(value, NumberStyles.Integer, Metadata.DefaultFormat, out valueNum)(string.Format("Flag with label '{0}' is not found.", value));
+				if (long.TryParse(value, NumberStyles.Integer, Metadata.DefaultFormat, out valueNum) == false)
+					throw new FormatException(string.Format("Flag with label '{0}' is not found.", value));
 
 				result |= valueNum;
 			}

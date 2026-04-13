@@ -1,0 +1,57 @@
+<#+
+	private void WriteEnum(EnumDefinition enumDef, CodeGenerationContext context)
+	{
+#>
+	--- @enum <#= enumDef #>
+<#+
+		if (!string.IsNullOrWhiteSpace(enumDef.Description))
+		{
+#>
+	-- <#= enumDef.Description #>
+<#+
+		}
+#>
+	local <#= enumDef #> = {
+<#+
+		foreach (var kv in enumDef.Values)
+		{
+			var enumValue = kv.Value;
+			var enumValueLiteral = Convert.ToString(kv.Value, CultureInfo.InvariantCulture);
+			switch (enumDef.BaseTypeCode)
+			{
+				case EnumBaseTypeCode.Float32:
+				case EnumBaseTypeCode.Float64:
+				case EnumBaseTypeCode.Int32:
+					break;
+				case EnumBaseTypeCode.Int64:
+					// Lua 5.3+ has integer type, but may exceed safe int64 range
+					break;
+				case EnumBaseTypeCode.String:
+					enumValueLiteral = "\"" + JsonGameDataReader.EscapeString(enumValueLiteral, forUnicodeEncoding: false) + "\"";
+					break;
+				case EnumBaseTypeCode.TimeSpan:
+					// TimeSpan as seconds (numeric)
+					var timespan = TimeSpan.Parse(Convert.ToString(enumValue, CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
+					enumValueLiteral = timespan.TotalSeconds.ToString("F0", CultureInfo.InvariantCulture);
+					break;
+				case EnumBaseTypeCode.Bool:
+					enumValueLiteral = (((bool?)enumValue ?? false) ? "true" : "false");
+					break;
+				case EnumBaseTypeCode.DateTime:
+					// DateTime as Unix timestamp
+					var datetime = DateTime.Parse(Convert.ToString(enumValue, CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
+					enumValueLiteral = ((long)(datetime - new DateTime(1970, 1, 1)).TotalSeconds).ToString(CultureInfo.InvariantCulture);
+					break;
+				default: throw new InvalidOperationException($"Unknown enum base type: {enumDef.BaseType}.");
+			}
+#>
+		<#= kv.Key #> = <#= enumValueLiteral #>,
+<#+
+		}
+#>
+	}
+
+	return <#= enumDef #>
+<#+
+	}
+#>

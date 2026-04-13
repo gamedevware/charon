@@ -3,7 +3,12 @@
 	{
 		var invokeParameters = string.Join(", ", formulaDef.ParameterNames.Select((name, i) => name + ": " + formulaDef.ParameterTypes[i]).ToArray());
 
-#>/**
+#>
+/*  If you see the error "Cannot find module 'formula.known.types.ts'", then you need to create an empty file "formula.known.types.ts" in this folder,
+    in it you can import and re-export your custom types used in formulas.
+*/
+
+/**
   * <#= formulaDef.Description #>
   */
 export class <#= formulaDef #> extends Function {

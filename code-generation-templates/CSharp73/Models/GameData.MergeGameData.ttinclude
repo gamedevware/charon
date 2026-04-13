@@ -305,7 +305,7 @@
 			var mergedLocalizedText = new Formatters.IndexedDictionary<string, object>();
 			foreach (var languageId in originalLocalizedText.Keys.Union(modifiedLocalizedText.Keys))
 			{
-				if (modifiedLocalizedText.ContainsKey(languageId) == false)
+				if (!modifiedLocalizedText.ContainsKey(languageId))
 				{
 					originalLocalizedText.TryGetValue(languageId, out var originalText);
 					mergedLocalizedText[languageId] = originalText;

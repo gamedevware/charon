@@ -1,0 +1,151 @@
+<#+
+	private void WriteClass(TypeDefinition typeDef, CodeGenerationContext context)
+	{
+		var baseType = (typeDef.BaseTypeAndInterfaces?.Count > 0 ? typeDef.BaseTypeAndInterfaces[0] : context.TargetLanguage.DocumentClassName);
+#>
+	local <#= context.TargetLanguage.DocumentClassName #> = require("<#= MakeLuaFileName(context.TargetLanguage.DocumentClassName) #>")
+	local <#= context.TargetLanguage.LocalizedTextClassName #> = require("<#= MakeLuaFileName(context.TargetLanguage.LocalizedTextClassName) #>")
+	local <#= context.TargetLanguage.DocumentReferenceClassName #> = require("<#= MakeLuaFileName(context.TargetLanguage.DocumentReferenceClassName) #>")
+
+	--- @class <#= typeDef #> : <#= baseType #>
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+#>
+	--- @field <#= propertyDef.Name #> <#= propertyDef.Type #>
+<#+
+		}
+#>
+	local <#= typeDef #> = {}
+	setmetatable(<#= typeDef #>, { __index = <#= context.TargetLanguage.DocumentClassName #> })
+
+	<#= typeDef #>.SchemaId = "<#= typeDef.Schema.Id #>"
+	<#= typeDef #>.SchemaName = "<#= typeDef.Schema.Name #>"
+
+<#+
+		if (!string.IsNullOrEmpty(typeDef.Description))
+		{
+#>
+	--- <#= typeDef.Description #>
+<#+
+		}
+#>
+	--- @param data table Raw data table from GameData
+	--- @param findDocument Function Function used to find referenced document in GameData
+	--- @param languageSwitcher any Current selected and fallback language holder for GameData
+	--- @return <#= typeDef #>
+	function <#= typeDef #>.new(data, findDocument, languageSwitcher)
+		local self = setmetatable({}, <#= typeDef #>)
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if (propertyDef.DataType == DataType.Document)
+			{
+				var docTypeName = propertyDef.DocumentOrReferenceType.ToString();
+				var docTypeReference = docTypeName == typeDef.TypeName ? typeDef.TypeName : $"require(\"{ MakeLuaFileName(docTypeName) }\")";
+#>
+		if data["<#= propertyDef.SchemaProperty.Name #>"] then
+			self.<#= propertyDef.RawName #> = <#= docTypeReference #>.new(data["<#= propertyDef.SchemaProperty.Name #>"], findDocument, languageSwitcher)
+			self.<#= propertyDef.RawName #>:setParent(self)
+		end
+<#+
+			}
+			else if (propertyDef.DataType == DataType.DocumentCollection)
+			{
+				var docTypeName = propertyDef.DocumentOrReferenceType.ToString();
+				var docTypeReference = docTypeName == typeDef.TypeName ? typeDef.TypeName : $"require(\"{ MakeLuaFileName(docTypeName) }\")";
+#>
+		self.<#= propertyDef.RawName #> = {}
+		if data["<#= propertyDef.SchemaProperty.Name #>"] then
+			for k, itemData in pairs(data["<#= propertyDef.SchemaProperty.Name #>"]) do
+				self.<#= propertyDef.RawName #>[k] = <#= docTypeReference #>.new(itemData, findDocument, languageSwitcher)
+				self.<#= propertyDef.RawName #>[k]:setParent(self)
+			end
+		end
+<#+
+			}
+			else if (propertyDef.DataType == DataType.Reference)
+			{
+#>
+		if data["<#= propertyDef.SchemaProperty.Name #>"] then
+			self.<#= propertyDef.RawName #> = <#= context.TargetLanguage.DocumentReferenceClassName #>.new(data["<#= propertyDef.SchemaProperty.Name #>"], "<#= propertyDef.SchemaProperty.ReferenceType.Schema.Name #>", findDocument)
+		end
+<#+
+			}
+			else if (propertyDef.DataType == DataType.ReferenceCollection)
+			{
+#>
+		self.<#= propertyDef.RawName #> = {}
+		self.<#= propertyDef.RawName #>.dereference = <#= context.TargetLanguage.DocumentReferenceClassName #>.dereferenceCollection;
+		if data["<#= propertyDef.SchemaProperty.Name #>"] then
+			for k, itemData in pairs(data["<#= propertyDef.SchemaProperty.Name #>"]) do
+				self.<#= propertyDef.RawName #>[k] = <#= context.TargetLanguage.DocumentReferenceClassName #>.new(itemData, "<#= propertyDef.SchemaProperty.ReferenceType.Schema.Name #>", findDocument)
+			end
+		end
+<#+
+			}
+			else if (propertyDef.DataType == DataType.LocalizedText)
+			{
+#>		self.<#= propertyDef.RawName #> = <#= context.TargetLanguage.LocalizedTextClassName #>.new(data["<#= propertyDef.SchemaProperty.Name #>"], languageSwitcher)
+<#+
+			}
+			else
+			{
+#>		self.<#= propertyDef.RawName #> = data["<#= propertyDef.SchemaProperty.Name #>"]
+<#+
+			}
+		}
+#>
+		return self
+	end
+
+	function <#= typeDef #>.__index(self, key)
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+			if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.ReferenceCollection)
+			{
+#>
+		if (key == "<#= propertyDef.Name #>" and self.<#= propertyDef.RawName #>) then
+			return self.<#= propertyDef.RawName #>:dereference()
+		end
+<#+
+			}
+			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.Reference)
+			{
+#>
+		if (key == "<#= propertyDef.Name #>" and self.<#= propertyDef.RawName #>) then
+			return self.<#= propertyDef.RawName #>:dereference()
+		end
+<#+
+			}
+			else if (propertyDef.RawProperty != null && propertyDef.DataType == DataType.LocalizedText)
+			{
+#>
+		if (key == "<#= propertyDef.Name #>") then
+			return self.<#= propertyDef.RawName #>:value()
+		end
+<#+
+			}
+		}
+#>
+		return <#= typeDef #>[key]
+	end
+
+	function <#= typeDef #>:__tostring()
+		local parts = {}
+<#+
+		foreach (var propertyDef in typeDef.Properties)
+		{
+#>
+		table.insert(parts, "<#= propertyDef.DisplayName #>=" .. tostring(self.<#= propertyDef.RawName #>))
+<#+
+		}
+#>
+		return "<#= typeDef #>(" .. table.concat(parts, ", ") .. ")"
+	end
+
+	return <#= typeDef #>
+<#+
+	}
+#>

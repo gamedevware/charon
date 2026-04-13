@@ -13,12 +13,12 @@
 			switch (format)
 			{
 <#+
-		if (context.DisableJsonSerialization == false)
+		if (!context.DisableJsonSerialization)
 		{
 #>				case Formatters.GameDataFormat.Json: return new Formatters.JsonGameDataReader(gameDataStream);
 <#+
 		}
-		if (context.DisableMessagePackSerialization == false)
+		if (!context.DisableMessagePackSerialization)
 		{
 #>				case Formatters.GameDataFormat.MessagePack: return new Formatters.MessagePackGameDataReader(gameDataStream);
 <#+

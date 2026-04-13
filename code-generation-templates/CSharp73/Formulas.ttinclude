@@ -1320,7 +1320,7 @@
 					{
 						WriteNamePart(declaringTypeInfo, builder, partialGenerics, options);
 	
-						if (declaringTypeInfo == type == false)
+						if (!(declaringTypeInfo == type))
 							builder.Append('.');
 					}
 	
@@ -1345,7 +1345,7 @@
 					for (var i = genericArguments.Offset; i < genericArguments.Offset + genericArguments.Count; i++)
 					{
 						// ReSharper disable once PossibleNullReferenceException
-						if (genericArguments.Array[i].IsGenericParameter == false)
+						if (!genericArguments.Array[i].IsGenericParameter)
 						{
 							WriteName(genericArguments.Array[i], builder, options);
 						}
@@ -1394,7 +1394,7 @@
 					}
 	
 					var typeAboveCurrent = this.typeInfo;
-					while (typeAboveCurrent != null && this.Current == GetDeclaringType(typeAboveCurrent) == false)
+					while (typeAboveCurrent != null && !(this.Current == GetDeclaringType(typeAboveCurrent)))
 						typeAboveCurrent = GetDeclaringType(typeAboveCurrent);
 	
 					this.Current = typeAboveCurrent;
@@ -4255,7 +4255,7 @@
 				var typeNames = CSharpNameUtils.GetTypeNames(type);
 				if (!string.IsNullOrEmpty(typeNames.Key))
 				{
-					if (this.knownTypesByName.TryGetValue(typeNames.Key, out var typeList) == false)
+					if (!this.knownTypesByName.TryGetValue(typeNames.Key, out var typeList))
 					{
 						this.knownTypesByName.Add(typeNames.Key, typeList = new List<Type>());
 					}
@@ -4265,7 +4265,7 @@
 	
 				if (!string.IsNullOrEmpty(typeNames.Value))
 				{
-					if (this.knownTypesByName.TryGetValue(typeNames.Value, out var typeList) == false)
+					if (!this.knownTypesByName.TryGetValue(typeNames.Value, out var typeList))
 					{
 						this.knownTypesByName.Add(typeNames.Value, typeList = new List<Type>());
 					}
@@ -4276,7 +4276,7 @@
 				var fullTypeNames = CSharpNameUtils.GetTypeFullNames(type);
 				if (!string.IsNullOrEmpty(fullTypeNames.Key))
 				{
-					if (this.knownTypesByFullName.TryGetValue(fullTypeNames.Key, out var typeList) == false)
+					if (!this.knownTypesByFullName.TryGetValue(fullTypeNames.Key, out var typeList))
 					{
 						this.knownTypesByFullName.Add(fullTypeNames.Key, typeList = new List<Type>());
 					}
@@ -4286,7 +4286,7 @@
 	
 				if (!string.IsNullOrEmpty(fullTypeNames.Value))
 				{
-					if (this.knownTypesByFullName.TryGetValue(fullTypeNames.Value, out var typeList) == false)
+					if (!this.knownTypesByFullName.TryGetValue(fullTypeNames.Value, out var typeList))
 					{
 						this.knownTypesByFullName.Add(fullTypeNames.Value, typeList = new List<Type>());
 					}
@@ -4461,7 +4461,7 @@
 			{
 				if (typeReference.TypeArguments.Count == 1)
 				{
-					if (this.TryGetType(typeReference.TypeArguments[0], out var elementType) == false)
+					if (!this.TryGetType(typeReference.TypeArguments[0], out var elementType))
 					{
 						return false;
 					}
@@ -6130,7 +6130,7 @@
 	
 				for (var index = 0; index < typeParameters.Count; index++)
 				{
-					if (typeParameters[index].IsMatching(typeArguments[index]) == false)
+					if (!typeParameters[index].IsMatching(typeArguments[index]))
 					{
 						return false;
 					}
@@ -7306,6 +7306,10 @@
 			{
 				var target = this.expression.Execute(context);
 				var typeDescription = context.TypeResolver.GetTypeDescription(this.type);
+				if (target.IsNull)
+				{
+					return false;  // null is X -> always false, except `null is null`, which is C# 8
+				}
 				return typeDescription.Type.IsAssignableFrom(target.Type);
 			}
 	
@@ -8812,7 +8816,7 @@
 			public long ToInt64(bool uncheckedConversion = false)
 			{
 				var typeCode = this.TypeCode;
-				if (typeCode == TypeCode.UInt64 && uncheckedConversion == false)
+				if (typeCode == TypeCode.UInt64 && !uncheckedConversion)
 				{
 					var uint64Value = unchecked((ulong)this.binaryValue);
 					return checked((long)uint64Value);

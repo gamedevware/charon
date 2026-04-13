@@ -1,0 +1,26 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" encoding="utf-8" #>
+<#
+	//
+	// Lua Code Generator
+	// This template generates Lua modules for game data access from .gdjs/.gdmp files.
+	// Usage:
+	//   local json = require("dkjson")  -- or any Lua JSON library
+	//   local data = json.decode(io.open("game.gdjs"):read("*a"))
+	//   local gd = gameData.new(data)
+	//
+	// To test locally with dotnet-t4:
+	// dotnet tool install dotnet-t4 --local --create-manifest-if-needed
+	// dotnet t4 "--parameter=GameDataPath=./gamedata.gdjs" ./LuaGameDataGenerator.tt
+	//
+#>
+
+<#@ include file="./LuaGameData.ttinclude" once="true" #>
+
+<#+
+	public string GameDataPath { get; set; }
+	public string Namespace { get; set; }
+	public string GameDataClassName { get; set; }
+	public string DocumentClassName { get; set; }
+	public string[] Optimizations { get; set; }
+#>

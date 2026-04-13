@@ -295,5 +295,19 @@ export module Formulas
 			return typeName.Substring(0, typeNamePathSplitterIndex);
 		}
 	}
+
+	public string MakeTypeScriptFileName(string typeName)
+	{
+		var name = new StringBuilder();
+		foreach (var charValue in typeName)
+		{
+			if (char.IsUpper(charValue) && name.Length > 0)
+			{
+				name.Append('.');
+			}
+			name.Append(char.ToLowerInvariant(charValue));
+		}
+		return name.ToString();
+	}
 #>
 
