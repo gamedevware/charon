@@ -4,7 +4,8 @@ Charon — Data-Driven Game Design, Done Right
 
 <img width="894" alt="dashboard" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/cover_github.png"/>
 
-[Documentation](https://gamedevware.github.io/charon/) [[PDF]](https://gamedevware.github.io/charon/pdf/documentation.pdf) • [Discord](https://discord.gg/2quB5vXryd) • [Website](https://www.gamedevware.com/) • [Changelog](https://www.gamedevware.com/whats-new) • [Issues](https://github.com/gamedevware/charon/issues)
+[Documentation](https://gamedevware.github.io/charon/) • [Discord](https://discord.gg/2quB5vXryd) • [Website](https://www.gamedevware.com/) • [Changelog](https://www.gamedevware.com/whats-new) • [Issues](https://github.com/gamedevware/charon/issues)  
+[[Documentation PDF]](https://gamedevware.github.io/charon/pdf/documentation.pdf)
 
 Plugins
 -------
@@ -12,7 +13,7 @@ Plugins
 [<img width="100" alt="unity" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/unity_logo.svg"/>](https://gamedevware.github.io/charon/unity/overview.html)
 [<img width="100" alt="unreal engine" src="https://raw.githubusercontent.com/gamedevware/charon/main/docs/assets/unreal_engine_logo.svg"/>](https://gamedevware.github.io/charon/unreal_engine/overview.html)
 
-[[Unity Asset Store]](https://gamedevware.github.io/charon/unity/overview.html) [[Unity OpenUPM]](https://openupm.com/packages/com.gamedevware.charon/) [[Unreal Engine Marketplace]](https://gamedevware.github.io/charon/unreal_engine/overview.html)
+[Unity Asset Store](https://gamedevware.github.io/charon/unity/overview.html) • [Unity OpenUPM](https://openupm.com/packages/com.gamedevware.charon/) • [Unreal Engine Marketplace](https://gamedevware.github.io/charon/unreal_engine/overview.html)  • [Other Engines](https://gamedevware.github.io/charon/standalone/overview.html)
 
 Standalone
 ----------
