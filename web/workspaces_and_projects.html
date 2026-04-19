@@ -1,0 +1,529 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workspaces, Projects, and Branches &mdash; Charon 2026.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2b694ea4"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Server Edition" href="../server/overview.html" />
+    <link rel="prev" title="REST API" href="rest.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rest.html">REST API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html#composite-types">Composite Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/formula_expression_ast.html">Formula Expression AST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rest.html">REST API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Workspaces, Projects, and Branches</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/web/workspaces_and_projects.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="workspaces-projects-and-branches">
+<h1>Workspaces, Projects, and Branches<a class="headerlink" href="#workspaces-projects-and-branches" title="Link to this heading"></a></h1>
+<p>Charon organises collaborative game data in a three-level hierarchy.
+Understanding this model is the foundation for managing teams, permissions,
+and parallel design workflows.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#hierarchy" id="id1">Hierarchy</a></p>
+<ul>
+<li><p><a class="reference internal" href="#workspace" id="id2">Workspace</a></p></li>
+<li><p><a class="reference internal" href="#project" id="id3">Project</a></p></li>
+<li><p><a class="reference internal" href="#branch" id="id4">Branch</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#creating-a-project" id="id5">Creating a Project</a></p></li>
+<li><p><a class="reference internal" href="#inviting-collaborators" id="id6">Inviting Collaborators</a></p></li>
+<li><p><a class="reference internal" href="#working-with-branches-via-cli" id="id7">Working with Branches via CLI</a></p></li>
+<li><p><a class="reference internal" href="#branch-based-release-pipeline" id="id8">Branch-based Release Pipeline</a></p>
+<ul>
+<li><p><a class="reference internal" href="#how-a-push-works" id="id9">How a push works</a></p></li>
+<li><p><a class="reference internal" href="#typical-branch-setup" id="id10">Typical branch setup</a></p></li>
+<li><p><a class="reference internal" href="#ci-cd-pipeline-example" id="id11">CI/CD pipeline example</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#advanced-patch-based-feature-merging" id="id12">Advanced: Patch-based Feature Merging</a></p></li>
+<li><p><a class="reference internal" href="#cloning-a-branch-locally" id="id13">Cloning a Branch Locally</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id14">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="hierarchy">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Hierarchy</a><a class="headerlink" href="#hierarchy" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Workspace
+└── Project
+    ├── Branch  (e.g. main)
+    ├── Branch  (e.g. develop)
+    └── Branch  (e.g. feature-loot-rework)
+</pre></div>
+</div>
+<section id="workspace">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">Workspace</a><a class="headerlink" href="#workspace" title="Link to this heading"></a></h3>
+<p>A <strong>Workspace</strong> is the top-level organisational container for your studio or team.</p>
+<ul class="simple">
+<li><p>A workspace holds one or more projects.</p></li>
+<li><p>A workspace has one <strong>Owner</strong> and can have multiple <strong>Administrators</strong>.</p></li>
+<li><p>Deleting a workspace permanently removes all projects and branches inside it.</p></li>
+</ul>
+</section>
+<section id="project">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Project</a><a class="headerlink" href="#project" title="Link to this heading"></a></h3>
+<p>A <strong>Project</strong> is a named container for a single game’s data.</p>
+<ul class="simple">
+<li><p>Every project has at least one branch (<code class="docutils literal notranslate"><span class="pre">main</span></code> by default).</p></li>
+<li><p>Projects can be shared by inviting team members; each invitation carries a
+specific <a class="reference internal" href="permission_and_roles.html"><span class="doc">role</span></a>.</p></li>
+<li><p>Projects can be cloned locally at any time — the resulting file is fully compatible
+with the standalone CLI.</p></li>
+</ul>
+</section>
+<section id="branch">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Branch</a><a class="headerlink" href="#branch" title="Link to this heading"></a></h3>
+<p>A <strong>Branch</strong> is a named, independently editable snapshot of game data inside a project.</p>
+<ul class="simple">
+<li><p>Branches are addressed in CLI calls via their URL:
+<code class="docutils literal notranslate"><span class="pre">https://charon.live/view/data/&lt;project&gt;/&lt;branch&gt;/</span></code></p></li>
+<li><p>Branches enable parallel development: designers work on feature branches, then merge
+changes back to <code class="docutils literal notranslate"><span class="pre">main</span></code> using Charon’s <a class="reference internal" href="../advanced/patch_diff.html"><span class="doc">patch/diff</span></a> tooling.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="creating-a-project">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Creating a Project</a><a class="headerlink" href="#creating-a-project" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Sign in to <a class="reference external" href="https://charon.live">charon.live</a>.</p></li>
+<li><p>Open your workspace from the top navigation.</p></li>
+<li><p>Click <strong>New Project</strong> and choose a name.</p></li>
+<li><p>The project is created with a single <code class="docutils literal notranslate"><span class="pre">main</span></code> branch.</p></li>
+</ol>
+</section>
+<section id="inviting-collaborators">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Inviting Collaborators</a><a class="headerlink" href="#inviting-collaborators" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Open the project.</p></li>
+<li><p>Navigate to <strong>Project Settings → Members</strong>.</p></li>
+<li><p>Enter the invitee’s email and choose a role.</p></li>
+<li><p>The invitee receives an email with a link to accept the invitation.</p></li>
+</ol>
+<p>Available roles: Viewer, Editor, Designer, Administrator.
+See <a class="reference internal" href="permission_and_roles.html"><span class="doc">Roles and Permissions</span></a> for the full permission matrix.</p>
+</section>
+<hr class="docutils" />
+<section id="working-with-branches-via-cli">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Working with Branches via CLI</a><a class="headerlink" href="#working-with-branches-via-cli" title="Link to this heading"></a></h2>
+<p>All CLI <code class="docutils literal notranslate"><span class="pre">DATA</span></code> and <code class="docutils literal notranslate"><span class="pre">GENERATE</span></code> commands accept a branch URL as <code class="docutils literal notranslate"><span class="pre">--dataBase</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export from the develop branch</span>
+charon<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span><span class="s2">&quot;https://charon.live/view/data/MyGame/develop/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>items.json<span class="w"> </span>--outputFormat<span class="w"> </span>json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--credentials<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span>
+
+<span class="c1"># Import into a feature branch</span>
+charon<span class="w"> </span>DATA<span class="w"> </span>IMPORT<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span><span class="s2">&quot;https://charon.live/view/data/MyGame/feature-loot/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--input<span class="w"> </span>new_items.json<span class="w"> </span>--inputFormat<span class="w"> </span>json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--mode<span class="w"> </span>createAndUpdate<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--credentials<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span>
+
+<span class="c1"># Generate code from main</span>
+charon<span class="w"> </span>GENERATE<span class="w"> </span>CSHARPCODE<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span><span class="s2">&quot;https://charon.live/view/data/MyGame/main/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--namespace<span class="w"> </span>MyGame.Parameters<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--outputDirectory<span class="w"> </span>./Generated<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--credentials<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="branch-based-release-pipeline">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Branch-based Release Pipeline</a><a class="headerlink" href="#branch-based-release-pipeline" title="Link to this heading"></a></h2>
+<p>The recommended workflow is a linear promotion pipeline. Work flows in one
+direction — from <code class="docutils literal notranslate"><span class="pre">dev</span></code> toward <code class="docutils literal notranslate"><span class="pre">stable</span></code> — by <strong>pushing</strong> (copying) the entire
+branch into the next stage. A push replaces the destination branch completely;
+it is not a merge.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dev ──── push ────→ staging ──── push ────→ stable ──── publish ──→ game
+(design)            (QA)                    (release)
+</pre></div>
+</div>
+<section id="how-a-push-works">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">How a push works</a><a class="headerlink" href="#how-a-push-works" title="Link to this heading"></a></h3>
+<p>A push copies the complete content of one branch into another, replacing the
+destination entirely. There is no partial merge — every document in the
+destination is overwritten.</p>
+<p>Three ways to trigger a push are available:</p>
+<dl>
+<dt><strong>Web UI</strong></dt><dd><p>Go to <strong>Project Settings → Branches</strong>, open the <code class="docutils literal notranslate"><span class="pre">...</span></code> menu next to the
+source branch, and choose <strong>Push Branch…</strong>. Select the target branch from
+the dropdown and confirm.</p>
+</dd>
+<dt><strong>REST API</strong></dt><dd><p>Send a <code class="docutils literal notranslate"><span class="pre">PUT</span></code> request to the branch endpoint with the destination branch
+name in the request body:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">&quot;https://charon.live/api/project/{projectId}/branch/dev/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{ &quot;destinationBranchName&quot;: &quot;staging&quot; }&#39;</span>
+</pre></div>
+</div>
+<p>The operation is synchronous; a <code class="docutils literal notranslate"><span class="pre">200</span></code> response means the push completed
+successfully.</p>
+</dd>
+<dt><strong>CLI (BACKUP + RESTORE)</strong></dt><dd><p>Use this approach when the push is part of a larger CLI script, or when
+you need to inspect the snapshot before promoting it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Step 1 – snapshot the source branch</span>
+charon<span class="w"> </span>DATA<span class="w"> </span>BACKUP<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span><span class="s2">&quot;https://charon.live/view/data/MyGame/dev/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>dev_snapshot.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--credentials<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span>
+
+<span class="c1"># Step 2 – overwrite the destination branch with the snapshot</span>
+charon<span class="w"> </span>DATA<span class="w"> </span>RESTORE<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span><span class="s2">&quot;https://charon.live/view/data/MyGame/staging/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--input<span class="w"> </span>dev_snapshot.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--credentials<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Repeat the same steps to promote from <code class="docutils literal notranslate"><span class="pre">staging</span></code> to <code class="docutils literal notranslate"><span class="pre">stable</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>All three methods <strong>replace all content</strong> in the target branch. Double-check
+that you are targeting the correct branch before triggering a push.</p>
+</div>
+</section>
+<section id="typical-branch-setup">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Typical branch setup</a><a class="headerlink" href="#typical-branch-setup" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Branch</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Who writes to it</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dev</span></code></p></td>
+<td><p>Active design and iteration</p></td>
+<td><p>Designers, game designers</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">staging</span></code></p></td>
+<td><p>Integration and QA testing</p></td>
+<td><p>CI pipeline (push from
+<code class="docutils literal notranslate"><span class="pre">dev</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stable</span></code></p></td>
+<td><p>Release-ready data; source for publish</p></td>
+<td><p>CI pipeline (push from
+<code class="docutils literal notranslate"><span class="pre">staging</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ci-cd-pipeline-example">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">CI/CD pipeline example</a><a class="headerlink" href="#ci-cd-pipeline-example" title="Link to this heading"></a></h3>
+<p>The REST API push is the simplest option for CI pipelines — a single HTTP
+call with no intermediate files. The example below uses GitHub Actions, but
+the same pattern works with any CI system.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># .github/workflows/promote.yml</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Promote dev → staging</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">workflow_dispatch</span><span class="p">:</span><span class="w">   </span><span class="c1"># triggered manually or on a schedule</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">promote</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Push dev branch into staging</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">curl -X PUT \</span>
+<span class="w">            </span><span class="no">&quot;https://charon.live/api/project/${{ secrets.CHARON_PROJECT_ID }}/branch/dev/&quot; \</span>
+<span class="w">            </span><span class="no">-H &quot;Authorization: Bearer ${{ secrets.CHARON_API_KEY }}&quot; \</span>
+<span class="w">            </span><span class="no">-H &quot;Content-Type: application/json&quot; \</span>
+<span class="w">            </span><span class="no">-d &#39;{ &quot;destinationBranchName&quot;: &quot;staging&quot; }&#39;</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="../advanced/cicd.html"><span class="doc">CI/CD Integration</span></a> for a full CI/CD walkthrough including validation
+and publish steps.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="advanced-patch-based-feature-merging">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Advanced: Patch-based Feature Merging</a><a class="headerlink" href="#advanced-patch-based-feature-merging" title="Link to this heading"></a></h2>
+<p>For teams that need to integrate isolated feature branches selectively — without
+promoting the entire <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch — Charon provides a patch/diff workflow.
+A <em>patch</em> is a JSON file that captures only the differences between two branches.
+It can be reviewed, stored in version control, and applied to any compatible
+target.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute what changed between dev and a feature branch</span>
+charon<span class="w"> </span>DATA<span class="w"> </span>CREATEPATCH<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase1<span class="w"> </span><span class="s2">&quot;https://charon.live/view/data/MyGame/dev/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase2<span class="w"> </span><span class="s2">&quot;https://charon.live/view/data/MyGame/feature-loot/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>loot.patch.json<span class="w"> </span>--credentials<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span>
+
+<span class="c1"># Apply only those changes to the target branch</span>
+charon<span class="w"> </span>DATA<span class="w"> </span>APPLYPATCH<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span><span class="s2">&quot;https://charon.live/view/data/MyGame/dev/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--input<span class="w"> </span>loot.patch.json<span class="w"> </span>--credentials<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>This approach requires a custom build pipeline and additional scripting to handle
+conflict resolution. It is best suited for large teams with long-lived feature
+branches or for shipping incremental live-service updates.</p>
+<p>See <a class="reference internal" href="../advanced/patch_diff.html"><span class="doc">Patch and Diff Workflow</span></a> for the full reference.</p>
+</section>
+<hr class="docutils" />
+<section id="cloning-a-branch-locally">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Cloning a Branch Locally</a><a class="headerlink" href="#cloning-a-branch-locally" title="Link to this heading"></a></h2>
+<p>Any branch can be downloaded as a standalone file using <code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">BACKUP</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>charon<span class="w"> </span>DATA<span class="w"> </span>BACKUP<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span><span class="s2">&quot;https://charon.live/view/data/MyGame/main/&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>myGame_main.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--credentials<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CHARON_API_KEY</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>The resulting file can be opened with the standalone CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>charon<span class="w"> </span>myGame_main.json
+</pre></div>
+</div>
+<p>The standalone tool and the server share the same file format — full round-trip
+compatibility is guaranteed.</p>
+</section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="overview.html"><span class="doc">Web Application Overview</span></a></p></li>
+<li><p><a class="reference internal" href="permission_and_roles.html"><span class="doc">Roles and Permissions</span></a></p></li>
+<li><p><a class="reference internal" href="cli_access_to_web_project.html"><span class="doc">CLI Access to charon.live</span></a></p></li>
+<li><p><a class="reference internal" href="rest.html"><span class="doc">REST API</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/backup_restore.html"><span class="doc">Backup and Restore</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/cicd.html"><span class="doc">CI/CD Integration</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/patch_diff.html"><span class="doc">Patch and Diff Workflow</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rest.html" class="btn btn-neutral float-left" title="REST API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../server/overview.html" class="btn btn-neutral float-right" title="Server Edition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
