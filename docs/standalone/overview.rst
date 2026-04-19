@@ -97,15 +97,33 @@ dotnet tool (recommended)
 
   # install charon globally (run it once)
   dotnet tool install -g dotnet-charon
-  
+
   # update global tool
   dotnet tool update -g dotnet-charon
-  
+
   # make empty game data file
    charon INIT ./gamedata.json
 
   # run editor
    charon ./gamedata.json
+
+dnx (.NET SDK 10+, no install)
+------------------------------
+
+If you are on .NET SDK 10 or later and want to try Charon without installing it globally,
+use ``dnx`` to download and run the tool on demand:
+
+.. code-block:: bash
+
+  # make empty game data file
+  dnx dotnet-charon -- INIT ./gamedata.json
+
+  # run editor
+  dnx dotnet-charon -- ./gamedata.json
+
+The tool is cached by NuGet after the first run, so subsequent invocations start quickly.
+This is a good fit for trying Charon or for one-off scripts; for daily use prefer the
+``dotnet tool install`` option above so you can call ``charon`` directly.
 
 .. youtube:: TOBmJEkNb2U
    :width: 640

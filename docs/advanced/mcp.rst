@@ -36,6 +36,13 @@ Verify the installation:
 
    charon VERSION
 
+.. note::
+
+   On **.NET SDK 10+** you can skip the install step and invoke the tool on demand
+   with ``dnx dotnet-charon -- MCP``. The examples below assume ``charon`` is on
+   ``PATH``; if you prefer ``dnx``, replace the ``command`` / ``args`` pair in each
+   client config with ``"command": "dnx"`` and ``"args": ["dotnet-charon", "--", "MCP"]``.
+
 ----
 
 Starting the MCP Server

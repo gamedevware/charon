@@ -19,21 +19,39 @@ The easiest way to install is to use the infrastructure provided by the `dotnet 
 
   # install charon globally
   dotnet tool install -g dotnet-charon
-  
+
   # install charon in current working directory
-  dotnet tool install dotnet-charon --local --create-manifest-if-needed 
+  dotnet tool install dotnet-charon --local --create-manifest-if-needed
 
 To update current tool use following commands:
 
 .. code-block:: bash
-  
+
   # update global tool
   dotnet tool update --global dotnet-charon
-  
+
   # update local tool
   dotnet tool update dotnet-charon --local
 
-Option 2: Bootstrap scripts
+Option 2: dnx (no install, .NET SDK 10+)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.NET SDK 10 introduced `dnx <https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-dnx>`_, a runner for .NET tools similar to ``npx``.
+It downloads and executes the tool on demand without registering it in the global or local tool manifest:
+
+.. code-block:: bash
+
+  # run any charon command without installing
+  dnx dotnet-charon -- DATA EXPORT --help
+
+The tool is cached by NuGet after the first run. This is handy for one-off commands or trying Charon on a new
+machine. For day-to-day usage prefer Option 1 so you can type ``charon`` directly; for CI pipelines prefer
+Option 1 as well, pinned to a specific version for reproducibility.
+
+Throughout the rest of this documentation, command examples are written as ``charon <verb>`` assuming the tool is
+on ``PATH``. If you use ``dnx`` instead, replace the leading ``charon`` with ``dnx dotnet-charon --``.
+
+Option 3: Bootstrap scripts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Alternatively, you can use one of two bootstrap scripts:  

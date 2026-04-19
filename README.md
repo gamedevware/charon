@@ -103,6 +103,13 @@ Install the standalone version (requires [.NET SDK 8+](https://dotnet.microsoft.
 dotnet tool install dotnet-charon --global
 ```
 
+Or, on [.NET SDK 10+](https://dotnet.microsoft.com/en-us/download), run it once without installing:
+
+```bash
+dnx dotnet-charon -- INIT gamedata.json
+dnx dotnet-charon -- gamedata.json
+```
+
 Initialize a new game data file and open the editor:
 
 ```bash
