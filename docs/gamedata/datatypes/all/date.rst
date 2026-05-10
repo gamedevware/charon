@@ -26,8 +26,9 @@ Example
 .. code-block:: js
 
   "2017-12-27T00:00:00.000Z"
-  
-   // it is better not to store dates before this mark for compatibility reasons
+
+  // Avoid dates before the Unix epoch for cross-platform compatibility:
+  // some runtimes and serialization libraries do not handle pre-1970 dates correctly.
   "1970-01-01T00:00:00.000Z"
 
 See also

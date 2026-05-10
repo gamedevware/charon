@@ -38,9 +38,9 @@ Specification
    - ``resultType`` — Specifies the return type of the formula.  
    
      Example: ``resultType=System.String``
-   - ``knownType`` — Declares types known to the formula. Only static members of known types can be accessed.  
-   
-     Example: ``knownType=System.FMath``
+   - ``knownType`` — Declares types known to the formula. Only static members of known types can be accessed.
+
+     Example: ``knownType=System.Math``
    - ``typeName`` — Custom type name for the generated class. If omitted, a name is derived from the containing schema and property.  
    
      Example: ``typeName=MyDamageCalculatingFormula``

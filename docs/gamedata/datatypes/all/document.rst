@@ -17,7 +17,7 @@ Source Code Type
    | Haxe                                                  | ``class``                                                       |
    +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
-   Document Text cannot be marked as unique.
+   Document cannot be marked as unique.
    
 Example
 -------

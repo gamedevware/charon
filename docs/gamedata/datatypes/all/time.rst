@@ -1,7 +1,7 @@
 Time
 ====
 
-The ``Time`` data type in game data is equivalent to the ``TimeSpan`` data type in C#. It is used to store a duration or a time interval, such as the time it takes to complete a task or the length of a cutscene in a game. The ``Time`` data type is represented as a string in the format ``HH:mm:ss``, where HH is the number of hours, mm is the number of minutes, and ss is the number of seconds.
+The ``Time`` data type in game data is equivalent to the ``TimeSpan`` data type in C#. It is used to store a duration or a time interval, such as the time it takes to complete a task or the length of a cutscene in a game. The ``Time`` data type is represented as a string in the format ``[DD.]HH:mm:ss``, where DD is an optional number of days, HH is the number of hours, mm is the number of minutes, and ss is the number of seconds. It can also be stored as a plain integer representing the total number of seconds. Negative durations are supported.
 
 For example, if a task takes 2 hours and 30 minutes to complete, the ``Time`` data type value would be ``02:30:00``.
 

@@ -17,7 +17,7 @@ Source Code Type
    | Haxe                                                  | ReadOnlyArray{T}                                                |
    +-------------------------------------------------------+-----------------------------------------------------------------+
 Uniqueness
-   Document Collection Text cannot be marked as unique.
+   Document Collection cannot be marked as unique.
 Size
    May be limited in number of items. 0 - no limit.
 

@@ -6,7 +6,7 @@ This type is commonly used for categorical selections such as character class, i
 In user interfaces, a ``PickList`` is typically presented as a dropdown menu, allowing users to choose only one option from the list.  
 
 Storage on Disk
-   On disk, ``PickList`` values are stored as integer. This value correspond directly to one of the predefined options.  
+   On disk, ``PickList`` values are stored as integers. Each integer corresponds directly to one of the predefined options.  
 
 Example
    In a character creator, the player might choose "Mage" as their class from a list of available options like Warrior, Mage, or Rogue.

@@ -38,8 +38,13 @@ Example
 -------
 .. code-block:: js
 
-  1 // internaly stored as integers
-  "Apple" // string values also valid
+  // Single value selected:
+  1        // stored as integer (bit position 0 = first option)
+  "Apple"  // string name also accepted as input
+
+  // Multiple values selected (bitwise OR of individual bits):
+  3        // Apple(1) | Banana(2) — both selected
+  "Apple, Banana"  // comma-separated string names also accepted
 
 See also
 --------

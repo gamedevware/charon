@@ -1,4 +1,3 @@
- 
 Logical
 =======
 
@@ -48,13 +47,15 @@ Example
 -------
 .. code-block:: js
 
-  true
+  true    // canonical JSON boolean
   false
-  True
+
+  // alternative accepted input formats during import:
+  True    // case-insensitive spelling
   False
-  1
-  0
-  "Yes"
+  1       // non-zero integer = true
+  0       // zero = false
+  "Yes"   // accepted string aliases
   "No"
 
 See also
