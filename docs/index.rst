@@ -169,6 +169,7 @@ Further Reading
    /gamedata/working_with_type_script_code
    /gamedata/working_with_uecpp_code
    /gamedata/working_with_haxe_code
+   /gamedata/working_with_lua_code
 
 .. toctree::
    :caption: Data Workflows

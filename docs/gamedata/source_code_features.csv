@@ -1,12 +1,12 @@
-Feature,C#,TypeScript,C++ (UE),Haxe,Lua
-Classes,x,x,x,x,x
-Enums,x,x,x,x,x
-Build-in Formatters,x,x,x,x,
-• JSON,x,x,x,x,
-• MessagePack,x,x,x,x,
-Localization,x,x,x,x,x
-Patching,x,x,x,x
-Formulas,x,x,x,x,
-• Parsed AST,x,x,x,x,
-• Interpeter,x,x,x,,
-• Lambdas,x,x,,,
+Feature,C#,TypeScript,C++ (UE),Hax️e,Lua
+Classes,✔️,✔️,✔️,✔️,✔️
+Enums,✔️,✔️,✔️,✔️,✔️
+Build-in Formatters,✔️,✔️,✔️,✔️,
+— JSON,✔️,✔️,✔️,✔️,
+— MessagePack,✔️,✔️,✔️,✔️,
+Localization,✔️,✔️,✔️,✔️,✔️
+Patching,✔️,✔️,✔️,✔️
+Formulas,✔️,✔️,✔️,✔️,
+— Parsed AST,✔️,✔️,✔️,✔️,
+— Interpeter,✔️,✔️,✔️,,
+— Lambdas,✔️,✔️,,,
