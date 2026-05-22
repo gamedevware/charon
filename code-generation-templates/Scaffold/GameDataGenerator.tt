@@ -1,0 +1,44 @@
+<#@ template language="C#" #>
+<#@ output extension=".txt" encoding="utf-8" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Runtime.CompilerServices" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.ObjectModel" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.IO.Compression" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Security" #>
+<#@ include file="./ObjectModel.ttinclude" once="true" #>
+<#
+	this.GenerationEnvironment.Length = 0; // clean any whitespace
+
+	var optimizations = this.Optimizations ?? Array.Empty<string>();
+	var context = new CodeGenerationContext(this.GameDataPath, new CSharpLanguage() {
+		Namespace = this.Namespace,
+		GameDataClassName = this.GameDataClassName,
+		DocumentClassName = this.DocumentClassName,
+	}, optimizations) {
+		ToolsName = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name ?? "GameDataGenerator.tt",
+		ToolsVersion = this.GetType().Assembly.GetName().Version.ToString(),
+	};
+#>
+<#
+	foreach (var typeDef in context.ObjectModel.Types)
+	{
+#>
+- <#= typeDef.TypeName #>
+<#
+	}
+#>
+<#+
+	public string GameDataPath { get; set; }
+	public string Namespace { get; set; }
+	public string GameDataClassName { get; set; }
+	public string DocumentClassName { get; set; }
+	public string[] Optimizations { get; set; }
+#>
