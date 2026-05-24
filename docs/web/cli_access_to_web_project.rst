@@ -1,11 +1,11 @@
-CLI Access to charon.live
+﻿CLI Access to charon.live
 =========================
 
 The web version of Charon provides a :doc:`REST API <rest>` and :doc:`CLI <../advanced/command_line>` for accessing and
 modifying game data remotely. To authenticate CLI commands against a web project, users need to generate an ``API Key``
 in the *API Keys* section of their *User Profile*.
 
-With an API Key, Charon integrates into any existing workflow — exporting data into a local repository,
+With an API Key, Charon integrates into any existing workflow - exporting data into a local repository,
 importing designer edits back to the server, generating source code, or running validation in CI.
 
 .. contents:: On this page
@@ -38,7 +38,7 @@ Finding Your Project URL
 ------------------------
 
 Every web project has a stable URL that can be passed to the ``--dataBase`` parameter. You can find it in your
-browser's address bar while viewing any page inside the project on charon.live — it has the form:
+browser's address bar while viewing any page inside the project on charon.live - it has the form:
 
 .. code-block:: text
 
@@ -59,8 +59,8 @@ Use the branch-specific URL when you want to target a particular branch (e.g. ``
 Generating an API Key
 ---------------------
 
-1. Navigate to the *API Keys* section in your *User Profile* and click **Generate API Key...**.
-2. Copy the generated ``API Key`` — it is shown only once.
+1. Navigate to the *API Keys* section in your *User Profile → API Keys* and click **Create API Key...**.
+2. Copy the generated ``API Key`` - it is shown only once.
 3. Store the key securely (e.g. in a password manager or CI secret store).
 
 Use the API Key in:
@@ -87,7 +87,7 @@ Pass the API Key either as an explicit parameter or as an environment variable:
 
 .. code-block:: bash
 
-   # Environment variable — picked up automatically by all commands
+   # Environment variable - picked up automatically by all commands
    export CHARON_API_KEY="<API-Key>"
    charon DATA EXPORT \
      --dataBase "https://charon.live/view/data/My_Game/develop/" \
@@ -139,7 +139,7 @@ Push local edits back to the web project:
 
 .. code-block:: bash
 
-   # Update existing documents (safe — no creates or deletes)
+   # Update existing documents (safe - no creates or deletes)
    charon DATA IMPORT \
      --dataBase "https://charon.live/view/data/My_Game/develop/" \
      --schemas Character \
@@ -173,7 +173,7 @@ Generate C# classes directly from the web project without downloading the data f
 Validate Data
 ^^^^^^^^^^^^^
 
-Check data integrity — useful before a release or as a CI gate:
+Check data integrity - useful before a release or as a CI gate:
 
 .. code-block:: bash
 

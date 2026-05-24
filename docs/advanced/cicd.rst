@@ -1,8 +1,8 @@
-CI/CD Integration
+﻿CI/CD Integration
 =================
 
-Charon's CLI supports full automation of game data workflows — validation, export, translation,
-code generation, and backup — making it straightforward to integrate into any continuous
+Charon's CLI supports full automation of game data workflows - validation, export, translation,
+code generation, and backup - making it straightforward to integrate into any continuous
 integration or deployment pipeline.
 
 .. contents:: On this page
@@ -58,13 +58,13 @@ Store it as a CI secret; never hard-code it in pipeline files.
 
 .. code-block:: yaml
 
-   # GitHub Actions — secrets.CHARON_API_KEY defined in repository settings
+   # GitHub Actions - secrets.CHARON_API_KEY defined in repository settings
    env:
      CHARON_API_KEY: ${{ secrets.CHARON_API_KEY }}
 
 .. code-block:: bash
 
-   # Shell — set before running any charon command
+   # Shell - set before running any charon command
    export CHARON_API_KEY="your-api-key-here"
    charon DATA EXPORT --dataBase "https://charon.live/view/data/MyGame/main/" ...
 
@@ -81,7 +81,7 @@ Charon exits with ``0`` on success. It exits with ``1`` or any positive code in 
 - A fatal error occurred (bad parameters, file not found, network failure).
 - ``DATA VALIDATE`` produced errors **and** ``--output`` was set to ``err``.
 
-All other cases — including a validation report that contains errors written to a file —
+All other cases - including a validation report that contains errors written to a file -
 exit with ``0``. Design your pipeline steps accordingly.
 
 ----

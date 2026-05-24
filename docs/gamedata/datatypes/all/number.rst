@@ -1,4 +1,4 @@
-Number
+﻿Number
 ======
 
 The ``Number`` data type is used to represent decimal numbers. It conforms to the `IEEE 754 <https://en.wikipedia.org/wiki/IEEE_754>`_ floating-point standard and can represent both positive and negative numbers, as well as zero. However, due to the limitations of the floating-point representation, precision may be lost when performing certain arithmetic operations. Therefore, it is recommended to use the :doc:`Integer <integer>` data type for financial calculations and other scenarios that require high precision.
@@ -26,10 +26,10 @@ Size
 Specification 
    Numbers support the following specification parameters:
    
-   - ``precision`` — Specify decimal precision of stored number.  
+   - ``precision`` - Specify decimal precision of stored number.  
    
      Example: ``precision=2``
-   - ``displayPrecision`` — Specify decimal precision of displayed in UI number.  
+   - ``displayPrecision`` - Specify decimal precision of displayed in UI number.  
    
      Example: ``displayPrecision=2``
 

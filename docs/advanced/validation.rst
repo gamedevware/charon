@@ -1,4 +1,4 @@
-Validation
+﻿Validation
 ==========
 
 Charon validates game data at several points in the editing lifecycle: on every document save,
@@ -52,7 +52,7 @@ These flags **report errors** without modifying data.
    Every property marked **Not Null** or **Not Empty** must have a value.
 
 ``checkFormat``
-   Values must match the declared data type format — e.g. ``Date`` must be ISO 8601,
+   Values must match the declared data type format - e.g. ``Date`` must be ISO 8601,
    ``Number`` must not be a string, ``PickList`` value must be in the defined list.
 
 ``checkUniqueness``
@@ -83,7 +83,7 @@ Repair flags **automatically fix** certain problem classes before integrity chec
 They modify the data in-place (or within the import transaction).
 
 ``repair``
-   Master switch — must be present alongside individual repair flags.
+   Master switch - must be present alongside individual repair flags.
 
 ``deduplicateIds``
    If multiple documents in the same collection share the same ``Id``, each duplicate gets

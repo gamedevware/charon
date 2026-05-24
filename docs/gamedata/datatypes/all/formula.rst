@@ -1,4 +1,4 @@
-Formula
+﻿Formula
 =======
 
 The **Formula** data type allows storing and evaluating C# expressions within game data. It enables developers to define logic that performs calculations based on dynamic inputs and parameters not known until runtime. A formula can be any valid C# expression that returns a value of a supported data type.
@@ -32,16 +32,16 @@ Uniqueness
    Formulas cannot be marked as unique.
 Specification 
    Formulas support the following specification parameters:
-   - ``param.<name>`` — Defines a formula parameter and its type.  
+   - ``param.<name>`` - Defines a formula parameter and its type.  
    
      Example: ``param.id=System.Int32``
-   - ``resultType`` — Specifies the return type of the formula.  
+   - ``resultType`` - Specifies the return type of the formula.  
    
      Example: ``resultType=System.String``
-   - ``knownType`` — Declares types known to the formula. Only static members of known types can be accessed.
+   - ``knownType`` - Declares types known to the formula. Only static members of known types can be accessed.
 
      Example: ``knownType=System.Math``
-   - ``typeName`` — Custom type name for the generated class. If omitted, a name is derived from the containing schema and property.  
+   - ``typeName`` - Custom type name for the generated class. If omitted, a name is derived from the containing schema and property.  
    
      Example: ``typeName=MyDamageCalculatingFormula``
 

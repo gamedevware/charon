@@ -1,4 +1,4 @@
-Shared Property
+﻿Shared Property
 ===============
 
 A **Shared Property** is a :doc:`Schema <../schemas/schema>` property that syncs data type-related configuration with other properties of the same name across different schemas. When a shared property is modified in one schema, all other synced properties with the same shared name are updated accordingly.
@@ -23,7 +23,7 @@ These parameters ensure consistency across schemas that use the same shared prop
 Impact on Generated Source Code
 -------------------------------
 
-In cases where a property results in a distinct type in the generated source code—such as a `PickList` producing an ``enum``—the name of the shared property is used to derive the generated type name.
+In cases where a property results in a distinct type in the generated source code-such as a `PickList` producing an ``enum``-the name of the shared property is used to derive the generated type name.
 
 For example:
 

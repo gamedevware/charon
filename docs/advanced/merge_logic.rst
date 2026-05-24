@@ -1,4 +1,4 @@
-Document Merge Logic
+﻿Document Merge Logic
 ====================
 
 When ``DATA IMPORT`` or ``DATA APPLYPATCH`` merges incoming (modified) data with the
@@ -15,8 +15,8 @@ patch application, and ``SafeUpdate`` operations.
 Core Principle
 --------------
 
-Every merge operation takes two document trees — **original** (left) and **modified**
-(right) — and produces a **merged** result. The fundamental rule is:
+Every merge operation takes two document trees - **original** (left) and **modified**
+(right) - and produces a **merged** result. The fundamental rule is:
 
 - If **modified** provides a value for a property → the merged result uses the modified value.
 - If **modified** does not provide a value for a property → the merged result keeps the original value.
@@ -65,7 +65,7 @@ Applies to: ``Text``, ``Time``, ``Date``, ``Logical``, ``Reference``, ``Formula`
 If modified supplies a value, it overwrites the original unconditionally.
 If modified does not supply a value, the original is kept.
 
-**Special case — ``Id`` in SafeUpdate mode:**
+**Special case - ``Id`` in SafeUpdate mode:**
 The ``Id`` property is never overwritten when the import mode is ``safeUpdate``.
 Even if modified provides an ``Id`` value, the original ``Id`` is preserved.
 This prevents accidental re-identification of documents when patching subsets of fields.
@@ -91,7 +91,7 @@ LocalizedText Properties
 
 - The **comment** field: modified wins if it has a comment; otherwise the original comment
   is kept.
-- **Stale translation flags**: the union (OR) of both sets — a language that was stale in
+- **Stale translation flags**: the union (OR) of both sets - a language that was stale in
   either original or modified remains stale. Stale flags are then automatically cleared for
   any language whose value was explicitly supplied by modified.
 
@@ -106,7 +106,7 @@ The four cases:
 +----------------------+----------------------+------------------------------------------+
 | Original             | Modified             | Result                                   |
 +======================+======================+==========================================+
-| absent / null        | document             | Merge(empty, modified) — see caveat      |
+| absent / null        | document             | Merge(empty, modified) - see caveat      |
 +----------------------+----------------------+------------------------------------------+
 | document             | absent / null        | ``null`` (deleted), *or* original in     |
 |                      |                      | ``safeUpdate``                           |
@@ -122,9 +122,9 @@ Document Collections
 ``DocumentCollection`` and ``ReferenceCollection`` properties are merged **by document
 Id**. The set of Ids to iterate depends on the mode:
 
-- **createAndUpdate** — iterates the **modified** Ids. Documents present in original but
+- **createAndUpdate** - iterates the **modified** Ids. Documents present in original but
   absent from modified are treated as deleted and dropped from the result.
-- **safeUpdate** — iterates the **original** Ids. Documents present in original but absent
+- **safeUpdate** - iterates the **original** Ids. Documents present in original but absent
   from modified are left unchanged. Items in modified not in original are ignored.
 
 Per-item resolution:
@@ -143,7 +143,7 @@ Per-item resolution:
 +------------------------+------------------------+---------------------------------------------+
 
 For ``ReferenceCollection`` items (which store a reference object, not full data), when
-both sides exist the modified reference object replaces the original without recursion —
+both sides exist the modified reference object replaces the original without recursion -
 there are no meaningful sub-properties to merge.
 
 Null optional collections
@@ -162,16 +162,16 @@ A subtle but important edge case arises when:
 
 1. A document was **deleted** from the original (original is ``null`` or absent).
 2. A patch was created that **adds or modifies** that document (modified contains a
-   partial document — only the properties that changed).
+   partial document - only the properties that changed).
 3. ``DATA APPLYPATCH`` (``createAndUpdate`` mode) applies the patch.
 
 In this case the merge calls ``Merge(empty, partialModified, schema)``.
 Since ``empty`` provides no values, every property takes its value from ``partialModified``
-where present — and is simply **omitted** where modified does not supply it.
+where present - and is simply **omitted** where modified does not supply it.
 
 The resulting document exists in the data, but **only contains the properties included in
-the patch**. Required properties that were absent in the original document — and were not
-listed in the patch — will be missing from the result.
+the patch**. Required properties that were absent in the original document - and were not
+listed in the patch - will be missing from the result.
 
 **Example:**
 
@@ -220,12 +220,12 @@ Merge in Context
 
 The merge logic is invoked by:
 
-- **``DATA IMPORT``** — for every document that matches both the import input and the
+- **``DATA IMPORT``** - for every document that matches both the import input and the
   target data (matched by ``Id``). The mode is set by ``--mode``.
-- **``DATA APPLYPATCH``** — always runs in ``createAndUpdate`` mode. The patch format
+- **``DATA APPLYPATCH``** - always runs in ``createAndUpdate`` mode. The patch format
   uses ``null`` entries to express deletions, which interact directly with the merge rules
   described above.
-- **``DATA UPDATE`` (single document)** — runs in ``createAndUpdate`` mode on a single
+- **``DATA UPDATE`` (single document)** - runs in ``createAndUpdate`` mode on a single
   document.
 
 ----

@@ -1,4 +1,4 @@
-Formula Expression AST
+﻿Formula Expression AST
 ======================
 
 Formula values are stored as a JSON-encoded Abstract Syntax Tree (AST). Each node in the tree represents an expression and is identified by the ``expressionType`` field, which acts as a discriminator for the node type. An interpreter recursively evaluates the tree starting from the root node.
@@ -275,7 +275,7 @@ Structure
 
 Every AST node is a JSON object with at least one field:
 
-- ``expressionType`` — a string that identifies the node type and determines which other fields are present.
+- ``expressionType`` - a string that identifies the node type and determines which other fields are present.
 
 Nodes that refer to types use either a plain string (e.g. ``"System.Int32"``) or a :ref:`type-reference` object for generic or nested types.
 
@@ -289,10 +289,10 @@ TypeReference
 A type reference describes a type, including generic types. It is used wherever a type is needed (e.g. ``Constant``, ``Convert``, ``New``).
 
 
-- ``name`` *(string)* — The simple or fully-qualified type name.
-- ``expressionType`` *(string, optional)* — When set to ``"MemberResolve"``, the type is resolved relative to ``expression``.
-- ``expression`` *(TypeReference or string, optional)* — The containing namespace or type from which ``name`` is resolved.
-- ``arguments`` *(object, optional)* — A map of generic type arguments, where keys are type parameter names and values are TypeReference objects or strings.
+- ``name`` *(string)* - The simple or fully-qualified type name.
+- ``expressionType`` *(string, optional)* - When set to ``"MemberResolve"``, the type is resolved relative to ``expression``.
+- ``expression`` *(TypeReference or string, optional)* - The containing namespace or type from which ``name`` is resolved.
+- ``arguments`` *(object, optional)* - A map of generic type arguments, where keys are type parameter names and values are TypeReference objects or strings.
 
 Example: ``List<int>``
 
@@ -319,8 +319,8 @@ Represents a literal value of a known type.
 
 
 - ``expressionType``: ``"Constant"``
-- ``type`` — The type of the value (TypeReference or string).
-- ``value`` — The literal value. The JSON type matches the declared type (number, string, boolean, null, etc.).
+- ``type`` - The type of the value (TypeReference or string).
+- ``value`` - The literal value. The JSON type matches the declared type (number, string, boolean, null, etc.).
 
 Example: the integer literal ``42``
 
@@ -351,10 +351,10 @@ Resolves a named member (variable, property, field, method, or type) optionally 
 
 
 - ``expressionType``: ``"MemberResolve"``
-- ``name`` *(string)* — The member name to resolve.
-- ``expression`` *(FormulaExpression or null, optional)* — The target object. When ``null`` or absent, the name is resolved in the current scope (e.g. a formula parameter or a known type).
-- ``arguments`` *(object, optional)* — Generic type arguments for the member, keyed by type parameter name.
-- ``useNullPropagation`` *(boolean)* — When ``true``, the access uses null-safe semantics (equivalent to ``?.`` in C#). If ``expression`` evaluates to null, the result is null instead of throwing.
+- ``name`` *(string)* - The member name to resolve.
+- ``expression`` *(FormulaExpression or null, optional)* - The target object. When ``null`` or absent, the name is resolved in the current scope (e.g. a formula parameter or a known type).
+- ``arguments`` *(object, optional)* - Generic type arguments for the member, keyed by type parameter name.
+- ``useNullPropagation`` *(boolean)* - When ``true``, the access uses null-safe semantics (equivalent to ``?.`` in C#). If ``expression`` evaluates to null, the result is null instead of throwing.
 
 Example: accessing ``target.HP``
 
@@ -396,18 +396,18 @@ Unary
 Applies a unary operator to a single operand.
 
 
-- ``expressionType`` — One of:
+- ``expressionType`` - One of:
 
-  - ``"UnaryPlus"`` — identity (``+x``)
-  - ``"Negate"`` — arithmetic negation (``-x``)
-  - ``"NegateChecked"`` — arithmetic negation with overflow checking
-  - ``"Not"`` — logical NOT (``!x``)
-  - ``"Complement"`` — bitwise complement (``~x``)
-  - ``"Group"`` — grouping parentheses, no operation change (``(x)``)
-  - ``"UncheckedScope"`` — disables overflow checking for the inner expression (``unchecked(x)``)
-  - ``"CheckedScope"`` — enables overflow checking for the inner expression (``checked(x)``)
+  - ``"UnaryPlus"`` - identity (``+x``)
+  - ``"Negate"`` - arithmetic negation (``-x``)
+  - ``"NegateChecked"`` - arithmetic negation with overflow checking
+  - ``"Not"`` - logical NOT (``!x``)
+  - ``"Complement"`` - bitwise complement (``~x``)
+  - ``"Group"`` - grouping parentheses, no operation change (``(x)``)
+  - ``"UncheckedScope"`` - disables overflow checking for the inner expression (``unchecked(x)``)
+  - ``"CheckedScope"`` - enables overflow checking for the inner expression (``checked(x)``)
 
-- ``expression`` *(FormulaExpression)* — The operand.
+- ``expression`` *(FormulaExpression)* - The operand.
 
 Example: ``-x``
 
@@ -431,7 +431,7 @@ Binary
 Applies a binary operator to two operands.
 
 
-- ``expressionType`` — One of:
+- ``expressionType`` - One of:
 
   - Arithmetic: ``"Add"``, ``"AddChecked"``, ``"Subtract"``, ``"SubtractChecked"``, ``"Multiply"``, ``"MultiplyChecked"``, ``"Divide"``, ``"Modulo"``, ``"Power"``
   - Bitwise / Shift: ``"And"``, ``"Or"``, ``"ExclusiveOr"``, ``"LeftShift"``, ``"RightShift"``
@@ -441,8 +441,8 @@ Applies a binary operator to two operands.
 
   Variants with ``Checked`` suffix perform overflow-checked arithmetic.
 
-- ``left`` *(FormulaExpression)* — The left operand.
-- ``right`` *(FormulaExpression)* — The right operand.
+- ``left`` *(FormulaExpression)* - The left operand.
+- ``right`` *(FormulaExpression)* - The right operand.
 
 Example: ``weaponPower * targetResistance``
 
@@ -473,9 +473,9 @@ A conditional (ternary) expression: ``test ? ifTrue : ifFalse``.
 
 
 - ``expressionType``: ``"Condition"``
-- ``test`` *(FormulaExpression)* — The boolean condition.
-- ``ifTrue`` *(FormulaExpression)* — Evaluated when ``test`` is true.
-- ``ifFalse`` *(FormulaExpression)* — Evaluated when ``test`` is false.
+- ``test`` *(FormulaExpression)* - The boolean condition.
+- ``ifTrue`` *(FormulaExpression)* - Evaluated when ``test`` is true.
+- ``ifFalse`` *(FormulaExpression)* - Evaluated when ``test`` is false.
 
 Example: ``x > 0 ? x : -x``
 
@@ -508,14 +508,14 @@ Convert / TypeAs
 Converts or casts an expression to a different type.
 
 
-- ``expressionType`` — One of:
+- ``expressionType`` - One of:
 
-  - ``"Convert"`` — explicit cast; throws on failure.
-  - ``"ConvertChecked"`` — explicit cast with overflow checking.
-  - ``"TypeAs"`` — safe cast; returns null if the object is not of the target type (equivalent to ``as`` in C#).
+  - ``"Convert"`` - explicit cast; throws on failure.
+  - ``"ConvertChecked"`` - explicit cast with overflow checking.
+  - ``"TypeAs"`` - safe cast; returns null if the object is not of the target type (equivalent to ``as`` in C#).
 
-- ``type`` — The target type (TypeReference or string).
-- ``expression`` *(FormulaExpression)* — The expression to convert.
+- ``type`` - The target type (TypeReference or string).
+- ``expression`` *(FormulaExpression)* - The expression to convert.
 
 Example: ``(float)damage``
 
@@ -541,7 +541,7 @@ Produces the default value for a type (e.g. ``0`` for numeric types, ``null`` fo
 
 
 - ``expressionType``: ``"Default"``
-- ``type`` — The type whose default value to produce (TypeReference or string).
+- ``type`` - The type whose default value to produce (TypeReference or string).
 
 Example: ``default(Int32)``
 
@@ -561,8 +561,8 @@ Tests whether an expression is of a given type (equivalent to ``is`` in C#). Eva
 
 
 - ``expressionType``: ``"TypeIs"``
-- ``type`` — The type to test against (TypeReference or string).
-- ``expression`` *(FormulaExpression)* — The expression whose type is tested.
+- ``type`` - The type to test against (TypeReference or string).
+- ``expression`` *(FormulaExpression)* - The expression whose type is tested.
 
 Example: ``obj is Enemy``
 
@@ -588,7 +588,7 @@ Returns the runtime type descriptor for the given type (equivalent to ``typeof(T
 
 
 - ``expressionType``: ``"TypeOf"``
-- ``type`` — The type to retrieve (TypeReference or string).
+- ``type`` - The type to retrieve (TypeReference or string).
 
 Example: ``typeof(String)``
 
@@ -608,9 +608,9 @@ Accesses an element of an indexable object (array, list, dictionary, or any type
 
 
 - ``expressionType``: ``"Index"``
-- ``expression`` *(FormulaExpression)* — The collection or indexable object.
-- ``arguments`` *(ArgumentCollectionObj)* — The index arguments, keyed by positional index (``"0"``, ``"1"``, ...).
-- ``useNullPropagation`` *(boolean)* — When ``true``, the access is null-safe (``?[...]``). Returns null if ``expression`` is null.
+- ``expression`` *(FormulaExpression)* - The collection or indexable object.
+- ``arguments`` *(ArgumentCollectionObj)* - The index arguments, keyed by positional index (``"0"``, ``"1"``, ...).
+- ``useNullPropagation`` *(boolean)* - When ``true``, the access is null-safe (``?[...]``). Returns null if ``expression`` is null.
 
 Example: ``items[0]``
 
@@ -639,8 +639,8 @@ Calls a method or invokes a delegate/function. The method itself is resolved as 
 
 
 - ``expressionType``: ``"Invoke"``
-- ``expression`` *(FormulaExpression)* — The callable to invoke (typically a ``MemberResolve`` node).
-- ``arguments`` *(ArgumentCollectionObj)* — Arguments passed to the call, keyed by positional index (``"0"``, ``"1"``, ...) or parameter name.
+- ``expression`` *(FormulaExpression)* - The callable to invoke (typically a ``MemberResolve`` node).
+- ``arguments`` *(ArgumentCollectionObj)* - Arguments passed to the call, keyed by positional index (``"0"``, ``"1"``, ...) or parameter name.
 
 Example: ``target.DoDamage(100)``
 
@@ -673,8 +673,8 @@ Defines an anonymous function (lambda). The ``arguments`` field declares the par
 
 
 - ``expressionType``: ``"Lambda"``
-- ``arguments`` *(ArgumentCollectionObj)* — Parameter declarations. Keys are parameter names; values are ``null`` (parameter type is inferred from context) or a ``MemberResolve`` expression denoting the declared type.
-- ``expression`` *(FormulaExpression)* — The lambda body.
+- ``arguments`` *(ArgumentCollectionObj)* - Parameter declarations. Keys are parameter names; values are ``null`` (parameter type is inferred from context) or a ``MemberResolve`` expression denoting the declared type.
+- ``expression`` *(FormulaExpression)* - The lambda body.
 
 Example: ``x => x * 2``
 
@@ -701,8 +701,8 @@ Instantiates a new object of a given type by calling a constructor.
 
 
 - ``expressionType``: ``"New"``
-- ``type`` — The type to instantiate (TypeReference or string).
-- ``arguments`` *(ArgumentCollectionObj)* — Constructor arguments, keyed by positional index (``"0"``, ``"1"``, ...) or parameter name.
+- ``type`` - The type to instantiate (TypeReference or string).
+- ``arguments`` *(ArgumentCollectionObj)* - Constructor arguments, keyed by positional index (``"0"``, ``"1"``, ...) or parameter name.
 
 Example: ``new Vector2(1.0, 0.5)``
 
@@ -726,8 +726,8 @@ Creates a new array with specified dimension sizes but without initializers.
 
 
 - ``expressionType``: ``"NewArrayBounds"``
-- ``type`` — The element type of the array (TypeReference or string).
-- ``arguments`` *(ArgumentCollectionObj)* — Dimension size expressions, keyed by dimension index (``"0"`` for one-dimensional arrays).
+- ``type`` - The element type of the array (TypeReference or string).
+- ``arguments`` *(ArgumentCollectionObj)* - Dimension size expressions, keyed by dimension index (``"0"`` for one-dimensional arrays).
 
 Example: ``new int[10]``
 
@@ -750,8 +750,8 @@ Creates a new single-dimensional array and initializes it with a list of values.
 
 
 - ``expressionType``: ``"NewArrayInit"``
-- ``type`` — The element type of the array (TypeReference or string).
-- ``initializers`` *(ArgumentCollectionObj)* — Element expressions, keyed by positional index (``"0"``, ``"1"``, ...).
+- ``type`` - The element type of the array (TypeReference or string).
+- ``initializers`` *(ArgumentCollectionObj)* - Element expressions, keyed by positional index (``"0"``, ``"1"``, ...).
 
 Example: ``new int[] { 1, 2, 3 }``
 
@@ -776,12 +776,12 @@ Creates a new object and initializes its members. Combines a ``New`` node with a
 
 
 - ``expressionType``: ``"MemberInit"``
-- ``new`` *(NewExpression)* — The object construction node.
-- ``bindings`` *(MemberBindingCollectionObj)* — A map of member bindings, keyed by member name. Each value is one of:
+- ``new`` *(NewExpression)* - The object construction node.
+- ``bindings`` *(MemberBindingCollectionObj)* - A map of member bindings, keyed by member name. Each value is one of:
 
-  - ``AssignmentBinding`` — assigns an expression to a member.
-  - ``MemberBinding`` — recursively initializes members of a nested object.
-  - ``ListBinding`` — adds elements to a collection member.
+  - ``AssignmentBinding`` - assigns an expression to a member.
+  - ``MemberBinding`` - recursively initializes members of a nested object.
+  - ``ListBinding`` - adds elements to a collection member.
 
 Example: ``new Vector2 { X = 1.0, Y = 0.5 }``
 
@@ -817,11 +817,11 @@ Creates a new collection object and populates it using an initializer list. Each
 
 
 - ``expressionType``: ``"ListInit"``
-- ``new`` *(NewExpression)* — The collection construction node.
-- ``initializers`` *(ElementInitCollectionObj)* — A map of element initializers, keyed by positional index. Each value is an ``ElementInitBinding`` object with:
+- ``new`` *(NewExpression)* - The collection construction node.
+- ``initializers`` *(ElementInitCollectionObj)* - A map of element initializers, keyed by positional index. Each value is an ``ElementInitBinding`` object with:
 
   - ``expressionType``: ``"ElementInitBinding"``
-  - ``initializers`` *(ArgumentCollectionObj)* — Arguments passed to the Add method for this element.
+  - ``initializers`` *(ArgumentCollectionObj)* - Arguments passed to the Add method for this element.
 
 Example: ``new List<int> { 1, 2, 3 }``
 
@@ -874,8 +874,8 @@ AssignmentBinding
 Assigns a value to a named member.
 
 - ``expressionType``: ``"AssignmentBinding"``
-- ``name`` *(string)* — Member name.
-- ``expression`` *(FormulaExpression)* — The value to assign.
+- ``name`` *(string)* - Member name.
+- ``expression`` *(FormulaExpression)* - The value to assign.
 
 MemberBinding
 ~~~~~~~~~~~~~
@@ -883,8 +883,8 @@ MemberBinding
 Recursively initializes the members of a nested object member without reassigning the member itself.
 
 - ``expressionType``: ``"MemberBinding"``
-- ``name`` *(string)* — Member name of the nested object.
-- ``bindings`` *(MemberBindingCollectionObj)* — Nested bindings applied to the member's sub-members.
+- ``name`` *(string)* - Member name of the nested object.
+- ``bindings`` *(MemberBindingCollectionObj)* - Nested bindings applied to the member's sub-members.
 
 ListBinding
 ~~~~~~~~~~~
@@ -892,8 +892,8 @@ ListBinding
 Adds elements to a collection member using element initializers.
 
 - ``expressionType``: ``"ListBinding"``
-- ``name`` *(string)* — Member name of the collection.
-- ``initializers`` *(ElementInitCollectionObj)* — Elements to add, keyed by positional index.
+- ``name`` *(string)* - Member name of the collection.
+- ``initializers`` *(ElementInitCollectionObj)* - Elements to add, keyed by positional index.
 
 ----
 
@@ -904,12 +904,12 @@ An interpreter for this AST typically consists of a recursive ``evaluate(node, c
 
 Suggested steps:
 
-1. **Dispatch** — read ``expressionType`` from the node and select the appropriate handler.
-2. **Recurse** — evaluate child nodes before computing the current node's result (bottom-up evaluation).
-3. **Scope** — maintain a variable scope for formula parameters; ``MemberResolve`` with a null ``expression`` looks up names in this scope first, then in known types.
-4. **Type resolution** — map type names (strings or TypeReference objects) to concrete types in your runtime. Built-in types follow .NET naming conventions (e.g. ``System.Int32``, ``System.String``).
-5. **Null propagation** — for ``MemberResolve`` and ``Index`` nodes with ``useNullPropagation: true``, short-circuit and return null when the target expression is null.
-6. **Overflow checking** — ``Checked`` variants of arithmetic operators should raise an error on integer overflow; ``UncheckedScope`` / ``CheckedScope`` change the checking mode for a sub-tree.
+1. **Dispatch** - read ``expressionType`` from the node and select the appropriate handler.
+2. **Recurse** - evaluate child nodes before computing the current node's result (bottom-up evaluation).
+3. **Scope** - maintain a variable scope for formula parameters; ``MemberResolve`` with a null ``expression`` looks up names in this scope first, then in known types.
+4. **Type resolution** - map type names (strings or TypeReference objects) to concrete types in your runtime. Built-in types follow .NET naming conventions (e.g. ``System.Int32``, ``System.String``).
+5. **Null propagation** - for ``MemberResolve`` and ``Index`` nodes with ``useNullPropagation: true``, short-circuit and return null when the target expression is null.
+6. **Overflow checking** - ``Checked`` variants of arithmetic operators should raise an error on integer overflow; ``UncheckedScope`` / ``CheckedScope`` change the checking mode for a sub-tree.
 
 See also
 --------

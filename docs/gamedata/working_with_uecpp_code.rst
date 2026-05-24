@@ -1,4 +1,4 @@
-Working with Source Code (UE C++)
+﻿Working with Source Code (UE C++)
 =================================
 
 .. note::
@@ -60,7 +60,7 @@ Formulas
 Formulas are supported when the plugin has the ``CHARON_FEATURE_FORMULAS_V2=1`` compilation
 constant enabled (available since plugin version 2025.2.x).
 
-Each formula property in your schema generates a dedicated ``UObject`` subclass — for example
+Each formula property in your schema generates a dedicated ``UObject`` subclass - for example
 a property named ``LevelUpConditionsCheck`` with return type ``System.Boolean`` and one parameter
 ``stats`` of type ``UObject`` produces:
 
@@ -105,10 +105,10 @@ Formula Scope
 
 Every formula expression has two implicit identifiers available without a qualifier:
 
-- ``this`` — the document instance that declares the formula property. For a formula property
+- ``this`` - the document instance that declares the formula property. For a formula property
   defined on the ``Hero`` schema, ``this`` refers to the ``UHero`` object being
   evaluated.
-- ``GameData`` — the root ``UGameData`` instance, giving access to all other documents and
+- ``GameData`` - the root ``UGameData`` instance, giving access to all other documents and
   settings.
 
 Consider a ``Hero`` schema with a numeric property ``BaseDamage`` and a formula property
@@ -127,15 +127,15 @@ Formula Syntax
 
 Formula expressions use **C# 3.5 syntax** with several extensions:
 
-- ``?.`` — null-conditional member access (``this.Target?.Health``)
-- ``?[`` — null-conditional index access (``list?[0]``)
-- ``??`` — null-coalescing operator (``value ?? 0``)
-- ``**`` — exponentiation operator (``base ** exponent``)
+- ``?.`` - null-conditional member access (``this.Target?.Health``)
+- ``?[`` - null-conditional index access (``list?[0]``)
+- ``??`` - null-coalescing operator (``value ?? 0``)
+- ``**`` - exponentiation operator (``base ** exponent``)
 
 The following C# features are **not supported**:
 
-- Lambda expressions (``x => expr``) — see below.
-- Generic type arguments (``SomeMethod<T>()``) — type arguments cannot be specified
+- Lambda expressions (``x => expr``) - see below.
+- Generic type arguments (``SomeMethod<T>()``) - type arguments cannot be specified
   explicitly.
 
 Member and method dispatch is **dynamic**: property and method names are resolved at
@@ -152,7 +152,7 @@ Lambda Expressions
 ^^^^^^^^^^^^^^^^^^
 
 Lambda expressions (``x => expr``, ``(x, y) => expr``) are parsed but are **not
-implemented** — calling ``Invoke`` on a formula that contains a lambda returns the default
+implemented** - calling ``Invoke`` on a formula that contains a lambda returns the default
 value and logs an ``UnsupportedExpression`` error.
 
 Generated Code Contract
@@ -161,14 +161,14 @@ Generated Code Contract
 Document properties are declared as public ``UPROPERTY`` fields and collections as
 ``TArray<T*>`` / ``TMap<FString, T*>``. These are intentionally mutable for two reasons:
 
-- **Blueprint compatibility** — Blueprint nodes read and write ``UPROPERTY`` fields
+- **Blueprint compatibility** - Blueprint nodes read and write ``UPROPERTY`` fields
   directly; getter-only accessors are not reachable from Blueprints.
-- **UObject lifecycle** — UE's garbage collector tracks references through ``UPROPERTY``
+- **UObject lifecycle** - UE's garbage collector tracks references through ``UPROPERTY``
   metadata, which requires fields to be declared in the standard way.
 
 Treat the loaded data as **logically read-only** even though the language does not
 enforce it. Do not assign to, replace, or clear any field or collection on a document
-obtained from a loaded ``UGameData`` instance — mutating loaded data produces undefined
+obtained from a loaded ``UGameData`` instance - mutating loaded data produces undefined
 behaviour and is not persisted to the source file.
 
 .. note::

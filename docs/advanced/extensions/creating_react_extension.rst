@@ -1,4 +1,4 @@
-Creating a Custom Editor with React
+﻿Creating a Custom Editor with React
 ===================================
 
 Charon is a flexible data modeling web application that supports user-defined custom editors for fields and documents. By leveraging **Web Components**, Charon allows developers to seamlessly integrate reusable UI components that can be packaged and distributed via NPM.
@@ -62,7 +62,7 @@ Key points when writing your component:
 - Implement the ``CharonPropertyEditorElement`` interface in your Web Component to accept input properties from the main application.
 - Ensure you correctly subscribe and unsubscribe when ``valueControl`` or ``documentControl`` input values change to avoid memory leaks.
 - Export your Web Component using a unique tag name (e.g., ``ext-logical-toggle-editor``).
-- Your ``main.js`` script should only register the Web Component—it should not render anything directly.
+- Your ``main.js`` script should only register the Web Component-it should not render anything directly.
 
 4. Modify ``vite.config.ts`` for Packaging
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

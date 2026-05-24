@@ -1,7 +1,7 @@
-Unity Plugin Overview
+﻿Unity Plugin Overview
 =====================
 
-You know the moment. Your project starts small — a few ScriptableObjects for enemy stats, a couple of prefabs with Inspector overrides.
+You know the moment. Your project starts small - a few ScriptableObjects for enemy stats, a couple of prefabs with Inspector overrides.
 Clean, manageable, very Unity.
 
 Then six months in, you have 300 ``.asset`` files scattered across a dozen folders. A designer needs to change a damage multiplier and
@@ -9,7 +9,7 @@ can't tell which one to open. A programmer renames a field and three of those as
 afternoon just trying to understand where the quest data actually lives.
 
 **ScriptableObjects were never designed to be a game database.** The `Charon Unity Plugin <https://assetstore.unity.com/packages/tools/visual-scripting/game-data-editor-charon-95117>`_ replaces that fragile patchwork with
-a structured, validated game database — embedded directly in your Unity project.
+a structured, validated game database - embedded directly in your Unity project.
 
 ----------
 
@@ -24,8 +24,8 @@ What is it?
 
 The **Charon Unity Plugin** is a full data-driven design workflow embedded in the Unity Editor. It gives you:
 
-- A **structured game database** — one organized place for all your items, characters, quests, and abilities, with enforced relationships between them
-- A **visual editor** that opens from the Unity menu and runs in your browser — no external tools, no switching context
+- A **structured game database** - one organized place for all your items, characters, quests, and abilities, with enforced relationships between them
+- A **visual editor** that opens from the Unity menu and runs in your browser - no external tools, no switching context
 - A **C# code generator** that turns your schema into type-safe classes, so your code reads ``hero.Stats.Hp`` instead of ``(float)data["stats"]["hp"]``
 
 Designers own the data. Programmers own the code. Charon keeps both in sync automatically.
@@ -44,7 +44,7 @@ Which problem does it solve?
    * - **Broken references**
      - Deleting an item that a quest still references is a validation error, not a silent runtime bug.
    * - **Boilerplate data code**
-     - Generated C# classes handle all loading, deserialization, and lookups — zero hand-written plumbing.
+     - Generated C# classes handle all loading, deserialization, and lookups - zero hand-written plumbing.
    * - **Designer bottleneck**
      - Designers edit data in a purpose-built UI without waiting on a programmer to change a value.
    * - **Localization sprawl**
@@ -55,15 +55,15 @@ Who is it for?
 
 **Unity Developers**
   Stop writing data-loading boilerplate. Generated C# classes give you full IntelliSense,
-  compile-time safety, and zero magic strings. Plug into CI/CD with the CLI — validate data on every commit.
+  compile-time safety, and zero magic strings. Plug into CI/CD with the CLI - validate data on every commit.
 
 **Game & Narrative Designers**
   A real editor, not a spreadsheet workaround. Define your own schemas, fill in data, and see
-  validation errors immediately — without touching a line of code or filing a ticket.
+  validation errors immediately - without touching a line of code or filing a ticket.
 
 **Production Teams**
   Building an RPG, CCG, strategy game, or anything with hundreds of balanced entities?
-  Charon scales with you. It also supports modding out of the box — ship the editor alongside your game
+  Charon scales with you. It also supports modding out of the box - ship the editor alongside your game
   so your community builds with the same tools you used.
 
 ----------

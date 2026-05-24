@@ -1,14 +1,14 @@
-Data-Driven Game Design with Charon
+﻿Data-Driven Game Design with Charon
 =====================================
 
 Every game team hits the wall eventually.
 
-It starts small — a spreadsheet for item stats, another for enemy data, a few config files for quests.
+It starts small - a spreadsheet for item stats, another for enemy data, a few config files for quests.
 Then the game grows. Tabs multiply. Formulas break silently. A programmer renames a constant and three
 designer files now reference something that doesn't exist. A localization request arrives and no one knows
 where all the strings actually live.
 
-**This is the spreadsheet ceiling** — and most teams don't realize they've hit it until something breaks in production.
+**This is the spreadsheet ceiling** - and most teams don't realize they've hit it until something breaks in production.
 
 Charon exists to push that ceiling out of your way.
 
@@ -17,7 +17,7 @@ Charon exists to push that ceiling out of your way.
 What is Data-Driven Game Design?
 ---------------------------------
 
-Data-driven game design means your game's content lives in *structured, validated data* — not in source code,
+Data-driven game design means your game's content lives in *structured, validated data* - not in source code,
 not in spreadsheets, not in a programmer's head. Designers define what a quest looks like. Programmers consume
 it through generated, type-safe code. The pipeline enforces that they stay in sync.
 
@@ -28,7 +28,7 @@ When it works:
 - Adding a language is a data task, not a code task
 - Game balance is version-controlled, diff-able, and rollback-able
 
-**Charon is the tool that makes this practical.** It gives your team a shared language between design and engineering —
+**Charon is the tool that makes this practical.** It gives your team a shared language between design and engineering -
 a structured database, a visual editor, and a code generator that keeps both sides moving independently.
 
 **TLDR:** Charon is an in-game database for your game. It replaces spreadsheets and config files with a validated,
@@ -40,7 +40,7 @@ Who Is This For?
 -----------------
 
 **Game Designers**
-  You get a real editor — schemas you define, forms that match your data, and validation that catches mistakes
+  You get a real editor - schemas you define, forms that match your data, and validation that catches mistakes
   before the next build does. No more pasting values into cells and hoping the formula still works.
 
 **Programmers**
@@ -60,10 +60,10 @@ Deployment Options
 
 Charon adapts to your workflow, not the other way around:
 
-- :doc:`Unity Plugin <unity/overview>` — edit game data directly inside the Unity editor
-- :doc:`Unreal Engine Plugin <unreal_engine/overview>` — native integration with the Unreal content pipeline
-- :doc:`Standalone App <standalone/overview>` — run the editor locally for any engine (C#, TypeScript, Haxe)
-- :doc:`Web / Cloud Edition <web/overview>` — collaborative editing for distributed teams
+- :doc:`Unity Plugin <unity/overview>` - edit game data directly inside the Unity editor
+- :doc:`Unreal Engine Plugin <unreal_engine/overview>` - native integration with the Unreal content pipeline
+- :doc:`Standalone App <standalone/overview>` - run the editor locally for any engine (C#, TypeScript, Haxe)
+- :doc:`Web / Cloud Edition <web/overview>` - collaborative editing for distributed teams
 
 ----
 
@@ -71,7 +71,7 @@ Is It Free?
 ------------
 
 The offline CLI, standalone app, and engine plugins are **completely free** with no usage restrictions.
-They are open-licensed and can be bundled with your shipped game — so your players can build mods
+They are open-licensed and can be bundled with your shipped game - so your players can build mods
 using the same tools you used to build the game.
 
 The online collaborative edition, which enables shared editing across large teams with cloud hosting,

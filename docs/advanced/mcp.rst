@@ -1,8 +1,8 @@
-MCP Server (AI Assistant Integration)
+﻿MCP Server (AI Assistant Integration)
 ======================================
 
 Charon ships a built-in `Model Context Protocol (MCP) <https://modelcontextprotocol.io/>`_ server that
-lets AI assistants — Claude, Cursor, GitHub Copilot, Windsurf, Cline, Zed, and others — read and write game data directly.
+lets AI assistants - Claude, Cursor, GitHub Copilot, Windsurf, Cline, Zed, and others - read and write game data directly.
 The server communicates over **stdio** using the standard JSON-RPC MCP transport, so no network port
 is opened and no extra infrastructure is required.
 
@@ -55,7 +55,7 @@ Run the ``MCP`` verb with no additional arguments:
    charon MCP
 
 The process stays running and communicates over **stdin / stdout**.
-Do not write anything else to stdout while the server is active — the transport is
+Do not write anything else to stdout while the server is active - the transport is
 the raw MCP JSON-RPC stream and any extra output will corrupt the protocol.
 
 All diagnostic logging should be going to a log file (see `Logging`_ below),
@@ -309,6 +309,6 @@ with a bearer token equal to your ``CHARON_API_KEY`` value.
 
 .. seealso::
 
-   - :doc:`/web/rest` — REST API reference for the ``charon.live`` service
-   - :doc:`command_line` — full CLI reference, including all ``DATA`` and ``GENERATE`` verbs
-   - :doc:`cicd` — using Charon in automated pipelines
+   - :doc:`/web/rest` - REST API reference for the ``charon.live`` service
+   - :doc:`command_line` - full CLI reference, including all ``DATA`` and ``GENERATE`` verbs
+   - :doc:`cicd` - using Charon in automated pipelines

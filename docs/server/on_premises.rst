@@ -1,4 +1,4 @@
-On-Premises Deployment
+﻿On-Premises Deployment
 =======================
 
 The Charon server edition can be self-hosted on your own infrastructure. This gives teams
@@ -18,8 +18,8 @@ Consider on-premises deployment when:
 
 - **Data residency requirements** prohibit storing game data on third-party cloud services.
 - **NDA or IP restrictions** require all data to stay within a private network.
-- **Network isolation** — studios working on unannounced titles with air-gapped environments.
-- **Cost at scale** — large teams where a self-hosted MongoDB instance is more economical than
+- **Network isolation** - studios working on unannounced titles with air-gapped environments.
+- **Cost at scale** - large teams where a self-hosted MongoDB instance is more economical than
   the hosted subscription.
 
 ----
@@ -51,7 +51,7 @@ locally:
    unzip myGame_main.zip -d myGame/
    charon SERVER START myGame/gamedata.json --launchDefaultBrowser
 
-This portability is a deliberate design decision — teams are never locked in to the hosted
+This portability is a deliberate design decision - teams are never locked in to the hosted
 service.
 
 ----

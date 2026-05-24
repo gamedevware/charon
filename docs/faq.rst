@@ -1,4 +1,4 @@
-Frequently Asked Questions (FAQ)
+﻿Frequently Asked Questions (FAQ)
 ================================
 
 What kind of game data can be modeled in Charon?
@@ -73,7 +73,7 @@ The source code for the editor itself is not publicly available. However, the pl
 
 Charon can be :doc:`extended <advanced/extensions/overview>` with custom field editors or even full document editors, such as node-based interfaces.  
 
-For teams requiring a fully private, self-contained collaborative workspace, an **on-premises installation** of the online service is available. It provides the same features as the hosted version — real-time collaboration, access control, multiple projects, AI features, Machine Translation, and team workflows — while keeping all data and infrastructure under your control.  
+For teams requiring a fully private, self-contained collaborative workspace, an **on-premises installation** of the online service is available. It provides the same features as the hosted version - real-time collaboration, access control, multiple projects, AI features, Machine Translation, and team workflows - while keeping all data and infrastructure under your control.  
 If you are interested in an on-premises deployment, please contact us support@gamedevware.com for licensing and installation options.
 
 What happens if the project is discontinued or no longer maintained?

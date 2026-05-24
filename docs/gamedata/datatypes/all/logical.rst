@@ -1,7 +1,7 @@
-Logical
+﻿Logical
 =======
 
-The ``Logical`` data type is used to represent boolean values — values that can be either ``true`` or ``false``. It is suitable for modeling simple binary states, conditions, or flags commonly used throughout game data.
+The ``Logical`` data type is used to represent boolean values - values that can be either ``true`` or ``false``. It is suitable for modeling simple binary states, conditions, or flags commonly used throughout game data.
 
 Use Cases
 ---------

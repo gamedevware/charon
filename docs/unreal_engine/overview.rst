@@ -1,15 +1,15 @@
-Unreal Engine Plugin Overview
+﻿Unreal Engine Plugin Overview
 =============================
 
-DataTables work — until they don't.
+DataTables work - until they don't.
 
 A flat CSV-backed table handles a list of weapons just fine. But the moment a Quest needs to reference
-three Items, each with variant stats that inherit from a base type, with display text in four languages —
+three Items, each with variant stats that inherit from a base type, with display text in four languages -
 DataTables hit a wall. You end up with parallel tables held together by string row names, a Blueprint
 full of ``GetDataTableRow`` nodes, and struct definitions that go stale the moment a designer adds a field.
 
 **Unreal's data tools were built for simplicity, not for scale.** The `Charon Unreal Plugin <https://www.unrealengine.com/marketplace/en-US/product/charon-game-data-editor>`_ is built for exactly
-the kind of complex, relational, multi-language game data that real productions demand — with native
+the kind of complex, relational, multi-language game data that real productions demand - with native
 C++ and Blueprint access and zero boilerplate.
 
 ----------
@@ -25,9 +25,9 @@ What is it?
 
 The **Charon Unreal Plugin** is a relational game database embedded in the Unreal Editor. It gives you:
 
-- A **schema-driven data model** — define your ``Hero``, ``Item``, ``Quest`` types once, with typed fields, inheritance, and cross-references between them
-- A **visual editor** that opens directly from the Content Drawer — same workflow designers already know, no new tools to learn
-- **Automatic C++ and Blueprint generation** — every time your schema changes, your struct definitions and access code update themselves
+- A **schema-driven data model** - define your ``Hero``, ``Item``, ``Quest`` types once, with typed fields, inheritance, and cross-references between them
+- A **visual editor** that opens directly from the Content Drawer - same workflow designers already know, no new tools to learn
+- **Automatic C++ and Blueprint generation** - every time your schema changes, your struct definitions and access code update themselves
 
 It is the data layer your game needs without the infrastructure you'd have to build to get there.
 
@@ -43,7 +43,7 @@ Which problem does it solve?
    * - **DataTable limitations**
      - Full relational model: nesting, inheritance, and cross-table references without string row-name fragility.
    * - **Struct boilerplate**
-     - C++ structs and Blueprint nodes are generated automatically — change a field in the editor, not in code.
+     - C++ structs and Blueprint nodes are generated automatically - change a field in the editor, not in code.
    * - **Broken cross-references**
      - Referencing a deleted row is a validation error, caught before the build, not at runtime.
    * - **Designer bottleneck**
@@ -58,12 +58,12 @@ Who is it for?
 
 **Technical Directors & Programmers**
   Generated C++ structs give you type-safe data access with full IDE support and no parsing logic.
-  The CLI and REST API plug directly into your CI/CD pipeline — validate data on every commit,
+  The CLI and REST API plug directly into your CI/CD pipeline - validate data on every commit,
   diff between versions, automate patch builds.
 
 **Game & Narrative Designers**
   Build complex item economies, branching quest trees, and character progressions in a structured
-  editor — without writing a line of C++ or creating Blueprint spaghetti. Validation catches
+  editor - without writing a line of C++ or creating Blueprint spaghetti. Validation catches
   broken references before they reach a programmer.
 
 **Live-Ops Teams**
@@ -167,9 +167,9 @@ Core Concepts
 Data-Driven Design Principles
 -----------------------------
 
-The rule is straightforward: **if a designer might want to change it, it belongs in data — not in C++ and not in a Blueprint.**
+The rule is straightforward: **if a designer might want to change it, it belongs in data - not in C++ and not in a Blueprint.**
 
-Damage formulas, AI behavior thresholds, loot table weights, narrative branch conditions — when these live in code, every balance
+Damage formulas, AI behavior thresholds, loot table weights, narrative branch conditions - when these live in code, every balance
 pass requires an engineer. When they live in structured data, a designer can iterate in an afternoon without touching the build.
 
 Unreal Engine has always encouraged this approach. DataTables, ``UDeveloperSettings``, and config files are all steps in that

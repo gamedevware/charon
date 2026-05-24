@@ -1,4 +1,4 @@
-Reference
+﻿Reference
 =========
 
 The ``Reference`` data type enables the creation of non-embedded relationships between documents. A reference acts as a pointer to another document by using that document's ``Id`` as a key. This approach facilitates linking between related documents without the need to duplicate or embed data.
@@ -24,18 +24,18 @@ Uniqueness
 Specification 
    References support the following specification parameter:
    
-   - ``displayTextTemplate`` — Defines a template string for how the referenced value is displayed in the UI.  
+   - ``displayTextTemplate`` - Defines a template string for how the referenced value is displayed in the UI.  
    
      Example:  
      ``displayTextTemplate=Item%3A+%7BName%7D%2C+Count%3A+%7BCount%7D``  
      (renders as: `Item: {Name}, Count: {Count}`)  
    
-   - ``localOnly`` — Limits the selection to documents defined within the current document. References from other documents will be excluded from the drop-down list.
+   - ``localOnly`` - Limits the selection to documents defined within the current document. References from other documents will be excluded from the drop-down list.
    
      Example:  
      ``localOnly=true``  
    
-   - ``pathFilter`` — Filters available documents based on their path (RFC 6901 JSON Pointer). Use ``*`` to include all paths, or an empty string ``""`` to include only root-level documents.  
+   - ``pathFilter`` - Filters available documents based on their path (RFC 6901 JSON Pointer). Use ``*`` to include all paths, or an empty string ``""`` to include only root-level documents.  
    
      Example:  
      ``pathFilter=%2FItem`` (documents under `/Item`)  

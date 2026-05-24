@@ -1,8 +1,8 @@
-REST API
+﻿REST API
 ========
 
 The web edition of Charon exposes a REST API at ``https://charon.live/api/v1``.
-It covers the full feature set of the application — data CRUD, import/export,
+It covers the full feature set of the application - data CRUD, import/export,
 branch management, code generation, validation, and more.
 
 An interactive API explorer (Swagger UI) is available at
@@ -21,10 +21,10 @@ All endpoints require a bearer token in the ``Authorization`` header.
 Two credential types are accepted:
 
 **API Key (recommended for CI/CD and scripts)**
-   Obtain an API key from **User Profile → API Keys → Generate API Key**.
+   Obtain an API key from **User Profile → API Keys → Create API Key**.
    Use it directly as the bearer value:
 
-   .. code-block:: http
+   .. code-block:: default
 
       Authorization: Bearer <api-key>
 
@@ -87,7 +87,7 @@ Most data endpoints require ``projectId`` and/or ``dataSourceId``.
 Response Envelope
 -----------------
 
-Every response — success or failure — shares the same top-level JSON structure:
+Every response - success or failure - shares the same top-level JSON structure:
 
 .. code-block:: json
 
@@ -98,16 +98,16 @@ Every response — success or failure — shares the same top-level JSON structu
 
 One of fields are always present in the response body:
 
-- ``result`` — contains the operation's output on success. The shape varies by
+- ``result`` - contains the operation's output on success. The shape varies by
   endpoint (a single document, a list, a backup payload, etc.). On failure the
   field is absent.
-- ``errors`` — an array of error objects. Absent on success; contains
+- ``errors`` - an array of error objects. Absent on success; contains
   one or more entries on failure.
 
-The intended semantics are a discriminated union — either ``result`` carries
+The intended semantics are a discriminated union - either ``result`` carries
 meaningful data **or** ``errors`` is non-empty.
 
-**Success example** — ``GET /datasource/{id}/collection/Item/``
+**Success example** - ``GET /datasource/{id}/collection/Item/``
 
 .. code-block:: json
 
@@ -118,7 +118,7 @@ meaningful data **or** ``errors`` is non-empty.
      }
    }
 
-**No-content success** — some write operations (create branch, commit
+**No-content success** - some write operations (create branch, commit
 transaction, etc.) return HTTP ``204`` with no body.
 
 The simplest way to detect success in code is to check the HTTP status code
@@ -146,11 +146,11 @@ code:
 
 Fields:
 
-- ``result`` — is absent on error.
-- ``errors`` — array of one or more error objects. Each object has:
+- ``result`` - is absent on error.
+- ``errors`` - array of one or more error objects. Each object has:
 
-  - ``code`` *(string)* — machine-readable error code from the ``ErrorCode`` enum (see below).
-  - ``message`` *(string)* — human-readable description of the problem.
+  - ``code`` *(string)* - machine-readable error code from the ``ErrorCode`` enum (see below).
+  - ``message`` *(string)* - human-readable description of the problem.
   - Additional fields may be present for specific error types (e.g. ``parameterName``, ``path``).
 
 HTTP status codes and their typical error codes:

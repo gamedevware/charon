@@ -1,4 +1,4 @@
-Asset Path
+﻿Asset Path
 ==========
 
 The ``Asset Path`` is a sub-type of the :doc:`Text <../all/text>` data type and is used to store a path to a game asset within game data.  
@@ -12,7 +12,7 @@ Specification
 
 Asset Path Collection supports the following specification parameters:
 
-- ``assetType`` — Filters the types of assets to select.  
+- ``assetType`` - Filters the types of assets to select.  
   For Unity and Unreal Engine, this refers to class names.  
   For standalone builds, it refers to file extensions.  
   Example: ``assetType=Texture`` or ``assetType=Texture2D``

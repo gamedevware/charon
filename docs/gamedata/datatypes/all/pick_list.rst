@@ -1,4 +1,4 @@
-Pick List
+﻿Pick List
 =========
 
 The ``PickList`` data type defines a property that can take one value from a predefined set of options. It is best suited for fields where only a single choice is valid at any given time. This ensures consistency and restricts inputs to known, valid values.  
@@ -30,7 +30,7 @@ Size
 Specification 
    Pick Lists support the following specification parameters:
    
-   - ``typeName`` — Custom type name for the generated class. If omitted, a name is derived from the containing schema and property.  
+   - ``typeName`` - Custom type name for the generated class. If omitted, a name is derived from the containing schema and property.  
    
      Example: ``typeName=MyEnum``
 

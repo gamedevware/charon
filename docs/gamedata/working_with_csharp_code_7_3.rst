@@ -1,4 +1,4 @@
-Working with Source Code (C# 7.3)
+﻿Working with Source Code (C# 7.3)
 =================================
 
 .. note::
@@ -52,7 +52,7 @@ Or you can access specific documents by their ``Id`` or *Unique* properties:
 Formulas
 --------
 
-Each formula property in your schema generates a dedicated ``partial class`` — for example
+Each formula property in your schema generates a dedicated ``partial class`` - for example
 a property named ``LevelUpConditionsCheck`` with return type ``bool`` and one parameter
 ``stats`` of type ``HeroStats`` produces:
 
@@ -88,9 +88,9 @@ Formula Scope
 
 Every formula expression has two implicit identifiers available without a qualifier:
 
-- ``this`` — the document instance that declares the formula property. For a formula property
+- ``this`` - the document instance that declares the formula property. For a formula property
   defined on the ``Hero`` schema, ``this`` refers to the ``Hero`` object being evaluated.
-- ``GameData`` — the root ``GameData`` instance, giving access to all other documents and
+- ``GameData`` - the root ``GameData`` instance, giving access to all other documents and
   settings.
 
 Consider a ``Hero`` schema with a numeric property ``BaseDamage`` and a formula property
@@ -109,10 +109,10 @@ Formula Syntax
 
 Formula expressions use **C# 3.5 syntax** with several extensions:
 
-- ``?.`` — null-conditional member access (``this.Target?.Health``)
-- ``?[`` — null-conditional index access (``list?[0]``)
-- ``??`` — null-coalescing operator (``value ?? 0``)
-- ``**`` — exponentiation operator (``base ** exponent``)
+- ``?.`` - null-conditional member access (``this.Target?.Health``)
+- ``?[`` - null-conditional index access (``list?[0]``)
+- ``??`` - null-coalescing operator (``value ?? 0``)
+- ``**`` - exponentiation operator (``base ** exponent``)
 
 Unlike the UE C++ generator, **lambda expressions and explicit generic type arguments are
 fully supported**:
@@ -135,10 +135,10 @@ Generated Code Contract
 
 The generated C# API is **read-only by design**:
 
-- Document classes expose only public *getters* — there are no public property setters.
+- Document classes expose only public *getters* - there are no public property setters.
 - Collections are typed as ``IReadOnlyList<T>`` or ``IReadOnlyDictionary<TKey, TValue>``.
 - After the ``GameData`` constructor returns, all documents and collections are **frozen**. Attempting to modify internal state via reflection or unsafe casts will corrupt the object graph.
-- Some properties — notably resolved cross-document references and formula results — are computed lazily on first access and cached internally. This is an implementation detail; the observable value never changes after load.
+- Some properties - notably resolved cross-document references and formula results - are computed lazily on first access and cached internally. This is an implementation detail; the observable value never changes after load.
 
 The intended usage pattern is: **load once, read many times, never write**.
 

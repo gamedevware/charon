@@ -1,8 +1,8 @@
-Backup and Restore
+﻿Backup and Restore
 ==================
 
 Charon can create a full snapshot of a game data file and restore it later. Backups capture
-the complete state of the database — all documents, schemas, project settings, and metadata —
+the complete state of the database - all documents, schemas, project settings, and metadata -
 in a single portable file.
 
 .. contents:: On this page
@@ -36,7 +36,7 @@ What is included
 What is **not** included
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-- User accounts, API keys, and access control settings (server edition — managed separately).
+- User accounts, API keys, and access control settings (server edition - managed separately).
 - Binary resource files (images, audio) attached to documents via Asset Path properties.
 
 ----
@@ -57,7 +57,7 @@ Restoring from a Backup
 
 .. warning::
    ``DATA RESTORE`` **replaces all content** in the target database. The operation is not
-   incremental — the entire existing state is overwritten. Confirm you are targeting the
+   incremental - the entire existing state is overwritten. Confirm you are targeting the
    correct database before running.
 
 ----
@@ -76,10 +76,10 @@ Choose the right tool for the job:
 +---------------------------+-------------------------------------+--------------------------------------------+
 | **Includes schemas**      | Always                              | Optional (``--schemas Schema``)            |
 +---------------------------+-------------------------------------+--------------------------------------------+
-| **Strips unused data**    | No                                  | Yes — ``--mode publication`` strips unused |
+| **Strips unused data**    | No                                  | Yes - ``--mode publication`` strips unused |
 |                           |                                     | docs and languages                         |
 +---------------------------+-------------------------------------+--------------------------------------------+
-| **Restorable**            | Yes, via ``DATA RESTORE``           | Partially — via ``DATA IMPORT``            |
+| **Restorable**            | Yes, via ``DATA RESTORE``           | Partially - via ``DATA IMPORT``            |
 +---------------------------+-------------------------------------+--------------------------------------------+
 
 Use **Backup** when you need a full, restorable point-in-time snapshot.

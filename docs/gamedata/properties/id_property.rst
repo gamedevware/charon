@@ -1,4 +1,4 @@
-Id Property
+﻿Id Property
 ===========
 
 Each schema includes an ``Id`` property that defines the unique identifier for a document.  
@@ -93,7 +93,7 @@ You can change a schema's ``Id Generator`` to ``None`` at any time, but you cann
 Id Placeholder
 --------------
 
-If you want to assign a temporary value to the ID of a document being created—for example, for internal reference—you can use a placeholder string such as ``_ID_XXX_ANY_UNIQUE_TEXT_HERE_XXX``.  
+If you want to assign a temporary value to the ID of a document being created-for example, for internal reference-you can use a placeholder string such as ``_ID_XXX_ANY_UNIQUE_TEXT_HERE_XXX``.  
 This placeholder will be automatically replaced with the actual generated ID during saving or importing.
 
 Before save:

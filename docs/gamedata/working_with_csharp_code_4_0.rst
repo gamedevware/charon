@@ -1,4 +1,4 @@
-Working with Source Code (C# 4.0)
+﻿Working with Source Code (C# 4.0)
 =============================
 
 .. note::
@@ -65,10 +65,10 @@ Generated Code Contract
 
 The generated C# API is **read-only by design**:
 
-- Document classes expose only public *getters* — there are no public property setters.
+- Document classes expose only public *getters* - there are no public property setters.
 - Collections are typed as ``ReadOnlyList<T>``.
 - After the ``GameData`` constructor returns, all documents and collections are **frozen**. The ``OnBeforeInitialize`` partial hook fires before references are resolved and documents are marked read-only; ``OnInitialize`` fires once everything is locked. Attempting to modify the object graph after that point will corrupt it.
-- Some properties — notably resolved cross-document references — are computed lazily on first access and cached internally. This is an implementation detail; the observable value never changes after load.
+- Some properties - notably resolved cross-document references - are computed lazily on first access and cached internally. This is an implementation detail; the observable value never changes after load.
 
 The intended usage pattern is: **load once, read many times, never write**.
 

@@ -1,4 +1,4 @@
-Schema
+﻿Schema
 ======
 
 A **Schema** defines the structure of a specific type of game data entity. It acts as a blueprint that outlines the fields (properties) associated with the entity, much like columns in a database table or cells in a spreadsheet. Schemas are central to organizing and modeling structured game data.
@@ -27,7 +27,7 @@ The **Type** setting defines how instances (documents) of this schema are create
 Display Text Template
 ---------------------
 
-The :doc:`Display Text Template <display_text_template>` defines how documents of this schema are presented in the UI when a textual representation is needed—e.g., in dropdowns, reference lists, or relationship views.
+The :doc:`Display Text Template <display_text_template>` defines how documents of this schema are presented in the UI when a textual representation is needed-e.g., in dropdowns, reference lists, or relationship views.
 
 Icon
 ----

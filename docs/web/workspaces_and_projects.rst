@@ -1,4 +1,4 @@
-Workspaces, Projects, and Branches
+﻿Workspaces, Projects, and Branches
 ====================================
 
 Charon organises collaborative game data in a three-level hierarchy.
@@ -39,7 +39,7 @@ A **Project** is a named container for a single game's data.
 - Every project has at least one branch (``main`` by default).
 - Projects can be shared by inviting team members; each invitation carries a
   specific :doc:`role <permission_and_roles>`.
-- Projects can be cloned locally at any time — the resulting file is fully compatible
+- Projects can be cloned locally at any time - the resulting file is fully compatible
   with the standalone CLI.
 
 Branch
@@ -108,7 +108,7 @@ Branch-based Release Pipeline
 ------------------------------
 
 The recommended workflow is a linear promotion pipeline. Work flows in one
-direction — from ``dev`` toward ``stable`` — by **pushing** (copying) the entire
+direction - from ``dev`` toward ``stable`` - by **pushing** (copying) the entire
 branch into the next stage. A push replaces the destination branch completely;
 it is not a merge.
 
@@ -121,7 +121,7 @@ How a push works
 ^^^^^^^^^^^^^^^^
 
 A push copies the complete content of one branch into another, replacing the
-destination entirely. There is no partial merge — every document in the
+destination entirely. There is no partial merge - every document in the
 destination is overwritten.
 
 Three ways to trigger a push are available:
@@ -188,7 +188,7 @@ Typical branch setup
 CI/CD pipeline example
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The REST API push is the simplest option for CI pipelines — a single HTTP
+The REST API push is the simplest option for CI pipelines - a single HTTP
 call with no intermediate files. The example below uses GitHub Actions, but
 the same pattern works with any CI system.
 
@@ -220,8 +220,8 @@ and publish steps.
 Advanced: Patch-based Feature Merging
 --------------------------------------
 
-For teams that need to integrate isolated feature branches selectively — without
-promoting the entire ``dev`` branch — Charon provides a patch/diff workflow.
+For teams that need to integrate isolated feature branches selectively - without
+promoting the entire ``dev`` branch - Charon provides a patch/diff workflow.
 A *patch* is a JSON file that captures only the differences between two branches.
 It can be reviewed, stored in version control, and applied to any compatible
 target.
@@ -265,7 +265,7 @@ The resulting file can be opened with the standalone CLI:
 
    charon myGame_main.json
 
-The standalone tool and the server share the same file format — full round-trip
+The standalone tool and the server share the same file format - full round-trip
 compatibility is guaranteed.
 
 See also

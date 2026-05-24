@@ -1,4 +1,4 @@
-Schema Types
+﻿Schema Types
 ============
 
 Every :doc:`Schema <schema>` has a **Type** field that controls how its documents are created, stored, and navigated within the data model. Choosing the right type is fundamental to a well-structured data model.
@@ -21,7 +21,7 @@ Normal
   :doc:`ReferenceCollection <../datatypes/all/reference_collection>` properties.
 
 Use **Normal** for any entity that has an independent identity and may need to be listed,
-searched, and referenced across the project — items, characters, quests, abilities, etc.
+searched, and referenced across the project - items, characters, quests, abilities, etc.
 
 .. code-block:: json
 
@@ -70,7 +70,7 @@ root-level collection. It cannot be embedded inside other documents.
 Union (Tagged Union)
 --------------------
 
-A **Union** schema — also known as a Discriminated Union, Sum Type, or ``$oneOf`` — lets a
+A **Union** schema - also known as a Discriminated Union, Sum Type, or ``$oneOf`` - lets a
 single collection slot or property hold documents of **different shapes** in a type-safe way.
 
 A Union schema does not define properties itself. Instead it declares a set of **variant
@@ -95,9 +95,9 @@ See :doc:`Implementing Inheritance <../inheritance>` for a full comparison, but 
 
 Key properties of Union:
 
-- **Sparse storage** — unset variant fields are not written to disk; only the active variant's
+- **Sparse storage** - unset variant fields are not written to disk; only the active variant's
   properties are stored.
-- **First-class UI** — when editing a Union field the editor shows a type-selector dropdown
+- **First-class UI** - when editing a Union field the editor shows a type-selector dropdown
   and only renders the form for the chosen variant.
 
 Defining a Union schema
@@ -122,7 +122,7 @@ variant schema name and whose value is the document body:
    { "Armor":  { "Id": "Plate01", "Defense": 8                        } }
    { "Shield": { "Id": "Shield01","BlockChance": 0.25                 }, /* Weapon: null, "Armor": null, are ommited */ }
 
-The variant is identified by whichever key is present in the wrapper — ``"Weapon"``,
+The variant is identified by whichever key is present in the wrapper - ``"Weapon"``,
 ``"Armor"``, ``"Shield"``, etc. There is no ``"$type"`` string anywhere in the stored data; the schema name *is* the discriminator.
 
 A full collection of union documents therefore looks like:
@@ -149,17 +149,17 @@ Malformed Union values
 ^^^^^^^^^^^^^^^^^^^^^^
 
 A Union value is **well-formed** when the wrapper object contains exactly two keys:
-``Id`` and exactly one variant key. Two malformed states can occur — usually as a result
+``Id`` and exactly one variant key. Two malformed states can occur - usually as a result
 of a bulk import, a hand-crafted JSON payload, or a patch applied to a Union field without
 accounting for the wrapper format.
 
-**Empty union** — the ``Id`` is present but no variant key is set:
+**Empty union** - the ``Id`` is present but no variant key is set:
 
 .. code-block:: json
 
    { "Id": "item_01" }
 
-**Conflicting union** — two or more variant keys are set simultaneously:
+**Conflicting union** - two or more variant keys are set simultaneously:
 
 .. code-block:: json
 

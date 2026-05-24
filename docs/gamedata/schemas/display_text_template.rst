@@ -1,4 +1,4 @@
-Display Text Template
+﻿Display Text Template
 =====================
 
 When a document needs to be shown or referenced in the UI, a text representation is required. By default, Charon will use one of the following properties, in order of precedence: ``DisplayName``, ``Name``, ``Title``, or ``Id``. This fallback behavior can often result in uninformative or unclear document labels.
@@ -199,9 +199,9 @@ String Manipulation Methods
 
 String expressions support several methods:
 
-- ``Trim()`` — Removes leading and trailing whitespace.
-- ``Substring(start: int, count: int)`` — Extracts a substring from a given position.
-- ``ToString()`` — Converts any non-null value to its string representation.
+- ``Trim()`` - Removes leading and trailing whitespace.
+- ``Substring(start: int, count: int)`` - Extracts a substring from a given position.
+- ``ToString()`` - Converts any non-null value to its string representation.
 
 String concatenation is done using the ``+`` operator:
 

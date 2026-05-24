@@ -1,4 +1,4 @@
-Patch and Diff Workflow
+﻿Patch and Diff Workflow
 =======================
 
 Charon can compute the **difference** between two game data files and represent it as a reusable
@@ -34,10 +34,10 @@ Two commands form the workflow:
 
 Common use cases:
 
-- **Feature branch merge** — keep a stable baseline; apply a feature branch as a patch.
-- **DLC / live updates** — ship incremental changes without distributing the full file.
-- **Code-review diff** — generate a human-readable changelog of data edits for review.
-- **Automated reconciliation** — merge concurrent edits from multiple environments in CI.
+- **Feature branch merge** - keep a stable baseline; apply a feature branch as a patch.
+- **DLC / live updates** - ship incremental changes without distributing the full file.
+- **Code-review diff** - generate a human-readable changelog of data edits for review.
+- **Automated reconciliation** - merge concurrent edits from multiple environments in CI.
 
 ----
 
@@ -157,7 +157,7 @@ Storing Patches in Version Control
 Patch files are plain JSON (or BSON / MessagePack). They can be:
 
 - Committed alongside game source code to track data changes per feature branch.
-- Applied conditionally during a build — e.g., apply a hotfix patch only in production builds.
+- Applied conditionally during a build - e.g., apply a hotfix patch only in production builds.
 - Accumulated as a migration log: ``v1.0→v1.1.patch.json``, ``v1.1→v1.2.patch.json``, and so on.
 
 See also

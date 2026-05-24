@@ -1,4 +1,4 @@
-===========================
+﻿===========================
 Internationalization (i18n)
 ===========================
 
@@ -150,7 +150,7 @@ text but does not replace professional translation for final copy.
 
 Machine translation is configured per-server by an Administrator. When enabled, a
 **Translate** button appears on ``LocalizedText`` fields in the editor. Translated text
-is inserted as a draft — it must be reviewed and approved before the document is saved.
+is inserted as a draft - it must be reviewed and approved before the document is saved.
 
 For studios without machine translation access, or for bulk text, the export/import
 workflow described above is the recommended path for all target languages.

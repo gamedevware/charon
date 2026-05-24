@@ -1,4 +1,4 @@
-Multi-Pick List
+﻿Multi-Pick List
 ===============
 
 The ``MultiPickList`` data type allows a property to represent multiple values selected from a predefined list of options. It is designed for cases where multiple attributes, traits, or capabilities can be applied to a single entity simultaneously.  
@@ -6,7 +6,7 @@ Unlike :doc:`PickList <pick_list>`, which limits the property to a single choice
 In the UI, MultiPickList is typically presented as a dropdown menu, allowing users to select or deselect multiple options independently.  
 
 Storage on Disk
-   On disk, the ``MultiPickList`` is stored as an integer bitmask. Each option is assigned a specific bit position. When multiple options are selected, their bits are combined using bitwise OR operations. The number of options is limited by the bit width of the storage format—commonly 32 or 64 options for a 32-bit or 64-bit integer, respectively.  
+   On disk, the ``MultiPickList`` is stored as an integer bitmask. Each option is assigned a specific bit position. When multiple options are selected, their bits are combined using bitwise OR operations. The number of options is limited by the bit width of the storage format-commonly 32 or 64 options for a 32-bit or 64-bit integer, respectively.  
 
 Example
    An item in an RPG might be marked as equippable, sellable, and destructible using a single MultiPickList field instead of three separate boolean flags.
@@ -30,7 +30,7 @@ Size
 Specification 
    Multi-Pick Lists support the following specification parameters:
    
-   - ``typeName`` — Custom type name for the generated class. If omitted, a name is derived from the containing schema and property.  
+   - ``typeName`` - Custom type name for the generated class. If omitted, a name is derived from the containing schema and property.  
    
      Example: ``typeName=MyEnum``
 
@@ -43,7 +43,7 @@ Example
   "Apple"  // string name also accepted as input
 
   // Multiple values selected (bitwise OR of individual bits):
-  3        // Apple(1) | Banana(2) — both selected
+  3        // Apple(1) | Banana(2) - both selected
   "Apple, Banana"  // comma-separated string names also accepted
 
 See also
