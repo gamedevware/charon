@@ -28,17 +28,17 @@ Examples
 .. code-block:: bash
   
   # publish data to FTP
-  charon DATA EXPORT 
-    --dataBase "https://charon.live/view/data/My_Game/develop/dashboard"     
-    --output "ftp://user:password@example.com/public/gamedata.json"
-    --mode publication 
-    --outputFormat json
-    --credentials "<API-Key>" 
-    
-  # import localization from remote HTTP server 
-  charon DATA I18N IMPORT
-    --dataBase "file:///c:/my app/gamedata.json" 
-    --input "https://example.com/translated/gamedata.xliff"
+  charon DATA EXPORT \
+    --dataBase "https://charon.live/view/data/My_Game/develop/dashboard" \
+    --output "ftp://user:password@example.com/public/gamedata.json" \
+    --mode publication \
+    --outputFormat json \
+    --credentials "<API-Key>"
+
+  # import localization from remote HTTP server
+  charon DATA I18N IMPORT \
+    --dataBase "file:///c:/my app/gamedata.json" \
+    --input "https://example.com/translated/gamedata.xliff" \
     --inputFormat xliff
 
   # print languages for game data in local file

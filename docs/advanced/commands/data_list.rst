@@ -15,10 +15,15 @@ Seaches for a documents.
 .. code-block:: bash
 
   # local game data (windows)
-  charon DATA LIST --dataBase "c:\my app\gamedata.json" --schema Character
-  
+  charon DATA LIST \
+    --dataBase "c:\my app\gamedata.json" \
+    --schema Character
+
   # remote game data
-  charon DATA LIST --dataBase "https://charon.live/view/data/My_Game/develop/" --schema Character --credentials "<API-Key>"
+  charon DATA LIST \
+    --dataBase "https://charon.live/view/data/My_Game/develop/" \
+    --schema Character \
+    --credentials "<API-Key>"
   
 ---------------
  Parameters

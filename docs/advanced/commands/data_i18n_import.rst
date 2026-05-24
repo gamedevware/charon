@@ -15,10 +15,17 @@ Import translated text from a specified file into game data.
 .. code-block:: bash
 
   # local game data (windows)
-  charon DATA I18N IMPORT --dataBase "c:\my app\gamedata.json" --input "c:\my app\character_loc.xliff" --inputFormat xliff
-  
+  charon DATA I18N IMPORT \
+    --dataBase "c:\my app\gamedata.json" \
+    --input "c:\my app\character_loc.xliff" \
+    --inputFormat xliff
+
   # remote game data
-  charon DATA I18N IMPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --input "./character_loc.xliff" --inputFormat xliff --credentials "<API-Key>"
+  charon DATA I18N IMPORT \
+    --dataBase "https://charon.live/view/data/My_Game/develop/" \
+    --input "./character_loc.xliff" \
+    --inputFormat xliff \
+    --credentials "<API-Key>"
 
 ---------------
  Parameters

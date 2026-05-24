@@ -131,12 +131,17 @@ Take a backup immediately before publishing so that a known-good restore point e
    charon DATA BACKUP --dataBase gamedata.json --output pre_publish_backup.msgpack
 
    # 2. Validate
-   charon DATA VALIDATE --dataBase gamedata.json \
-       --validationOptions checkRequirements checkReferences --output err
+   charon DATA VALIDATE \
+       --dataBase gamedata.json \
+       --validationOptions checkRequirements checkReferences \
+       --output err
 
    # 3. Publish
-   charon DATA EXPORT --dataBase gamedata.json \
-       --mode publication --output StreamingAssets/gamedata.json --outputFormat json
+   charon DATA EXPORT \
+       --dataBase gamedata.json \
+       --mode publication \
+       --output StreamingAssets/gamedata.json \
+       --outputFormat json
 
 See also
 --------

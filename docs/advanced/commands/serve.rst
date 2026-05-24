@@ -15,7 +15,10 @@ Starts Charon in standalone mode for specified game data. Path to game data coul
 .. code-block:: bash
 
   # local game data (windows)
-  charon SERVER START --dataBase "c:\my app\gamedata.json" --port 8080 --launchDefaultBrowser
+  charon SERVER START \
+    --dataBase "c:\my app\gamedata.json" \
+    --port 8080 \
+    --launchDefaultBrowser
   
   # shortcut version
   charon "c:\my app\gamedata.json"

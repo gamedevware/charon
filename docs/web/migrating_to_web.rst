@@ -5,7 +5,7 @@ To migrate to the web application, you only need to backup your game data in you
 
 In short: project settings include a backup and restore feature. You make a backup in one place, and you can restore it in another. This is how you can transfer game data to another project.  
 
-Backup Data Step by Step
+Step 1: Backup Data Step by Step
 -------------------------
 
 1. Open your game data in the editor (Standalone, Unity ...)
@@ -16,7 +16,7 @@ Backup Data Step by Step
 6. On the "Format" step, select "JSON" and click "Backup"  
 7. On the "Summary" step, click the link with a file name like ``backup_2023_11_10_11_27.json`` and save it to your computer.  
 
-Restoring Backup in the Web Application
+Step 2: Restoring Backup in the Web Application
 --------------------------------------
 
 1. On the Home screen, click on "Create Project"  

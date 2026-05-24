@@ -15,10 +15,21 @@ Imports documents from file to a game data.
 .. code-block:: bash
 
   # local game data (windows)
-  charon DATA IMPORT --dataBase "c:\my app\gamedata.json" --schemas Character --input "c:\my app\characters.json" --inputFormat json --mode safeUpdate
-  
+  charon DATA IMPORT \
+    --dataBase "c:\my app\gamedata.json" \
+    --schemas Character \
+    --input "c:\my app\characters.json" \
+    --inputFormat json \
+    --mode safeUpdate
+
   # remote game data
-  charon DATA IMPORT --dataBase "https://charon.live/view/data/My_Game/develop/" --schemas Character --input "./characters.json" --inputFormat json --mode safeUpdate --credentials "<API-Key>"
+  charon DATA IMPORT \
+    --dataBase "https://charon.live/view/data/My_Game/develop/" \
+    --schemas Character \
+    --input "./characters.json" \
+    --inputFormat json \
+    --mode safeUpdate \
+    --credentials "<API-Key>"
   
 ---------------
  Parameters

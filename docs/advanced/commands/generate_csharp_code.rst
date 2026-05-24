@@ -17,10 +17,17 @@ By default, this command does not delete previously generated files. Use the ``-
 .. code-block:: bash
 
   # local game data (windows)
-  charon GENERATE CSHARPCODE --dataBase "c:\my app\gamedata.json" --namespace "MyGame.Parameters" --outputDirectory "c:\my app\scripts"
+  charon GENERATE CSHARPCODE \
+    --dataBase "c:\my app\gamedata.json" \
+    --namespace "MyGame.Parameters" \
+    --outputDirectory "c:\my app\scripts"
 
   # remote game data
-  charon GENERATE CSHARPCODE --dataBase "https://charon.live/view/data/My_Game/develop/" --namespace "MyGame.Parameters" --outputDirectory "./scripts" --credentials "<API-Key>"
+  charon GENERATE CSHARPCODE \
+    --dataBase "https://charon.live/view/data/My_Game/develop/" \
+    --namespace "MyGame.Parameters" \
+    --outputDirectory "./scripts" \
+    --credentials "<API-Key>"
   
 ---------------
  Parameters

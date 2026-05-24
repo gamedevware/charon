@@ -15,10 +15,19 @@ Outputs the differences between two game datas as a file that can be used later 
 .. code-block:: bash
 
   # local game data (windows)
-  charon DATA CREATEPATCH --dataBase1 "c:\my app\gamedata_base.json" --dataBase2 "c:\my app\gamedata_modified.json" --output "./gamedata_patch.json" --outputFormat json
-  
+  charon DATA CREATEPATCH \
+    --dataBase1 "c:\my app\gamedata_base.json" \
+    --dataBase2 "c:\my app\gamedata_modified.json" \
+    --output "./gamedata_patch.json" \
+    --outputFormat json
+
   # remote game data
-  charon DATA CREATEPATCH --dataBase1 "https://charon.live/view/data/My_Game/develop/" --dataBase2 "https://charon.live/view/data/My_Game/staging/" --output "./gamedata_staging_patch.json" --outputFormat json --credentials "<API-Key>"
+  charon DATA CREATEPATCH \
+    --dataBase1 "https://charon.live/view/data/My_Game/develop/" \
+    --dataBase2 "https://charon.live/view/data/My_Game/staging/" \
+    --output "./gamedata_staging_patch.json" \
+    --outputFormat json \
+    --credentials "<API-Key>"
   
 ---------------
  Parameters

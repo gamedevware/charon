@@ -38,7 +38,11 @@ The following example exports all translatable text to an Excel spreadsheet:
 
 .. code-block:: bash
 
-   charon DATA EXPORT --dataBase "gamedata.json" --properties [LocalizedText] --output "text_all_languages.xlsx" --outputFormat xlsx
+   charon DATA EXPORT \
+     --dataBase "gamedata.json" \
+     --properties [LocalizedText] \
+     --output "text_all_languages.xlsx" \
+     --outputFormat xlsx
 
 Key parameters:
 
@@ -55,7 +59,12 @@ To export translation data in XLIFF format:
 
 .. code-block:: bash
 
-   charon DATA I18N EXPORT --dataBase "gamedata.json" --sourceLanguage en --targetLanguage fr --output "en_fr_texts.xliff" --outputFormat xliff
+   charon DATA I18N EXPORT \
+     --dataBase "gamedata.json" \
+     --sourceLanguage en \
+     --targetLanguage fr \
+     --output "en_fr_texts.xliff" \
+     --outputFormat xliff
 
 Key parameters:
 
@@ -75,7 +84,11 @@ To import translated spreadsheet data:
 
 .. code-block:: bash
 
-   charon DATA IMPORT --dataBase "gamedata.json" --input "text_all_languages.xlsx" --inputFormat xlsx --mode safeUpdate
+   charon DATA IMPORT \
+     --dataBase "gamedata.json" \
+     --input "text_all_languages.xlsx" \
+     --inputFormat xlsx \
+     --mode safeUpdate
 
 Key parameters:
 
