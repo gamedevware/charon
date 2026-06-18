@@ -141,6 +141,7 @@ Further Reading
    :titlesonly:
 
    /server/overview
+   /server/on_premises
 
 .. toctree::
    :caption: Data Modeling
@@ -150,6 +151,11 @@ Further Reading
    /gamedata/creating_schema
    /gamedata/filling_documents
    /gamedata/inheritance
+
+.. toctree::
+   :caption: Schemas, Properties & Types
+   :titlesonly:
+
    /gamedata/schemas/schema
    /gamedata/schemas/schema_types
    /gamedata/schemas/display_text_template
@@ -192,7 +198,6 @@ Further Reading
    /advanced/mcp
    /advanced/game_data_structure
    /advanced/formula_expression_ast
-   /web/rest
 
 .. toctree::
    :caption: Extending Charon
