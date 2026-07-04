@@ -56,8 +56,10 @@ public:
 			{
 				case EnumBaseTypeCode.Int32:
 				case EnumBaseTypeCode.Int64:
-				case EnumBaseTypeCode.Float32:
 				case EnumBaseTypeCode.Float64:
+					break;
+				case EnumBaseTypeCode.Float32:
+					enumValueStr += "f";
 					break;
 				case EnumBaseTypeCode.String:
 					enumValueStr = "TEXT(\"" + JsonGameDataReader.EscapeString(enumValueStr, forUnicodeEncoding: false) + "\")";

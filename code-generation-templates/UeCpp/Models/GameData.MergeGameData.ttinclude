@@ -21,7 +21,7 @@ TSharedPtr<FJsonObject> <#= context.TargetLanguage.GameDataClassName #>::MergeGa
 		auto& GameDataCollectionsMap = GameDataCollections->Get()->Values;
 		auto& PatchCollectionsMap = PatchCollections->Get()->Values;
 
-		TSet<FString> VisitedSchemas;
+		TSet<FJsonKeyString> VisitedSchemas;
 		auto SchemaNames = MergeKeys(GameDataCollectionsMap, PatchCollectionsMap);
 
 		for (auto SchemaName : SchemaNames.Get())
@@ -161,7 +161,7 @@ TSharedPtr<FJsonValue> <#= context.TargetLanguage.GameDataClassName #>::MergeDoc
 	auto OriginalCollectionById = <#= context.TargetLanguage.GameDataClassName #>_ToIdMapper::ToDocumentById(OriginalCollection);
 	auto ModifiedCollectionById = <#= context.TargetLanguage.GameDataClassName #>_ToIdMapper::ToDocumentById(ModifiedCollection);
 	auto MergedCollectionById = MakeShared<FJsonObject>();
-	auto DocumentIds = PurgeRest ? MergeKeys(ModifiedCollectionById->Values, TMap<FString, TSharedPtr<FJsonValue>>()) : MergeKeys(OriginalCollectionById->Values, ModifiedCollectionById->Values);
+	auto DocumentIds = PurgeRest ? MergeKeys(ModifiedCollectionById->Values, TMap<FJsonKeyString, TSharedPtr<FJsonValue>>()) : MergeKeys(OriginalCollectionById->Values, ModifiedCollectionById->Values);
 
 	for (auto DocumentId : DocumentIds.Get())
 	{
@@ -394,7 +394,7 @@ TSharedRef<FJsonValue> <#= context.TargetLanguage.GameDataClassName #>::MergeLoc
 	{
 		static bool IsSame(TSharedRef<FJsonObject> Left, TSharedRef<FJsonObject> Right)
 		{
-			TArray<FString> Keys;
+			TArray<FJsonKeyString> Keys;
 			for(int i = 0; i < 2; i++)
 			{
 				if (i == 0)
@@ -485,12 +485,12 @@ TSharedRef<FJsonValue> <#= context.TargetLanguage.GameDataClassName #>::MergeLoc
 	return MakeShared<FJsonValueObject>(MergedLocalizedText);
 }
 
-TSharedRef<TArray<FString>> <#= context.TargetLanguage.GameDataClassName #>::MergeKeys(const TMap<FString, TSharedPtr<FJsonValue>>& Collection1, const TMap<FString, TSharedPtr<FJsonValue>>& Collection2)
+TSharedRef<TArray<FJsonKeyString>> <#= context.TargetLanguage.GameDataClassName #>::MergeKeys(const TMap<FJsonKeyString, TSharedPtr<FJsonValue>>& Collection1, const TMap<FJsonKeyString, TSharedPtr<FJsonValue>>& Collection2)
 {
-	TArray<FString> Keys;
+	TArray<FJsonKeyString> Keys;
 	Collection1.GetKeys(Keys);
 
-	auto MergedKeys = MakeShared<TArray<FString>>();
+	auto MergedKeys = MakeShared<TArray<FJsonKeyString>>();
 	for (auto Key : Keys)
 	{
 		MergedKeys->Push(Key);
@@ -526,7 +526,7 @@ TSharedRef<TArray<FString>> <#= context.TargetLanguage.GameDataClassName #>::Mer
 	void MergePropertyLanguagesValue(TSharedRef<FJsonObject> MergedDocument, TSharedRef<FJsonObject> OriginalDocument, TSharedRef<FJsonObject> ModifiedDocument, const FString PropertyName);
 	void MergePropertyValue(TSharedRef<FJsonObject> MergedDocument, TSharedRef<FJsonObject> OriginalDocument, TSharedRef<FJsonObject> ModifiedDocument, const FString PropertyName, OptionalMergeValueFunc MergeFn = OptionalMergeValueFunc());
 	TSharedRef<FJsonValue> MergeLocalizedText(TSharedRef<FJsonValue> OriginalLocalizedText, TSharedRef<FJsonValue> ModifiedLocalizedText);
-	TSharedRef<TArray<FString>> MergeKeys(const TMap<FString, TSharedPtr<FJsonValue>>& Collection1, const TMap<FString, TSharedPtr<FJsonValue>>& Collection2);
+	TSharedRef<TArray<FJsonKeyString>> MergeKeys(const TMap<FJsonKeyString, TSharedPtr<FJsonValue>>& Collection1, const TMap<FJsonKeyString, TSharedPtr<FJsonValue>>& Collection2);
 <#+
 	}
 #>

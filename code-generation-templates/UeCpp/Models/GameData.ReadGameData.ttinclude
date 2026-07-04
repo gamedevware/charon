@@ -162,7 +162,12 @@ static void <#= context.TargetLanguage.GameDataClassName #>_FillDocumentByUnique
 		}
 		DocumentsById->Add(ObjectName, Child);
 	},
-	/* bIncludeNested */ true);
+#if UE_VERSION_NEWER_THAN(5, 8, -1)
+	EGetObjectsFlags::IncludeNestedObjects
+#else
+	/* bIncludeNested */ true
+#endif
+	);
 }
 static void <#= context.TargetLanguage.GameDataClassName #>_ClearDocumentByUniqueNameMap(TSharedPtr<TMap<FString, UObject*>> DocumentsById)
 {
@@ -227,7 +232,13 @@ static void <#= context.TargetLanguage.GameDataClassName #>_TryDeleteDocument(UO
 		return;
 	}
 
-	Document->Rename(nullptr, GetTransientPackage(), REN_DontCreateRedirectors | REN_NonTransactional | REN_ForceNoResetLoaders);
+	Document->Rename(nullptr, GetTransientPackage(), REN_DontCreateRedirectors | REN_NonTransactional |
+#if UE_VERSION_NEWER_THAN(5, 8, -1)
+		REN_AllowPackageLinkerMismatch
+#else
+		REN_ForceNoResetLoaders
+#endif
+	);
 }
 
 static void <#= context.TargetLanguage.GameDataClassName #>_MarkChildDocumentsForDeletion(UObject* Document)
@@ -247,7 +258,12 @@ static void <#= context.TargetLanguage.GameDataClassName #>_MarkChildDocumentsFo
 		}
 		Child->SetFlags(EObjectFlags::RF_TagGarbageTemp);
 	},
-	/* bIncludeNested */ false);
+#if UE_VERSION_NEWER_THAN(5, 8, -1)
+	EGetObjectsFlags::IncludeNestedObjects
+#else
+	/* bIncludeNested */ true
+#endif
+	);
 }
 
 static void <#= context.TargetLanguage.GameDataClassName #>_SweepMarkedChildDocuments(UObject* Document)
@@ -270,12 +286,23 @@ static void <#= context.TargetLanguage.GameDataClassName #>_SweepMarkedChildDocu
 		Child->ClearFlags(EObjectFlags::RF_TagGarbageTemp);
 		ChildrenToDestroy.Add(Child);
 	},
-	/* bIncludeNested */ false);
+#if UE_VERSION_NEWER_THAN(5, 8, -1)
+	EGetObjectsFlags::IncludeNestedObjects
+#else
+	/* bIncludeNested */ true
+#endif
+	);
 
 	for (UObject* Child : ChildrenToDestroy)
 	{
 		Child->MarkAsGarbage();
-		Child->Rename(nullptr, GetTransientPackage(), REN_DontCreateRedirectors | REN_NonTransactional | REN_ForceNoResetLoaders);
+		Child->Rename(nullptr, GetTransientPackage(), REN_DontCreateRedirectors | REN_NonTransactional |
+#if UE_VERSION_NEWER_THAN(5, 8, -1)
+		REN_AllowPackageLinkerMismatch
+#else
+		REN_ForceNoResetLoaders
+#endif
+		);
 	}
 }
 
