@@ -2777,6 +2777,10 @@
 			{
 				throw new FormulaException($"Can't access method group with name '{name}' on type '{targetTypeDescription}' in this context.");
 			}
+			public static Exception ErrorWhileAccessingMember(ITypeDescription targetType, string name, Exception innerException)
+			{
+				throw new FormulaException($"Error while accessing member '{name}' on type '{targetType}': {innerException.Message}", innerException);
+			}
 			public static Exception UnableToResolveType(FormulaTypeReference typeReference)
 			{
 				throw new FormulaException($"Can't find type with name '{typeReference}'. Add this type to list of known types before using it.");
@@ -5700,8 +5704,14 @@
 					throw FormulaException.CantAccessMethodOrConstructorGroup(this.MemberName, targetTypeDescription);
 				}
 	
-				// TODO wrap errors for better message
-				return memberDescriptor.TryInvoke(target, callArguments: null, expectedType: null, typeArguments: null, out memberValue);
+				try
+				{
+					return memberDescriptor.TryInvoke(target, callArguments: null, expectedType: null, typeArguments: null, out memberValue);
+				}
+				catch (Exception error) when (!(error is FormulaException))
+				{
+					throw FormulaException.ErrorWhileAccessingMember(targetTypeDescription, this.MemberName, error);
+				}
 			}
 			private static HashSet<string> GetAvailableParameterAndGlobalMemberNames(FormulaExecutionContext context)
 			{

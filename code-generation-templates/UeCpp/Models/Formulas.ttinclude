@@ -3,6 +3,7 @@
 	{
 		var invokeParameters = string.Join(", ", formulaDef.ParameterNames.Select((name, i) => MakePtrTypeIfNeeded(formulaDef.ParameterTypes[i], context) + " " + name).ToArray());
 		var invokeReturnType = MakePtrTypeIfNeeded(formulaDef.ReturnType, context);
+		var formulaReferencesTypes = formulaDef.GetReferenceTypes().Union(formulaDef.GetReferencedExternalTypes()).ToList();
 
 #>/* # move to Public/<#= formulaDef #>.h */
 #pragma once
@@ -24,6 +25,14 @@
 #include "GameData/Formulas/FFormulaTypeResolver.h"
 #include "GameData/Formulas/FFormulaExecutionContext.h"
 #include "GameData/Formulas/FFormulaValue.h"
+<#+
+		foreach (var typeRef in formulaReferencesTypes.Where(typeRef => typeRef is EnumDefinition))
+		{
+#>
+#include "<#= typeRef #>.h"
+<#+
+		}
+#>
 #endif
 #if __has_include("<#= context.TargetLanguage.GameDataClassName #>FormulaTypes.h")
     #include "<#= context.TargetLanguage.GameDataClassName #>FormulaTypes.h"
@@ -36,6 +45,13 @@ DECLARE_LOG_CATEGORY_EXTERN(Log<#= formulaDef #>, Log, All);
 
 #include "<#= formulaDef #>.generated.h"
 
+<#+
+		foreach (var typeRef in formulaReferencesTypes.Where(typeRef => typeRef is TypeDefinition))
+		{
+#>class <#= typeRef #>; // forward declaration
+<#+
+		}
+#>
 /**
   * <#= formulaDef.Description ?? string.Empty #>
   */
@@ -89,6 +105,7 @@ public:
 		var invokeParameters = string.Join(", ", formulaDef.ParameterNames.Select((name, i) => MakePtrTypeIfNeeded(formulaDef.ParameterTypes[i], context) + " " + name).ToArray());
 		var invokeReturnType = MakePtrTypeIfNeeded(formulaDef.ReturnType, context);
 		var hasReturnValue = !string.Equals(formulaDef.ReturnType.TypeName, "void", StringComparison.Ordinal);
+		var formulaReferencesTypes = formulaDef.GetReferenceTypes().Union(formulaDef.GetReferencedExternalTypes()).ToList();
 #>
 /* # move to Private/<#= formulaDef #>.cpp */
 <#+
@@ -107,7 +124,7 @@ static TSharedRef<FFormulaTypeResolver> <#= formulaDef #>_GetOrCreateTypeResolve
 {
 	static TSharedRef<FFormulaTypeResolver> __TypeResolver = MakeShared<FFormulaTypeResolver>(<#= context.TargetLanguage.GameDataClassName #>::GetSharedFormulaTypeResolver(), TArray<UObject*> {
 <#+
-		foreach (var typeRef in formulaDef.GetReferenceTypes().Concat(formulaDef.GetReferencedExternalTypes()))
+		foreach (var typeRef in formulaReferencesTypes)
 		{
 			if (IsUObjectType(typeRef))
 			{

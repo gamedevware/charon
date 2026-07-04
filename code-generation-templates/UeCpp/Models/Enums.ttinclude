@@ -12,7 +12,9 @@
 #>
 // ReSharper disable All
 
+#include "CoreMinimal.h"
 #include "Misc/TVariant.h"
+#include "<#= enumDef #>.generated.h"
 
 /**
   * <#= enumDef.Description ?? string.Empty #>

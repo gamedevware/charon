@@ -29,6 +29,8 @@
 #include "UObject/ReflectedTypeAccessors.h"
 #include "UObject/Class.h"
 #endif
+#include "Engine/Engine.h"
+#include "UObject/Object.h"
 #include "Serialization/JsonReader.h"
 #include "Serialization/JsonTypes.h"
 #include "Serialization/Archive.h"
@@ -198,7 +200,8 @@ private:
 #include "<#= context.TargetLanguage.GameDataClassName #>.h"
 <#+
 		foreach (var typeRef in context.ObjectModel.Types.Cast<ITypeReference>().Concat(
-			context.ObjectModel.Formulas.Cast<ITypeReference>()))
+			context.ObjectModel.Formulas.Cast<ITypeReference>()).Concat(
+			context.ObjectModel.Enums.Cast<ITypeReference>()))
 		{
 #>#include "<#= typeRef #>.h"
 <#+
