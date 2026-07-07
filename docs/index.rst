@@ -188,6 +188,7 @@ Further Reading
    /advanced/validation
    /advanced/backup_restore
    /advanced/patch_diff
+   /advanced/modding
    /advanced/cicd
 
 .. toctree::
@@ -212,6 +213,7 @@ Further Reading
    :caption: Configuration & Troubleshooting
    :titlesonly:
 
+   /advanced/troubleshooting
    /advanced/logs
    /advanced/reset_preferences
 

@@ -91,6 +91,15 @@ Prerequisites
 
 Unity plugin uses ``dotnet charon`` tool, which is a .NET Core application built for .NET 8.
 
+.. note::
+
+   The plugin requires **Unity 2022.3.62f3 or later**. The generated C# code itself is far less
+   demanding - the C# 4.0 generator produces code that works even on Unity 3.4 - but there is no
+   plugin support for such legacy versions. For older Unity versions, take the "other engines"
+   path instead: edit game data with the :doc:`standalone editor <../standalone/overview>` or
+   CLI, :doc:`generate C# source code <../gamedata/generating_source_code>`, and wire up loading
+   with your own tooling and helpers.
+
 .. tab-set::
 
    .. tab-item:: Windows
@@ -130,7 +139,7 @@ Installation from OpenUPM (recommended)
 ---------------------------------------
 
 1. Install the required software for your operating system.
-2. Ensure your Unity version is 2021.3 or later.
+2. Ensure your Unity version is 2022.3.62f3 or later.
 3. Open the `OpenUPM <https://openupm.com/packages/com.gamedevware.charon/>`_ page for the plugin.
 4. Click the **Manual Installation** button in the upper right corner and follow the instructions.
 
@@ -142,7 +151,7 @@ Installation from Unity Asset Store
 -----------------------------------
 
 1. Install the required software for your operating system.
-2. Ensure your Unity version is 2021.3 or later.
+2. Ensure your Unity version is 2022.3.62f3 or later.
 3. Open the `Charon plugin <https://assetstore.unity.com/packages/tools/visual-scripting/game-data-editor-charon-95117>`_ in the Unity Asset Store.
 4. Click **Add To My Assets**.
 5. Open the Unity Package Manager by navigating to **Window → Package Manager**.

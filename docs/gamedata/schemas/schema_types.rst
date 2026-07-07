@@ -42,6 +42,14 @@ and never exist as standalone root-level entries.
 Typical examples: a ``Stat`` block inside a ``Character``, a ``DropEntry`` inside a ``LootTable``,
 a ``BonusEffect`` inside a ``Weapon``.
 
+.. warning::
+
+   Documents of a **Component** schema are never exported or published as root-level collection
+   entries - export and publication skip them unless they are embedded inside another document.
+   If documents of a schema must live in the root collection *and* appear in exported data,
+   the schema type should be **Normal**. Normal documents are exported in both cases: standalone
+   and embedded.
+
 .. code-block:: json
 
    {

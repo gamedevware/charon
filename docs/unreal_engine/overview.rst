@@ -101,6 +101,12 @@ Prerequisites
 
 The Unreal Engine plugin is written in C++ but relies on ``dotnet charon``, a .NET Core application which runs on .NET 8.
 
+.. note::
+
+   The plugin requires **Unreal Engine 5.3 or later**. The generated C++ code depends on the
+   plugin's runtime module, so the plugin is the only supported integration path - generated
+   code cannot be used standalone on older engine versions.
+
 .. tab-set::
 
    .. tab-item:: Windows
