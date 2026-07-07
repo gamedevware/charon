@@ -50,6 +50,60 @@ Install the ``dotnet-charon`` tool as part of your pipeline setup step. The tool
 
 ----
 
+Version Pinning and Compatibility
+----------------------------------
+
+``dotnet tool install`` without a version always fetches the latest release. For reproducible
+builds, pin the tool version.
+
+**Local tools manifest (recommended).** Create a manifest once and commit
+``.config/dotnet-tools.json`` to the repository:
+
+.. code-block:: bash
+
+   dotnet new tool-manifest
+   dotnet tool install dotnet-charon --version 2026.3.4
+
+CI then restores the exact pinned version and invokes the tool through ``dotnet``:
+
+.. code-block:: bash
+
+   dotnet tool restore
+   dotnet charon DATA VALIDATE --dataBase gamedata.json ...
+
+**On-demand with a pinned version (.NET 10 SDK):**
+
+.. code-block:: bash
+
+   dnx dotnet-charon@2026.3.4 -- DATA VALIDATE --dataBase gamedata.json ...
+
+**Global install with a pinned version:**
+
+.. code-block:: bash
+
+   dotnet tool install -g dotnet-charon --version 2026.3.4
+
+Tool version vs. format version
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Two versions matter for compatibility:
+
+- **Tool version** (e.g. ``2026.3.4``) - the actual release version of ``dotnet-charon``.
+  It changes with every release: bug fixes, new features, UI updates.
+- **Format version** - the version of the game data file format. It changes only when the
+  system schemas are updated or system fields are added or changed, which is rare. Tool
+  releases overwhelmingly ship with an unchanged format version.
+
+Game data files are **auto-migrated to the newest format version on save**. Read-only
+operations - ``DATA VALIDATE``, ``DATA EXPORT``, ``GENERATE ...`` - never mutate the file, so
+running a newer tool against an older-format file in CI is safe and leaves the file untouched.
+
+If you want to deliberately migrate a file to the current format version, apply any change and
+save - for example, update the *Copyright* field in *Project Settings* from the editor UI.
+The save rewrites the file in the newest format.
+
+----
+
 Authentication
 --------------
 
