@@ -48,8 +48,17 @@ affect merge in particular:
    are left unchanged. The ``Id`` field of a document is never overwritten regardless of
    what modified supplies.
 
-Other modes (``create``, ``update``, ``replace``, ``delete``) control *which* documents
-are eligible for merge, but once a document is selected, the merge rules below apply.
+``create`` and ``update`` control *which* documents are eligible (insert-only /
+update-only respectively), but once a document is selected the merge rules below apply
+exactly as in ``createAndUpdate``.
+
+``delete`` does not merge at all - the matched document is removed outright.
+
+``replace`` does not merge against the existing document either: the modified document is
+always merged against an **empty** document (only for schema normalization), so any
+property the modified document omits is **not** carried over from the original - it is
+simply absent from the result. This is a genuine whole-document replacement, not a
+property-preserving merge.
 
 ----
 
@@ -93,7 +102,9 @@ LocalizedText Properties
   is kept.
 - **Stale translation flags**: the union (OR) of both sets - a language that was stale in
   either original or modified remains stale. Stale flags are then automatically cleared for
-  any language whose value was explicitly supplied by modified.
+  any language whose value was explicitly supplied by modified **and differs from the
+  original value**. If modified re-supplies the same text as original, the existing stale
+  flag for that language is left untouched.
 
 Inline Document Properties
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
