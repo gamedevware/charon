@@ -140,6 +140,8 @@ See also
 --------
 
 - :doc:`DATA LIST <data_list>`
+- :doc:`DATA SEARCH <data_search>`
 - :doc:`DATA CREATE <data_create>`
 - :doc:`DATA UPDATE <data_update>`
 - :doc:`DATA DELETE <data_delete>`
+- :doc:`DATA PROJECTSETTINGS <data_project_settings>`

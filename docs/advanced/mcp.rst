@@ -11,9 +11,10 @@ With the MCP server running, an AI assistant can:
 - Discover and inspect schemas
 - Query, create, update, and delete game data documents
 - Import and export data in multiple formats
-- Generate typed source code (C#, TypeScript, Unreal C++, Haxe)
+- Generate typed source code (C#, TypeScript, Unreal C++, Haxe, Lua)
 - Manage localization (XLIFF / JSON round-trips)
 - Compare and patch game data between two sources
+- Read project settings (languages, primary language)
 
 .. contents:: On this page
    :local:

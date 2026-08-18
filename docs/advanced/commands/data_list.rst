@@ -232,5 +232,7 @@ See also
 --------
 
 - :doc:`DATA FIND <data_find>`
+- :doc:`DATA SEARCH <data_search>`
+- :doc:`DATA LISTSCHEMAS <data_list_schemas>`
 - :doc:`DATA EXPORT <data_export>`
 - :doc:`Game Data Structure <../game_data_structure>`
