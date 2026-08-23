@@ -93,9 +93,6 @@ does not load or validate document contents, so it stays fast even on large file
      # Message Pack
      --outputFormat msgpack
 
-     # XLSX Spreadsheet
-     --outputFormat xlsx
-
 --outputFormattingOptions
    Additional formatting options for the chosen output format.
 

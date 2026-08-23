@@ -21,7 +21,7 @@ Scans a folder for game data files and returns discovered paths with their colle
   # scan a folder tree, one path per line for shell piping
   charon DATA FINDFILES \
     --folder "c:\my app\game-content" \
-    --resultFormat list \
+    --outputFormat list \
     --output out | xargs -I{} charon DATA EXAMINE --dataBase "{}"
 
 Use this command to bootstrap work in an unfamiliar directory tree - "what game data lives here?" - before
@@ -61,10 +61,10 @@ full of unrelated files.
    .. code-block:: bash
 
      # JSON array of `{path, collections}` objects, matching the MCP `data_find_files` tool (default)
-     --resultFormat json
+     --outputFormat json
 
      # one file path per line, for shell piping (e.g. `xargs`, `for` loops)
-     --resultFormat list
+     --outputFormat list
 
 --output
    Specifies where to write the output data.
@@ -106,7 +106,7 @@ This command supports :doc:`universal parameters <universal_parameters>`.
  Output
 ------------------
 
-``--resultFormat json`` (default) writes an array of ``{path, collections}`` objects, where ``collections``
+``--outputFormat json`` (default) writes an array of ``{path, collections}`` objects, where ``collections``
 maps each schema name found in that file to its document count:
 
 .. code-block:: json
@@ -129,7 +129,7 @@ maps each schema name found in that file to its document count:
     }
   ]
 
-``--resultFormat list`` writes one absolute file path per line, with no other formatting - suitable for
+``--outputFormat list`` writes one absolute file path per line, with no other formatting - suitable for
 piping into ``xargs`` or a shell ``for`` loop:
 
 .. code-block:: text

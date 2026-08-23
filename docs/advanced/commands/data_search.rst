@@ -23,7 +23,7 @@ Searches for documents across all schemas using a text query with wildcard match
   charon DATA SEARCH \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --query Dragon \
-    --resultFormat json \
+    --outputFormat json \
     --credentials "<API-Key>"
 
 Unlike :doc:`DATA LIST <data_list>`, which requires a ``--schema`` and matches one field at a time via
@@ -130,12 +130,12 @@ which schema or field it lives in; use ``DATA LIST`` once you do.
      --output "ftp://user:password@example.com/results.json"
 
 --outputFormat
-   Format for serializing the output. Only used when ``--resultFormat json``; ignored for ``table``.
+   Format for serializing the output. Only used when ``--outputFormat json``; ignored for ``table``.
 
    .. code-block:: bash
 
      # flat `Schema|Document Id|Path|Value` rows, script/grep-friendly (default)
-     --resultFormat table
+     --outputFormat table
 
      # JSON (default)
      --outputFormat json
@@ -158,20 +158,20 @@ This command supports :doc:`universal parameters <universal_parameters>`.
  Output
 ------------------
 
-``--resultFormat table`` (default) writes one line per match, pipe-delimited, with a header row - convenient
+``--outputFormat table`` (default) writes one line per match, pipe-delimited, with a header row - convenient
 for ``grep``/``cut``/``awk``:
 
 .. code-block:: text
 
   Schema|Document Id|Path|Value
-  Character|Knight||A knight who slays dragons for gold.
-  Item|DragonScale||Dragon Scale
-  Quest|SlayTheDragon||Slay the Dragon
+  Character|Knight|/Description|A knight who slays dragons for gold.
+  Item|DragonScale|/Name|Dragon Scale
+  Quest|SlayTheDragon|/Name|Slay the Dragon
 
 The ``Path`` column is empty for root documents and holds the embedding property's JSON Pointer path
 (e.g. ``/Item``) for documents embedded inside another document.
 
-``--resultFormat json`` writes the matched documents in full, grouped back into their schema collections, in
+``--outputFormat json`` writes the matched documents in full, grouped back into their schema collections, in
 the same shape as :doc:`DATA EXPORT <data_export>`'s ``ExportResult``:
 
 .. code-block:: json

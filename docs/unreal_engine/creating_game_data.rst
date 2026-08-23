@@ -4,6 +4,14 @@ How to Create Game Data File
 To create a new game data file within the Unreal Engine Editor, open the **Content Drawer**, right-click in the desired folder, and select in the **Create Advanced Assets** section **Miscellaneous → Game Data** menu option.
 Name your game data file and proceed according to the instructions in the dialog window that appears.
 
+.. note::
+
+   The plugin must be enabled after installation before the **Game Data** menu option becomes available. Open **Edit → Plugins...**, find **Charon** in the list, and check its checkbox.
+
+   .. image:: enable_plugin.png
+     :width: 800
+     :alt: Enabling the Charon plugin in the Plugins tab
+
 Step By Step
 ------------
 
@@ -27,6 +35,10 @@ Step By Step
 Throubleshooting
 ----------------
 Game data creation or code generation/compilation may encounter issues under certain circumstances:  
+
+**Module Generation Fails on a Blueprint-Only Project**
+- **Problem**: The project has no C++ source yet (Blueprint-only), so there is no ``.Target.cs``/IDE project for the wizard to add the generated module to, and module generation fails.
+- **Solution**: Convert the project to a C++ project first, then retry. The easiest way is via **Tools → New C++ Class...**, picking any class (e.g. *Actor*), then *Next → Create Class*. This generates the missing C++ project files; the new class itself isn't needed and can be deleted afterward.
 
 **Insufficient File System Rights or File Creation Errors**
 - **Problem**: Lack of sufficient rights to the OS file system, or errors during file creation (e.g., file name too long, antivirus block).
