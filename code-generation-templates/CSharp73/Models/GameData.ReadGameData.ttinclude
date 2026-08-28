@@ -139,7 +139,7 @@
 				this.languageSwitcher.PrimaryLanguageId = "<#= context.Metadata.ProjectSettings.PrimaryLanguage #>";
 			}
 
-			this.languageSwitcher.CurrentLanguageId = this.languageSwitcher.FallbackLanguageId = this.languageSwitcher.PrimaryLanguageId;
+			this.languageSwitcher.SwitchLanguage(this.languageSwitcher.PrimaryLanguageId, this.languageSwitcher.PrimaryLanguageId, this.languageSwitcher.FallbackOption);
 			if (!languages.Contains(this.languageSwitcher.PrimaryLanguageId)) {
 				languages.Add(this.languageSwitcher.PrimaryLanguageId);
 			}

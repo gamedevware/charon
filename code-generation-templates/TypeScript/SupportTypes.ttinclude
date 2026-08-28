@@ -505,13 +505,13 @@
 	export class LocalizedText {
 		public static empty: LocalizedText;
 		private currentValue?: string;
-		private currentValueLanguageId?: string;
+		private currentValueVersion = -1;
 		public get count(): number {
 			return this.textByLanguage.size;
 		}
 		public get value(): string {
-			if (this.languageSwitcher.currentLanguageId != this.currentValueLanguageId) {
-				this.currentValueLanguageId = this.languageSwitcher.currentLanguageId;
+			if (this.languageSwitcher.version != this.currentValueVersion) {
+				this.currentValueVersion = this.languageSwitcher.version;
 				switch (this.languageSwitcher.fallbackOption)
 				{
 					case LocalizedText.FallbackOption.OnNotDefined:
@@ -562,12 +562,41 @@
 	}
 	export module LocalizedText {
 		export class LanguageSwitcher {
+			public currentLanguageId: string;
+			public fallbackLanguageId: string;
+			public primaryLanguageId: string;
+			public fallbackOption: FallbackOption;
+			/**
+			 * Bumped by {@link switchLanguage} whenever any value actually changes; used by {@link LocalizedText} to invalidate its cached {@link LocalizedText.value}.
+			 */
+			private version_ = 0;
+			public get version(): number {
+				return this.version_;
+			}
 			constructor(
-				public currentLanguageId: string,
-				public fallbackLanguageId: string,
-				public primaryLanguageId: string,
-				public fallbackOption: FallbackOption,
+				currentLanguageId: string,
+				fallbackLanguageId: string,
+				primaryLanguageId: string,
+				fallbackOption: FallbackOption,
 			) {
+				this.currentLanguageId = currentLanguageId;
+				this.fallbackLanguageId = fallbackLanguageId;
+				this.primaryLanguageId = primaryLanguageId;
+				this.fallbackOption = fallbackOption;
+			}
+			/**
+			 * Sets all three values at once, bumping {@link version} exactly once if any of them actually changed.
+			 */
+			public switchLanguage(currentLanguageId: string, fallbackLanguageId: string, fallbackOption: FallbackOption) {
+				if (this.currentLanguageId == currentLanguageId &&
+					this.fallbackLanguageId == fallbackLanguageId &&
+					this.fallbackOption == fallbackOption) {
+					return;
+				}
+				this.currentLanguageId = currentLanguageId;
+				this.fallbackLanguageId = fallbackLanguageId;
+				this.fallbackOption = fallbackOption;
+				this.version_++;
 			}
 		}
 		export enum FallbackOption {

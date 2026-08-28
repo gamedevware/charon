@@ -236,7 +236,7 @@
 		/// <inheritdoc />
 		public override int GetHashCode()
 		{
-			return this.documents.Aggregate(0, (acc, next) => unchecked(next.GetHashCode() * 17 + acc));
+			return this.documents.Aggregate(0, (acc, next) => unchecked((next?.GetHashCode() ?? 0) * 17 + acc));
 		}
 
 		/// <inheritdoc />
@@ -425,7 +425,7 @@
 		/// <inheritdoc />
 		public override int GetHashCode()
 		{
-			return this.referenceList.Aggregate(0, (acc, next) => unchecked(next.GetHashCode() * 17 + acc));
+			return this.referenceList.Aggregate(0, (acc, next) => unchecked((next?.GetHashCode() ?? 0) * 17 + acc));
 		}
 
 		/// <inheritdoc />
@@ -466,6 +466,29 @@
 			public string FallbackLanguageId = "en-US";
 			public string PrimaryLanguageId = "en-US";
 			public FallbackOption FallbackOption = FallbackOption.OnNull;
+
+			/// <summary>
+			/// Bumped by <see cref="SwitchLanguage"/> whenever any value actually changes; used by <see cref="LocalizedText"/> to invalidate its cached <see cref="LocalizedText.Value"/>.
+			/// </summary>
+			public int Version { get; private set; }
+
+			/// <summary>
+			/// Sets all four values at once, bumping <see cref="Version"/> exactly once if any of them actually changed.
+			/// </summary>
+			public void SwitchLanguage(string currentLanguageId, string fallbackLanguageId, FallbackOption fallbackOption)
+			{
+				if (this.CurrentLanguageId == currentLanguageId &&
+					this.FallbackLanguageId == fallbackLanguageId &&
+					this.FallbackOption == fallbackOption)
+				{
+					return;
+				}
+
+				this.CurrentLanguageId = currentLanguageId;
+				this.FallbackLanguageId = fallbackLanguageId;
+				this.FallbackOption = fallbackOption;
+				this.Version++;
+			}
 		}
 
 		public enum FallbackOption
@@ -488,7 +511,7 @@
 		private readonly string[] keys;
 		private readonly string[] values;
 		private string currentValue;
-		private string currentValueLanguageId;
+		private int currentValueVersion = -1;
 
 		/// <inheritdoc />
 		public int Count => this.keys.Length;
@@ -526,9 +549,9 @@
 			var fallbackLanguageId = this.languageSwitcher.FallbackLanguageId;
 			var primaryLanguageId = this.languageSwitcher.PrimaryLanguageId;
 
-			if (currentLanguageId != this.currentValueLanguageId)
+			if (this.languageSwitcher.Version != this.currentValueVersion)
 			{
-				this.currentValueLanguageId = currentLanguageId;
+				this.currentValueVersion = this.languageSwitcher.Version;
 				switch (this.languageSwitcher.FallbackOption)
 				{
 					case FallbackOption.OnNotDefined:

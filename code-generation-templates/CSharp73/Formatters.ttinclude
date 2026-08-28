@@ -633,7 +633,7 @@
 
 		private void PushFrame(IReadOnlyDictionary<string, object> dictionary)
 		{
-			if (this.topFrameIndex == this.frames.Length)
+			if (this.topFrameIndex == this.frames.Length - 1)
 			{
 				Array.Resize(ref this.frames, (int)(this.frames.Length * 1.5));
 			}
@@ -642,7 +642,7 @@
 		}
 		private void PushFrame(IReadOnlyList<object> list)
 		{
-			if (this.topFrameIndex == this.frames.Length)
+			if (this.topFrameIndex == this.frames.Length - 1)
 			{
 				Array.Resize(ref this.frames, (int)(this.frames.Length * 1.5));
 			}

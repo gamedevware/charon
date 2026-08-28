@@ -970,7 +970,9 @@
 			var hasDefault = false;
 			foreach (var kv in specification.GetPickListValues())
 			{
-				hasDefault = hasDefault | kv.Value == "0";
+				if (kv.Value != "0") continue;
+
+				hasDefault = true;
 				this.DefaultValueName = kv.Key;
 			}
 			foreach (var kv in specification.GetPickListValues())
@@ -2141,180 +2143,227 @@
 	}
 
 
-	//Copyright (c) 2011, Brendan Erwin and contributors. All rights reserved.
-
-	//	Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-	//	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-	//	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-	//	The names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-	//THIS SOFTWARE IS PROVIDED BY Brendan Erwin and contributors ''AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL Brendan Erwin or contributors BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+	// Ported from Pluralize.NET (https://github.com/sarathkcm/Pluralize.NET), a C# port of
+	// blakeembrey/pluralize (https://github.com/blakeembrey/pluralize).
+	//
+	// The MIT License (MIT)
+	//
+	// Copyright (c) 2013 Blake Embrey (hello@blakeembrey.com), ported to C# by Sarath KCM
+	//
+	// Permission is hereby granted, free of charge, to any person obtaining a copy
+	// of this software and associated documentation files (the "Software"), to deal
+	// in the Software without restriction, including without limitation the rights
+	// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	// copies of the Software, and to permit persons to whom the Software is
+	// furnished to do so, subject to the following conditions:
+	//
+	// The above copyright notice and this permission notice shall be included in
+	// all copies or substantial portions of the Software.
+	//
+	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	// THE SOFTWARE.
 	public static class Pluralizer
 	{
-		private static readonly EnglishInflector inflector = new EnglishInflector();
+		private readonly struct Rule
+		{
+			public readonly Regex Condition;
+			public readonly string ReplaceWith;
+
+			public Rule(string pattern, string replaceWith)
+			{
+				this.Condition = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+				this.ReplaceWith = replaceWith;
+			}
+		}
+
+		private static readonly Regex GroupRefRegex = new Regex(@"\$(\d{1,2})", RegexOptions.Compiled);
+
+		private static readonly Rule[] PluralRules =
+		{
+			new Rule("s?$", "s"),
+			new Rule("[^\x00-\x7F]$", "$0"),
+			new Rule("([^aeiou]ese)$", "$1"),
+			new Rule("(ax|test)is$", "$1es"),
+			new Rule("(alias|[^aou]us|t[lm]as|gas|ris)$", "$1es"),
+			new Rule("(e[mn]u)s?$", "$1s"),
+			new Rule("([^l]ias|[aeiou]las|[ejzr]as|[iu]am)$", "$1"),
+			new Rule("(alumn|syllab|vir|radi|nucle|fung|cact|stimul|termin|bacill|foc|uter|loc|strat)(?:us|i)$", "$1i"),
+			new Rule("(alumn|alg|vertebr)(?:a|ae)$", "$1ae"),
+			new Rule("(seraph|cherub)(?:im)?$", "$1im"),
+			new Rule("(her|at|gr)o$", "$1oes"),
+			new Rule("(agend|addend|millenni|dat|extrem|bacteri|desiderat|strat|candelabr|errat|ov|symposi|curricul|automat|quor)(?:a|um)$", "$1a"),
+			new Rule("(apheli|hyperbat|periheli|asyndet|noumen|phenomen|criteri|organ|prolegomen|hedr|automat)(?:a|on)$", "$1a"),
+			new Rule("sis$", "ses"),
+			new Rule("(?:(kni|wi|li)fe|(ar|l|ea|eo|oa|hoo)f)$", "$1$2ves"),
+			new Rule("([^aeiouy]|qu)y$", "$1ies"),
+			new Rule("([^ch][ieo][ln])ey$", "$1ies"),
+			new Rule("(x|ch|ss|sh|zz)$", "$1es"),
+			new Rule("(matr|cod|mur|sil|vert|ind|append)(?:ix|ex)$", "$1ices"),
+			new Rule(@"\b((?:tit)?m|l)(?:ice|ouse)$", "$1ice"),
+			new Rule("(pe)(?:rson|ople)$", "$1ople"),
+			new Rule("(child)(?:ren)?$", "$1ren"),
+			new Rule("eaux$", "$0"),
+			new Rule("m[ae]n$", "men"),
+			new Rule("^thou$", "you"),
+			new Rule("pox$", "$0"),
+			new Rule("o[iu]s$", "$0"),
+			new Rule("deer$", "$0"),
+			new Rule("fish$", "$0"),
+			new Rule("sheep$", "$0"),
+			new Rule("measles$", "$0"),
+			new Rule("[^aeiou]ese$", "$0"),
+		};
+
+		private static readonly Rule[] SingularRules =
+		{
+			new Rule("s$", ""),
+			new Rule("(ss)$", "$1"),
+			new Rule(@"(wi|kni|(?:after|half|high|low|mid|non|night|[^\w]|^)li)ves$", "$1fe"),
+			new Rule("(ar|(?:wo|[ae])l|[eo][ao])ves$", "$1f"),
+			new Rule("ies$", "y"),
+			new Rule(@"\b([pl]|zomb|(?:neck|cross)?t|coll|faer|food|gen|goon|group|lass|talk|goal|cut)ies$", "$1ie"),
+			new Rule(@"\b(mon|smil)ies$", "$1ey"),
+			new Rule(@"\b((?:tit)?m|l)ice$", "$1ouse"),
+			new Rule("(seraph|cherub)im$", "$1"),
+			new Rule("(x|ch|ss|sh|zz|tto|go|cho|alias|[^aou]us|t[lm]as|gas|(?:her|at|gr)o|[aeiou]ris)(?:es)?$", "$1"),
+			new Rule("(analy|diagno|parenthe|progno|synop|the|empha|cri|ne)(?:sis|ses)$", "$1sis"),
+			new Rule("(movie|twelve|abuse|e[mn]u)s$", "$1"),
+			new Rule("(test)(?:is|es)$", "$1is"),
+			new Rule("(alumn|syllab|octop|vir|radi|nucle|fung|cact|stimul|termin|bacill|foc|uter|loc|strat)(?:us|i)$", "$1us"),
+			new Rule("(agend|addend|millenni|dat|extrem|bacteri|desiderat|strat|candelabr|errat|ov|symposi|curricul|quor)a$", "$1um"),
+			new Rule("(apheli|hyperbat|periheli|asyndet|noumen|phenomen|criteri|organ|prolegomen|hedr|automat)a$", "$1on"),
+			new Rule("(alumn|alg|vertebr)ae$", "$1a"),
+			new Rule("(cod|mur|sil|vert|ind)ices$", "$1ex"),
+			new Rule("(matr|append)ices$", "$1ix"),
+			new Rule("(pe)(rson|ople)$", "$1rson"),
+			new Rule("(child)ren$", "$1"),
+			new Rule("(eau)x?$", "$1"),
+			new Rule("men$", "man"),
+			new Rule("[^aeiou]ese$", "$0"),
+			new Rule("deer$", "$0"),
+			new Rule("fish$", "$0"),
+			new Rule("measles$", "$0"),
+			new Rule("o[iu]s$", "$0"),
+			new Rule("pox$", "$0"),
+			new Rule("sheep$", "$0"),
+		};
+
+		private static readonly (string Singular, string Plural)[] IrregularWords =
+		{
+			// Pronouns.
+			("I", "we"), ("me", "us"), ("he", "they"), ("she", "they"), ("them", "them"),
+			("myself", "ourselves"), ("yourself", "yourselves"), ("itself", "themselves"),
+			("herself", "themselves"), ("himself", "themselves"), ("themself", "themselves"),
+			("is", "are"), ("was", "were"), ("has", "have"), ("this", "these"), ("that", "those"),
+			// Words ending in a consonant and "o".
+			("echo", "echoes"), ("dingo", "dingoes"), ("volcano", "volcanoes"),
+			("tornado", "tornadoes"), ("torpedo", "torpedoes"),
+			// Ends with "us".
+			("genus", "genera"), ("viscus", "viscera"),
+			// Ends with "ma".
+			("stigma", "stigmata"), ("stoma", "stomata"), ("dogma", "dogmata"),
+			("lemma", "lemmata"), ("schema", "schemata"), ("anathema", "anathemata"),
+			// Other irregular rules.
+			("ox", "oxen"), ("axe", "axes"), ("die", "dice"), ("yes", "yeses"), ("foot", "feet"),
+			("eave", "eaves"), ("goose", "geese"), ("tooth", "teeth"), ("quiz", "quizzes"),
+			("human", "humans"), ("proof", "proofs"), ("carve", "carves"), ("valve", "valves"),
+			("looey", "looies"), ("thief", "thieves"), ("groove", "grooves"), ("pickaxe", "pickaxes"),
+			("passerby", "passersby"), ("cookie", "cookies"),
+		};
+
+		private static readonly IReadOnlyDictionary<string, string> IrregularSingulars = IrregularWords
+			.ToDictionary(w => w.Singular, w => w.Plural, StringComparer.OrdinalIgnoreCase);
+
+		// Built by walking the irregular list in reverse so the first-declared mapping wins when
+		// several singulars share a plural (mirrors the original pluralize.js behaviour).
+		private static readonly IReadOnlyDictionary<string, string> IrregularPlurals = BuildIrregularPlurals();
+
+		private static readonly HashSet<string> Uncountables = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+		{
+			// Singular words with no plurals.
+			"adulthood", "advice", "agenda", "aid", "aircraft", "alcohol", "ammo", "anime",
+			"athletics", "audio", "bison", "blood", "bream", "buffalo", "butter", "carp", "cash",
+			"chassis", "chess", "clothing", "cod", "commerce", "cooperation", "corps", "debris",
+			"diabetes", "digestion", "elk", "energy", "equipment", "excretion", "expertise",
+			"firmware", "flounder", "fun", "gallows", "garbage", "graffiti", "headquarters",
+			"health", "herpes", "highjinks", "homework", "housework", "information", "jeans",
+			"justice", "kudos", "labour", "literature", "machinery", "mackerel", "mail", "media",
+			"mews", "moose", "music", "mud", "manga", "news", "only", "personnel", "pike",
+			"plankton", "pliers", "police", "pollution", "premises", "rain", "research", "rice",
+			"salmon", "scissors", "series", "sewage", "shambles", "shrimp", "software", "species",
+			"staff", "swine", "tennis", "traffic", "transportation", "trout", "tuna", "wealth",
+			"welfare", "whiting", "wildebeest", "wildlife", "you",
+		};
+
+		private static IReadOnlyDictionary<string, string> BuildIrregularPlurals()
+		{
+			var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+			for (var i = IrregularWords.Length - 1; i >= 0; i--)
+			{
+				var plural = IrregularWords[i].Plural;
+				if (!result.ContainsKey(plural))
+					result.Add(plural, IrregularWords[i].Singular);
+			}
+			return result;
+		}
 
 		public static string Pluralize(string value)
 		{
-			return inflector.Pluralize(value);
+			return Transform(value, IrregularSingulars, IrregularPlurals, PluralRules);
 		}
 
 		public static string Singularize(string value)
 		{
-			return inflector.Singularize(value);
+			return Transform(value, IrregularPlurals, IrregularSingulars, SingularRules);
 		}
 
-		private class NounsRule : IEquatable<NounsRule>
+		private static string Transform(string word, IReadOnlyDictionary<string, string> replaceable, IReadOnlyDictionary<string, string> keepable, Rule[] rules)
 		{
-			private readonly int hashCode;
-			private readonly string pattern;
-			private readonly Regex regex;
-			private readonly string replacement;
-
-			public NounsRule(string pattern, string replacement)
-			{
-				if (string.IsNullOrEmpty(pattern))
-					throw new ArgumentNullException(nameof(pattern));
-				if (replacement == null)
-					throw new ArgumentNullException(nameof(replacement));
-				this.pattern = pattern;
-				this.replacement = replacement;
-				this.hashCode = 397 ^ this.replacement.GetHashCode() ^ this.pattern.GetHashCode();
-				this.regex = this.CreateRegex();
-			}
-			public bool Equals(NounsRule other)
-			{
-				if (ReferenceEquals(null, other))
-					return false;
-				if (ReferenceEquals(this, other))
-					return true;
-				return Equals(other.pattern, this.pattern) && Equals(other.replacement, this.replacement);
-			}
-			public override bool Equals(object obj)
-			{
-				return this.Equals(obj as NounsRule);
-			}
-			public override int GetHashCode()
-			{
-				return this.hashCode;
-			}
-			private Regex CreateRegex()
-			{
-				return new Regex(this.pattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-			}
-			public string Apply(string word)
-			{
-				if (!this.regex.IsMatch(word))
-					return null;
-
-				return this.regex.Replace(word, this.replacement);
-			}
+			if (keepable.ContainsKey(word))
+				return word;
+			if (replaceable.TryGetValue(word, out var irregular))
+				return RestoreCase(word, irregular);
+			return ApplyRules(word, rules);
 		}
-		private sealed class EnglishInflector
+
+		private static string ApplyRules(string word, Rule[] rules)
 		{
-			private readonly List<NounsRule> plurals = new List<NounsRule>();
-			private readonly List<NounsRule> singulars = new List<NounsRule>();
-			private readonly HashSet<string> uncountables = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-			public EnglishInflector()
-			{
-				this.AddPlural("$", "s");
-				this.AddPlural("s$", "s");
-				this.AddPlural("(ax|test)is$", "$1es");
-				this.AddPlural("(octop|vir)us$", "$1i");
-				this.AddPlural("(alias|status)$", "$1es");
-				this.AddPlural("(bu)s$", "$1ses");
-				this.AddPlural("(buffal|tomat)o$", "$1oes");
-				this.AddPlural("([ti])um$", "$1a");
-				this.AddPlural("sis$", "ses");
-				this.AddPlural("(?:([^f])fe|([lr])f)$", "$1$2ves");
-				this.AddPlural("(hive)$", "$1s");
-				this.AddPlural("([^aeiouy]|qu)y$", "$1ies");
-				this.AddPlural("(x|ch|ss|sh)$", "$1es");
-				this.AddPlural("(matr|vert|ind)ix|ex$", "$1ices");
-				this.AddPlural("([m|l])ouse$", "$1ice");
-				this.AddPlural("^(ox)$", "$1en");
-				this.AddPlural("(quiz)$", "$1zes");
+			if (word.Length == 0 || Uncountables.Contains(word))
+				return word;
 
-				this.AddSingular("s$", "");
-				this.AddSingular("(n)ews$", "$1ews");
-				this.AddSingular("([ti])a$", "$1um");
-				this.AddSingular("((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$", "$1$2sis");
-				this.AddSingular("(^analy)ses$", "$1sis");
-				this.AddSingular("([^f])ves$", "$1fe");
-				this.AddSingular("(hive)s$", "$1");
-				this.AddSingular("(tive)s$", "$1");
-				this.AddSingular("([lr])ves$", "$1f");
-				this.AddSingular("([^aeiouy]|qu)ies$", "$1y");
-				this.AddSingular("(s)eries$", "$1eries");
-				this.AddSingular("(m)ovies$", "$1ovie");
-				this.AddSingular("(x|ch|ss|sh)es$", "$1");
-				this.AddSingular("([m|l])ice$", "$1ouse");
-				this.AddSingular("(bus)es$", "$1");
-				this.AddSingular("(o)es$", "$1");
-				this.AddSingular("(shoe)s$", "$1");
-				this.AddSingular("(cris|ax|test)es$", "$1is");
-				this.AddSingular("(octop|vir)i$", "$1us");
-				this.AddSingular("(alias|status)es$", "$1");
-				this.AddSingular("^(ox)en", "$1");
-				this.AddSingular("(vert|ind)ices$", "$1ex");
-				this.AddSingular("(matr)ices$", "$1ix");
-				this.AddSingular("(quiz)zes$", "$1");
+			for (var i = rules.Length - 1; i >= 0; i--)
+			{
+				var rule = rules[i];
+				var match = rule.Condition.Match(word);
+				if (!match.Success)
+					continue;
 
-				this.AddIrregular("person", "people");
-				this.AddIrregular("man", "men");
-				this.AddIrregular("child", "children");
-				this.AddIrregular("sex", "sexes");
-				this.AddIrregular("move", "moves");
+				var matchedText = match.Groups[0].Value;
+				var caseSource = matchedText.Length > 0 ? matchedText : word[match.Index - 1].ToString();
+				var replaced = GroupRefRegex.Replace(rule.ReplaceWith, g => match.Groups[int.Parse(g.Groups[1].Value)].Value);
 
-				this.AddUncountable("equipment");
-				this.AddUncountable("information");
-				this.AddUncountable("rice");
-				this.AddUncountable("money");
-				this.AddUncountable("species");
-				this.AddUncountable("series");
-				this.AddUncountable("fish");
-				this.AddUncountable("sheep");
+				return word.Substring(0, match.Index) + RestoreCase(caseSource, replaced) + word.Substring(match.Index + matchedText.Length);
 			}
-			private string ApplyFirstMatchRule(IEnumerable<NounsRule> rules, string word)
-			{
-				var result = word;
-				if (this.uncountables.Contains(word)) return result;
-				foreach (var rule in rules.Reverse())
-				{
-					result = rule.Apply(word);
-					if (result != null)
-					{
-						break;
-					}
-				}
-				return result ?? word;
-			}
-			private void AddIrregular(string singular, string plural)
-			{
-				this.AddPlural("(" + singular[0] + ")" + singular.Substring(1) + "$", "$1" + plural.Substring(1));
-				this.AddSingular("(" + plural[0] + ")" + plural.Substring(1) + "$", "$1" + singular.Substring(1));
-			}
-			private void AddUncountable(string word)
-			{
-				this.uncountables.Add(word);
-			}
-			private void AddPlural(string rule, string replacement)
-			{
-				this.plurals.Add(new NounsRule(rule, replacement));
-			}
-			private void AddSingular(string rule, string replacement)
-			{
-				this.singulars.Add(new NounsRule(rule, replacement));
-			}
-			public string Pluralize(string word)
-			{
-				return this.ApplyFirstMatchRule(this.plurals, word);
-			}
-			public string Singularize(string word)
-			{
-				return this.ApplyFirstMatchRule(this.singulars, word);
-			}
+
+			return word;
+		}
+
+		private static string RestoreCase(string originalWord, string newWord)
+		{
+			if (originalWord == newWord)
+				return newWord;
+			if (originalWord == originalWord.ToLower())
+				return newWord.ToLower();
+			if (originalWord == originalWord.ToUpper())
+				return newWord.ToUpper();
+			if (originalWord[0] == char.ToUpper(originalWord[0]) && newWord.Length > 0)
+				return char.ToUpper(newWord[0]) + newWord.Substring(1);
+			return newWord.ToLower();
 		}
 	}
 
@@ -2791,7 +2840,7 @@
 			GenerationTargetLanguage targetLanguage,
 			TypeGenerationFlags typeGenerationFlags,
 			Func<string, ITypeReference> typeResolver)
-			: base(targetLanguage.MakePropertyName(schemaProperty.Name),
+			: base(MakePropertyName(schemaProperty, targetLanguage),
 				GetPropertyType(schemaProperty, targetLanguage, typeResolver))
 		{
 			if (typeDef == null) throw new ArgumentNullException(nameof(typeDef));
@@ -2853,6 +2902,16 @@
 				(this.Requirement == Requirement.None ? " Can Be Null," : $" {targetLanguage.FormatEnumDisplayString(this.Requirement)},") +
 				(this.SchemaProperty.Uniqueness != Uniqueness.None ? " Unique," : string.Empty);
 			this.Description = this.Description.TrimEnd(new[] { ',', '.' }) + ".";
+		}
+
+		// Base-constructor arguments evaluate before this constructor's own body (and its null-guards) run, so
+		// schemaProperty/targetLanguage must be validated here rather than left to the body's checks below.
+		private static string MakePropertyName(SchemaProperty schemaProperty, GenerationTargetLanguage targetLanguage)
+		{
+			if (schemaProperty == null) throw new ArgumentNullException(nameof(schemaProperty));
+			if (targetLanguage == null) throw new ArgumentNullException(nameof(targetLanguage));
+
+			return targetLanguage.MakePropertyName(schemaProperty.Name);
 		}
 
 		private static ITypeReference GetPropertyType
@@ -4814,7 +4873,7 @@
 
 		private void PushFrame(IReadOnlyDictionary<string, object> dictionary)
 		{
-			if (this.topFrameIndex == this.frames.Length)
+			if (this.topFrameIndex == this.frames.Length - 1)
 			{
 				Array.Resize(ref this.frames, (int)(this.frames.Length * 1.5));
 			}
@@ -4823,7 +4882,7 @@
 		}
 		private void PushFrame(IReadOnlyList<object> list)
 		{
-			if (this.topFrameIndex == this.frames.Length)
+			if (this.topFrameIndex == this.frames.Length - 1)
 			{
 				Array.Resize(ref this.frames, (int)(this.frames.Length * 1.5));
 			}

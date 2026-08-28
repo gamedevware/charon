@@ -303,11 +303,33 @@ class LanguageSwitcher {
 	public var primaryLanguageId: String;
 	public var fallbackOption: LanguageFallbackOption;
 
-	public function new() {
-		this.currentLanguageId = "en-US";
-		this.fallbackLanguageId = "en-US";
-		this.primaryLanguageId = "en-US";
+	/**
+		Bumped by `switchLanguage` whenever any value actually changes; used by `LocalizedText` to invalidate its cached `value`.
+	**/
+	public var version(default, null): Int;
+
+	public function new(primaryLanguageId: String) {
+		this.currentLanguageId = primaryLanguageId;
+		this.fallbackLanguageId = primaryLanguageId;
+		this.primaryLanguageId = primaryLanguageId;
 		this.fallbackOption = LanguageFallbackOption.OnNull;
+		this.version = 0;
+	}
+
+	/**
+		Sets all three values at once, bumping `version` exactly once if any of them actually changed.
+	**/
+	public function switchLanguage(currentLanguageId: String, fallbackLanguageId: String, fallbackOption: LanguageFallbackOption) {
+		if (this.currentLanguageId == currentLanguageId &&
+			this.fallbackLanguageId == fallbackLanguageId &&
+			this.fallbackOption == fallbackOption) {
+			return;
+		}
+
+		this.currentLanguageId = currentLanguageId;
+		this.fallbackLanguageId = fallbackLanguageId;
+		this.fallbackOption = fallbackOption;
+		this.version++;
 	}
 }
 <#+ 
@@ -328,13 +350,13 @@ class LanguageSwitcher {
 	{
 #>
 class LocalizedText {
-	public static var _empty = new LocalizedText(new Map<String, String>(), new LanguageSwitcher());
+	public static var _empty = new LocalizedText(new Map<String, String>(), new LanguageSwitcher("en-US"));
 	public static function empty() { return _empty; }
 
 	private var textByLanguageId:Map<String, String>;
 	private var languageSwitcher:LanguageSwitcher;
 	private var currentValue:String;
-	private var currentValueLanguageId:String;
+	private var currentValueVersion:Int;
 
 	public var count(default, null):Int;
 
@@ -345,8 +367,8 @@ class LocalizedText {
 		var fallbackLanguageId = this.languageSwitcher.fallbackLanguageId;
 		var primaryLanguageId = this.languageSwitcher.primaryLanguageId;
 
-		if (currentLanguageId != this.currentValueLanguageId) {
-			this.currentValueLanguageId = currentLanguageId;
+		if (this.languageSwitcher.version != this.currentValueVersion) {
+			this.currentValueVersion = this.languageSwitcher.version;
 			switch (this.languageSwitcher.fallbackOption) {
 				case LanguageFallbackOption.OnNotDefined:
 					if (this.textByLanguageId.exists(currentLanguageId)) {
@@ -388,7 +410,7 @@ class LocalizedText {
 		this.languageSwitcher = languageSwitcher;
 		this.count = Lambda.count(textByLanguageId);
 		this.currentValue = null;
-		this.currentValueLanguageId = null;
+		this.currentValueVersion = -1;
 	}
 
 	/**

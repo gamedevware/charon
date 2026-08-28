@@ -501,21 +501,27 @@
 		}
 	}
 	export function inheritFromDotNetObject(type: Function) {
+		// ES6 class methods are non-enumerable, so `for...in` finds nothing here - use getOwnPropertyNames instead.
 		// copy static functions
-		for (const member in DotNetObject) {
-			if (Object.prototype.hasOwnProperty.call(DotNetObject, member)) {
-				const objectStaticFunc = (<any>DotNetObject)[member];
-				if (!(member in type)) {
-					(<any>type)[member] = objectStaticFunc;
-				}
+		for (const member of Object.getOwnPropertyNames(DotNetObject)) {
+			if (member === 'length' || member === 'name' || member === 'prototype') {
+				continue;
+			}
+			const descriptor = Object.getOwnPropertyDescriptor(DotNetObject, member);
+			if (descriptor && !(member in type)) {
+				Object.defineProperty(type, member, descriptor);
 			}
 		}
-		// copy instance functions
-		for (const member in DotNetObject.prototype) {
-			if (Object.prototype.hasOwnProperty.call(DotNetObject.prototype, member)) {
-				const objectInstanceFunc = (<any>DotNetObject)[member];
-				if (!(member in type)) {
-					(<any>type)[member] = objectInstanceFunc;
+		// copy instance functions onto the target's prototype, where member resolution actually looks for them.
+		const typePrototype = (<any>type).prototype;
+		if (typePrototype) {
+			for (const member of Object.getOwnPropertyNames(DotNetObject.prototype)) {
+				if (member === 'constructor') {
+					continue;
+				}
+				const descriptor = Object.getOwnPropertyDescriptor(DotNetObject.prototype, member);
+				if (descriptor && !(member in typePrototype)) {
+					Object.defineProperty(typePrototype, member, descriptor);
 				}
 			}
 		}
@@ -535,21 +541,28 @@
 	}
 	inheritFromDotNetObject(DotNetArray);
 	export function inheritFromDotNetArray(type: Function) {
+		// getOwnPropertyNames + defineProperty (not `for...in` + assignment) so class methods and the Count/Length
+		// getters are enumerated and copied as accessors, not evaluated once and copied by value.
 		// copy static functions
-		for (const member in DotNetArray) {
-			if (Object.prototype.hasOwnProperty.call(DotNetArray, member)) {
-				const arrayStaticFunc = (<any>DotNetArray)[member];
-				if (!(member in type)) {
-					(<any>type)[member] = arrayStaticFunc;
-				}
+		for (const member of Object.getOwnPropertyNames(DotNetArray)) {
+			if (member === 'length' || member === 'name' || member === 'prototype') {
+				continue;
+			}
+			const descriptor = Object.getOwnPropertyDescriptor(DotNetArray, member);
+			if (descriptor && !(member in type)) {
+				Object.defineProperty(type, member, descriptor);
 			}
 		}
-		// copy instance functions
-		for (const member in DotNetArray.prototype) {
-			if (Object.prototype.hasOwnProperty.call(DotNetArray.prototype, member)) {
-				const arrayInstanceFunc = (<any>DotNetArray)[member];
-				if (!(member in type)) {
-					(<any>type)[member] = arrayInstanceFunc;
+		// copy instance functions/getters onto the target's prototype, not the target itself.
+		const typePrototype = (<any>type).prototype;
+		if (typePrototype) {
+			for (const member of Object.getOwnPropertyNames(DotNetArray.prototype)) {
+				if (member === 'constructor') {
+					continue;
+				}
+				const descriptor = Object.getOwnPropertyDescriptor(DotNetArray.prototype, member);
+				if (descriptor && !(member in typePrototype)) {
+					Object.defineProperty(typePrototype, member, descriptor);
 				}
 			}
 		}
@@ -775,13 +788,10 @@
 			return date;
 		}
 		public get Day(): number {
-			return DotNetDate.toDate(this).getUTCDay();
+			return DotNetDate.toDate(this).getUTCDate();
 		}
 		public get DayOfWeek(): DayOfWeek {
-			const time = DotNetDate.toDate(this).getTime();
-			const ticks = BigInt(time) * ticksPerMillisecond;
-			const dayOfWeek = ((ticks / 864000000000n) + 1n) % 7n;
-			return Number(dayOfWeek) as DayOfWeek;
+			return DotNetDate.toDate(this).getUTCDay() as DayOfWeek;
 		}
 		public get DayOfYear(): number {
 			const time = DotNetDate.toDate(this).getTime();
@@ -803,7 +813,7 @@
 			return DotNetDate.toDate(this).getUTCMinutes();
 		}
 		public get Month(): number {
-			return DotNetDate.toDate(this).getUTCMonth();
+			return DotNetDate.toDate(this).getUTCMonth() + 1;
 		}
 		public get Nanosecond(): bigint {
 			const time = DotNetDate.toDate(this).getMilliseconds();
@@ -841,15 +851,15 @@
 			if (!(value instanceof Date)) {
 				return 1;
 			}
-			const thisValue = DotNetDate.toDate(this);
-			return thisValue > value ? 1 : thisValue === value ? 0 : -1;
+			const thisTime = DotNetDate.toDate(this).getTime();
+			const valueTime = value.getTime();
+			return thisTime > valueTime ? 1 : thisTime === valueTime ? 0 : -1;
 		}
 		public Equals(value?: Date): boolean {
 			if (!(value instanceof Date)) {
 				return false;
 			}
-			const thisValue = DotNetDate.toDate(this);
-			return thisValue === value;
+			return DotNetDate.toDate(this).getTime() === value.getTime();
 		}
 		public ToString(): string {
 			const thisValue = DotNetDate.toDate(this);
@@ -881,7 +891,7 @@
 					if (!Object.prototype.hasOwnProperty.call(enumType, label)) {
 						continue;
 					}
-					if (value.toLowerCase() !== label) {
+					if (value.toLowerCase() !== label.toLowerCase()) {
 						continue;
 					}
 					return enumType[label];
@@ -903,8 +913,10 @@
 		}
 	}
 	export function createDotNetEnum<T extends Enum<T>>(enumType: T): Function {
-		const newEnumType = function DotNetEnumInstance() {
-			return 0;
+		// declares `value` so NewExpression reserves an argument slot for it; the body itself is unused since
+		// `.new` below is always preferred when present.
+		const newEnumType = function DotNetEnumInstance(value: any) {
+			return value;
 		};
 		newEnumType.prototype = DotNetEnum;
 		newEnumType.new = function (value: any) {
@@ -912,6 +924,10 @@
 		};
 		newEnumType.is = function (value: any) {
 			return typeof value === 'number';
+		};
+		// binds enumType so a formula calling Type.Parse(value, ignoreCase) doesn't have to supply it itself.
+		newEnumType.Parse = function (value: any, ignoreCase?: boolean) {
+			return DotNetEnum.Parse(enumType, value, ignoreCase);
 		};
 		inheritFromDotNetObject(newEnumType);
 		// copy labels
@@ -926,9 +942,9 @@
 	/* eslint-enable @typescript-eslint/naming-convention */
 	/* eslint-disable @typescript-eslint/naming-convention */
 	export class DotNetMath {
-		public static E = 2.71828175;
-		public static PI = 3.14159274;
-		public static Tau = 6.28318548;
+		public static E = Math.E;
+		public static PI = Math.PI;
+		public static Tau = Math.PI * 2;
 		public static Abs(value: number): number {
 			check(value, 'value').is.number().and.not.nullOrUndefined();
 			return Math.abs(value);
@@ -1465,7 +1481,7 @@
 		}
 		public static IsNaN(d: number) {
 			check(d, 'd').is.number().and.not.nullOrUndefined();
-			return !Number.isNaN(d);
+			return Number.isNaN(d);
 		}
 		public static IsNegative(d: number) {
 			check(d, 'd').is.number().and.not.nullOrUndefined();
@@ -1487,7 +1503,7 @@
 		}
 		public static IsPositiveInfinity(d: number) {
 			check(d, 'd').is.number().and.not.nullOrUndefined();
-			return d === Number.NEGATIVE_INFINITY;
+			return d === Number.POSITIVE_INFINITY;
 		}
 		public static IsRealNumber(d: number) {
 			check(d, 'd').is.number().and.not.nullOrUndefined();
@@ -1675,7 +1691,8 @@
 		}
 		public CompareTo(value: any, comparisonType?: StringComparison): number {
 			value = changeStringCasing(String(value), comparisonType) ?? '';
-			return this.toString().localeCompare(value);
+			const thisValue = changeStringCasing(this.toString(), comparisonType) ?? '';
+			return thisValue.localeCompare(value);
 		}
 		public Contains(value: string, comparisonType?: StringComparison): boolean {
 			check(value, 'value').is.string().and.not.nullOrUndefined();
@@ -1694,7 +1711,9 @@
 				const thisValue = this.toString() ?? '';
 				if (comparisonType === StringComparison.Ordinal ||
 					comparisonType === StringComparison.OrdinalIgnoreCase) {
-					return DotNetString.CompareOrdinal(thisValue, value) === 0;
+					const lhs = changeStringCasing(thisValue, comparisonType) ?? '';
+					const rhs = changeStringCasing(value, comparisonType) ?? '';
+					return DotNetString.CompareOrdinal(lhs, rhs) === 0;
 				} else {
 					return DotNetString.Compare(thisValue, value, comparisonType) === 0;
 				}
@@ -1715,13 +1734,13 @@
 		}
 		public IndexOf(value: string, comparisonType?: StringComparison): number {
 			check(value, 'value').is.string().and.not.nullOrUndefined();
-			value = changeStringCasing(this.toString(), comparisonType) ?? '';
+			value = changeStringCasing(value, comparisonType) ?? '';
 			const thisValue = changeStringCasing(this.toString(), comparisonType) ?? '';
 			return thisValue.indexOf(value);
 		}
 		public LastIndexOf(value: string, comparisonType?: StringComparison): number {
 			check(value, 'value').is.string().and.not.nullOrUndefined();
-			value = changeStringCasing(this.toString(), comparisonType) ?? '';
+			value = changeStringCasing(value, comparisonType) ?? '';
 			const thisValue = changeStringCasing(this.toString(), comparisonType) ?? '';
 			return thisValue.lastIndexOf(value);
 		}
@@ -1753,7 +1772,7 @@
 		}
 		public static Format(format: string, ...args: any[]): string {
 			check(format, 'format').is.string().and.not.nullOrUndefined();
-			return formatString(format, args);
+			return formatString(format, ...args);
 		}
 		public static Equals(value1: string | null | undefined, value2: string | null | undefined,
 			comparisonType?: boolean | StringComparison): boolean {
@@ -1907,7 +1926,7 @@
 				return this.toString().trim();
 			}
 			if (typeof chars === 'string') {
-				chars = [chars];
+				chars = chars.split(''); // individual characters, not a single-element array holding the whole string
 			}
 			const thisValue = this.toString();
 			let fromStart = 0;
@@ -1936,7 +1955,7 @@
 				return this.toString().trimEnd();
 			}
 			if (typeof chars === 'string') {
-				chars = [chars];
+				chars = chars.split(''); // individual characters, not a single-element array holding the whole string
 			}
 			const thisValue = this.toString();
 			let fromEnd = thisValue.length;
@@ -1954,10 +1973,10 @@
 		}
 		public TrimStart(chars?: string | string[]): string {
 			if (!chars) {
-				return this.toString().trim();
+				return this.toString().trimStart();
 			}
 			if (typeof chars === 'string') {
-				chars = [chars];
+				chars = chars.split(''); // individual characters, not a single-element array holding the whole string
 			}
 			const thisValue = this.toString();
 			let fromStart = 0;
@@ -1976,24 +1995,16 @@
 			comparisonType === StringComparison.InvariantCultureIgnoreCase || comparisonType === StringComparison.OrdinalIgnoreCase;
 	}
 	function changeStringCasing(value: string | null | undefined, comparisonType?: StringComparison | boolean): string | null | undefined {
-		if (comparisonType === true) {
-			comparisonType = StringComparison.OrdinalIgnoreCase;
-		} else if (comparisonType == null || comparisonType === undefined || comparisonType === false) {
-			comparisonType = StringComparison.Ordinal;
-		}
-		if (!value) {
-			return value;
+		if (!value || !isCaseInsensitive(comparisonType)) {
+			return value; // Ordinal/CurrentCulture/InvariantCulture (or no comparisonType given) - case-sensitive, leave as-is
 		}
 		switch (comparisonType) {
 			case StringComparison.InvariantCultureIgnoreCase:
 			case StringComparison.OrdinalIgnoreCase:
-				value = value.toLowerCase();
-				break;
-			default:
-				value = value.toLocaleLowerCase();
-				break;
+				return value.toLowerCase();
+			default: // CurrentCultureIgnoreCase, or the shorthand `true`
+				return value.toLocaleLowerCase();
 		}
-		return value;
 	}
 	inheritFromDotNetObject(DotNetString);
 	export enum StringComparison {
@@ -2041,25 +2052,25 @@
 			return this.ticks;
 		}
 		public get TotalDays() {
-			return Number(this.ticks / 864000000000n);
+			return Number(this.ticks) / 864000000000;
 		}
 		public get TotalHours() {
-			return Number(this.ticks / 36000000000n);
+			return Number(this.ticks) / 36000000000;
 		}
 		public get TotalMicroseconds() {
-			return Number(this.ticks / 10n);
+			return Number(this.ticks) / 10;
 		}
 		public get TotalMilliseconds() {
-			return Number(this.ticks / 10000n);
+			return Number(this.ticks) / 10000;
 		}
 		public get TotalMinutes() {
-			return Number(this.ticks / 600000000n);
+			return Number(this.ticks) / 600000000;
 		}
 		public get TotalNanoseconds() {
 			return Number(this.ticks) * 100;
 		}
 		public get TotalSeconds() {
-			return Number(this.ticks / 10000000n);
+			return Number(this.ticks) / 10000000;
 		}
 		public static Compare(t1: TimeSpan, t2: TimeSpan): number {
 			check(t1, 't1').is.instanceOf(TimeSpan).and.not.nullOrUndefined();
@@ -2119,7 +2130,7 @@
 		public Divide(divisor: number | TimeSpan): TimeSpan | number {
 			if (divisor instanceof TimeSpan) {
 				check(divisor, 'divisor').is.instanceOf(TimeSpan).and.not.nullOrUndefined();
-				return new TimeSpan(this.ticks / divisor.ticks);
+				return Number(this.ticks) / Number(divisor.ticks);
 			} else {
 				check(divisor, 'divisor').is.number().and.not.nullOrUndefined();
 				return new TimeSpan(BigInt(Math.round(Number(this.ticks) / divisor)));
@@ -2152,6 +2163,7 @@
 			return this.toString();
 		}
 	}
+	inheritFromDotNetObject(DotNetTimeSpan);
 	/* eslint-enable @typescript-eslint/naming-convention */
 	export interface LineInfo {
 		readonly _pos: string;
@@ -4032,7 +4044,7 @@
 					continue;
 				}
 				const argument = this.arguments[argumentName];
-				const value = (argument ? argument.execute(context) : '') || '';
+				const value = (argument ? argument.execute(context) : '') ?? '';
 				indexes.push(value);
 			}
 			if (indexes.length === 0) {
@@ -4175,8 +4187,11 @@
 				throw new FormulaError(formatString(ExpressionResources.EXCEPTION_EXECUTION_APIISRESTRICTED, typeof target));
 			}
 			const parameterNames = getFunctionParameterNames(invokable);
+			// A rest parameter contributes neither to parameterNames.length nor invokable.length, so a variadic
+			// method also needs sizing against the number of arguments actually supplied.
+			const suppliedArgumentCount = Object.keys(this.arguments).length;
 			const args = [];
-			args.length = Math.max(parameterNames.length, invokable.length);
+			args.length = Math.max(parameterNames.length, invokable.length, suppliedArgumentCount);
 			for (const argumentName in this.arguments) {
 				if (!this.arguments.hasOwnProperty(argumentName)) {
 					continue;
@@ -4405,8 +4420,11 @@
 				throw new FormulaError(formatString(ExpressionResources.EXCEPTION_BIND_UNABLETORESOLVETYPE, this.type));
 			}
 			const parameterNames = getFunctionParameterNames(ctr);
+			// A rest parameter contributes neither to parameterNames.length nor ctr.length, so a variadic
+			// constructor also needs sizing against the number of arguments actually supplied.
+			const suppliedArgumentCount = Object.keys(this.arguments).length;
 			const args: any[] = [];
-			args.length = Math.max(parameterNames.length, ctr.length);
+			args.length = Math.max(parameterNames.length, ctr.length, suppliedArgumentCount);
 			for (const argumentName in this.arguments) {
 				if (!this.arguments.hasOwnProperty(argumentName)) {
 					continue;

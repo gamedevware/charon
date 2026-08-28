@@ -71,8 +71,7 @@ class <#= context.TargetLanguage.GameDataClassName #> {
 		this.supportedLanguages = ["<#= context.Metadata.ProjectSettings.PrimaryLanguage #>"];
 		this.changeNumber = 0;
 		this.revisionHash = null;
-		this.languageSwitcher = new LanguageSwitcher();
-		this.setLanguage("<#= context.Metadata.ProjectSettings.PrimaryLanguage #>");
+		this.languageSwitcher = new LanguageSwitcher("<#= context.Metadata.ProjectSettings.PrimaryLanguage #>");
 		this.findDocument = this.findDocumentInternal;
 
 		var reader = this.createReader(gameData, options);
@@ -138,9 +137,7 @@ class <#= context.TargetLanguage.GameDataClassName #> {
 		if (languageId == null)
 			throw 'languageId cannot be null';
 
-		this.languageSwitcher.currentLanguageId = languageId;
-		this.languageSwitcher.fallbackLanguageId = fallbackLanguageId ?? languageId;
-		this.languageSwitcher.fallbackOption = fallbackOption;
+		this.languageSwitcher.switchLanguage(languageId, fallbackLanguageId ?? languageId, fallbackOption);
 	}
 
 	public function getAllDocuments():ReadOnlyArray<<#= context.TargetLanguage.DocumentClassName #>> {

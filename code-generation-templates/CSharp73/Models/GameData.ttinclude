@@ -98,7 +98,6 @@
 		public ReadOnlyCollection<string> SupportedLanguages { get { return this.languages; } }
 		public Func<string, object, <#= context.TargetLanguage.DocumentClassName #>> FindDocument { get; private set; }
 
-
 		public <#= context.TargetLanguage.GameDataClassName #>(Stream gameDataStream, Formatters.GameDataLoadOptions options)
 		{
 			if (gameDataStream == null) throw new ArgumentNullException(nameof(gameDataStream));
@@ -185,9 +184,7 @@
 			if (languageId == null) throw new ArgumentNullException(nameof(languageId));
 			if (fallbackLanguageId == null) throw new ArgumentNullException(nameof(fallbackLanguageId));
 
-			this.languageSwitcher.CurrentLanguageId = languageId;
-			this.languageSwitcher.FallbackLanguageId = fallbackLanguageId ?? languageId;
-			this.languageSwitcher.FallbackOption = fallbackOption;
+			this.languageSwitcher.SwitchLanguage(languageId, fallbackLanguageId ?? languageId, fallbackOption);
 		}
 
 		public IEnumerable<string> GetDocumentIds(string schemaNameOrId)

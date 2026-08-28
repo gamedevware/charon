@@ -144,7 +144,7 @@ return <#= context.TargetLanguage.DocumentClassName #>
 --- @field _values table<string, string> Map of language -> text
 --- @field _languageSwitcher any Language switcher for current/fallback language selection
 --- @field _cachedValue string Cached resolved value
---- @field _cachedLanguageId string Language ID of cached value
+--- @field _cachedVersion number Language switcher version of cached value
 local localizedText = {}
 localizedText.__index = localizedText
 
@@ -164,7 +164,7 @@ function localizedText.new(values, languageSwitcher)
 		self._values = values or {}
 		self._languageSwitcher = languageSwitcher
 		self._cachedValue = nil
-		self._cachedLanguageId = nil
+		self._cachedVersion = -1
 		return self
 end
 
@@ -180,7 +180,26 @@ function localizedText.newLanguageSwitcher(currentLanguageId, fallbackLanguageId
 		self.fallbackLanguageId = fallbackLanguageId or currentLanguageId or "en-US"
 		self.primaryLanguageId = primaryLanguageId or currentLanguageId or "en-US"
 		self.fallbackOption = fallbackOption or localizedText.FallbackOption.OnNull
+		self.version = 0
 		return self
+end
+
+--- Switch current/fallback language on a language switcher, bumping its version exactly once if anything actually changed
+--- @param languageSwitcher table Language switcher instance, as returned by localizedText.newLanguageSwitcher
+--- @param currentLanguageId string The currently selected language ID
+--- @param fallbackLanguageId string The fallback language ID
+--- @param fallbackOption string Fallback option ('OnNull', 'OnEmpty', 'OnNotDefined')
+function localizedText.switchLanguage(languageSwitcher, currentLanguageId, fallbackLanguageId, fallbackOption)
+		if languageSwitcher.currentLanguageId == currentLanguageId and
+				languageSwitcher.fallbackLanguageId == fallbackLanguageId and
+				languageSwitcher.fallbackOption == fallbackOption then
+				return
+		end
+
+		languageSwitcher.currentLanguageId = currentLanguageId
+		languageSwitcher.fallbackLanguageId = fallbackLanguageId
+		languageSwitcher.fallbackOption = fallbackOption
+		languageSwitcher.version = (languageSwitcher.version or 0) + 1
 end
 
 --- Get the resolved text value for the current language with fallback support
@@ -192,13 +211,13 @@ function localizedText:value()
 				end
 		end
 
-		-- Return cached value if language hasn't changed
-		if self._cachedLanguageId == self._languageSwitcher.currentLanguageId then
+		-- Return cached value if the language switcher hasn't changed
+		if self._cachedVersion == self._languageSwitcher.version then
 				return self._cachedValue or ''
 		end
 
 		-- Update cached value based on fallback option
-		self._cachedLanguageId = self._languageSwitcher.currentLanguageId
+		self._cachedVersion = self._languageSwitcher.version
 		local result = ''
 
 		local fallbackOption = self._languageSwitcher.fallbackOption or localizedText.FallbackOption.OnNull
@@ -254,7 +273,7 @@ end
 function localizedText:setValue(languageId, value)
 		self._values[languageId] = value
 		-- Invalidate cache
-		self._cachedLanguageId = nil
+		self._cachedVersion = -1
 		self._cachedValue = nil
 end
 

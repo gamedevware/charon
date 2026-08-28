@@ -121,9 +121,7 @@ export class <#= context.TargetLanguage.GameDataClassName #>
 		check(languageId, 'languageId').is.string().not.nullOrUndefined();
 		check(fallbackLanguageId, 'fallbackLanguageId').is.string().not.nullOrUndefined();
 
-		this.languageSwitcher.currentLanguageId = languageId;
-		this.languageSwitcher.fallbackLanguageId = fallbackLanguageId ?? languageId;
-		this.languageSwitcher.fallbackOption = fallbackOption ?? <#= context.TargetLanguage.LocalizedTextClassName #>.FallbackOption.OnNull;
+		this.languageSwitcher.switchLanguage(languageId, fallbackLanguageId ?? languageId, fallbackOption ?? <#= context.TargetLanguage.LocalizedTextClassName #>.FallbackOption.OnNull);
 	}
 
 	private getOne<DocumentT extends <#= context.TargetLanguage.DocumentClassName #>>(documents: readonly DocumentT[], type: string): DocumentT

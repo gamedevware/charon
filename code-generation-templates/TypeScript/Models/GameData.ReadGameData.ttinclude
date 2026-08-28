@@ -81,7 +81,7 @@
 			} else {
 				this.languageSwitcher.primaryLanguageId = '<#= context.Metadata.ProjectSettings.PrimaryLanguage #>';
 			}
-			this.languageSwitcher.currentLanguageId = this.languageSwitcher.fallbackLanguageId = this.languageSwitcher.primaryLanguageId;
+			this.languageSwitcher.switchLanguage(this.languageSwitcher.primaryLanguageId, this.languageSwitcher.primaryLanguageId, this.languageSwitcher.fallbackOption);
 			if (allLanguages.indexOf(this.languageSwitcher.currentLanguageId) < 0) {
 				allLanguages.push(this.languageSwitcher.currentLanguageId);
 			}

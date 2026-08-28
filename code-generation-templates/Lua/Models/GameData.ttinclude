@@ -135,9 +135,16 @@
 		fallbackLanguageId = fallbackLanguageId or "<#= context.Metadata.ProjectSettings?.PrimaryLanguage ?? "en-US" #>"
 		fallbackOption = fallbackOption or <#= context.TargetLanguage.LocalizedTextClassName #>.FallbackOption.OnNull
 
+		if self._languageSwitcher.currentLanguageId == languageId and
+			self._languageSwitcher.fallbackLanguageId == fallbackLanguageId and
+			self._languageSwitcher.fallbackOption == fallbackOption then
+			return
+		end
+
 		self._languageSwitcher.currentLanguageId = languageId
 		self._languageSwitcher.fallbackLanguageId = fallbackLanguageId
 		self._languageSwitcher.fallbackOption = fallbackOption
+		self._languageSwitcher.version = self._languageSwitcher.version + 1
 	end
 
 	--- Find a document by ID across all collections
