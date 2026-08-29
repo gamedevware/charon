@@ -34,6 +34,18 @@ role or higher.
 The version lives on the project settings document, so it travels with the data - into backups, ordinary
 exports, and the published file alike.
 
+At runtime the generated game data class exposes it as ``GameDataVersion``, next to ``RevisionHash``
+and ``ChangeNumber``. It is read straight out of the project settings document while the file is
+deserialized, so the game can log or display which data snapshot it loaded:
+
+.. code-block:: csharp
+
+   Debug.Log($"Game data version: {gameData.GameDataVersion}");
+
+In Unreal Engine the same value is a ``BlueprintReadOnly`` property on the game data object, so it can
+be read from Blueprints without any C++ code. ``GameDataVersion`` is generated for **C# 7.3** and
+**UE C++** only - the C# 4.0, TypeScript, Haxe and Lua targets do not expose it.
+
 **CLI equivalent**
 
 .. code-block:: bash
@@ -201,8 +213,9 @@ Publication is ``DATA EXPORT`` with ``--mode publication``:
 
 Key parameters:
 
-- ``--mode publication`` - strips everything the game does not need. Without it you get a full export,
-  which the generated code cannot load.
+- ``--mode publication`` - keeps the system schemas and the project settings document that the
+  generated code needs, and strips localization for the languages you did not select. Without it the
+  export omits the system schemas and the generated code cannot load it.
 - ``--languages`` - the languages to include, in braces. Omit the parameter to publish all languages.
 - ``--outputFormat`` - ``json`` or ``msgpack``, matching the wizard's format step.
 

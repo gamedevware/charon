@@ -188,7 +188,7 @@ Choose the right tool for the job:
 | **Includes schemas**      | Always                              | Optional (``--schemas Schema``)            |
 +---------------------------+-------------------------------------+--------------------------------------------+
 | **Strips unused data**    | No                                  | Yes - ``--mode publication`` strips unused |
-|                           |                                     | docs and languages                         |
+|                           |                                     | languages                                  |
 +---------------------------+-------------------------------------+--------------------------------------------+
 | **Restorable**            | Yes, via ``DATA RESTORE``           | Partially - via ``DATA IMPORT``            |
 +---------------------------+-------------------------------------+--------------------------------------------+

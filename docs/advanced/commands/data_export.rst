@@ -134,8 +134,11 @@ Exports documents into a file.
       This mode ensures that the exported graph of documents remains valid by including any necessary additional documents to avoid any broken references.
 
    publication
-      Same as `--mode normal`, but all non-essential data will be stripped. 
-      The result of the export can be safely loaded within the game with the :doc:`generated code <../../gamedata/generating_source_code>`.
+      Same as `--mode normal`, but shaped for the game: localization for languages outside
+      `--languages` is stripped, and the file level ``ToolsVersion``, ``RevisionHash`` and
+      ``ChangeNumber`` fields are written into the output. System schemas and the project settings
+      document are kept - the :doc:`generated code <../../gamedata/generating_source_code>` requires
+      them and refuses to load a file without them.
    
    extraction
       Export only the specified `--schemas` without exporting any referenced documents. 
