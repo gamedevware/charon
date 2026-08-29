@@ -127,7 +127,7 @@ By default, this command does not delete previously generated files. Use the ``-
      # Avoids generating helper methods for localized strings, keeping only raw accessors.
      # This optimization eliminates helper methods for accessing localized text, instead providing
      # accessors that deal directly with lists of localized texts.
-     --optimizations rawLocalizedStrings
+     --optimizations rawLocalizedTexts
      
      # Disables string pooling during game data loading.
      # Turning off string pooling can yield a minor performance improvement at the cost of increased
