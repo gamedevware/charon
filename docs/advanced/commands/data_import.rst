@@ -110,6 +110,9 @@ Imports documents from file to a game data.
     
 --validationOptions
    List of validation checks and repairs to perform during import.
+   Defaults to ``repair repairRequiredWithDefaults deduplicateIds resolveConflictingUnions`` - repairs
+   only, with no integrity checks. Pass the ``check*`` flags explicitly to have the import verify the
+   data, and see :doc:`Validation <../validation>` for what each flag does.
      
    .. code-block:: bash
 
@@ -123,18 +126,18 @@ Imports documents from file to a game data.
      --validationOptions repair deduplicateIds
 
      # fill required fields that have a default value
-     --validationOptions repair repairRequiredWithDefaultValue
+     --validationOptions repair repairRequiredWithDefaults
 
      # erase values whose type does not match the property's data type
-     --validationOptions repair eraseInvalidValue
+     --validationOptions repair eraseInvalidValues
 
      # fix malformed Union values:
      #   empty union (no variant set)      → erased to null
      #   conflicting union (2+ variants)   → last variant in schema order is kept
      --validationOptions repair resolveConflictingUnions
 
-     # checks (default)
-     --validationOptions checkTranslation
+     # integrity checks - applied only when requested
+     --validationOptions checkTranslations
      --validationOptions checkRequirements
      --validationOptions checkFormat
      --validationOptions checkUniqueness
@@ -251,6 +254,7 @@ Imports documents from file to a game data.
 This command supports :doc:`universal parameters <universal_parameters>`.
 
 .. _CommandLine_Import_Structure:
+
 ---------------------
  Input Data Structure
 ---------------------
