@@ -93,27 +93,18 @@ Applying a Patch
 Validation on apply
 ^^^^^^^^^^^^^^^^^^^^
 
-``DATA APPLYPATCH`` validates the target after applying the patch using the
-``DefaultForBulkChange`` preset (repairs only, no strict integrity checks). To tighten this:
+``DATA APPLYPATCH`` validates the target after applying the patch with repairs only - ``repair``,
+``deduplicateIds``, ``repairRequiredWithDefaults`` and ``resolveConflictingUnions`` - and no integrity
+checks. The command takes no ``--validationOptions`` parameter, so check the result separately whenever
+the patch is not fully trusted:
 
 .. code-block:: bash
 
-   dnx dotnet-charon -- DATA APPLYPATCH \
+   dnx dotnet-charon -- DATA VALIDATE \
        --dataBase target.json \
-       --input changes.patch.json \
-       --validationOptions repair checkRequirements checkReferences
-
-Dry run
-^^^^^^^^
-
-Preview what the patch would do without committing any changes:
-
-.. code-block:: bash
-
-   dnx dotnet-charon -- DATA APPLYPATCH \
-       --dataBase target.json \
-       --input changes.patch.json \
-       --dryRun
+       --validationOptions checkRequirements checkFormat checkUniqueness \
+                           checkReferences checkSpecification checkConstraints \
+       --output err
 
 ----
 

@@ -65,7 +65,7 @@ The fastest way to reach it is the Publication wizard - clicking a collection in
 collection already filtered this way. The filter chip stays visible in the search bar, so you can clear it
 to return to the full list.
 
-Error counts come from a background pass over the whole database using ``AllIntegrityChecks`` **plus**
+Error counts come from a background pass over the whole database using the six integrity checks **plus**
 ``checkTranslations``. This is a wider profile than the one used when saving, so a document can be clean at
 save time and still be counted here - untranslated text being the usual reason.
 
@@ -130,44 +130,35 @@ opens its errors view, described above.
 When Validation Runs
 --------------------
 
-+-------------------------------------------+---------------------------------------------+
-| Trigger                                   | Default preset                              |
-+===========================================+=============================================+
-| Document save (UI / API CREATE or UPDATE) | ``DefaultForCreate`` / ``DefaultForUpdate`` |
-+-------------------------------------------+---------------------------------------------+
-| Document save with *Save Anyway*          | repairs only, no checks                     |
-+-------------------------------------------+---------------------------------------------+
-| ``DATA IMPORT``                           | ``DefaultForBulkChange``                    |
-+-------------------------------------------+---------------------------------------------+
-| ``DATA I18N IMPORT``                      | ``DefaultForBulkChange``                    |
-+-------------------------------------------+---------------------------------------------+
-| ``DATA VALIDATE`` (on demand)             | ``AllIntegrityChecks``                      |
-+-------------------------------------------+---------------------------------------------+
-| Error counts and publication review       | ``DefaultForBackgroundValidation``          |
-+-------------------------------------------+---------------------------------------------+
+Throughout this page, *the six integrity checks* means ``checkRequirements``, ``checkFormat``,
+``checkUniqueness``, ``checkReferences``, ``checkSpecification`` and ``checkConstraints``.
 
-What the presets expand to:
-
-+------------------------------------+-------------------------------------------------------------+
-| Preset                             | Flags                                                       |
-+====================================+=============================================================+
-| ``AllIntegrityChecks``             | the six ``check*`` flags, **without** ``checkTranslations`` |
-+------------------------------------+-------------------------------------------------------------+
-| ``DefaultForCreate`` /             | ``repair``, ``repairRequiredWithDefaults``,                 |
-| ``DefaultForUpdate``               | ``AllIntegrityChecks``                                      |
-+------------------------------------+-------------------------------------------------------------+
-| ``DefaultForBulkChange``           | ``repair``, ``deduplicateIds``,                             |
-|                                    | ``repairRequiredWithDefaults``,                             |
-|                                    | ``resolveConflictingUnions``                                |
-+------------------------------------+-------------------------------------------------------------+
-| ``DefaultForBackgroundValidation`` | ``AllIntegrityChecks``, ``checkTranslations``               |
-+------------------------------------+-------------------------------------------------------------+
++---------------------------------------------+--------------------------------------------------------------------+
+| Trigger                                     | Checks and repairs applied                                         |
++=============================================+====================================================================+
+| Document save (UI / API CREATE or UPDATE)   | ``repair``, ``repairRequiredWithDefaults``, and the six            |
+|                                             | integrity checks                                                   |
++---------------------------------------------+--------------------------------------------------------------------+
+| Document save with *Save Anyway*            | repairs only - no integrity checks                                 |
++---------------------------------------------+--------------------------------------------------------------------+
+| ``DATA IMPORT``                             | ``repair``, ``repairRequiredWithDefaults``,                        |
+|                                             | ``deduplicateIds``, ``resolveConflictingUnions`` -                 |
+|                                             | **no integrity checks**                                            |
++---------------------------------------------+--------------------------------------------------------------------+
+| ``DATA I18N IMPORT``                        | ``repair``, ``repairRequiredWithDefaults``,                        |
+|                                             | ``deduplicateIds``, ``resolveConflictingUnions`` -                 |
+|                                             | **no integrity checks**                                            |
++---------------------------------------------+--------------------------------------------------------------------+
+| ``DATA VALIDATE`` (on demand)               | the six integrity checks                                           |
++---------------------------------------------+--------------------------------------------------------------------+
+| Error counts and publication review         | the six integrity checks plus ``checkTranslations``                |
++---------------------------------------------+--------------------------------------------------------------------+
 
 .. warning::
-   ``DefaultForBulkChange`` contains **no integrity checks**. By default ``DATA IMPORT`` and
-   ``DATA I18N IMPORT`` repair what they can and report nothing - broken references or missing required
-   values land in the data silently. Pass ``--validationOptions`` explicitly, or follow the import with a
-   ``DATA VALIDATE`` run, whenever the input is not fully trusted.
+   Both import commands default to repairs **without integrity checks**. They fix what they can and
+   report nothing else - broken references or missing required values land in the data silently.
+   Pass ``--validationOptions`` explicitly, or follow the import with a ``DATA VALIDATE`` run,
+   whenever the input is not fully trusted.
 
 All defaults can be overridden with ``--validationOptions`` on the relevant command.
 
@@ -214,7 +205,8 @@ These flags **report errors** without modifying data.
 ``checkTranslations``
    Every :doc:`LocalizedText <../gamedata/datatypes/all/localized_text>` field must have a
    translation for each language declared in Project Settings. Detects untranslated strings
-   before shipping. Not part of ``AllIntegrityChecks`` - request it explicitly.
+   before shipping. Not included in any default profile except the background pass - request it
+   explicitly.
 
 Repair flags
 ^^^^^^^^^^^^
