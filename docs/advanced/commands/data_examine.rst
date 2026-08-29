@@ -1,7 +1,7 @@
 Examine Game Data
 =================
 
-Returns quick statistics about game data: document counts per schema, metadata hash, and revision hash.
+Returns statistics about game data: document and validation error counts per schema, metadata hash, and revision hash.
 
 - :ref:`CLI Installation <CommandLine_Installation>`
 - :ref:`Commands Reference <CommandLine_Commands>`
@@ -23,10 +23,15 @@ Returns quick statistics about game data: document counts per schema, metadata h
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --credentials "<API-Key>"
 
-Use this command to verify that a file is valid game data and get a cheap content overview - document counts
-per schema, a metadata hash, and a revision hash - before running a heavier command such as
-:doc:`DATA LIST <data_list>`, :doc:`DATA SEARCH <data_search>`, or :doc:`DATA VALIDATE <data_validate>`. It
-does not load or validate document contents, so it stays fast even on large files.
+Use this command to verify that a file is valid game data and get a content overview - document counts per
+schema, a metadata hash, and a revision hash - before running a heavier command such as
+:doc:`DATA LIST <data_list>` or :doc:`DATA SEARCH <data_search>`.
+
+Examine runs a full validation pass over the data and reports how many errors of each kind every collection
+has. This is the same pass that produces the error counts shown in the editor's document lists and in the
+publication review, and it uses the same profile: all integrity checks plus ``checkTranslations``. Use
+:doc:`DATA VALIDATE <data_validate>` instead when you need the individual errors rather than the counts, or
+when you need to choose which checks run.
 
 ---------------
  Parameters

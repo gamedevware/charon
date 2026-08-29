@@ -1,5 +1,5 @@
 Validate Game Data
-===============
+==================
 
 Checks the game data for validity and produces a report.
 
@@ -62,10 +62,10 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
      --validationOptions repair deduplicateIds
 
      # fill required fields that have a default value
-     --validationOptions repair repairRequiredWithDefaultValue
+     --validationOptions repair repairRequiredWithDefaults
 
      # erase values whose type does not match the property's data type
-     --validationOptions repair eraseInvalidValue
+     --validationOptions repair eraseInvalidValues
 
      # fix malformed Union values:
      #   empty union (no variant set)      → erased to null
@@ -73,7 +73,7 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
      --validationOptions repair resolveConflictingUnions
 
      # checks (default)
-     --validationOptions checkTranslation
+     --validationOptions checkTranslations
      --validationOptions checkRequirements
      --validationOptions checkFormat
      --validationOptions checkUniqueness
@@ -136,9 +136,9 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
 
 This command supports :doc:`universal parameters <universal_parameters>`.
 
-------------------
+--------------------
  Output Data Schema
-------------------
+--------------------
 
 The report follow this pattern:
 
