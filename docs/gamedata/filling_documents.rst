@@ -67,7 +67,8 @@ Everything that is not a per-document edit lives in ``Actions``.
    * - ``Customize Columns...``
      - Picks which properties are shown as columns, see `Choosing Columns`_.
 
-Extensions installed in the project add their own entries below the separator.
+Extensions installed in the project add their own entries below the separator - see
+:doc:`Custom Actions <../advanced/extensions/custom_actions>`.
 
 ----
 

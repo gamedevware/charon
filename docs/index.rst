@@ -207,6 +207,10 @@ Further Reading
 
    /advanced/extensions/overview
    /advanced/extensions/implementing_property_editor
+   /advanced/extensions/implementing_schema_editor
+   /advanced/extensions/custom_actions
+   /advanced/extensions/custom_pages
+   /advanced/extensions/host_services
    /advanced/extensions/creating_react_extension
    /advanced/extensions/creating_angular_extension
 

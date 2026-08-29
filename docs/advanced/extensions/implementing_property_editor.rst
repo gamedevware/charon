@@ -121,10 +121,28 @@ Example:
     return () => valueControl.removeValidators(validateValue);
   }, [valueControl]);
 
+Reaching Host Services
+----------------------
+
+A property editor is handed one value, but the rest of the editor is still reachable through the root of the
+control tree:
+
+.. code-block:: typescript
+
+  import { getRootDocumentControl } from 'charon-extensions';
+
+  const root = getRootDocumentControl(valueControl);
+  const languages = root.services.translationLanguage?.languages$;
+
+That gives the document being edited, its schema, and the document-level services - game data queries, dialogs,
+notifications, undo/redo, and persisted UI state. See :doc:`Host Services <host_services>`.
+
 See also
 --------
 
-- :doc:`UI Extensions Overview <overview>`
+- :doc:`UI Extensions <overview>`
+- :doc:`Implementing a Schema Editor <implementing_schema_editor>`
+- :doc:`Host Services <host_services>`
 - :doc:`Creating a Custom Editor with React <creating_react_extension>`
 - :doc:`Creating a Custom Editor with Angular <creating_angular_extension>`
 - `charon-extensions package (NPM) <https://www.npmjs.com/package/charon-extensions>`_

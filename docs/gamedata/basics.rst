@@ -38,6 +38,9 @@ From the top:
   names, plus **Add new schema**.
 - **Project Settings** at the bottom.
 
+Installed :doc:`extensions <../advanced/extensions/overview>` can add entries of their own here, either in the
+**Home** group or in a section of their own.
+
 The ``«`` button collapses the whole panel to a narrow rail of icons, and ``»`` brings it back - worth doing
 on a laptop screen when a collection has many columns.
 

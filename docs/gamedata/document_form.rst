@@ -170,7 +170,8 @@ Graph
 ^^^^^
 
 Graph mode belongs to :doc:`extensions <../advanced/extensions/overview>`. When an extension registers a custom
-editor for a schema, that editor is shown here; without one the mode does not appear at all.
+editor for a schema, that editor is shown here; without one the mode does not appear at all. Writing one is
+:doc:`Implementing a Schema Editor <../advanced/extensions/implementing_schema_editor>`.
 
 .. figure:: ./document_form_mode_graph_conversation_editor.png
 
