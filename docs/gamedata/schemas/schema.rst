@@ -3,6 +3,21 @@
 
 A **Schema** defines the structure of a specific type of game data entity. It acts as a blueprint that outlines the fields (properties) associated with the entity, much like columns in a database table or cells in a spreadsheet. Schemas are central to organizing and modeling structured game data.
 
+Where Schemas Are Edited
+------------------------
+
+A schema is a document like any other, edited in the same :doc:`document form <../document_form>` as game
+data. Open it with ``Actions`` → ``Design`` from a collection page, or from **Metadata** in the side menu;
+the breadcrumb marks the form as ``[Design]``.
+
+.. figure:: ./document_form_schema_advanced_mode.png
+
+The screenshot has ``Actions`` → ``Show advanced options`` turned on, which reveals the rarely used fields.
+Without it the form is shorter.
+
+Schema documents also have a ``Layout`` view mode, which arranges these properties on the document form that
+editors will use. See :doc:`Editing a Document <../document_form>`.
+
 Name
 ----
 
@@ -58,6 +73,12 @@ Properties
 ----------
 
 A list of :doc:`Properties <../properties/property>` that define the fields associated with this schema.
+Each row expands into the property's own fields, ``Add Property ...`` appends a new one, and the bin icon
+removes it.
+
+An Id property managed by the schema's **Id Generator** is marked *(auto-generated)* and offers a **Hide**
+checkbox, which keeps the field out of the document form for editors who never need to see it. The checkbox
+writes ``Display=Hidden`` into the property's :doc:`Specification <specification>`.
 
 See also
 --------
@@ -69,3 +90,4 @@ See also
 - :doc:`Specification <specification>`
 - :doc:`All Data Types <../datatypes/list>`
 - :doc:`Creating Document Type (Schema) <../creating_schema>`
+- :doc:`Editing a Document <../document_form>`
