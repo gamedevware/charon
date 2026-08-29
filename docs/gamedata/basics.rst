@@ -40,5 +40,6 @@ See also
 
 - :doc:`Creating Document Type (Schema) <creating_schema>`
 - :doc:`Filling Documents <filling_documents>`
+- :doc:`Editing a Document <document_form>`
 - :doc:`Publishing Game Data <publication>`
 - :doc:`Generating Source Code <generating_source_code>`

@@ -150,6 +150,7 @@ Further Reading
    /gamedata/basics
    /gamedata/creating_schema
    /gamedata/filling_documents
+   /gamedata/document_form
    /gamedata/inheritance
 
 .. toctree::

@@ -74,7 +74,7 @@ Extensions installed in the project add their own entries below the separator.
 Creating Documents
 ------------------
 
-``Create`` opens an empty document form for the collection's schema. Fill in the fields, press ``Save``, and
+``Create`` opens an empty :doc:`document form <document_form>` for the collection's schema. Fill in the fields, press ``Save``, and
 the new document appears in the grid.
 
 For entering many short documents in a row, stay in the grid instead. The ``+ New <Schema>`` button under the
@@ -346,6 +346,7 @@ See also
 --------
 
 - :doc:`Basic Navigation and User Interface Overview <basics>`
+- :doc:`Editing a Document <document_form>`
 - :doc:`Creating Document Type (Schema) <creating_schema>`
 - :doc:`Importing and Exporting Data <../advanced/import_export>`
 - :doc:`Validation <../advanced/validation>`
