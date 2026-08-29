@@ -108,6 +108,9 @@ Tips and Keyboard Shortcuts
   document's form. This works on references throughout the UI.
 - **Move between documents without going back** - :kbd:`Alt/⌘+←` and :kbd:`Alt/⌘+→` walk the collection
   from inside the form, filters and sorting included.
+- **Reorder or copy an embedded document** - inside a document form, drag a collection entry by its panel
+  header to move it, or hold :kbd:`Ctrl` while dropping to copy it. See
+  :doc:`Editing a Document <document_form>`.
 - The collection grid and the document form have shortcuts of their own, listed on their pages.
 
 See also

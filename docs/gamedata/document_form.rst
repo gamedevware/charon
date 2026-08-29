@@ -49,6 +49,22 @@ a date picker, a reference search box, and so on. A red asterisk after the label
 - **Embedded documents and collections** appear as expansion panels with an ``Add`` button below them, so a
   whole subtree is edited in place without leaving the document.
 
+Reordering and Reusing Embedded Documents
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The panels of an embedded collection can be dragged by their header:
+
+- **within the same collection** - the entries swap places, which is how the order of a collection is
+  changed;
+- **into another collection of the same schema** - anywhere on the form - the entry moves out of the first
+  one and into the second;
+- **holding** :kbd:`Ctrl` - the entry is copied instead of moved. The copy is a clone with its identifiers
+  cleared, so it becomes a new document rather than a second appearance of the same one.
+
+Only collections of the same schema accept each other's entries, and nothing can be dragged while the form
+is read-only. This works on the collection fields of a form; the grid on the
+:doc:`collection page <filling_documents>` is not a drop target.
+
 ----
 
 Saving
