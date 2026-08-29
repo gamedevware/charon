@@ -24,6 +24,17 @@ The heading is the document's rendered :doc:`display text <schemas/display_text_
 so it changes as you type. ``Save`` and ``Discard Changes`` sit above the fields, ``Actions`` on the right,
 and the view mode switch in the bottom right corner.
 
+Moving Between Documents
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``‹`` and ``›`` buttons next to the heading open the previous and the next document without going back
+to the collection - :kbd:`Alt/⌘+←` and :kbd:`Alt/⌘+→` do the same. They follow the order of the list the
+form was opened from, filters and sorting included, so reviewing a filtered set is a matter of pressing one
+key repeatedly.
+
+They are disabled on the first and the last document, and when the form was reached in a way that has no
+position in a list - by following a reference, for instance.
+
 ----
 
 Fields
