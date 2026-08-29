@@ -15,12 +15,12 @@ Searches for documents across all schemas using a text query with wildcard match
 .. code-block:: bash
 
   # local game data (windows), default table output
-  charon DATA SEARCH \
+  dnx dotnet-charon -- DATA SEARCH \
     --dataBase "c:\my app\gamedata.json" \
     --query Dragon
 
   # remote game data, full documents as JSON
-  charon DATA SEARCH \
+  dnx dotnet-charon -- DATA SEARCH \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --query Dragon \
     --outputFormat json \

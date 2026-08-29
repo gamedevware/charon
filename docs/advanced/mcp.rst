@@ -25,24 +25,25 @@ With the MCP server running, an AI assistant can:
 Prerequisites
 -------------
 
-Install .NET 8 or later and the ``dotnet-charon`` tool:
+Install the `.NET SDK 10 or later <https://dotnet.microsoft.com/en-us/download>`_. Nothing else is
+required - ``dnx`` downloads and runs Charon on demand:
 
 .. code-block:: bash
 
-   dotnet tool install -g dotnet-charon
-
-Verify the installation:
-
-.. code-block:: bash
-
-   charon VERSION
+   dnx dotnet-charon -- VERSION
 
 .. note::
 
-   On **.NET SDK 10+** you can skip the install step and invoke the tool on demand
-   with ``dnx dotnet-charon -- MCP``. The examples below assume ``charon`` is on
-   ``PATH``; if you prefer ``dnx``, replace the ``command`` / ``args`` pair in each
-   client config with ``"command": "dnx"`` and ``"args": ["dotnet-charon", "--", "MCP"]``.
+   On **.NET SDK 8 or 9** ``dnx`` is unavailable. Install the tool globally instead:
+
+   .. code-block:: bash
+
+      dotnet tool install -g dotnet-charon
+      charon VERSION
+
+   Then in every client config below replace ``"command": "dnx"`` /
+   ``"args": ["dotnet-charon", "--", "MCP"]`` with ``"command": "charon"`` / ``"args": ["MCP"]``.
+   See :ref:`Adding the global tool to PATH <CommandLine_Path>` if ``charon`` is not found.
 
 ----
 
@@ -53,7 +54,7 @@ Run the ``MCP`` verb with no additional arguments:
 
 .. code-block:: bash
 
-   charon MCP
+   dnx dotnet-charon -- MCP
 
 The process stays running and communicates over **stdin / stdout**.
 Do not write anything else to stdout while the server is active - the transport is
@@ -72,13 +73,13 @@ diagnostics to a file:
 
 .. code-block:: bash
 
-   charon MCP --log /tmp/charon-mcp.log
+   dnx dotnet-charon -- MCP --log /tmp/charon-mcp.log
 
 Pass ``--verbose`` to include debug-level messages:
 
 .. code-block:: bash
 
-   charon MCP --log /tmp/charon-mcp.log --verbose
+   dnx dotnet-charon -- MCP --log /tmp/charon-mcp.log --verbose
 
 Specifying ``--log con`` or ``--log out`` in MCP mode is silently ignored to protect
 the transport.
@@ -100,8 +101,8 @@ or ``%APPDATA%\Claude\claude_desktop_config.json`` on Windows):
    {
      "mcpServers": {
        "charon": {
-         "command": "charon",
-         "args": ["MCP"]
+         "command": "dnx",
+         "args": ["dotnet-charon", "--", "MCP"]
        }
      }
    }
@@ -113,15 +114,15 @@ Claude Code (CLI)
 
 .. code-block:: bash
 
-   claude mcp add --transport stdio charon -- charon MCP
+   claude mcp add --transport stdio charon -- dnx dotnet-charon -- MCP
 
 Cursor
 ^^^^^^
 
 Open **Settings → MCP → Add MCP Server** and fill in:
 
-- **Command**: ``charon``
-- **Arguments**: ``MCP``
+- **Command**: ``dnx``
+- **Arguments**: ``dotnet-charon -- MCP``
 
 VS Code (GitHub Copilot)
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -134,8 +135,8 @@ Add to your workspace ``.vscode/mcp.json``:
      "servers": {
        "charon": {
          "type": "stdio",
-         "command": "charon",
-         "args": ["MCP"]
+         "command": "dnx",
+         "args": ["dotnet-charon", "--", "MCP"]
        }
      }
    }
@@ -151,8 +152,8 @@ Add to ``~/.codeium/windsurf/mcp_config.json``
    {
      "mcpServers": {
        "charon": {
-         "command": "charon",
-         "args": ["MCP"]
+         "command": "dnx",
+         "args": ["dotnet-charon", "--", "MCP"]
        }
      }
    }
@@ -168,8 +169,8 @@ and paste the following configuration:
    {
      "mcpServers": {
        "charon": {
-         "command": "charon",
-         "args": ["MCP"]
+         "command": "dnx",
+         "args": ["dotnet-charon", "--", "MCP"]
        }
      }
    }
@@ -188,8 +189,8 @@ and add the following to ``cline_mcp_settings.json``:
    {
      "mcpServers": {
        "charon": {
-         "command": "charon",
-         "args": ["MCP"]
+         "command": "dnx",
+         "args": ["dotnet-charon", "--", "MCP"]
        }
      }
    }
@@ -204,8 +205,8 @@ Add to your Zed settings file (open with **Zed → Settings → Open Settings** 
    {
      "context_servers": {
        "charon": {
-         "command": "charon",
-         "args": ["MCP"]
+         "command": "dnx",
+         "args": ["dotnet-charon", "--", "MCP"]
        }
      }
    }
@@ -222,7 +223,7 @@ environment variable before starting the server:
 .. code-block:: bash
 
    export CHARON_API_KEY=your_api_key_here
-   charon MCP
+   dnx dotnet-charon -- MCP
 
 In client configuration files you can pass the variable directly.
 Most clients (Claude Desktop, Windsurf, Cursor, Cline, JetBrains) use the same ``env`` block:
@@ -232,8 +233,8 @@ Most clients (Claude Desktop, Windsurf, Cursor, Cline, JetBrains) use the same `
    {
      "mcpServers": {
        "charon": {
-         "command": "charon",
-         "args": ["MCP"],
+         "command": "dnx",
+         "args": ["dotnet-charon", "--", "MCP"],
          "env": {
            "CHARON_API_KEY": "your_api_key_here"
          }
@@ -249,8 +250,8 @@ For **VS Code (GitHub Copilot)**, add the ``env`` field inside the server entry 
      "servers": {
        "charon": {
          "type": "stdio",
-         "command": "charon",
-         "args": ["MCP"],
+         "command": "dnx",
+         "args": ["dotnet-charon", "--", "MCP"],
          "env": {
            "CHARON_API_KEY": "your_api_key_here"
          }
@@ -265,8 +266,8 @@ For **Zed**, add the ``env`` field inside your ``context_servers`` entry:
    {
      "context_servers": {
        "charon": {
-         "command": "charon",
-         "args": ["MCP"],
+         "command": "dnx",
+         "args": ["dotnet-charon", "--", "MCP"],
          "env": {
            "CHARON_API_KEY": "your_api_key_here"
          }
@@ -285,7 +286,7 @@ Use the following command to inspect the MCP server:
 
 .. code-block:: sh
 
-    npx @modelcontextprotocol/inspector charon MCP
+    npx @modelcontextprotocol/inspector dnx dotnet-charon -- MCP
 
 ----
 
@@ -293,7 +294,7 @@ Limitations and Remote-Only Use Case
 --------------------------------------
 
 The built-in MCP server works with **local files** and with **remote Charon service URLs** that
-are reachable from the machine running the ``charon`` process. The game data file is loaded
+are reachable from the machine running the Charon process. The game data file is loaded
 locally by the CLI tool.
 
 If you need a **fully-remote** MCP setup where Charon itself runs as a cloud service and the

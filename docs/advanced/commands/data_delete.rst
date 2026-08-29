@@ -15,13 +15,13 @@ Deletes a document. For a bulk deletion use :doc:`DATA IMPORT <data_import>` com
 .. code-block:: bash
 
   # local game data (windows)
-  charon DATA DELETE \
+  dnx dotnet-charon -- DATA DELETE \
     --dataBase "c:\my app\gamedata.json" \
     --schema Item \
     --id "Sword"
 
   # remote game data
-  charon DATA DELETE \
+  dnx dotnet-charon -- DATA DELETE \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --schema Item \
     --id "Sword" \

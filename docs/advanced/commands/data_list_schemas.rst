@@ -15,11 +15,11 @@ Lists schema definitions (document types) configured in game data.
 .. code-block:: bash
 
   # local game data (windows)
-  charon DATA LISTSCHEMAS \
+  dnx dotnet-charon -- DATA LISTSCHEMAS \
     --dataBase "c:\my app\gamedata.json"
 
   # remote game data
-  charon DATA LISTSCHEMAS \
+  dnx dotnet-charon -- DATA LISTSCHEMAS \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --credentials "<API-Key>"
 

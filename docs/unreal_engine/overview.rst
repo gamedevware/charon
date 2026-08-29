@@ -99,7 +99,10 @@ Following this, a rebuild of your project's C++ code is necessary. The final ste
 Prerequisites
 -------------
 
-The Unreal Engine plugin is written in C++ but relies on ``dotnet charon``, a .NET Core application which runs on .NET 8.
+The Unreal Engine plugin is written in C++ but relies on the ``dotnet-charon`` tool, a .NET
+application built for .NET 8. Install the
+`.NET SDK 10 or later <https://dotnet.microsoft.com/en-us/download>`_; SDK 8 is the minimum
+supported version.
 
 .. note::
 
@@ -111,18 +114,18 @@ The Unreal Engine plugin is written in C++ but relies on ``dotnet charon``, a .N
 
    .. tab-item:: Windows
 
-      1. Download and install `SDK NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      1. Download and install `.NET SDK 10+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``%PROGRAMDATA%/Charon``.
 
    .. tab-item:: MacOS
 
-      1. Download and install `SDK NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      1. Download and install `.NET SDK 10+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``/Users/<username>/.config/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 
 .. tab-item:: Linux
 
-      1. Download and install `NET SDK 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      1. Download and install `.NET SDK 10+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``/home/<username>/.config/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 

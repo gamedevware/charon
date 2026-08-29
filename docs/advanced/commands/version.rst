@@ -13,7 +13,7 @@ Gets version of ``charon`` application.
 .. code-block:: bash
 
   # Windows, Linux or OSX
-  charon VERSION
+  dnx dotnet-charon -- VERSION
   #> 2023.2.3-alpha
   
 ---------------

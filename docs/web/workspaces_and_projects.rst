@@ -83,20 +83,20 @@ All CLI ``DATA`` and ``GENERATE`` commands accept a branch URL as ``--dataBase``
 .. code-block:: bash
 
    # Export from the develop branch
-   charon DATA EXPORT \
+   dnx dotnet-charon -- DATA EXPORT \
        --dataBase "https://charon.live/view/data/MyGame/develop/" \
        --output items.json --outputFormat json \
        --credentials "$CHARON_API_KEY"
 
    # Import into a feature branch
-   charon DATA IMPORT \
+   dnx dotnet-charon -- DATA IMPORT \
        --dataBase "https://charon.live/view/data/MyGame/feature-loot/" \
        --input new_items.json --inputFormat json \
        --mode createAndUpdate \
        --credentials "$CHARON_API_KEY"
 
    # Generate code from main
-   charon GENERATE CSHARPCODE \
+   dnx dotnet-charon -- GENERATE CSHARPCODE \
        --dataBase "https://charon.live/view/data/MyGame/main/" \
        --namespace MyGame.Parameters \
        --outputDirectory ./Generated \
@@ -153,13 +153,13 @@ Three ways to trigger a push are available:
    .. code-block:: bash
 
       # Step 1 – snapshot the source branch
-      charon DATA BACKUP \
+      dnx dotnet-charon -- DATA BACKUP \
           --dataBase "https://charon.live/view/data/MyGame/dev/" \
           --output dev_snapshot.json \
           --credentials "$CHARON_API_KEY"
 
       # Step 2 – overwrite the destination branch with the snapshot
-      charon DATA RESTORE \
+      dnx dotnet-charon -- DATA RESTORE \
           --dataBase "https://charon.live/view/data/MyGame/staging/" \
           --input dev_snapshot.json \
           --credentials "$CHARON_API_KEY"
@@ -229,13 +229,13 @@ target.
 .. code-block:: bash
 
    # Compute what changed between dev and a feature branch
-   charon DATA CREATEPATCH \
+   dnx dotnet-charon -- DATA CREATEPATCH \
        --dataBase1 "https://charon.live/view/data/MyGame/dev/" \
        --dataBase2 "https://charon.live/view/data/MyGame/feature-loot/" \
        --output loot.patch.json --credentials "$CHARON_API_KEY"
 
    # Apply only those changes to the target branch
-   charon DATA APPLYPATCH \
+   dnx dotnet-charon -- DATA APPLYPATCH \
        --dataBase "https://charon.live/view/data/MyGame/dev/" \
        --input loot.patch.json --credentials "$CHARON_API_KEY"
 
@@ -254,7 +254,7 @@ Any branch can be downloaded as a standalone file using ``DATA BACKUP``:
 
 .. code-block:: bash
 
-   charon DATA BACKUP \
+   dnx dotnet-charon -- DATA BACKUP \
        --dataBase "https://charon.live/view/data/MyGame/main/" \
        --output myGame_main.json \
        --credentials "$CHARON_API_KEY"

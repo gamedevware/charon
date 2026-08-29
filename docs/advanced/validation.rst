@@ -113,13 +113,13 @@ opens its errors view, described above.
 
 .. code-block:: bash
 
-   charon DATA EXAMINE --dataBase "gamedata.json"
+   dnx dotnet-charon -- DATA EXAMINE --dataBase "gamedata.json"
 
 ``DATA VALIDATE`` returns the individual errors behind those counts:
 
 .. code-block:: bash
 
-   charon DATA VALIDATE \
+   dnx dotnet-charon -- DATA VALIDATE \
      --dataBase "gamedata.json" \
      --validationOptions checkRequirements checkFormat checkUniqueness \
                          checkReferences checkSpecification checkConstraints checkTranslations \
@@ -180,7 +180,7 @@ Flags are combined to form a validation profile. Pass multiple flags as space-se
 
 .. code-block:: bash
 
-   charon DATA VALIDATE --dataBase gamedata.json \
+   dnx dotnet-charon -- DATA VALIDATE --dataBase gamedata.json \
        --validationOptions checkRequirements checkReferences checkFormat
 
 Integrity check flags
@@ -283,13 +283,13 @@ This design makes it easy to use validation in CI:
 .. code-block:: bash
 
    # Fail the pipeline if there are any integrity errors
-   charon DATA VALIDATE --dataBase gamedata.json \
+   dnx dotnet-charon -- DATA VALIDATE --dataBase gamedata.json \
        --validationOptions checkRequirements checkReferences checkFormat \
        --output err
    # Exit code 1  →  CI step fails
 
    # Write report to a file without failing the step
-   charon DATA VALIDATE --dataBase gamedata.json \
+   dnx dotnet-charon -- DATA VALIDATE --dataBase gamedata.json \
        --output validation_report.json --outputFormat json
    # Exit code 0  →  CI step passes; inspect the file separately
 
@@ -303,7 +303,7 @@ Skip all checks (import prototype data)
 
 .. code-block:: bash
 
-   charon DATA IMPORT --dataBase gamedata.json --input prototype.json \
+   dnx dotnet-charon -- DATA IMPORT --dataBase gamedata.json --input prototype.json \
        --validationOptions none
 
 The UI equivalent is the *Ignore consistency errors in imported data* checkbox in the import wizard.
@@ -313,7 +313,7 @@ Auto-repair + full check on import
 
 .. code-block:: bash
 
-   charon DATA IMPORT --dataBase gamedata.json --input data.json \
+   dnx dotnet-charon -- DATA IMPORT --dataBase gamedata.json --input data.json \
        --validationOptions repair deduplicateIds repairRequiredWithDefaults \
                           checkRequirements checkReferences checkFormat
 
@@ -322,7 +322,7 @@ Fix union conflicts after schema refactor
 
 .. code-block:: bash
 
-   charon DATA IMPORT --dataBase gamedata.json --input data.json \
+   dnx dotnet-charon -- DATA IMPORT --dataBase gamedata.json --input data.json \
        --validationOptions repair resolveConflictingUnions
 
 Check for untranslated strings
@@ -332,7 +332,7 @@ Reproduces what the publication review counts as *missed translations*:
 
 .. code-block:: bash
 
-   charon DATA VALIDATE --dataBase gamedata.json \
+   dnx dotnet-charon -- DATA VALIDATE --dataBase gamedata.json \
        --validationOptions checkTranslations --output out --outputFormat json
 
 Gate a build on a clean publication review
@@ -340,7 +340,7 @@ Gate a build on a clean publication review
 
 .. code-block:: bash
 
-   charon DATA VALIDATE --dataBase gamedata.json \
+   dnx dotnet-charon -- DATA VALIDATE --dataBase gamedata.json \
        --validationOptions checkRequirements checkFormat checkUniqueness \
                            checkReferences checkSpecification checkConstraints \
        --output err

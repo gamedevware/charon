@@ -15,14 +15,14 @@ Exports documents into a file.
 .. code-block:: bash
 
   # local game data (windows)
-  charon DATA EXPORT \
+  dnx dotnet-charon -- DATA EXPORT \
     --dataBase "c:\my app\gamedata.json" \
     --schemas Character \
     --output "c:\my app\characters.json" \
     --outputFormat json
 
   # remote game data
-  charon DATA EXPORT \
+  dnx dotnet-charon -- DATA EXPORT \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --schemas Character \
     --output "./characters.json" \
@@ -256,7 +256,7 @@ To use `yq` with exported JSON data:
    .. code-block:: bash
    
      # Export data
-     charon DATA EXPORT \
+     dnx dotnet-charon -- DATA EXPORT \
        --dataBase gamedata.json \
        --schemas Character \
        --output characters.json
@@ -268,7 +268,7 @@ To use `yq` with exported JSON data:
      yq -i '.Collections.Character[0].level = 10' characters.json
 
      # Import data back
-     charon DATA IMPORT \
+     dnx dotnet-charon -- DATA IMPORT \
        --dataBase gamedata.json \
        --schemas Character \
        --input characters.json \

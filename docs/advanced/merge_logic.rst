@@ -216,7 +216,7 @@ error.
 
   .. code-block:: bash
 
-     charon DATA APPLYPATCH \
+     dnx dotnet-charon -- DATA APPLYPATCH \
          --dataBase target.json \
          --input changes.patch.json \
          --validationOptions repair checkRequirements checkReferences

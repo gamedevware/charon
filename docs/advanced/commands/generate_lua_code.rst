@@ -17,12 +17,12 @@ By default, this command does not delete previously generated files. Use the ``-
 .. code-block:: bash
 
   # local game data (windows)
-  charon GENERATE LUA \
+  dnx dotnet-charon -- GENERATE LUA \
     --dataBase "c:\my app\gamedata.json" \
     --outputDirectory "c:\my app\scripts"
 
   # remote game data
-  charon GENERATE LUA \
+  dnx dotnet-charon -- GENERATE LUA \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --outputDirectory "./scripts" \
     --credentials "<API-Key>"

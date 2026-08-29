@@ -15,13 +15,13 @@ Seaches for a document.
 .. code-block:: bash
 
   # local game data (windows)
-  charon DATA FIND \
+  dnx dotnet-charon -- DATA FIND \
     --dataBase "c:\my app\gamedata.json" \
     --schema Character \
     --id John
 
   # remote game data
-  charon DATA FIND \
+  dnx dotnet-charon -- DATA FIND \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --schema Character \
     --id John \

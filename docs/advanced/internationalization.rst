@@ -52,7 +52,7 @@ List the configured languages (the primary language always comes first):
 
 .. code-block:: bash
 
-   charon DATA I18N LANGUAGES \
+   dnx dotnet-charon -- DATA I18N LANGUAGES \
      --dataBase "gamedata.json" \
      --output out --outputFormat table
 
@@ -60,7 +60,7 @@ Add target languages:
 
 .. code-block:: bash
 
-   charon DATA I18N ADDLANGUAGE \
+   dnx dotnet-charon -- DATA I18N ADDLANGUAGE \
      --dataBase "gamedata.json" \
      --languages "es-ES" "fr-FR"
 
@@ -127,7 +127,7 @@ Review the choices and start the export. The resulting file is downloaded throug
 
 .. code-block:: bash
 
-   charon DATA I18N EXPORT \
+   dnx dotnet-charon -- DATA I18N EXPORT \
      --dataBase "gamedata.json" \
      --sourceLanguage en-US \
      --targetLanguage fr \
@@ -194,7 +194,7 @@ Review and run the import.
 
 .. code-block:: bash
 
-   charon DATA I18N IMPORT \
+   dnx dotnet-charon -- DATA I18N IMPORT \
      --dataBase "gamedata.json" \
      --input "en_fr_translated.xliff" \
      --inputFormat xliff \
@@ -272,7 +272,7 @@ The standard human-translation workflow with Charon:
 
    .. code-block:: bash
 
-      charon DATA I18N EXPORT \
+      dnx dotnet-charon -- DATA I18N EXPORT \
           --dataBase "gamedata.json" \
           --sourceLanguage en-US --targetLanguage fr \
           --output en_fr.xliff --outputFormat xliff
@@ -284,7 +284,7 @@ The standard human-translation workflow with Charon:
 
    .. code-block:: bash
 
-      charon DATA I18N IMPORT \
+      dnx dotnet-charon -- DATA I18N IMPORT \
           --dataBase "gamedata.json" \
           --input en_fr_translated.xliff \
           --languages fr

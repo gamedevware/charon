@@ -87,9 +87,11 @@ Getting Started
 ===============
 
 Prerequisites
-------------
+-------------
 
-Unity plugin uses ``dotnet charon`` tool, which is a .NET Core application built for .NET 8.
+Unity plugin uses the ``dotnet-charon`` tool, a .NET application built for .NET 8. Install the
+`.NET SDK 10 or later <https://dotnet.microsoft.com/en-us/download>`_; SDK 8 is the minimum
+supported version.
 
 .. note::
 
@@ -104,18 +106,18 @@ Unity plugin uses ``dotnet charon`` tool, which is a .NET Core application built
 
    .. tab-item:: Windows
 
-      1. Download and install `NET SDK 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      1. Download and install `.NET SDK 10+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``%PROGRAMDATA%/Charon``.
 
    .. tab-item:: MacOS
 
-      1. Download and install `NET SDK 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      1. Download and install `.NET SDK 10+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``/Users/<username>/.config/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 
    .. tab-item:: Linux
 
-      1. Download and install `NET SDK 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      1. Download and install `.NET SDK 10+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``/usr/share/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 

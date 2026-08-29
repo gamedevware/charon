@@ -17,12 +17,12 @@ By default, this command does not delete previously generated files. Use the ``-
 .. code-block:: bash
 
   # local game data (windows)
-  charon GENERATE UECPPCODE \
+  dnx dotnet-charon -- GENERATE UECPPCODE \
     --dataBase "c:\My Project\Content\gamedata.json" \
     --outputDirectory "c:\My Project\Source\Gamedata"
 
   # remote game data
-  charon GENERATE UECPPCODE \
+  dnx dotnet-charon -- GENERATE UECPPCODE \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --outputDirectory "./My Project/Source/Gamedata" \
     --credentials "<API-Key>"

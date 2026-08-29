@@ -122,7 +122,7 @@ file can accidentally damage them, which breaks validation for everything define
    - ``ProjectSettings`` - id ``55a4f32faca22e191098f3d9``
    - ``SchemaProperty`` - id ``d40d8eb1a23248b69b252eea``
 
-**Fix:** Create a new, empty game data file (e.g. via your engine plugin or ``charon INIT``),
+**Fix:** Create a new, empty game data file (e.g. via your engine plugin or ``dnx dotnet-charon -- INIT``),
 open both files in a text editor, and copy the three system schema documents from the fresh file
 into your damaged one, replacing the broken versions. Make a backup first.
 
@@ -134,7 +134,8 @@ into your damaged one, replacing the broken versions. Make a backup first.
 **Symptom:** The engine plugin fails to set up the game data editor and complains about a missing
 .NET installation.
 
-Charon is a .NET tool and requires the **.NET 8 SDK or later**. Download it from
+Charon is a .NET tool and requires the **.NET SDK 10 or later** (SDK 8 is the minimum supported,
+but it does not provide ``dnx``). Download it from
 `dotnet.microsoft.com <https://dotnet.microsoft.com/download>`_ and verify:
 
 .. code-block:: bash

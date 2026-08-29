@@ -15,14 +15,14 @@ Scans a folder for game data files and returns discovered paths with their colle
 .. code-block:: bash
 
   # scan a folder tree, JSON output (default)
-  charon DATA FINDFILES \
+  dnx dotnet-charon -- DATA FINDFILES \
     --folder "c:\my app\game-content"
 
   # scan a folder tree, one path per line for shell piping
-  charon DATA FINDFILES \
+  dnx dotnet-charon -- DATA FINDFILES \
     --folder "c:\my app\game-content" \
     --outputFormat list \
-    --output out | xargs -I{} charon DATA EXAMINE --dataBase "{}"
+    --output out | xargs -I{} dnx dotnet-charon -- DATA EXAMINE --dataBase "{}"
 
 Use this command to bootstrap work in an unfamiliar directory tree - "what game data lives here?" - before
 picking a file to pass to :doc:`DATA EXAMINE <data_examine>`, :doc:`DATA LIST <data_list>`, or

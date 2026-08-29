@@ -46,7 +46,7 @@ Creating a Patch
 
 .. code-block:: bash
 
-   charon DATA CREATEPATCH \
+   dnx dotnet-charon -- DATA CREATEPATCH \
        --dataBase1 gamedata_before.json \
        --dataBase2 gamedata_after.json \
        --output    changes.patch.json \
@@ -85,7 +85,7 @@ Applying a Patch
 
 .. code-block:: bash
 
-   charon DATA APPLYPATCH \
+   dnx dotnet-charon -- DATA APPLYPATCH \
        --dataBase target.json \
        --input    changes.patch.json \
        --inputFormat json
@@ -98,7 +98,7 @@ Validation on apply
 
 .. code-block:: bash
 
-   charon DATA APPLYPATCH \
+   dnx dotnet-charon -- DATA APPLYPATCH \
        --dataBase target.json \
        --input changes.patch.json \
        --validationOptions repair checkRequirements checkReferences
@@ -110,7 +110,7 @@ Preview what the patch would do without committing any changes:
 
 .. code-block:: bash
 
-   charon DATA APPLYPATCH \
+   dnx dotnet-charon -- DATA APPLYPATCH \
        --dataBase target.json \
        --input changes.patch.json \
        --dryRun
@@ -123,12 +123,12 @@ End-to-End Example: Feature Branch Merge
 .. code-block:: bash
 
    # 1. Backup the stable main branch
-   charon DATA BACKUP \
+   dnx dotnet-charon -- DATA BACKUP \
        --dataBase "https://charon.live/view/data/MyGame/main/" \
        --output main.zip --credentials "$CHARON_KEY"
 
    # 2. Backup the feature branch
-   charon DATA BACKUP \
+   dnx dotnet-charon -- DATA BACKUP \
        --dataBase "https://charon.live/view/data/MyGame/feature-loot/" \
        --output feature.zip --credentials "$CHARON_KEY"
 
@@ -136,7 +136,7 @@ End-to-End Example: Feature Branch Merge
    unzip main.zip -d main/ && unzip feature.zip -d feature/
 
    # 4. Compute the diff
-   charon DATA CREATEPATCH \
+   dnx dotnet-charon -- DATA CREATEPATCH \
        --dataBase1 main/gamedata.json \
        --dataBase2 feature/gamedata.json \
        --output loot_changes.patch.json
@@ -144,7 +144,7 @@ End-to-End Example: Feature Branch Merge
    # 5. (Optional) review the patch in a text editor or commit it to version control
 
    # 6. Apply to a staging branch
-   charon DATA APPLYPATCH \
+   dnx dotnet-charon -- DATA APPLYPATCH \
        --dataBase staging/gamedata.json \
        --input loot_changes.patch.json \
        --validationOptions repair checkRequirements checkReferences

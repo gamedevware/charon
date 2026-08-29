@@ -15,11 +15,11 @@ Returns statistics about game data: document and validation error counts per sch
 .. code-block:: bash
 
   # local game data (windows)
-  charon DATA EXAMINE \
+  dnx dotnet-charon -- DATA EXAMINE \
     --dataBase "c:\my app\gamedata.json"
 
   # remote game data
-  charon DATA EXAMINE \
+  dnx dotnet-charon -- DATA EXAMINE \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --credentials "<API-Key>"
 

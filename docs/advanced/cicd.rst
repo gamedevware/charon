@@ -14,8 +14,8 @@ integration or deployment pipeline.
 Installation in CI
 ------------------
 
-Install the ``dotnet-charon`` tool as part of your pipeline setup step. The tool requires the
-.NET 8 (or later) runtime to be present.
+Charon requires the **.NET SDK 10 or later** on the runner. With SDK 10 there is no install step at
+all - ``dnx`` fetches and runs the tool on demand, and NuGet caches it for the rest of the job.
 
 .. tab-set::
 
@@ -24,40 +24,52 @@ Install the ``dotnet-charon`` tool as part of your pipeline setup step. The tool
       .. code-block:: yaml
 
          - name: Setup .NET
-           uses: actions/setup-dotnet@v4
+           uses: actions/setup-dotnet@v5
            with:
-             dotnet-version: '8.x'
+             dotnet-version: '10.x'
 
-         - name: Install Charon
-           run: dotnet tool install -g dotnet-charon
+         - name: Check Charon
+           run: dnx dotnet-charon -- VERSION
 
    .. tab-item:: GitLab CI
 
       .. code-block:: yaml
 
          before_script:
-           - apt-get install -y dotnet-sdk-8.0
-           - dotnet tool install -g dotnet-charon
-           - export PATH="$PATH:$HOME/.dotnet/tools"
+           - apt-get install -y dotnet-sdk-10.0
+           - dnx dotnet-charon -- VERSION
 
    .. tab-item:: Shell script (any runner)
 
       .. code-block:: bash
 
-         dotnet tool install -g dotnet-charon
-         export PATH="$PATH:$HOME/.dotnet/tools"
-         charon VERSION
+         dnx dotnet-charon -- VERSION
+
+If your runner is pinned to .NET SDK 8 or 9, ``dnx`` is unavailable. Install the tool globally instead
+and call it as ``charon``:
+
+.. code-block:: bash
+
+   dotnet tool install -g dotnet-charon
+   export PATH="$PATH:$HOME/.dotnet/tools"
+   charon VERSION
 
 ----
 
 Version Pinning and Compatibility
 ----------------------------------
 
-``dotnet tool install`` without a version always fetches the latest release. For reproducible
+``dnx dotnet-charon`` without a version always fetches the latest release. For reproducible
 builds, pin the tool version.
 
-**Local tools manifest (recommended).** Create a manifest once and commit
-``.config/dotnet-tools.json`` to the repository:
+**On-demand with a pinned version (recommended, .NET SDK 10+).** Nothing to install or commit:
+
+.. code-block:: bash
+
+   dnx dotnet-charon@2026.3.4 -- DATA VALIDATE --dataBase gamedata.json ...
+
+**Local tools manifest.** Create a manifest once and commit ``.config/dotnet-tools.json`` to the
+repository:
 
 .. code-block:: bash
 
@@ -71,17 +83,12 @@ CI then restores the exact pinned version and invokes the tool through ``dotnet`
    dotnet tool restore
    dotnet charon DATA VALIDATE --dataBase gamedata.json ...
 
-**On-demand with a pinned version (.NET 10 SDK):**
-
-.. code-block:: bash
-
-   dnx dotnet-charon@2026.3.4 -- DATA VALIDATE --dataBase gamedata.json ...
-
 **Global install with a pinned version:**
 
 .. code-block:: bash
 
    dotnet tool install -g dotnet-charon --version 2026.3.4
+   charon DATA VALIDATE --dataBase gamedata.json ...
 
 Tool version vs. format version
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -120,7 +127,7 @@ Store it as a CI secret; never hard-code it in pipeline files.
 
    # Shell - set before running any charon command
    export CHARON_API_KEY="your-api-key-here"
-   charon DATA EXPORT --dataBase "https://charon.live/view/data/MyGame/main/" ...
+   dnx dotnet-charon -- DATA EXPORT --dataBase "https://charon.live/view/data/MyGame/main/" ...
 
 Alternatively, pass credentials explicitly with ``--credentials``. The environment variable
 takes precedence when both are supplied.
@@ -159,14 +166,13 @@ Validate on every pull request
        steps:
          - uses: actions/checkout@v4
 
-         - uses: actions/setup-dotnet@v4
-           with: { dotnet-version: '8.x' }
+         - uses: actions/setup-dotnet@v5
+           with: { dotnet-version: '10.x' }
 
-         - run: dotnet tool install -g dotnet-charon
 
          - name: Validate integrity
            run: |
-             charon DATA VALIDATE \
+             dnx dotnet-charon -- DATA VALIDATE \
                --dataBase gamedata.json \
                --validationOptions checkRequirements checkReferences checkFormat \
                --output err
@@ -192,26 +198,25 @@ Export and publish on tag
 
        steps:
          - uses: actions/checkout@v4
-         - uses: actions/setup-dotnet@v4
-           with: { dotnet-version: '8.x' }
-         - run: dotnet tool install -g dotnet-charon
+         - uses: actions/setup-dotnet@v5
+           with: { dotnet-version: '10.x' }
 
          - name: Backup before publish
            run: |
-             charon DATA BACKUP \
+             dnx dotnet-charon -- DATA BACKUP \
                --dataBase "https://charon.live/view/data/MyGame/main/" \
                --output backup_${{ github.ref_name }}.zip
 
          - name: Validate
            run: |
-             charon DATA VALIDATE \
+             dnx dotnet-charon -- DATA VALIDATE \
                --dataBase "https://charon.live/view/data/MyGame/main/" \
                --validationOptions checkRequirements checkReferences \
                --output err
 
          - name: Export published data (JSON)
            run: |
-             charon DATA EXPORT \
+             dnx dotnet-charon -- DATA EXPORT \
                --dataBase "https://charon.live/view/data/MyGame/main/" \
                --mode publication \
                --output StreamingAssets/gamedata.json \
@@ -219,7 +224,7 @@ Export and publish on tag
 
          - name: Generate C# source code
            run: |
-             charon GENERATE CSHARPCODE \
+             dnx dotnet-charon -- GENERATE CSHARPCODE \
                --dataBase "https://charon.live/view/data/MyGame/main/" \
                --namespace MyGame.Parameters \
                --outputDirectory Assets/Scripts/Generated \
@@ -239,12 +244,12 @@ Apply a patch on merge
 .. code-block:: bash
 
    # In a merge script or CI job
-   charon DATA APPLYPATCH \
+   dnx dotnet-charon -- DATA APPLYPATCH \
        --dataBase gamedata.json \
        --input feature_changes.patch.json \
        --validationOptions repair checkRequirements checkReferences
 
-   charon DATA VALIDATE \
+   dnx dotnet-charon -- DATA VALIDATE \
        --dataBase gamedata.json \
        --validationOptions checkRequirements checkReferences checkFormat \
        --output err   # Fail CI if post-merge data is invalid
@@ -255,7 +260,7 @@ Export translation files for a localization vendor
 .. code-block:: bash
 
    for lang in de fr ja ko; do
-     charon DATA I18N EXPORT \
+     dnx dotnet-charon -- DATA I18N EXPORT \
        --dataBase gamedata.json \
        --sourceLanguage en \
        --targetLanguage "$lang" \
@@ -269,12 +274,12 @@ Import translated files from a vendor
 .. code-block:: bash
 
    for file in translations/en_*.xliff; do
-     charon DATA I18N IMPORT \
+     dnx dotnet-charon -- DATA I18N IMPORT \
        --dataBase gamedata.json \
        --input "$file" \
        --dryRun   # Preview first
 
-     charon DATA I18N IMPORT \
+     dnx dotnet-charon -- DATA I18N IMPORT \
        --dataBase gamedata.json \
        --input "$file"
    done

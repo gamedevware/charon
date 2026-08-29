@@ -15,13 +15,13 @@ Get a list of supported translation languages. Primary language always shows up 
 .. code-block:: bash
 
   # local game data (windows)
-  charon DATA I18N LANGUAGES \
+  dnx dotnet-charon -- DATA I18N LANGUAGES \
     --dataBase "c:\my app\gamedata.json" \
     --output out \
     --outputFormat table
 
   # remote game data
-  charon DATA I18N LANGUAGES \
+  dnx dotnet-charon -- DATA I18N LANGUAGES \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --output out \
     --outputFormat table \

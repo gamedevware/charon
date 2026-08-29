@@ -15,7 +15,7 @@ Starts Charon in standalone mode for specified game data. Path to game data coul
 .. code-block:: bash
 
   # local game data (windows)
-  charon SERVER START \
+  dnx dotnet-charon -- SERVER START \
     --dataBase "c:\my app\gamedata.json" \
     --port 8080 \
     --launchDefaultBrowser

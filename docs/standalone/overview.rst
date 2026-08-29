@@ -14,7 +14,7 @@ For developers who require maximum control over their environment, Charon offers
 1. What is it?
 --------------
 
-The standalone version is a **cross-platform .NET 8 CLI application**. It operates as a dual-purpose tool:
+The standalone version is a **cross-platform .NET CLI application**. It operates as a dual-purpose tool:
 
 * **Headless CLI:** A powerful command-line interface for data manipulation and code generation.
 * **Local HTTP Server:** By launching a local server, it provides a high-performance **browser-based UI** for visual data modeling and editing without requiring an internet connection.
@@ -43,26 +43,29 @@ This version is tailored for **advanced users and technical leads** who are comf
   :alt: Charon editor UI
 
 Prerequisites
-============
+=============
 
-Standalone application uses `dotnet-charon <https://www.nuget.org/packages/dotnet-charon>` tool, which is a .NET Core application built for .NET 8.
+Standalone application uses the `dotnet-charon <https://www.nuget.org/packages/dotnet-charon>`_ tool,
+which is distributed as a .NET tool. The `.NET SDK 10 or later <https://dotnet.microsoft.com/en-us/download>`_
+is recommended - it provides ``dnx``, which runs Charon without installing anything. The .NET SDK 8 and 9
+are also supported, but require an explicit install (see :ref:`Installation <CommandLine_Installation>`).
 
 .. tab-set::
 
    .. tab-item:: Windows
 
-      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      1. Download and install the `.NET SDK 10+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``%PROGRAMDATA%/Charon``.
 
    .. tab-item:: MacOS
 
-      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      1. Download and install the `.NET SDK 10+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``/Users/<username>/.config/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 
    .. tab-item:: Linux
 
-      1. Download and install `NET 8+ <https://dotnet.microsoft.com/en-us/download>`_.
+      1. Download and install the `.NET SDK 10+ <https://dotnet.microsoft.com/en-us/download>`_.
       2. Make sure you have write access to ``/home/<username>/.config/Charon``.
       3. Make sure ``dotnet`` is available from ``$PATH``.
 
@@ -70,48 +73,25 @@ Standalone application uses `dotnet-charon <https://www.nuget.org/packages/dotne
 
 .. code-block:: bash
 
-    # check for dotnet already installed
-    dotnet --list-runtimes
+    # check which SDKs are installed
+    dotnet --list-sdks
 
 .. code-block:: bash
 
-    # output for dotnet --list-runtimes
-    Microsoft.AspNetCore.App 6.0.36 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
-    Microsoft.AspNetCore.App 7.0.20 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
-    Microsoft.AspNetCore.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
-    Microsoft.AspNetCore.App 9.0.0 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
-    Microsoft.NETCore.App 6.0.36 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
-    Microsoft.NETCore.App 7.0.20 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
-    Microsoft.NETCore.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App] # <- this one is fine
-    Microsoft.NETCore.App 9.0.0 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App] # <- this one too
+    # output for dotnet --list-sdks
+    8.0.404 [C:\Program Files\dotnet\sdk]   # supported, no dnx
+    10.0.100 [C:\Program Files\dotnet\sdk]  # <- this one is what you want
 
 Installation and Updates
 ========================
 
-You can use just two commands to install the command line tool, or use a bootstrap script that will check dependencies and installed software, and then download and run the tool for you.
+Either run the tool on demand with ``dnx``, install it once as a global tool, or use a bootstrap
+script that checks dependencies, then downloads and runs the tool for you.
 
-dotnet tool (recommended)
------------
+dnx (recommended, .NET SDK 10+)
+-------------------------------
 
-.. code-block:: bash
-
-  # install charon globally (run it once)
-  dotnet tool install -g dotnet-charon
-
-  # update global tool
-  dotnet tool update -g dotnet-charon
-
-  # make empty game data file
-   charon INIT ./gamedata.json
-
-  # run editor
-   charon ./gamedata.json
-
-dnx (.NET SDK 10+, no install)
-------------------------------
-
-If you are on .NET SDK 10 or later and want to try Charon without installing it globally,
-use ``dnx`` to download and run the tool on demand:
+Nothing to install - ``dnx`` downloads and runs the tool on demand:
 
 .. code-block:: bash
 
@@ -122,8 +102,29 @@ use ``dnx`` to download and run the tool on demand:
   dnx dotnet-charon -- ./gamedata.json
 
 The tool is cached by NuGet after the first run, so subsequent invocations start quickly.
-This is a good fit for trying Charon or for one-off scripts; for daily use prefer the
-``dotnet tool install`` option above so you can call ``charon`` directly.
+
+dotnet tool (.NET SDK 8+)
+-------------------------
+
+On .NET SDK 8 or 9 ``dnx`` is unavailable. Install the tool globally instead, which also lets you
+type ``charon`` directly:
+
+.. code-block:: bash
+
+  # install charon globally (run it once)
+  dotnet tool install -g dotnet-charon
+
+  # update global tool
+  dotnet tool update -g dotnet-charon
+
+  # make empty game data file
+  charon INIT ./gamedata.json
+
+  # run editor
+  charon ./gamedata.json
+
+On macOS and Linux the ``charon`` command only works once ``$HOME/.dotnet/tools`` is on your
+``PATH`` - see :ref:`Adding the global tool to PATH <CommandLine_Path>`.
 
 .. youtube:: TOBmJEkNb2U
    :width: 640
@@ -132,44 +133,44 @@ This is a good fit for trying Charon or for one-off scripts; for daily use prefe
 Bootstrap Script
 ----------------
 
-Two bootstrap scripts which download and run latest version of Charon on your PC:  
+Two bootstrap scripts which download and run the latest version of Charon on your PC:
 
-  - ``RunCharon.bat`` for Windows  
-  - ``RunCharon.sh`` for Linux or MacOS  
+  - ``RunCharon.bat`` for Windows
+  - ``RunCharon.sh`` for Linux or MacOS
 
 .. warning::
-    Bootstrap scripts require **.NET SDK️** to run, not only bare .NET Runtime.
+    Bootstrap scripts require the **.NET SDK** to run, not only the bare .NET Runtime.
 
 Both scripts require the `dotnet <https://dotnet.microsoft.com/en-us/download/dotnet>`_ tool to be available in ``PATH``.
 
-  1. Download one of the scripts into a local folder ``charon``.  
-      a) `RunCharon.bat (Windows) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat>`_  
-      b) `RunCharon.sh (Linux, MacOS) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.sh>`_  
-  2. Navigate to the local folder ``cd charon``. 
-  3. Run ``RunCharon.bat`` or ``RunCharon.sh`` depending on your OS.  
-  4. Wait for the script to automatically download and upgrade ``dotnet-charon tool``, and display help text.  
-  5. Create an empty file named ``RunCharon.bat INIT gamedata.json``  
-  6. Run in standalone mode: ``RunCharon.bat gamedata.json``  
+  1. Download the script for your OS into a local folder ``Charon``:
 
-Or use following bootstrap script:  
+      a) `RunCharon.bat (Windows) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat>`_
+      b) `RunCharon.sh (Linux, MacOS) <https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.sh>`_
+
+  2. Navigate into that folder with ``cd Charon``.
+  3. Run the script with no arguments. It downloads and upgrades the ``dotnet-charon`` tool, then displays the help text.
+  4. Create an empty game data file: ``.\RunCharon.bat INIT gamedata.json`` (Windows) or ``./RunCharon.sh INIT gamedata.json``.
+  5. Run in standalone mode: ``.\RunCharon.bat gamedata.json`` (Windows) or ``./RunCharon.sh gamedata.json``.
+
+Or copy the whole sequence:
 
 .. tab-set::
 
    .. tab-item:: Windows
 
-      .. code-block:: bash
-  
-        rem ##### Load and run bootstrap script #####
+      .. code-block:: bat
 
-        @echo off
+        REM ##### Load and run bootstrap script #####
+
         mkdir Charon
         cd Charon
         curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.bat
-        ./RunCharon.bat INIT ./gamedata.json
-        
-        rem ##### Start editor #####
+        .\RunCharon.bat INIT .\gamedata.json
 
-        ./RunCharon.bat ./gamedata.json --log out
+        REM ##### Start editor #####
+
+        .\RunCharon.bat .\gamedata.json --log out
 
    .. tab-item:: Linux, MacOS
 
@@ -182,7 +183,7 @@ Or use following bootstrap script:
         curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.sh
         chmod +x RunCharon.sh
         ./RunCharon.sh INIT ./gamedata.json
-        
+
         ##### Start editor #####
 
         ./RunCharon.sh ./gamedata.json --log out
@@ -199,7 +200,7 @@ The editor will automatically fill the empty file with the initial data.
 
       .. code-block:: bash
 
-        # charon INIT .\gamedata.json 
+        # dnx dotnet-charon -- INIT .\gamedata.json 
         # or
         # copy /y NUL .\gamedata.json >NUL
         
@@ -209,7 +210,7 @@ The editor will automatically fill the empty file with the initial data.
 
       .. code-block:: bash
 
-        # charon INIT ./gamedata.json 
+        # dnx dotnet-charon -- INIT ./gamedata.json 
         # or
         # touch ./gamedata.json 
         

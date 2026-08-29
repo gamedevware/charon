@@ -15,7 +15,7 @@ Export text that can be translated into a file.
 .. code-block:: bash
 
   # local game data (windows)
-  charon DATA I18N EXPORT \
+  dnx dotnet-charon -- DATA I18N EXPORT \
     --dataBase "c:\my app\gamedata.json" \
     --schemas Character \
     --sourceLanguage en-US \
@@ -24,7 +24,7 @@ Export text that can be translated into a file.
     --outputFormat xliff
 
   # remote game data
-  charon DATA I18N EXPORT \
+  dnx dotnet-charon -- DATA I18N EXPORT \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --schemas Character \
     --sourceLanguage en-US \

@@ -189,11 +189,11 @@ used with :doc:`DATA VALIDATE <../../advanced/commands/data_validate>` or
 .. code-block:: bash
 
    # repair in-place
-   charon DATA VALIDATE --dataBase "gamedata.json" \
+   dnx dotnet-charon -- DATA VALIDATE --dataBase "gamedata.json" \
        --validationOptions repair resolveConflictingUnions
 
    # repair while importing
-   charon DATA IMPORT --dataBase "gamedata.json" --input "./patch.json" \
+   dnx dotnet-charon -- DATA IMPORT --dataBase "gamedata.json" --input "./patch.json" \
        --validationOptions repair resolveConflictingUnions
 
 Repair behaviour:

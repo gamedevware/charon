@@ -17,12 +17,12 @@ By default, this command does not delete previously generated files. Use the ``-
 .. code-block:: bash
 
   # local game data (windows)
-  charon GENERATE TYPESCRIPTCODE \
+  dnx dotnet-charon -- GENERATE TYPESCRIPTCODE \
     --dataBase "c:\my app\gamedata.json" \
     --outputDirectory "c:\my app\scripts"
 
   # remote game data
-  charon GENERATE TYPESCRIPTCODE \
+  dnx dotnet-charon -- GENERATE TYPESCRIPTCODE \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --outputDirectory "./scripts" \
     --credentials "<API-Key>"

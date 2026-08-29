@@ -17,13 +17,13 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
 .. code-block:: bash
 
   # local game data (windows)
-  charon DATA DELETE \
+  dnx dotnet-charon -- DATA DELETE \
     --dataBase "c:\my app\gamedata.json" \
     --schema Item \
     --id "Sword"
 
   # remote game data
-  charon DATA DELETE \
+  dnx dotnet-charon -- DATA DELETE \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --schema Item \
     --id "Sword" \

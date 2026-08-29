@@ -17,10 +17,10 @@ Creating a Backup
 .. code-block:: bash
 
    # Local file
-   charon DATA BACKUP --dataBase gamedata.json --output backup.msgpack
+   dnx dotnet-charon -- DATA BACKUP --dataBase gamedata.json --output backup.msgpack
 
    # Remote project
-   charon DATA BACKUP \
+   dnx dotnet-charon -- DATA BACKUP \
        --dataBase "https://charon.live/view/data/MyGame/develop/" \
        --output backup.msgpack \
        --credentials "$CHARON_API_KEY"
@@ -47,10 +47,10 @@ Restoring from a Backup
 .. code-block:: bash
 
    # Local file
-   charon DATA RESTORE --dataBase gamedata.json --input backup.msgpack
+   dnx dotnet-charon -- DATA RESTORE --dataBase gamedata.json --input backup.msgpack
 
    # Remote project
-   charon DATA RESTORE \
+   dnx dotnet-charon -- DATA RESTORE \
        --dataBase "https://charon.live/view/data/MyGame/develop/" \
        --input backup.msgpack \
        --credentials "$CHARON_API_KEY"
@@ -97,7 +97,7 @@ Scheduled Automated Backups
       .. code-block:: bash
 
          # Daily at 02:00
-         0 2 * * * charon DATA BACKUP \
+         0 2 * * * dnx dotnet-charon -- DATA BACKUP \
              --dataBase /var/game/gamedata.json \
              --output /backups/gamedata_$(date +\%Y\%m\%d).msgpack
 
@@ -107,7 +107,7 @@ Scheduled Automated Backups
 
          - name: Backup game data
            run: |
-             charon DATA BACKUP \
+             dnx dotnet-charon -- DATA BACKUP \
                --dataBase "${{ secrets.CHARON_DB_URL }}" \
                --output backups/gamedata_${{ github.run_id }}.msgpack \
                --credentials "${{ secrets.CHARON_API_KEY }}"
@@ -128,16 +128,16 @@ Take a backup immediately before publishing so that a known-good restore point e
 .. code-block:: bash
 
    # 1. Snapshot
-   charon DATA BACKUP --dataBase gamedata.json --output pre_publish_backup.msgpack
+   dnx dotnet-charon -- DATA BACKUP --dataBase gamedata.json --output pre_publish_backup.msgpack
 
    # 2. Validate
-   charon DATA VALIDATE \
+   dnx dotnet-charon -- DATA VALIDATE \
        --dataBase gamedata.json \
        --validationOptions checkRequirements checkReferences \
        --output err
 
    # 3. Publish
-   charon DATA EXPORT \
+   dnx dotnet-charon -- DATA EXPORT \
        --dataBase gamedata.json \
        --mode publication \
        --output StreamingAssets/gamedata.json \

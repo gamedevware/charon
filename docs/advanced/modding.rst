@@ -29,26 +29,27 @@ A typical modding setup consists of three parts:
 Shipping the Editor with Your Game
 -----------------------------------
 
-Charon is a .NET tool and requires the **.NET 8 Runtime** or later on the player's machine.
-You can verify what is installed with:
+Charon is a .NET tool, so the player's machine needs .NET installed. What exactly is required depends
+on which of the two options below you pick. Verify what is present with:
 
 .. code-block:: bash
 
+   dotnet --list-sdks
    dotnet --list-runtimes
 
-If the runtime is missing, direct the player to the
+If .NET is missing, direct the player to the
 `.NET download page <https://dotnet.microsoft.com/download>`_. Some distribution platforms
 (e.g. Steam) can install the .NET Runtime automatically as a game dependency.
 
 There are two ways to run the editor:
 
-**On-demand via the .NET SDK (simplest, requires .NET 10 SDK):**
+**On-demand via the .NET SDK (simplest, requires the .NET SDK 10 or later):**
 
 .. code-block:: bash
 
    dnx dotnet-charon -- SERVER START --dataBase "./gamedata.json" --denySchemaEditing --launchDefaultBrowser
 
-**A bundled copy of a specific version (full control, no SDK required):**
+**A bundled copy of a specific version (full control, only the .NET 8 Runtime required):**
 
 Download the ``dotnet-charon`` package from
 `nuget.org <https://www.nuget.org/packages/dotnet-charon/>`_ (a ``.nupkg`` file is a ZIP archive)
@@ -77,7 +78,7 @@ a CLI-only operation - there is no UI action for it:
 
 .. code-block:: bash
 
-   charon DATA CREATEPATCH \
+   dnx dotnet-charon -- DATA CREATEPATCH \
      --dataBase1 "./gamedata.json" \
      --dataBase2 "./mods/gamedata_copy.json" \
      --output "./mods/my_mod.gdpatch" \

@@ -36,7 +36,7 @@ CLI Example:
 
 .. code-block:: bash
 
-   charon SERVER START ./gamedata.json --launchDefaultBrowser --verbose
+   dnx dotnet-charon -- SERVER START ./gamedata.json --launchDefaultBrowser --verbose
 
 See also
 --------

@@ -43,13 +43,13 @@ locally:
 
 .. code-block:: bash
 
-   charon DATA BACKUP \
+   dnx dotnet-charon -- DATA BACKUP \
        --dataBase "https://charon.example.com/view/data/MyGame/main/" \
        --output myGame_main.zip \
        --credentials "$CHARON_API_KEY"
 
    unzip myGame_main.zip -d myGame/
-   charon SERVER START myGame/gamedata.json --launchDefaultBrowser
+   dnx dotnet-charon -- SERVER START myGame/gamedata.json --launchDefaultBrowser
 
 This portability is a deliberate design decision - teams are never locked in to the hosted
 service.

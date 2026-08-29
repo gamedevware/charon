@@ -16,11 +16,11 @@ from game data.
 .. code-block:: bash
 
   # local game data (windows)
-  charon DATA PROJECTSETTINGS \
+  dnx dotnet-charon -- DATA PROJECTSETTINGS \
     --dataBase "c:\my app\gamedata.json"
 
   # remote game data
-  charon DATA PROJECTSETTINGS \
+  dnx dotnet-charon -- DATA PROJECTSETTINGS \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --credentials "<API-Key>"
 

@@ -27,7 +27,7 @@ Exported data is available in formats such as JSON, BSON, MsgPack, and XLSX. JSO
 
 .. code-block:: bash
 
-   charon DATA EXPORT \
+   dnx dotnet-charon -- DATA EXPORT \
      --dataBase gamedata.json \
      --schemas Item \
      --output items.json \
@@ -82,7 +82,7 @@ Data can be imported through both the GUI and CLI. Several import modes are avai
 
 .. code-block:: bash
 
-   charon DATA IMPORT \
+   dnx dotnet-charon -- DATA IMPORT \
      --dataBase gamedata.json \
      --schemas Item \
      --input items.json \
@@ -121,7 +121,7 @@ It is recommended to use dry run functionality to preview changes before committ
 
 .. code-block:: bash
 
-   charon DATA IMPORT \
+   dnx dotnet-charon -- DATA IMPORT \
      --dataBase gamedata.json \
      --schemas Item \
      --input items.json \
@@ -138,7 +138,7 @@ Validation may be disabled to import incomplete or prototype data:
 
 .. code-block:: bash
 
-   charon DATA IMPORT \
+   dnx dotnet-charon -- DATA IMPORT \
      --dataBase gamedata.json \
      --schemas Item \
      --input items.json \

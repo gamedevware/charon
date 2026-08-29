@@ -17,18 +17,20 @@ importing designer edits back to the server, generating source code, or running 
 Installing the CLI
 ------------------
 
-Install ``dotnet-charon`` as a global .NET tool (requires .NET 8 or later):
-
-.. code-block:: bash
-
-   dotnet tool install -g dotnet-charon
-
-After installation the ``charon`` command is available on your ``PATH``.
-Alternatively, use ``dnx`` (.NET SDK 10+) to run without installing:
+Charon requires the `.NET SDK 10 or later <https://dotnet.microsoft.com/en-us/download>`_. There is
+nothing to install - ``dnx`` downloads and runs the tool on demand:
 
 .. code-block:: bash
 
    dnx dotnet-charon -- DATA EXPORT --help
+
+On .NET SDK 8 or 9 ``dnx`` is unavailable; install ``dotnet-charon`` as a global tool instead and
+call it as ``charon``:
+
+.. code-block:: bash
+
+   dotnet tool install -g dotnet-charon
+   charon DATA EXPORT --help
 
 See :doc:`Command Line Interface (CLI) <../advanced/command_line>` for full installation options.
 
@@ -79,7 +81,7 @@ Pass the API Key either as an explicit parameter or as an environment variable:
 .. code-block:: bash
 
    # Explicit parameter
-   charon DATA EXPORT \
+   dnx dotnet-charon -- DATA EXPORT \
      --dataBase "https://charon.live/view/data/My_Game/develop/" \
      --output "./gamedata.json" \
      --outputFormat json \
@@ -89,7 +91,7 @@ Pass the API Key either as an explicit parameter or as an environment variable:
 
    # Environment variable - picked up automatically by all commands
    export CHARON_API_KEY="<API-Key>"
-   charon DATA EXPORT \
+   dnx dotnet-charon -- DATA EXPORT \
      --dataBase "https://charon.live/view/data/My_Game/develop/" \
      --output "./gamedata.json" \
      --outputFormat json
@@ -110,14 +112,14 @@ Export all documents (or a subset by schema) from a web project into a local fil
 .. code-block:: bash
 
    # Export all schemas
-   charon DATA EXPORT \
+   dnx dotnet-charon -- DATA EXPORT \
      --dataBase "https://charon.live/view/data/My_Game/develop/" \
      --output "./gamedata.json" \
      --outputFormat json \
      --credentials "<API-Key>"
 
    # Export a specific schema
-   charon DATA EXPORT \
+   dnx dotnet-charon -- DATA EXPORT \
      --dataBase "https://charon.live/view/data/My_Game/develop/" \
      --schemas Character \
      --output "./characters.json" \
@@ -125,7 +127,7 @@ Export all documents (or a subset by schema) from a web project into a local fil
      --credentials "<API-Key>"
 
    # Export publication-ready data (strips non-essential fields)
-   charon DATA EXPORT \
+   dnx dotnet-charon -- DATA EXPORT \
      --dataBase "https://charon.live/view/data/My_Game/develop/" \
      --mode publication \
      --output "./StreamingAssets/gamedata.json" \
@@ -140,7 +142,7 @@ Push local edits back to the web project:
 .. code-block:: bash
 
    # Update existing documents (safe - no creates or deletes)
-   charon DATA IMPORT \
+   dnx dotnet-charon -- DATA IMPORT \
      --dataBase "https://charon.live/view/data/My_Game/develop/" \
      --schemas Character \
      --input "./characters.json" \
@@ -149,7 +151,7 @@ Push local edits back to the web project:
      --credentials "<API-Key>"
 
    # Create and update documents
-   charon DATA IMPORT \
+   dnx dotnet-charon -- DATA IMPORT \
      --dataBase "https://charon.live/view/data/My_Game/develop/" \
      --input "./gamedata.json" \
      --inputFormat json \
@@ -163,7 +165,7 @@ Generate C# classes directly from the web project without downloading the data f
 
 .. code-block:: bash
 
-   charon GENERATE CSHARPCODE \
+   dnx dotnet-charon -- GENERATE CSHARPCODE \
      --dataBase "https://charon.live/view/data/My_Game/develop/" \
      --namespace "MyGame.Parameters" \
      --outputDirectory "./Assets/Scripts/Generated" \
@@ -178,13 +180,13 @@ Check data integrity - useful before a release or as a CI gate:
 .. code-block:: bash
 
    # Print a validation report to stdout
-   charon DATA VALIDATE \
+   dnx dotnet-charon -- DATA VALIDATE \
      --dataBase "https://charon.live/view/data/My_Game/develop/" \
      --validationOptions checkRequirements checkReferences checkFormat \
      --credentials "<API-Key>"
 
    # Exit with code 1 if any errors are found (CI-friendly)
-   charon DATA VALIDATE \
+   dnx dotnet-charon -- DATA VALIDATE \
      --dataBase "https://charon.live/view/data/My_Game/develop/" \
      --validationOptions checkRequirements checkReferences checkFormat \
      --output err \
@@ -197,7 +199,7 @@ Create a local backup archive of a web project:
 
 .. code-block:: bash
 
-   charon DATA BACKUP \
+   dnx dotnet-charon -- DATA BACKUP \
      --dataBase "https://charon.live/view/data/My_Game/develop/" \
      --output "./backup_my_game.zip" \
      --credentials "<API-Key>"
