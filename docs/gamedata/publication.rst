@@ -54,8 +54,7 @@ the game can log or display which data snapshot it loaded:
 +------------------+------------------------------------------------------------------+
 | Lua              | ``gameData.gameDataVersion``                                     |
 +------------------+------------------------------------------------------------------+
-| TypeScript       | Loaded, but the field is private - as are the revision hash and  |
-|                  | change number - so it is not reachable from game code            |
+| TypeScript       | ``gameData.gameDataVersion``                                     |
 +------------------+------------------------------------------------------------------+
 | C# 4.0           | Not generated                                                    |
 +------------------+------------------------------------------------------------------+
