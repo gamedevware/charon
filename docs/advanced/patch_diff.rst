@@ -116,29 +116,25 @@ End-to-End Example: Feature Branch Merge
    # 1. Backup the stable main branch
    dnx dotnet-charon -- DATA BACKUP \
        --dataBase "https://charon.live/view/data/MyGame/main/" \
-       --output main.zip --credentials "$CHARON_KEY"
+       --output main.json --outputFormat json --credentials "$CHARON_KEY"
 
    # 2. Backup the feature branch
    dnx dotnet-charon -- DATA BACKUP \
        --dataBase "https://charon.live/view/data/MyGame/feature-loot/" \
-       --output feature.zip --credentials "$CHARON_KEY"
+       --output feature.json --outputFormat json --credentials "$CHARON_KEY"
 
-   # 3. Extract
-   unzip main.zip -d main/ && unzip feature.zip -d feature/
-
-   # 4. Compute the diff
+   # 3. Compute the diff
    dnx dotnet-charon -- DATA CREATEPATCH \
-       --dataBase1 main/gamedata.json \
-       --dataBase2 feature/gamedata.json \
+       --dataBase1 main.json \
+       --dataBase2 feature.json \
        --output loot_changes.patch.json
 
-   # 5. (Optional) review the patch in a text editor or commit it to version control
+   # 4. (Optional) review the patch in a text editor or commit it to version control
 
-   # 6. Apply to a staging branch
+   # 5. Apply to a staging branch
    dnx dotnet-charon -- DATA APPLYPATCH \
        --dataBase staging/gamedata.json \
-       --input loot_changes.patch.json \
-       --validationOptions repair checkRequirements checkReferences
+       --input loot_changes.patch.json
 
 ----
 

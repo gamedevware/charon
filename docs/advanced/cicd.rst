@@ -205,7 +205,8 @@ Export and publish on tag
            run: |
              dnx dotnet-charon -- DATA BACKUP \
                --dataBase "https://charon.live/view/data/MyGame/main/" \
-               --output backup_${{ github.ref_name }}.zip
+               --output backup_${{ github.ref_name }}.json \
+               --outputFormat json
 
          - name: Validate
            run: |
