@@ -119,6 +119,7 @@ Outputs the project settings document. See the
 See also
 --------
 
+- :doc:`DATA UPDATEPROJECTSETTINGS <data_update_project_settings>`
 - :doc:`DATA I18N LANGUAGES <data_i18n_languages>`
 - :doc:`DATA FIND <data_find>`
 - :doc:`Game Data Structure <../game_data_structure>`
