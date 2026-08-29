@@ -103,8 +103,18 @@ appear in the toolbar:
   those rows; with nothing selected it saves everything that changed.
 - ``Discard`` reverts to the last saved state, following the same selection rule.
 - When a changed document fails validation, ``Save`` becomes ``Save Anyway`` and carries a badge with the
-  number of errors. Charon stores invalid documents rather than refusing the edit -
-  :doc:`validation <../advanced/validation>` is what reports them.
+  number of errors. Charon stores the document anyway.
+
+.. note::
+   **Broken data is allowed while you work on it.** A reference pointing at a document that does not exist
+   yet, a required field still empty, a formula that does not parse - none of that stops a save, in the
+   editor or in the CLI. Half-finished data is a normal state during development, and a tool that refuses
+   it forces you to invent placeholder values just to close a form.
+
+   The tolerance ends at publication. Generated code and the game-side loaders assume the data satisfies
+   the schema, so anything the :doc:`Publication wizard <publication>` reports as a critical issue should be
+   fixed before shipping, not after. See :doc:`Validation <../advanced/validation>` for the checks, the two
+   severities, and how to gate a build on a clean review.
 
 .. list-table::
    :header-rows: 1
@@ -250,9 +260,10 @@ one asks for confirmation first:
 multi-document deletions run without the dialog.
 
 .. note::
-   Deleting a document does not clean up references to it. They stay in place as broken references and are
-   reported by :doc:`validation <../advanced/validation>`, which is the quickest way to find what pointed at
-   the removed document.
+   Deleting a document does not clean up references to it, and the deletion is not blocked by them. They
+   stay behind as broken references, which :doc:`validation <../advanced/validation>` reports - the quickest
+   way to find everything that pointed at the removed document. Like any other invalid data, they are
+   tolerated while you work and should be resolved before publishing.
 
 ----
 
