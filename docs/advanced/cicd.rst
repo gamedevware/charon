@@ -215,6 +215,13 @@ Export and publish on tag
                --validationOptions checkRequirements checkReferences \
                --output err
 
+         - name: Stamp the data version from the tag
+           run: |
+             dnx dotnet-charon -- DATA UPDATEPROJECTSETTINGS \
+               --dataBase "https://charon.live/view/data/MyGame/main/" \
+               --property Version \
+               --value "${GITHUB_REF_NAME#v}"
+
          - name: Export published data (JSON)
            run: |
              dnx dotnet-charon -- DATA EXPORT \
@@ -303,6 +310,7 @@ Recommended Pipeline Structure
 
    [Release tag]
      └─ DATA BACKUP (tagged archive)
+     └─ DATA UPDATEPROJECTSETTINGS --property Version
      └─ DATA EXPORT --mode publication
      └─ upload to CDN / game build
 
@@ -314,5 +322,6 @@ See also
 - :doc:`Backup and Restore <backup_restore>`
 - :doc:`Patch and Diff Workflow <patch_diff>`
 - :doc:`Internationalization <internationalization>`
+- :doc:`DATA UPDATEPROJECTSETTINGS <commands/data_update_project_settings>`
 - :doc:`Universal Parameters <commands/universal_parameters>`
 - :doc:`URL-based I/O <commands/remote_input_output>`

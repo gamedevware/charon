@@ -1,10 +1,9 @@
 Publishing Game Data
 ====================
 
-Publication turns your working game data into a game-ready file. Everything the editor needs but the game
-does not - schema definitions, project settings, unused localization - is stripped out, and what remains is
-written as ``JSON`` or ``MessagePack`` that the :doc:`generated code <generating_source_code>` can load
-directly.
+Publication turns your working game data into a game-ready file. Localization for the languages you did
+not select is stripped out, and the result is written as ``JSON`` or ``MessagePack`` that the
+:doc:`generated code <generating_source_code>` can load directly.
 
 This is the last step of the content pipeline, and where it ends depends on where you run it from: in the
 web editor you download a file, while the Unity and Unreal Engine plugins import the result into the engine
@@ -13,6 +12,42 @@ for you and regenerate the source code in the same pass.
 .. contents:: On this page
    :local:
    :depth: 2
+
+----
+
+Data Version
+------------
+
+**Project Settings** → **Publication** carries a **Version** field - a semantic version for the game data
+itself, separate from the Charon tool version and from your game's build number. It identifies the data
+snapshot, which is what you quote when a designer asks which data a shipped build was made from.
+
+.. figure:: ./publication_project_settings_version.png
+
+The accepted shape is three dot-separated numbers, an optional fourth, and an optional ``-suffix``, up to
+16 characters - ``1.4.0``, ``1.4.0.2`` and ``1.4.0-rc1`` are all valid. The hint under the field names the
+branch being edited, because every branch carries its own version.
+
+**Update** saves the change and stays disabled until the field is edited. Editing requires the **Designer**
+role or higher.
+
+The version lives on the project settings document, so it travels with the data - into backups, ordinary
+exports, and the published file alike.
+
+**CLI equivalent**
+
+.. code-block:: bash
+
+   dnx dotnet-charon -- DATA UPDATEPROJECTSETTINGS \
+     --dataBase "https://charon.live/view/data/MyGame/develop/" \
+     --property Version \
+     --value "1.4.0" \
+     --credentials "$CHARON_API_KEY"
+
+Stamping the version from CI just before the publish step keeps every shipped file traceable to the build
+that produced it; see :doc:`CI/CD <../advanced/cicd>` for a worked example and
+:doc:`DATA UPDATEPROJECTSETTINGS <../advanced/commands/data_update_project_settings>` for the full
+parameter list.
 
 ----
 
@@ -191,3 +226,4 @@ See also
 - :doc:`Unreal Engine Plugin Overview <../unreal_engine/overview>`
 - :doc:`Command Line Interface (CLI) <../advanced/command_line>`
 - :doc:`DATA EXPORT Command <../advanced/commands/data_export>`
+- :doc:`DATA UPDATEPROJECTSETTINGS Command <../advanced/commands/data_update_project_settings>`
