@@ -1,39 +1,114 @@
 Basic Navigation and User Interface Overview
 ============================================
 
-The UI consists of a left-side menu displaying all schemas of the game data, a middle working area with a dashboard/document list or document form, and a headline on the top with the project name and settings button. Depending on the installation, the UI may also include a user menu.  
+The editor is the same in every edition - the standalone application, the Unity and Unreal Engine plugins,
+and the web editor. This page is a tour of what is on the screen; the pages it links to explain the work
+done there.
+
+.. contents:: On this page
+   :local:
+   :depth: 2
+
+----
+
+The Editor Window
+-----------------
+
+.. figure:: ./dashboard.png
+
+Three regions, and they stay put:
+
+- **The side navigation** on the left - branches, the dashboard, and every schema in the project.
+- **The search field** across the top.
+- **The working area** in the middle - the dashboard, a document collection, or a document form, with a
+  breadcrumb above it that tracks where you are.
+
+----
+
+Side Navigation
+---------------
+
+From the top:
+
+- **The project** - its icon, its name, and the branch currently open.
+- **Branches** - the other branches of the project, one click to switch. Web editor only, see
+  :doc:`Workspaces, Projects, and Branches <../web/workspaces_and_projects>`.
+- **Home** - the **Dashboard**, and **Metadata**, which is the list of schemas.
+- **Schemas** - every schema that is visible in the menu, arranged into the folders its **Group** field
+  names, plus **Add new schema**.
+- **Project Settings** at the bottom.
+
+The ``«`` button collapses the whole panel to a narrow rail of icons, and ``»`` brings it back - worth doing
+on a laptop screen when a collection has many columns.
+
+----
 
 Dashboard
 ---------
 
-The dashboard is a central hub in the game data's user interface that provides quick access to frequently used features. It includes quick action buttons, such as creating a new schema, export, import, as well as a list of recently visited documents.  
-Additionally, in the case of a web application, the dashboard may display the presence of online members who are currently working in the same project.  
+The landing page of a project, and what the side navigation returns to.
 
-.. figure:: ./dashboard.png
+- **Start** - create a schema, export, import.
+- **Tasks** - publish, generate source code, internationalization settings.
+- **Recent Documents** - what you had open lately, newest first, each card naming the collection it belongs
+  to.
 
-Document Collection
--------------------
-The document collection page is place where user can view a list of all the documents of a specified schema. This page allows users to filter, sort, and customize the list to their liking, making it easier to find the specific document they need.  
+In the web editor the dashboard also shows which teammates are in the project at the same time.
 
-.. figure:: ./document_collection.png
+----
 
-Document Form
+Global Search
 -------------
-The document form page provides a specific edit form for a selected document. Here, users can view, edit, and save their game data documents in a structured and organized manner. The form allows users to input data into fields that correspond to the schema's properties. The document form page provides a user-friendly interface for updating and modifying game data.  
 
-.. figure:: ./document_form.png
+The field at the top searches the whole project rather than the current page.
+
+.. figure:: ./dashboard_side_minimized_with_search_result.png
+
+It matches documents on their display text **and** on their field values - the screenshot finds an item
+called *Rare Antique* and, separately, a ring whose *Rarity* field is set to *Rare*. Results are grouped by
+what they are, the header says how many were found, and the matched part of each hit is highlighted. In the
+web editor the same field also finds projects and users.
+
+Inside a collection the field narrows its scope to that collection and gains filtering; see
+:doc:`Finding Documents <filling_documents>`.
+
+.. note::
+   The screenshot also shows the side navigation collapsed to its icon rail.
+
+----
+
+First Steps
+-----------
+
+A new project opens with a guide docked to the right of the dashboard.
+
+.. figure:: ./dashboard_tutorial.png
+
+Five steps - create a schema, open and manage documents, generate source code, publish, load the game data -
+each ticked off as you do it, with the current one expanded into instructions. The header chevron collapses
+the card, **Skip Tutorial** dismisses it for good.
+
+----
+
+The Working Area
+----------------
+
+Selecting a schema in the side navigation opens its **document collection**, a grid of every document of
+that schema. Opening one of those documents replaces the grid with the **document form**.
+
+Those two screens are where nearly all the work happens, and each has a page of its own:
+:doc:`Filling Documents <filling_documents>` and :doc:`Editing a Document <document_form>`.
+
+----
 
 Tips and Keyboard Shortcuts
 ---------------------------
 
-A few useful interactions that are easy to miss:
-
-- **Duplicate a document** - hold :kbd:`Ctrl` and drag-and-drop the document within its
-  collection. Dropping without :kbd:`Ctrl` moves it instead.
-- **Copy between collections** - drag-and-drop a document into another collection of the same
-  schema type.
-- **Jump to a referenced document** - hold :kbd:`Ctrl` and click any reference value to open
-  the referenced document's edit form. This works on all references throughout the UI.
+- **Jump to a referenced document** - hold :kbd:`Ctrl` and click any reference value to open the referenced
+  document's form. This works on references throughout the UI.
+- **Move between documents without going back** - :kbd:`Alt/⌘+←` and :kbd:`Alt/⌘+→` walk the collection
+  from inside the form, filters and sorting included.
+- The collection grid and the document form have shortcuts of their own, listed on their pages.
 
 See also
 --------

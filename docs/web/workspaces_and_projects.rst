@@ -22,6 +22,11 @@ Hierarchy
        ├── Branch  (e.g. develop)
        └── Branch  (e.g. feature-loot-rework)
 
+.. figure:: ./multiple_workspaces_and_projects.png
+
+The home page shows this as cards: one per workspace - personal or shared - listing the projects it holds
+and how many members each has.
+
 Workspace
 ^^^^^^^^^
 
@@ -58,20 +63,47 @@ Creating a Project
 ------------------
 
 1. Sign in to `charon.live <https://charon.live>`_.
-2. Open your workspace from the top navigation.
-3. Click **New Project** and choose a name.
-4. The project is created with a single ``main`` branch.
+2. Find your workspace on the home page.
+3. Click **Create Project** on the workspace card and choose a name.
+4. The project is created with a single branch, which is marked *Primary*.
 
 Inviting Collaborators
 ----------------------
 
 1. Open the project.
 2. Navigate to **Project Settings → Members**.
-3. Enter the invitee's email and choose a role.
-4. The invitee receives an email with a link to accept the invitation.
+3. Press **Invite Member...** and enter the person's email address.
+4. They receive an email with a link to accept the invitation, and appear in the list straight away with
+   their invitation state next to them.
+5. Set their role in the **Access to the project** column - new members start as Viewers.
 
-Available roles: Viewer, Editor, Designer, Administrator.
-See :doc:`permission_and_roles` for the full permission matrix.
+Available roles: Viewer, Editor, Designer, Administrator. Only an Administrator can invite members or change
+roles. See :doc:`Roles and Permissions <permission_and_roles>` for the full permission matrix and for the
+screenshots of both steps.
+
+----
+
+Managing Branches in the Editor
+-------------------------------
+
+**Project Settings** → **Branches** lists the branches of the project.
+
+.. figure:: ./workspaces_and_projects_branch_list.png
+
+*Primary* marks the branch a project cannot be without - it cannot be deleted - and *Current* marks the one
+open in the editor. A project is limited to three branches at the time of writing.
+
+**Create Branch...** asks only for a name:
+
+.. figure:: ./workspaces_and_projects_create_branch_window.png
+
+The ``...`` menu at the end of a row holds the rest:
+
+.. figure:: ./workspaces_and_projects_branch_action_menu.png
+
+**Switch to Branch** opens it in the editor, and is disabled on the branch already open. **Push Branch**
+copies data into another branch, see `How a push works`_. **Rename Branch** renames it, which changes the
+URL the CLI addresses it by. **Delete Branch** is disabled on the primary branch.
 
 ----
 
@@ -128,8 +160,15 @@ Three ways to trigger a push are available:
 
 **Web UI**
    Go to **Project Settings → Branches**, open the ``...`` menu next to the
-   source branch, and choose **Push Branch…**. Select the target branch from
-   the dropdown and confirm.
+   source branch, and choose **Push Branch**.
+
+   .. figure:: ./workspaces_and_projects_push_branch_window.png
+
+   Source and target are both drop-downs, so the direction can be corrected here, and the dialog names the
+   branch about to be overwritten in red. **Game Data Version** stamps a semantic version onto the source
+   branch as part of the push - the same field as
+   :doc:`Data Version <../gamedata/publication>` in the project settings, so a promotion and a version bump
+   are one action.
 
 **REST API**
    Send a ``PUT`` request to the branch endpoint with the destination branch

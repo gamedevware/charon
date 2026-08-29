@@ -1,41 +1,133 @@
 Roles and Permissions
-========
+=====================
 
-The web version of the Charon provides a system of roles and permissions to manage access and control over your game development projects. 
-Each role is designed to provide specific levels of access and functionality within the platform. 
-Here are the key roles , along with their respective permissions:
+Access to a project in the web editor is granted per member, as one of four roles. The roles are cumulative:
+each one can do everything the roles above it can, plus more. Two further roles come from the workspace and
+are not assigned per project.
 
-Viewer Role:
- - View Documents: Users with the Viewer role can access and view documents within projects.
- - Export Data: Viewers can export data from the platform.
- - Access Project Settings: They can access and view project settings.
+.. contents:: On this page
+   :local:
+   :depth: 2
 
-Editor Role:
- - View Documents: Editors can view documents.
- - Edit Documents: Editors have the ability to edit documents within projects.
- - Import Data: They can import data into the platform.
- - Access Project Settings: Similar to Viewers, Editors can access and view project settings.
+----
 
-Designer Role:
- - Change Document Structure: Designers have the privilege to modify the structure of documents.
- - View Documents: Designers can view documents.
- - Edit Documents: They can edit documents.
- - Import Data: Designers can import data.
- - Access Project Settings: They can access and view project settings.
+Where Roles Are Assigned
+------------------------
 
-Administrator Role:
- - Make and Restore Backups: Administrators have the authority to create and restore backups of project data.
- - Grant or Revoke Permissions: They can grant or revoke permissions for users within the project.
- - Change Project Settings: Administrators can modify various project settings to tailor the environment to their needs.
- - View Documents: Administrators can view documents.
- - Edit Documents: They can edit documents.
- - Import Data: Administrators can import data.
+Open **Project Settings** → **Members**.
 
-Workspace Administrator and Workspace Owner Role:
- - They have the same permissions as Administrators, and they also have the ability to delete and transfer projects.
+.. figure:: ./project_members_window.png
+
+The **Access to the project** column is a drop-down per member - changing it takes effect immediately. The
+``...`` menu at the end of the row expels the member from the project.
+
+Only an **Administrator** can change roles or invite people. Workspace owners and workspace administrators
+are members of every project in the workspace automatically, and cannot be expelled or demoted from here.
+
+----
+
+What Each Role Can Do
+---------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 40 12 12 12 12
+
+   * - Capability
+     - Viewer
+     - Editor
+     - Designer
+     - Admin
+   * - View documents
+     - yes
+     - yes
+     - yes
+     - yes
+   * - Export data
+     - yes
+     - yes
+     - yes
+     - yes
+   * - View project settings
+     - yes
+     - yes
+     - yes
+     - yes
+   * - Edit documents
+     - \-
+     - yes
+     - yes
+     - yes
+   * - Import data
+     - \-
+     - yes
+     - yes
+     - yes
+   * - Change document structure (schemas and properties)
+     - \-
+     - \-
+     - yes
+     - yes
+   * - Change project settings, including the game data version
+     - \-
+     - \-
+     - \-
+     - yes
+   * - Create and restore backups
+     - \-
+     - \-
+     - \-
+     - yes
+   * - Invite members and change their roles
+     - \-
+     - \-
+     - \-
+     - yes
+
+Delete or transfer a project is a workspace-level action, available to the **Workspace Owner** and to
+**Workspace Administrators** only. Within a project they have everything an Administrator has.
+
+.. note::
+   The four project roles map onto the permission levels the API and the CLI use - ``view``, ``edit``,
+   ``design``, and ``administer``. A feature that requires ``design`` is available to Designers and
+   Administrators, and so on.
+
+----
+
+Inviting a Member
+-----------------
+
+**Invite Member...** on the Members page asks for an email address.
+
+.. figure:: ./project_members_invite_member_window.png
+
+The invited person appears in the list right away with the invitation state next to them - *sent*,
+*email sent*, or *declined* - and picks up their role as soon as they accept. New members start as Viewers
+unless you change the drop-down.
+
+The number of members a project can have depends on the subscription plan; the page warns when the limit is
+reached.
+
+----
+
+Which Role to Give
+------------------
+
+- **Viewer** - people who need to read the data but not change it: QA, external partners, anyone consuming
+  an export.
+- **Editor** - the default for content work. Fills documents, imports spreadsheets, cannot change the shape
+  of the data.
+- **Designer** - the people who model the data. Adding a property or a schema affects everyone's generated
+  code, which is why it is a separate role rather than part of editing.
+- **Administrator** - a small number of people. Backups, restores, project settings, and the member list.
+
+----
 
 See also
 --------
 
+- :doc:`Workspaces, Projects, and Branches <workspaces_and_projects>`
 - :doc:`Overview <overview>`
+- :doc:`Backup and Restore <../advanced/backup_restore>`
+- :doc:`Publishing Game Data <../gamedata/publication>`
 - `Web-based Application <https://gamedevware.com?ref=documentation>`_
