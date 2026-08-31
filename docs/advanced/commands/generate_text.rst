@@ -17,7 +17,7 @@ Generate Text from Templates (Obsolete)
 See also
 --------
 
-- :doc:`Generating Source Code <../generating_source_code>`
+- :doc:`Generating Source Code <../../gamedata/generating_source_code>`
 - :doc:`GENERATE TEMPLATES <generate_templates>`
 - :doc:`GENERATE CSHARPCODE <generate_csharp_code>`
 - `dotnet-t4 tool <https://github.com/mono/t4>`_

@@ -215,6 +215,7 @@ Export and publish on tag
                --validationOptions checkRequirements checkReferences \
                --output err
 
+         # DATA UPDATEPROJECTSETTINGS is available since vNext
          - name: Stamp the data version from the tag
            run: |
              dnx dotnet-charon -- DATA UPDATEPROJECTSETTINGS \
@@ -254,9 +255,9 @@ Apply a patch on merge
    # In a merge script or CI job
    dnx dotnet-charon -- DATA APPLYPATCH \
        --dataBase gamedata.json \
-       --input feature_changes.patch.json \
-       --validationOptions repair checkRequirements checkReferences
+       --input feature_changes.patch.json
 
+   # APPLYPATCH takes no validation options - validate as a separate step
    dnx dotnet-charon -- DATA VALIDATE \
        --dataBase gamedata.json \
        --validationOptions checkRequirements checkReferences checkFormat \

@@ -63,11 +63,11 @@ Outputs the differences between two game datas as a file that can be used later 
   
    .. code-block:: bash
 
-     # standart output (default)
+     # standard output (default)
      --output out
      --output con
 
-     # standart error
+     # standard error
      --output err
      
      # null device

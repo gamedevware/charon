@@ -111,6 +111,8 @@ opens its errors view, described above.
 
 ``DATA EXAMINE`` returns the same per-collection statistics that populate the review tree:
 
+.. versionadded:: vNext
+
 .. code-block:: bash
 
    dnx dotnet-charon -- DATA EXAMINE --dataBase "gamedata.json"

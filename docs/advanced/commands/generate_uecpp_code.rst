@@ -82,6 +82,11 @@ By default, this command does not delete previously generated files. Use the ``-
      # in case of name collision
      --gameDataClassName MyGameData # became UMyGameData in generated code
      
+--namespace
+   Accepted for symmetry with the other generators, but **ignored** by the Unreal Engine C++ target -
+   generated types are named with the ``U``/``F`` prefixes Unreal expects instead of being scoped into a
+   namespace. Use ``--documentClassName`` and ``--gameDataClassName`` to control the generated names.
+
 --defineConstants
    Preprocessor constants to define. Use semicolon(;) to separate multiple values.
    
@@ -113,6 +118,10 @@ By default, this command does not delete previously generated files. Use the ``-
      
      # Unix style \\n
      --lineEndings Unix
+
+--splitFiles
+   Accepted for symmetry with the other generators, but **ignored** by the Unreal Engine C++ target - it
+   always writes one header per type into ``Public/`` with the matching sources in ``Private/``.
 
 --optimizations
    List of enabled optimization in generated code.
@@ -167,10 +176,10 @@ This command supports :doc:`universal parameters <universal_parameters>`.
 See also
 --------
 
-- :doc:`Generating Source Code <../generating_source_code>`
+- :doc:`Generating Source Code <../../gamedata/generating_source_code>`
 - :doc:`Working with Unreal Engine C++ Code <../../gamedata/working_with_uecpp_code>`
 - :doc:`GENERATE CSHARPCODE <generate_csharp_code>`
 - :doc:`GENERATE TYPESCRIPTCODE <generate_typescript_code>`
 - :doc:`GENERATE HAXECODE <generate_haxe_code>`
-- :doc:`Publication <../publication>`
+- :doc:`Publication <../../gamedata/publication>`
 

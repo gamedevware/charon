@@ -1,6 +1,8 @@
 Update Project Settings
 =======================
 
+.. versionadded:: vNext
+
 Updates a single property of the project settings document (project name, copyright, languages, and other
 project-level configuration) in game data.
 
@@ -137,11 +139,11 @@ Any other property present in the document can be addressed the same way, by nam
 
    .. code-block:: bash
 
-     # standart output (default)
+     # standard output (default)
      --output out
      --output con
 
-     # standart error
+     # standard error
      --output err
 
      # null device

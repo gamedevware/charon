@@ -1,6 +1,8 @@
 Project Settings
 ================
 
+.. versionadded:: vNext
+
 Retrieves the project settings document (languages, primary language, and other project-level configuration)
 from game data.
 
@@ -54,11 +56,11 @@ internally.
 
    .. code-block:: bash
 
-     # standart output (default)
+     # standard output (default)
      --output out
      --output con
 
-     # standart error
+     # standard error
      --output err
 
      # null device

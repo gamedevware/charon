@@ -17,13 +17,13 @@ By default, this command does not delete previously generated files. Use the ``-
 .. code-block:: bash
 
   # local game data (windows)
-  dnx dotnet-charon -- GENERATE HAXE \
+  dnx dotnet-charon -- GENERATE HAXECODE \
     --dataBase "c:\my app\gamedata.json" \
     --packageName "" \
     --outputDirectory "c:\my app\scripts"
 
   # remote game data
-  dnx dotnet-charon -- GENERATE HAXE \
+  dnx dotnet-charon -- GENERATE HAXECODE \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --packageName "" \
     --outputDirectory "./scripts" \
@@ -93,7 +93,13 @@ By default, this command does not delete previously generated files. Use the ``-
    
      # named
      --packageName GameParameters
-     
+
+--defineConstants
+   Preprocessor constants to define. Use semicolon(;) to separate multiple values.
+
+   .. code-block:: bash
+
+     --defineConstants NO_OPTIMIZATIONS
 
 --indentation
    Indentation style for generated code.
@@ -176,10 +182,10 @@ This command supports :doc:`universal parameters <universal_parameters>`.
 See also
 --------
 
-- :doc:`Generating Source Code <../generating_source_code>`
+- :doc:`Generating Source Code <../../gamedata/generating_source_code>`
 - :doc:`Working with Haxe Code <../../gamedata/working_with_haxe_code>`
 - :doc:`GENERATE CSHARPCODE <generate_csharp_code>`
 - :doc:`GENERATE TYPESCRIPTCODE <generate_typescript_code>`
 - :doc:`GENERATE UECPPCODE <generate_uecpp_code>`
-- :doc:`Publication <../publication>`
+- :doc:`Publication <../../gamedata/publication>`
 

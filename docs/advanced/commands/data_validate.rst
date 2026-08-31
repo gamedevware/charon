@@ -89,11 +89,11 @@ The exit code will be ``1`` if the report contains errors and the ``--output`` i
   
    .. code-block:: bash
 
-     # standart output
+     # standard output
      --output out
      --output con
 
-     # standart error
+     # standard error
      --output err
      
      # null device (default)

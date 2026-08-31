@@ -20,13 +20,16 @@ Initializes an empty or missing file with initial data. Path to game data should
   
   # relative path
   dnx dotnet-charon -- INIT mygame/gamedata.json
-  
+
+.. note::
+   The parent directory must already exist - ``INIT`` creates the file, not the folders leading to it.
+
 ---------------
  Parameters
 ---------------
 
 --fileName
-   Absolute or relative path to game data file. Use quotation marks if your path contains spaces.
+   Absolute or relative path to game data file. The directory must already exist. Use quotation marks if your path contains spaces.
 
    .. code-block:: bash
    

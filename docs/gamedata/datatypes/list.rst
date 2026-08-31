@@ -12,9 +12,9 @@ Data Types
 
 Choosing the appropriate data type is essential for ensuring that game data is accurately structured, efficiently stored, and correctly interpreted by both the editor and runtime systems. Each data type serves a specific purpose and is designed to represent particular kinds of values or relationships.
 
-For instance, use the :doc:`Text <text>` data type for simple string values, or the :doc:`LocalizedText <localized_text>` type when the same text must support multiple languages. For numeric data, :doc:`Number <number>` is suited for decimal values, while :doc:`Integer <integer>` should be used for whole numbers.
+For instance, use the :doc:`Text <all/text>` data type for simple string values, or the :doc:`LocalizedText <all/localized_text>` type when the same text must support multiple languages. For numeric data, :doc:`Number <all/number>` is suited for decimal values, while :doc:`Integer <all/integer>` should be used for whole numbers.
 
-When a property should be selected from a defined set of options, :doc:`PickList <pick_list>` and :doc:`MultiPickList <multi_pick_list>` are recommended for single or multiple selections, respectively. For more complex structures, use :doc:`Document <document>` to define an embedded object, or :doc:`DocumentCollection <document_collection>` to represent a list of such objects.
+When a property should be selected from a defined set of options, :doc:`PickList <all/pick_list>` and :doc:`MultiPickList <all/multi_pick_list>` are recommended for single or multiple selections, respectively. For more complex structures, use :doc:`Document <all/document>` to define an embedded object, or :doc:`DocumentCollection <all/document_collection>` to represent a list of such objects.
 
 By selecting data types according to their intended purpose, developers can ensure better validation, clearer data organization, and more predictable behavior across tools and runtime systems.
 

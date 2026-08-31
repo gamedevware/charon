@@ -1,6 +1,8 @@
 Find Game Data Files
 ====================
 
+.. versionadded:: vNext
+
 Scans a folder for game data files and returns discovered paths with their collection statistics.
 
 - :ref:`CLI Installation <CommandLine_Installation>`
@@ -71,11 +73,11 @@ full of unrelated files.
 
    .. code-block:: bash
 
-     # standart output (default)
+     # standard output (default)
      --output out
      --output con
 
-     # standart error
+     # standard error
      --output err
 
      # null device

@@ -18,13 +18,15 @@ Seaches for a document.
   dnx dotnet-charon -- DATA FIND \
     --dataBase "c:\my app\gamedata.json" \
     --schema Character \
-    --id John
+    --id John \
+    --output "c:\my app\character.json"
 
   # remote game data
   dnx dotnet-charon -- DATA FIND \
     --dataBase "https://charon.live/view/data/My_Game/develop/" \
     --schema Character \
     --id John \
+    --output out \
     --credentials "<API-Key>"
   
 ---------------
@@ -75,11 +77,11 @@ Seaches for a document.
   
    .. code-block:: bash
 
-     # standart output (default)
+     # standard output (default)
      --output out
      --output con
 
-     # standart error
+     # standard error
      --output err
      
      # null device

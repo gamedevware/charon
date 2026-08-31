@@ -50,13 +50,24 @@ Starts Charon in standalone mode for specified game data. Path to game data coul
 
 --resetPreferences
    Set this flag to reset UI preferences on successful start.
- 
+
+--changesFile
+   .. versionadded:: vNext
+
+   Path to a changes file. When set, the game data file is opened read-only and every edit is written
+   into this file as a patch document instead of into the game data file. Overrides the ``changesFile``
+   query parameter of ``--dataBase``. Apply the patch later with :doc:`DATA APPLYPATCH <data_apply_patch>`.
+
+   .. code-block:: bash
+
+     --changesFile "./player-changes.patch.json"
+
 This command supports :doc:`universal parameters <universal_parameters>`.
 
 See also
 --------
 
 - :doc:`Command Line Reference <../command_line>`
-- :doc:`SERVER START (remote) <../commands/serve>`
+- :doc:`DATA APPLYPATCH <data_apply_patch>`
 - :doc:`Web Application Overview <../../web/overview>`
 - `IP port (Wikipedia) <https://en.wikipedia.org/wiki/Port_(computer_networking)>`_

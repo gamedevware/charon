@@ -46,11 +46,11 @@ Applies patch created with :doc:`DATA CREATEPATCH <data_create_patch>` command t
    The API key used to access remote server in case of *--dataBase* being URL.
 
 --input
-   Path to a file with patch to apply. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output>`.
+   Path to a file with patch to apply. Alternatively, you can use `Standard Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or `URL <remote_input_output>`.
 
    .. code-block:: bash
 
-     # standart input (default)
+     # standard input (default)
      --input in
      --input con
 

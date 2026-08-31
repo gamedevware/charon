@@ -46,11 +46,11 @@ Restores game data from a file created by :doc:`DATA BACKUP <data_backup>` comma
    The API key used to access remote server in case of *--dataBase* being URL.
 
 --input
-   Path to a backup file. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or :doc:`URL <remote_input_output>`.
+   Path to a backup file. Alternatively, you can use `Standard Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or :doc:`URL <remote_input_output>`.
 
    .. code-block:: bash
 
-     # standart input (default)
+     # standard input (default)
      --input in
      --input con
 

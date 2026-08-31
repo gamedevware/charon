@@ -44,7 +44,7 @@ These templates can be used with Visual Studio, Rider, Visual Studio Code with p
 See also
 --------
 
-- :doc:`Generating Source Code <../generating_source_code>`
+- :doc:`Generating Source Code <../../gamedata/generating_source_code>`
 - :doc:`GENERATE CSHARPCODE <generate_csharp_code>`
 - :doc:`GENERATE TYPESCRIPTCODE <generate_typescript_code>`
 - :doc:`GENERATE UECPPCODE <generate_uecpp_code>`

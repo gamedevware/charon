@@ -50,11 +50,11 @@ Get a list of supported translation languages. Primary language always shows up 
 
    .. code-block:: bash
 
-     # standart output (default)
+     # standard output (default)
      --output out
      --output con
 
-     # standart error
+     # standard error
      --output err
      
      # null device

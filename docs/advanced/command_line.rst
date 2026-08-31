@@ -384,15 +384,14 @@ To display the list of available commands add ``--help`` or ``/?``.
 
   dnx dotnet-charon -- --help
 
-  #> Usage: charon <action> [--<param> || (--<param> <paramValue> ...) ...]
-  #>
   #> Verbs:
-  #>  INIT        Initialize a new, empty game data file at the specified path.
-  #>  SERVER      Commands for starting and managing the embedded HTTP server.
-  #>  DATA        Commands for reading, writing, importing, and exporting game data.
-  #>  GENERATE    Commands for generating typed source code from game data schemas.
-  #>  MCP         Start an MCP server for AI assistant integration via stdio.
-  #>  VERSION     Print version.
+  #>   INIT        Initialize a new, empty game data file at the specified path.
+  #>   MCP         Start an MCP (Model Context Protocol) server for AI assistant integration via stdio.
+  #>               Usage: claude mcp add --transport stdio charon -- charon MCP
+  #>   SERVER      Commands for starting and managing the embedded HTTP server.
+  #>   DATA        Commands for reading, writing, importing, and exporting game data.
+  #>   GENERATE    Commands for generating typed source code from game data schemas.
+  #>   VERSION     Print current product version.
 
 The same flag works for any verb and sub-verb:
 

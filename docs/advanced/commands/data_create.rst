@@ -83,11 +83,11 @@ Create Document
      --validationOptions checkConstraints
      
 --input
-   Path to a file with document. Alternatively, you can use `Standart Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or :doc:`URL <remote_input_output>`.
+   Path to a file with document. Alternatively, you can use `Standard Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or :doc:`URL <remote_input_output>`.
 
    .. code-block:: bash
 
-     # standart input (default)
+     # standard input (default)
      --input in
      --input con
 
@@ -137,11 +137,11 @@ Create Document
   
    .. code-block:: bash
 
-     # standart output
+     # standard output
      --output out
      --output con
 
-     # standart error
+     # standard error
      --output err
      
      # null device (default)

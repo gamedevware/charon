@@ -211,18 +211,23 @@ error.
 
 - When generating a patch for a *new* document, include **all required fields** in the
   patch, not only the diff.
-- When applying a patch that resurrects deleted documents, pass stricter
-  ``--validationOptions`` to catch missing required fields immediately:
+- When applying a patch that resurrects deleted documents, validate right after
+  applying it - ``DATA APPLYPATCH`` has no ``--validationOptions`` parameter of its
+  own, so the check is a separate step:
 
   .. code-block:: bash
 
      dnx dotnet-charon -- DATA APPLYPATCH \
          --dataBase target.json \
-         --input changes.patch.json \
-         --validationOptions repair checkRequirements checkReferences
+         --input changes.patch.json
+
+     dnx dotnet-charon -- DATA VALIDATE \
+         --dataBase target.json \
+         --validationOptions repair checkRequirements checkReferences \
+         --output err
 
 - If the resurrection is intentional but the document is expected to be incomplete,
-  use ``--validationOptions None`` and fix the document via a follow-up import.
+  skip the validation step and fix the document via a follow-up import.
 
 ----
 

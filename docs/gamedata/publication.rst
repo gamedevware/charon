@@ -61,6 +61,9 @@ the game can log or display which data snapshot it loaded:
 
 **CLI equivalent**
 
+.. versionadded:: vNext
+   ``DATA UPDATEPROJECTSETTINGS``
+
 .. code-block:: bash
 
    dnx dotnet-charon -- DATA UPDATEPROJECTSETTINGS \

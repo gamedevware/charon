@@ -1,6 +1,8 @@
 Examine Game Data
 =================
 
+.. versionadded:: vNext
+
 Returns statistics about game data: document and validation error counts per schema, metadata hash, and revision hash.
 
 - :ref:`CLI Installation <CommandLine_Installation>`
@@ -59,11 +61,11 @@ when you need to choose which checks run.
 
    .. code-block:: bash
 
-     # standart output (default)
+     # standard output (default)
      --output out
      --output con
 
-     # standart error
+     # standard error
      --output err
 
      # null device

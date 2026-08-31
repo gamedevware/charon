@@ -1,6 +1,8 @@
 Search Documents
 ================
 
+.. versionadded:: vNext
+
 Searches for documents across all schemas using a text query with wildcard matching.
 
 - :ref:`CLI Installation <CommandLine_Installation>`
@@ -104,11 +106,11 @@ which schema or field it lives in; use ``DATA LIST`` once you do.
 
    .. code-block:: bash
 
-     # standart output (default)
+     # standard output (default)
      --output out
      --output con
 
-     # standart error
+     # standard error
      --output err
 
      # null device

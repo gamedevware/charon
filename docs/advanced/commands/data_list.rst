@@ -114,6 +114,15 @@ Seaches for a documents.
      # descending
      --sorters Name DESC
 
+--select
+   Projection of specific fields to include in the output. Use the format ``<PropertyName>``, e.g., ``Name``
+   or ``Id``. Useful for reducing output size.
+
+   .. code-block:: bash
+
+     # only names and ids
+     --select Id Name
+
 --path
    Embeddance path filter. Could be used to get only embedded documents.
 
@@ -152,11 +161,11 @@ Seaches for a documents.
   
    .. code-block:: bash
 
-     # standart output (default)
+     # standard output (default)
      --output out
      --output con
 
-     # standart error
+     # standard error
      --output err
      
      # null device

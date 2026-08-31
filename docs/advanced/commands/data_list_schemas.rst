@@ -1,6 +1,8 @@
 List Schemas
 ============
 
+.. versionadded:: vNext
+
 Lists schema definitions (document types) configured in game data.
 
 - :ref:`CLI Installation <CommandLine_Installation>`
@@ -115,11 +117,11 @@ instead.
 
    .. code-block:: bash
 
-     # standart output (default)
+     # standard output (default)
      --output out
      --output con
 
-     # standart error
+     # standard error
      --output err
 
      # null device
