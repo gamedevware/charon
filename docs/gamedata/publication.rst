@@ -61,7 +61,7 @@ the game can log or display which data snapshot it loaded:
 
 **CLI equivalent**
 
-.. versionadded:: vNext
+.. versionadded:: 2026.4.0
    ``DATA UPDATEPROJECTSETTINGS``
 
 .. code-block:: bash

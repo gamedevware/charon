@@ -1,7 +1,7 @@
 Update Project Settings
 =======================
 
-.. versionadded:: vNext
+.. versionadded:: 2026.4.0
 
 Updates a single property of the project settings document (project name, copyright, languages, and other
 project-level configuration) in game data.

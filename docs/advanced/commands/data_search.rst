@@ -1,7 +1,7 @@
 Search Documents
 ================
 
-.. versionadded:: vNext
+.. versionadded:: 2026.4.0
 
 Searches for documents across all schemas using a text query with wildcard matching.
 

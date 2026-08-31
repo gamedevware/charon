@@ -1,7 +1,7 @@
 Find Game Data Files
 ====================
 
-.. versionadded:: vNext
+.. versionadded:: 2026.4.0
 
 Scans a folder for game data files and returns discovered paths with their collection statistics.
 

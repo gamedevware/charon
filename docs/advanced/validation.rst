@@ -111,7 +111,7 @@ opens its errors view, described above.
 
 ``DATA EXAMINE`` returns the same per-collection statistics that populate the review tree:
 
-.. versionadded:: vNext
+.. versionadded:: 2026.4.0
 
 .. code-block:: bash
 

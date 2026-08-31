@@ -215,7 +215,7 @@ Export and publish on tag
                --validationOptions checkRequirements checkReferences \
                --output err
 
-         # DATA UPDATEPROJECTSETTINGS is available since vNext
+         # DATA UPDATEPROJECTSETTINGS is available since 2026.4.0
          - name: Stamp the data version from the tag
            run: |
              dnx dotnet-charon -- DATA UPDATEPROJECTSETTINGS \

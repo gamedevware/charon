@@ -52,7 +52,7 @@ Starts Charon in standalone mode for specified game data. Path to game data coul
    Set this flag to reset UI preferences on successful start.
 
 --changesFile
-   .. versionadded:: vNext
+   .. versionadded:: 2026.4.0
 
    Path to a changes file. When set, the game data file is opened read-only and every edit is written
    into this file as a patch document instead of into the game data file. Overrides the ``changesFile``

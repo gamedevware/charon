@@ -1,7 +1,7 @@
 List Schemas
 ============
 
-.. versionadded:: vNext
+.. versionadded:: 2026.4.0
 
 Lists schema definitions (document types) configured in game data.
 

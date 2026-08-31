@@ -1,7 +1,7 @@
 Project Settings
 ================
 
-.. versionadded:: vNext
+.. versionadded:: 2026.4.0
 
 Retrieves the project settings document (languages, primary language, and other project-level configuration)
 from game data.

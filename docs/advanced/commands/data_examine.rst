@@ -1,7 +1,7 @@
 Examine Game Data
 =================
 
-.. versionadded:: vNext
+.. versionadded:: 2026.4.0
 
 Returns statistics about game data: document and validation error counts per schema, metadata hash, and revision hash.
 
