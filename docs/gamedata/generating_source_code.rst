@@ -1,4 +1,4 @@
-Generating Source Code
+﻿Generating Source Code
 ======================
 
 Generated source code is how game data reaches the game. Charon reads the schemas and produces classes,
@@ -95,7 +95,7 @@ no preprocessor constants:
 Optimizations
 """""""""""""
 
-Two of these add work at load time and six remove code from the output. Everything removed is code the game
+Two of these add work at load time and seven remove code from the output. Everything removed is code the game
 would otherwise carry unused, so on a large project the difference in compile time and binary size is worth
 having - but each one takes a feature away, and the loader will not warn you at runtime.
 
@@ -114,6 +114,9 @@ having - but each one takes a feature away, and the loader will not warn you at 
    * - Raw Localized Texts
      - Drops the helpers that return the text for the current language, keeping accessors that hand back
        the whole set of translations.
+   * - Raw Composite Types
+     - Drops the parsed accessors for text properties carrying a vector, rectangle or tags editor. The
+       property keeps its original name and string type instead of moving to a ``<Name>Raw`` companion.
    * - Disable 'String Pooling' Optimization
      - Stops reusing identical short strings while loading. Slightly faster, more memory.
    * - Disable JSON Serialization
@@ -127,7 +130,9 @@ having - but each one takes a feature away, and the loader will not warn you at 
      - Omits the enums listing the ids of every document known at generation time. Cuts compile time
        noticeably on big projects, at the cost of losing the compile-time-checked id constants.
 
-String pooling and the two serializer options are not available for Lua.
+String pooling and the two serializer options are not available for Lua. Raw composite types is not
+available for Unreal Engine C++, which always behaves as if it were on - a ``UPROPERTY`` cannot be
+renamed, so those properties keep their name and get a separate ``GetParsed...`` accessor instead.
 
 Step 3. Summary
 ^^^^^^^^^^^^^^^
