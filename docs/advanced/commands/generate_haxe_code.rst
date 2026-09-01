@@ -1,4 +1,4 @@
-Generate Haxe Source Code
+﻿Generate Haxe Source Code
 ========================
 
 Generates Haxe source code for game data into output directory.
@@ -148,6 +148,11 @@ By default, this command does not delete previously generated files. Use the ``-
      # This optimization eliminates helper methods for accessing localized text, instead providing
      # accessors that deal directly with lists of localized texts.
      --optimizations rawLocalizedTexts
+     
+     # Keeps text properties carrying a vector, rectangle or tags editor as plain strings.
+     # By default such a property is renamed to '<Name>Raw' and a parsed accessor taking its place
+     # is generated. This optimization skips the parsing helpers and leaves the property untouched.
+     --optimizations rawCompositeTypes
      
      # Disables string pooling during game data loading.
      # Turning off string pooling can yield a minor performance improvement at the cost of increased

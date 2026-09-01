@@ -1,4 +1,4 @@
-Generate Unreal Engine C++ Source Code
+﻿Generate Unreal Engine C++ Source Code
 ========================
 
 Generates C++ for Unreal Engine source code for game data into output directory.
@@ -142,6 +142,11 @@ By default, this command does not delete previously generated files. Use the ``-
      # This optimization eliminates helper methods for accessing localized text, instead providing
      # accessors that deal directly with lists of localized texts.
      --optimizations rawLocalizedTexts
+     
+     # Not applicable. Unreal Engine C++ never renames a property, so a text property carrying a
+     # vector, rectangle or tags editor always keeps its name and gets a separate GetParsed...
+     # accessor beside it.
+     # --optimizations rawCompositeTypes (N/A)
      
      # Disables string pooling during game data loading.
      # Turning off string pooling can yield a minor performance improvement at the cost of increased
