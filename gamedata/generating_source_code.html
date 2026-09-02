@@ -1,0 +1,621 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generating Source Code &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Working with Source Code (C# 7.3)" href="working_with_csharp_code_7_3.html" />
+    <link rel="prev" title="Implementing Inheritance" href="inheritance.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Generating Source Code</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/gamedata/generating_source_code.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="generating-source-code">
+<h1>Generating Source Code<a class="headerlink" href="#generating-source-code" title="Link to this heading"></a></h1>
+<p>Generated source code is how game data reaches the game. Charon reads the schemas and produces classes,
+enums, and a loader for the target language, so the game accesses data through typed members instead of
+parsing JSON by hand.</p>
+<p>It runs in three places: the wizard in the editor, a button in the Unity and Unreal Engine plugins, and the
+<code class="docutils literal notranslate"><span class="pre">GENERATE</span></code> commands in the CLI. All three produce the same code from the same options.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#language-support-tiers" id="id2">Language Support Tiers</a></p></li>
+<li><p><a class="reference internal" href="#the-generation-wizard" id="id3">The Generation Wizard</a></p>
+<ul>
+<li><p><a class="reference internal" href="#step-1-target-language" id="id4">Step 1. Target Language</a></p></li>
+<li><p><a class="reference internal" href="#step-2-customize-generation" id="id5">Step 2. Customize Generation</a></p></li>
+<li><p><a class="reference internal" href="#step-3-summary" id="id6">Step 3. Summary</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#from-the-unity-and-unreal-engine-plugins" id="id7">From the Unity and Unreal Engine Plugins</a></p></li>
+<li><p><a class="reference internal" href="#from-the-cli" id="id8">From the CLI</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id9">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="language-support-tiers">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Language Support Tiers</a><a class="headerlink" href="#language-support-tiers" title="Link to this heading"></a></h2>
+<p>The source code generation system is organized into three support tiers:</p>
+<ul class="simple">
+<li><p><strong>Tier 3 (Basic):</strong> Schema types/enums are generated, basic game data class, localization language
+selection, document references, and built-in JSON reader.</p></li>
+<li><p><strong>Tier 2 (Advanced):</strong> Includes all Tier 3 features, plus: formulas parsed into AST (no interpreter),
+built-in Json/MessagePack reader, full game data class with helper functions/classes, and union types.
+Supported by <strong>Haxe</strong>.</p></li>
+<li><p><strong>Tier 1 (Complete):</strong> Includes all Tier 2 features, plus: full formulas support (ASP interpreter),
+patching during load support, and language idiomatic features. Supported by <strong>C# 4.0</strong>, <strong>C# 7.3</strong>,
+<strong>TypeScript</strong>, and <strong>UE C++</strong>.</p></li>
+</ul>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Features</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>C#</p></th>
+<th class="head"><p>TypeScript</p></th>
+<th class="head"><p>C++ (UE)</p></th>
+<th class="head"><p>Hax️e</p></th>
+<th class="head"><p>Lua</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Classes</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+</tr>
+<tr class="row-odd"><td><p>Enums</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+</tr>
+<tr class="row-even"><td><p>Build-in Formatters</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>— JSON</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>— MessagePack</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Localization</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+</tr>
+<tr class="row-even"><td><p>Patching</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Formulas</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>— Parsed AST</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>— Interpeter</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>— Lambdas</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="the-generation-wizard">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">The Generation Wizard</a><a class="headerlink" href="#the-generation-wizard" title="Link to this heading"></a></h2>
+<p><strong>Generate Source Code</strong> on the dashboard opens the wizard. <strong>Project Settings</strong> → <strong>Source Code</strong> has the
+same button.</p>
+<section id="step-1-target-language">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Step 1. Target Language</a><a class="headerlink" href="#step-1-target-language" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/generating_source_code_language_selection.png" src="../_images/generating_source_code_language_selection.png" />
+</figure>
+<p>Each entry names the language version the generated code targets. Markers say what to expect: <em>legacy</em> on
+C# 4.0, which exists for old Unity versions, and <em>beta</em> on Haxe and Lua.</p>
+<p>Two targets need something on the game side, and the wizard says so when they are selected:</p>
+<figure class="align-default">
+<img alt="../_images/generating_source_code_language_selection_ue_warning.png" src="../_images/generating_source_code_language_selection_ue_warning.png" />
+</figure>
+<ul class="simple">
+<li><p><strong>C++ Unreal Engine</strong> requires the Charon plugin - the generated code depends on its runtime module.</p></li>
+<li><p><strong>C# 4.0</strong> requires the <a class="reference external" href="https://assetstore.unity.com/packages/tools/visual-scripting/c-eval-56706">C# Eval()</a>
+library if the data uses <a class="reference internal" href="datatypes/all/formula.html"><span class="doc">formulas</span></a>.</p></li>
+</ul>
+</section>
+<section id="step-2-customize-generation">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Step 2. Customize Generation</a><a class="headerlink" href="#step-2-customize-generation" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/generating_source_code_customize_generation_csharp.png" src="../_images/generating_source_code_customize_generation_csharp.png" />
+</figure>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Game Data Class Name</strong></p></td>
+<td><p>Name of the root class the game loads and then reads collections from. Must be a valid identifier.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Document Class Name</strong></p></td>
+<td><p>Name of the base class every document type inherits from.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Code Namespace</strong></p></td>
+<td><p>Namespace the generated types are placed in. Reads <strong>Code Package Name</strong> for Haxe, is required for
+the two C# targets, and is absent for TypeScript, UE C++, and Lua, which have no equivalent.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Define constants</strong></p></td>
+<td><p>Preprocessor constants written into each generated file, separated by <code class="docutils literal notranslate"><span class="pre">;</span></code> or <code class="docutils literal notranslate"><span class="pre">,</span></code>. Offered for the
+C# targets and UE C++.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Line Endings</strong></p></td>
+<td><p>Windows or Unix. Worth matching to whatever the repository already stores, so regeneration does not
+produce a diff on every line.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Indentation</strong></p></td>
+<td><p>Tabs, 2 spaces, or 4 spaces.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Code Bundling</strong></p></td>
+<td><p>One file for everything, or a file per type. UE C++ is always multiple files.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Optimizations</strong></p></td>
+<td><p>A multi-select, described below.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Which fields appear depends on the target. Haxe, for instance, has a package name instead of a namespace and
+no preprocessor constants:</p>
+<figure class="align-default">
+<img alt="../_images/generating_source_code_customize_generation_haxe.png" src="../_images/generating_source_code_customize_generation_haxe.png" />
+</figure>
+<section id="optimizations">
+<h4>Optimizations<a class="headerlink" href="#optimizations" title="Link to this heading"></a></h4>
+<p>Two of these add work at load time and seven remove code from the output. Everything removed is code the game
+would otherwise carry unused, so on a large project the difference in compile time and binary size is worth
+having - but each one takes a feature away, and the loader will not warn you at runtime.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 34.0%" />
+<col style="width: 66.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Eager Reference Resolution</p></td>
+<td><p>Resolves and validates every reference while loading, instead of on first access. Costs load time,
+and turns a broken reference into a failure at startup rather than mid-game.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Raw References</p></td>
+<td><p>Drops the helper members that follow a reference to the referenced document, keeping the raw
+reference accessors only.</p></td>
+</tr>
+<tr class="row-even"><td><p>Raw Localized Texts</p></td>
+<td><p>Drops the helpers that return the text for the current language, keeping accessors that hand back
+the whole set of translations.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Raw Composite Types</p></td>
+<td><p>Drops the parsed accessors for text properties carrying a vector, rectangle or tags editor. The
+property keeps its original name and string type instead of moving to a <code class="docutils literal notranslate"><span class="pre">&lt;Name&gt;Raw</span></code> companion.</p></td>
+</tr>
+<tr class="row-even"><td><p>Disable ‘String Pooling’ Optimization</p></td>
+<td><p>Stops reusing identical short strings while loading. Slightly faster, more memory.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Disable JSON Serialization</p></td>
+<td><p>Omits the JSON reader. Only safe if the game ships Message Pack data.</p></td>
+</tr>
+<tr class="row-even"><td><p>Disable MessagePack Serialization</p></td>
+<td><p>Omits the Message Pack reader. Only safe if the game ships JSON.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Disable ‘Patch’ Support</p></td>
+<td><p>Omits the patch-application code, which is a large part of the output and is used for
+<a class="reference internal" href="../advanced/modding.html"><span class="doc">modding</span></a> and <a class="reference internal" href="../advanced/patch_diff.html"><span class="doc">patching</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p>Disable ‘Document Id’ Enums Generation</p></td>
+<td><p>Omits the enums listing the ids of every document known at generation time. Cuts compile time
+noticeably on big projects, at the cost of losing the compile-time-checked id constants.</p></td>
+</tr>
+</tbody>
+</table>
+<p>String pooling and the two serializer options are not available for Lua. Raw composite types is not
+available for Unreal Engine C++, which always behaves as if it were on - a <code class="docutils literal notranslate"><span class="pre">UPROPERTY</span></code> cannot be
+renamed, so those properties keep their name and get a separate <code class="docutils literal notranslate"><span class="pre">GetParsed...</span></code> accessor instead.</p>
+</section>
+</section>
+<section id="step-3-summary">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Step 3. Summary</a><a class="headerlink" href="#step-3-summary" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/generating_source_code_summary.png" src="../_images/generating_source_code_summary.png" />
+</figure>
+<p>The result is a zip named after the target and the moment it was generated. Download it and unpack it into
+the game project.</p>
+<figure class="align-default">
+<img alt="../_images/generating_source_code_summary_actions_menu.png" src="../_images/generating_source_code_summary_actions_menu.png" />
+</figure>
+<p>The <code class="docutils literal notranslate"><span class="pre">...</span></code> menu carries <strong>Copy CLI Generate Command</strong>, which puts the equivalent command line on the
+clipboard with every option filled in exactly as the wizard was configured. It is the fastest way to move a
+configuration that works into a build script; <strong>Documentation</strong> links to the reference for the language just
+generated.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="from-the-unity-and-unreal-engine-plugins">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">From the Unity and Unreal Engine Plugins</a><a class="headerlink" href="#from-the-unity-and-unreal-engine-plugins" title="Link to this heading"></a></h2>
+<p>Both plugins generate code with a single button, without the wizard.</p>
+<ul class="simple">
+<li><p><strong>Unreal Engine</strong> generates immediately, using default settings. There are no customization options in the
+plugin at the moment. See <a class="reference internal" href="../unreal_engine/creating_game_data.html"><span class="doc">Creating Game Data</span></a>.</p></li>
+<li><p><strong>Unity</strong> works the same way, except the options live in the Inspector of the game data asset - set them
+there, then press the button. See <a class="reference internal" href="../unity/overview.html"><span class="doc">Unity Overview</span></a>.</p></li>
+</ul>
+<p>Either way, regenerate after changing the structure of the data - adding a property, renaming a schema - and
+not after merely editing values.</p>
+</section>
+<hr class="docutils" />
+<section id="from-the-cli">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">From the CLI</a><a class="headerlink" href="#from-the-cli" title="Link to this heading"></a></h2>
+<p>One <code class="docutils literal notranslate"><span class="pre">GENERATE</span></code> command per language, taking the same options as the wizard:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>GENERATE<span class="w"> </span>CSHARPCODE<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span><span class="s2">"c:\my app\gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--outputDirectory<span class="w"> </span><span class="s2">"c:\my app\scripts"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--namespace<span class="w"> </span><span class="s2">"MyGame.Parameters"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--gameDataClassName<span class="w"> </span>GameData<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--splitFiles<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--clearOutputDirectory
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Wizard field</p></th>
+<th class="head"><p>CLI parameter</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Game Data Class Name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--gameDataClassName</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Document Class Name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--documentClassName</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Code Namespace / Code Package Name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--namespace</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Define constants</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--defineConstants</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Line Endings</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--lineEndings</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Indentation</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--indentation</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Code Bundling</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--splitFiles</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Optimizations</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--optimizations</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>The CLI has two parameters the wizard has no use for, because it writes into a directory rather than a zip:
+<code class="docutils literal notranslate"><span class="pre">--outputDirectory</span></code> for the destination, and <code class="docutils literal notranslate"><span class="pre">--clearOutputDirectory</span></code> to delete the previously generated
+files first. The second one only removes files carrying the <code class="docutils literal notranslate"><span class="pre">&lt;auto-generated&gt;</span></code> marker, so hand-written
+code in the same directory survives.</p>
+<p>Regenerating from CI on every change to the data keeps the code and the data from drifting apart - see
+<a class="reference internal" href="../advanced/cicd.html"><span class="doc">CI/CD</span></a>.</p>
+</section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="publication.html"><span class="doc">Publishing Game Data</span></a></p></li>
+<li><p><a class="reference internal" href="working_with_csharp_code_4_0.html"><span class="doc">Working with Source Code (C# 4.0)</span></a></p></li>
+<li><p><a class="reference internal" href="working_with_csharp_code_7_3.html"><span class="doc">Working with Source Code (C# 7.3)</span></a></p></li>
+<li><p><a class="reference internal" href="working_with_type_script_code.html"><span class="doc">Working with Source Code (TypeScript)</span></a></p></li>
+<li><p><a class="reference internal" href="working_with_uecpp_code.html"><span class="doc">Working with Source Code (UE C++)</span></a></p></li>
+<li><p><a class="reference internal" href="working_with_haxe_code.html"><span class="doc">Working with Source Code (Haxe)</span></a></p></li>
+<li><p><a class="reference internal" href="working_with_lua_code.html"><span class="doc">Working with Source Code (Lua)</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/command_line.html"><span class="doc">Command Line Interface (CLI)</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/commands/generate_csharp_code.html"><span class="doc">GENERATE CSHARPCODE Command</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/commands/generate_typescript_code.html"><span class="doc">GENERATE TYPESCRIPTCODE Command</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/commands/generate_uecpp_code.html"><span class="doc">GENERATE UECPP Command</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/commands/generate_haxe_code.html"><span class="doc">GENERATE HAXE Command</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/commands/generate_lua_code.html"><span class="doc">GENERATE LUA Command</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="inheritance.html" class="btn btn-neutral float-left" title="Implementing Inheritance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="working_with_csharp_code_7_3.html" class="btn btn-neutral float-right" title="Working with Source Code (C# 7.3)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

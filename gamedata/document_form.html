@@ -1,0 +1,537 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editing a Document &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Implementing Inheritance" href="inheritance.html" />
+    <link rel="prev" title="Filling Documents" href="filling_documents.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Editing a Document</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/gamedata/document_form.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="editing-a-document">
+<h1>Editing a Document<a class="headerlink" href="#editing-a-document" title="Link to this heading"></a></h1>
+<p>The document form is the full editor for a single document. The grid on the collection page is faster for
+short values, but everything that does not fit a table cell - embedded collections, localized text, long
+descriptions - is edited here.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#opening-the-form" id="id1">Opening the Form</a></p>
+<ul>
+<li><p><a class="reference internal" href="#moving-between-documents" id="id2">Moving Between Documents</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#fields" id="id3">Fields</a></p>
+<ul>
+<li><p><a class="reference internal" href="#reordering-and-reusing-embedded-documents" id="id4">Reordering and Reusing Embedded Documents</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#saving" id="id5">Saving</a></p></li>
+<li><p><a class="reference internal" href="#validation-errors" id="id6">Validation Errors</a></p></li>
+<li><p><a class="reference internal" href="#view-modes" id="id7">View Modes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#json" id="id8">JSON</a></p></li>
+<li><p><a class="reference internal" href="#layout" id="id9">Layout</a></p></li>
+<li><p><a class="reference internal" href="#graph" id="id10">Graph</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#the-actions-menu" id="id11">The Actions Menu</a></p></li>
+<li><p><a class="reference internal" href="#when-the-form-is-read-only" id="id12">When the Form Is Read-Only</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id13">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="opening-the-form">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Opening the Form</a><a class="headerlink" href="#opening-the-form" title="Link to this heading"></a></h2>
+<p>From the <a class="reference internal" href="filling_documents.html"><span class="doc">collection page</span></a>: <code class="docutils literal notranslate"><span class="pre">Create</span></code> for a new document, <code class="docutils literal notranslate"><span class="pre">Edit</span></code> for the
+selected one, or <kbd class="kbd docutils literal notranslate">Ctrl</kbd> + click on a row. Elsewhere in the editor, <kbd class="kbd docutils literal notranslate">Ctrl</kbd> + click on any reference
+value opens the form of the referenced document.</p>
+<figure class="align-default">
+<img alt="../_images/document_form_mode_form.png" src="../_images/document_form_mode_form.png" />
+</figure>
+<p>The heading is the document’s rendered <a class="reference internal" href="schemas/display_text_template.html"><span class="doc">display text</span></a>, not its <code class="docutils literal notranslate"><span class="pre">Id</span></code>,
+so it changes as you type. <code class="docutils literal notranslate"><span class="pre">Save</span></code> and <code class="docutils literal notranslate"><span class="pre">Discard</span> <span class="pre">Changes</span></code> sit above the fields, <code class="docutils literal notranslate"><span class="pre">Actions</span></code> on the right,
+and the view mode switch in the bottom right corner.</p>
+<section id="moving-between-documents">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">Moving Between Documents</a><a class="headerlink" href="#moving-between-documents" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">‹</span></code> and <code class="docutils literal notranslate"><span class="pre">›</span></code> buttons next to the heading open the previous and the next document without going back
+to the collection - <kbd class="kbd docutils literal notranslate">Alt/⌘</kbd>+<kbd class="kbd docutils literal notranslate">←</kbd> and <kbd class="kbd docutils literal notranslate">Alt/⌘</kbd>+<kbd class="kbd docutils literal notranslate">→</kbd> do the same. They follow the order of the list the
+form was opened from, filters and sorting included, so reviewing a filtered set is a matter of pressing one
+key repeatedly.</p>
+<p>They are disabled on the first and the last document, and when the form was reached in a way that has no
+position in a list - by following a reference, for instance.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="fields">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Fields</a><a class="headerlink" href="#fields" title="Link to this heading"></a></h2>
+<p>Each field is the editor of the property’s <a class="reference internal" href="datatypes/list.html"><span class="doc">data type</span></a> - a text box, a number field,
+a date picker, a reference search box, and so on. A red asterisk after the label marks a required property.</p>
+<ul class="simple">
+<li><p><strong>Localized text</strong> carries a flag button that switches the language being edited. See
+<a class="reference internal" href="../advanced/internationalization.html"><span class="doc">Internationalization</span></a>.</p></li>
+<li><p><strong>References</strong> are search boxes; typing filters candidate documents by their display text.</p></li>
+<li><p><strong>Embedded documents and collections</strong> appear as expansion panels with an <code class="docutils literal notranslate"><span class="pre">Add</span></code> button below them, so a
+whole subtree is edited in place without leaving the document.</p></li>
+</ul>
+<section id="reordering-and-reusing-embedded-documents">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Reordering and Reusing Embedded Documents</a><a class="headerlink" href="#reordering-and-reusing-embedded-documents" title="Link to this heading"></a></h3>
+<p>The panels of an embedded collection can be dragged by their header:</p>
+<ul class="simple">
+<li><p><strong>within the same collection</strong> - the entries swap places, which is how the order of a collection is
+changed;</p></li>
+<li><p><strong>into another collection of the same schema</strong> - anywhere on the form - the entry moves out of the first
+one and into the second;</p></li>
+<li><p><strong>holding</strong> <kbd class="kbd docutils literal notranslate">Ctrl</kbd> - the entry is copied instead of moved. The copy is a clone with its identifiers
+cleared, so it becomes a new document rather than a second appearance of the same one.</p></li>
+</ul>
+<p>Only collections of the same schema accept each other’s entries, and nothing can be dragged while the form
+is read-only. This works on the collection fields of a form; the grid on the
+<a class="reference internal" href="filling_documents.html"><span class="doc">collection page</span></a> is not a drop target.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="saving">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Saving</a><a class="headerlink" href="#saving" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Save</span></code> writes the document and makes it visible to everyone else; <code class="docutils literal notranslate"><span class="pre">Discard</span> <span class="pre">Changes</span></code> reverts it to the
+last saved state. Both appear only when something has changed.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Action</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Save</p></td>
+<td><p><kbd class="kbd docutils literal notranslate">Ctrl/⌘</kbd>+<kbd class="kbd docutils literal notranslate">S</kbd></p></td>
+</tr>
+<tr class="row-odd"><td><p>Save and return to the collection</p></td>
+<td><p><kbd class="kbd docutils literal notranslate">Ctrl/⌘</kbd> + click on <code class="docutils literal notranslate"><span class="pre">Save</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Save ignoring validation errors</p></td>
+<td><p><kbd class="kbd docutils literal notranslate">Shift</kbd> + click on <code class="docutils literal notranslate"><span class="pre">Save</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Undo / Redo</p></td>
+<td><p><kbd class="kbd docutils literal notranslate">Ctrl/⌘</kbd>+<kbd class="kbd docutils literal notranslate">Z</kbd> / <kbd class="kbd docutils literal notranslate">Ctrl/⌘</kbd>+<kbd class="kbd docutils literal notranslate">Y</kbd></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is no three-way merge. If two people save the same document, the last save wins. In practice
+collisions are rarer than that sounds, because only the fields you actually changed are written - two
+people working on different properties of the same document do not overwrite each other.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="validation-errors">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Validation Errors</a><a class="headerlink" href="#validation-errors" title="Link to this heading"></a></h2>
+<p>Fields that fail validation are outlined in red with the reason under them, and a counter appears in the
+bottom left corner. Clicking it lists every problem in the document with the field it belongs to.</p>
+<figure class="align-default">
+<img alt="../_images/document_form_error_list.png" src="../_images/document_form_error_list.png" />
+</figure>
+<p><code class="docutils literal notranslate"><span class="pre">Save</span></code> still works. When the document has errors the button becomes <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Anyway</span></code> and carries a badge
+with their number.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Broken data is allowed while you work on it.</strong> Empty required fields, references to documents that do
+not exist yet, formulas that do not parse - none of it blocks a save, here or in the CLI. Half-finished
+data is a normal state during development.</p>
+<p>The tolerance ends at publication: generated code and the game-side loaders assume the data satisfies the
+schema. See <a class="reference internal" href="../advanced/validation.html"><span class="doc">Validation</span></a> and the review step of the
+<a class="reference internal" href="publication.html"><span class="doc">Publication wizard</span></a>.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="view-modes">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">View Modes</a><a class="headerlink" href="#view-modes" title="Link to this heading"></a></h2>
+<p>The switch in the bottom right corner changes how the document is presented. The same modes are listed under
+<code class="docutils literal notranslate"><span class="pre">Actions</span></code> → <code class="docutils literal notranslate"><span class="pre">View</span> <span class="pre">Mode</span></code>. Two of the four are conditional - they appear only where they mean something.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>Available</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Form</p></td>
+<td><p>Always.</p></td>
+</tr>
+<tr class="row-odd"><td><p>JSON</p></td>
+<td><p>Always.</p></td>
+</tr>
+<tr class="row-even"><td><p>Layout</p></td>
+<td><p>Only when the document being edited is a schema.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Graph</p></td>
+<td><p>Only when an extension provides a custom editor for the schema.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="json">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">JSON</a><a class="headerlink" href="#json" title="Link to this heading"></a></h3>
+<p>The document as it is actually stored, in an editor with syntax highlighting and folding.</p>
+<figure class="align-default">
+<img alt="../_images/document_form_mode_json.png" src="../_images/document_form_mode_json.png" />
+</figure>
+<p>It is editable: changes made here go through the same save as the form. When the game data is read-only the
+JSON is shown as plain text instead. Useful for pasting a document in whole, for checking what a localized
+text or a reference really holds, and for reading the structure that
+<a class="reference internal" href="../advanced/import_export.html"><span class="doc">import and export</span></a> expect.</p>
+</section>
+<section id="layout">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Layout</a><a class="headerlink" href="#layout" title="Link to this heading"></a></h3>
+<p>Layout mode is not a way to view data - it edits the <em>schema</em>, deciding how that schema’s properties are
+arranged on the document form. It is therefore offered only while editing a schema, which the breadcrumb
+marks as <code class="docutils literal notranslate"><span class="pre">[Design]</span></code>.</p>
+<figure class="align-default">
+<img alt="../_images/document_form_schema_layout.png" src="../_images/document_form_schema_layout.png" />
+</figure>
+<p>Each property is a chip. Drag chips to reorder them and to group several onto one row. The area on the right
+takes an <em>Asset</em> property, which is then displayed beside the form instead of in it. <code class="docutils literal notranslate"><span class="pre">Reset</span> <span class="pre">Layout</span></code>
+returns the schema to the default one-property-per-row arrangement.</p>
+<p>Every document of that schema uses the layout from then on, so it is worth arranging the schemas your team
+fills most often - related fields side by side beat scrolling through forty rows.</p>
+</section>
+<section id="graph">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Graph</a><a class="headerlink" href="#graph" title="Link to this heading"></a></h3>
+<p>Graph mode belongs to <a class="reference internal" href="../advanced/extensions/overview.html"><span class="doc">extensions</span></a>. When an extension registers a custom
+editor for a schema, that editor is shown here; without one the mode does not appear at all. Writing one is
+<a class="reference internal" href="../advanced/extensions/implementing_schema_editor.html"><span class="doc">Implementing a Schema Editor</span></a>.</p>
+<figure class="align-default">
+<img alt="../_images/document_form_mode_graph_conversation_editor.png" src="../_images/document_form_mode_graph_conversation_editor.png" />
+</figure>
+<p>The screenshot is a conversation editor extension: dialogue nodes on a canvas, links between them as edges,
+and the selected node’s fields in the panel on the right. It edits the same document as the form - the nodes
+are the entries of an embedded document collection - so the two modes can be switched between freely, and
+the error counter keeps working in both.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="the-actions-menu">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">The Actions Menu</a><a class="headerlink" href="#the-actions-menu" title="Link to this heading"></a></h2>
+<figure class="align-default">
+<img alt="../_images/document_form_actions_menu.png" src="../_images/document_form_actions_menu.png" />
+</figure>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Entry</p></th>
+<th class="head"><p>What it does</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Design</span></code></p></td>
+<td><p>Opens the schema of this document in the schema editor. Hidden when the document already is a schema.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">New</span></code></p></td>
+<td><p>Opens an empty form for the same schema.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Clone</span></code></p></td>
+<td><p>Opens a copy of the current document as a new one.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Translate</span> <span class="pre">Texts</span></code></p></td>
+<td><p>Machine-translates the localized text of this document - everything, only what is missing, or only
+what is marked stale. Requires the machine translation feature, see
+<a class="reference internal" href="../advanced/internationalization.html"><span class="doc">Internationalization</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Delete</span></code></p></td>
+<td><p>Deletes the document and returns to the collection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Undo</span></code> / <code class="docutils literal notranslate"><span class="pre">Redo</span></code></p></td>
+<td><p>Step through the changes made since the form was opened.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">View</span> <span class="pre">Mode</span></code></p></td>
+<td><p>The same modes as the switch in the corner.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Schema forms replace <code class="docutils literal notranslate"><span class="pre">Design</span></code> with <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">advanced</span> <span class="pre">options</span></code>, which reveals the rarely used fields of a
+schema and its properties.</p>
+</section>
+<hr class="docutils" />
+<section id="when-the-form-is-read-only">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">When the Form Is Read-Only</a><a class="headerlink" href="#when-the-form-is-read-only" title="Link to this heading"></a></h2>
+<p>The editing buttons are hidden and a banner explains why. There are three of them:</p>
+<ul class="simple">
+<li><p><strong>the game data is read-only</strong> - insufficient permissions, a subscription plan limit, or a data source
+that is read-only to begin with;</p></li>
+<li><p><strong>you do not have permission to edit this document</strong>, see
+<a class="reference internal" href="../web/permission_and_roles.html"><span class="doc">Roles and Permissions</span></a>;</p></li>
+<li><p><strong>the document is protected from modifications</strong> and cannot be edited at all.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="see-also">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="filling_documents.html"><span class="doc">Filling Documents</span></a></p></li>
+<li><p><a class="reference internal" href="creating_schema.html"><span class="doc">Creating Document Type (Schema)</span></a></p></li>
+<li><p><a class="reference internal" href="datatypes/list.html"><span class="doc">Data Types</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/internationalization.html"><span class="doc">Internationalization</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/validation.html"><span class="doc">Validation</span></a></p></li>
+<li><p><a class="reference internal" href="publication.html"><span class="doc">Publishing Game Data</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="filling_documents.html" class="btn btn-neutral float-left" title="Filling Documents" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="inheritance.html" class="btn btn-neutral float-right" title="Implementing Inheritance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,727 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command Line Interface (CLI) &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Apply Patch (Merge)" href="commands/data_apply_patch.html" />
+    <link rel="prev" title="CI/CD Integration" href="cicd.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Command Line Interface (CLI)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_create.html">Create Document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_export.html">Export Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_find.html">Find Document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_import.html">Import Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_list.html">List Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_update.html">Update Document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands/version.html">Get Charon Version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Command Line Interface (CLI)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/advanced/command_line.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="command-line-interface-cli">
+<h1>Command Line Interface (CLI)<a class="headerlink" href="#command-line-interface-cli" title="Link to this heading"></a></h1>
+<p>Most of Charon functionality could be accessed via CLI commands. The application uses
+<a class="reference external" href="https://en.wikipedia.org/wiki/Command-line_interface#Command-line_option">GNU-style long options</a>
+(<code class="docutils literal notranslate"><span class="pre">--parameterName</span> <span class="pre">&lt;value&gt;</span></code>). You should be familiar with the terminal on your OS to fully tap the potential of the CLI.</p>
+<section id="requirements">
+<span id="commandline-requirements"></span><h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<p>Charon is distributed as a <a class="reference external" href="https://learn.microsoft.com/en-us/dotnet/core/tools/global-tools">.NET tool</a>, so the
+<a class="reference external" href="https://dotnet.microsoft.com/en-us/download">.NET SDK</a> is the only prerequisite.</p>
+<ul class="simple">
+<li><p><strong>.NET SDK 10 or later</strong> — recommended. Enables <code class="docutils literal notranslate"><span class="pre">dnx</span></code>, which runs Charon without installing anything.</p></li>
+<li><p><strong>.NET SDK 8 or 9</strong> — supported through <a class="reference internal" href="#commandline-bootstrap"><span class="std std-ref">bootstrap scripts</span></a> or a
+<a class="reference internal" href="#commandline-dotnettool"><span class="std std-ref">classic tool install</span></a>. <code class="docutils literal notranslate"><span class="pre">dnx</span></code> is not available on these versions.</p></li>
+</ul>
+<p>Check which version you have:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dotnet<span class="w"> </span>--version
+<span class="c1">#&gt; 10.0.100</span>
+</pre></div>
+</div>
+<p>If the command is not found, the SDK is not installed or not on <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</p>
+</section>
+<section id="installation">
+<span id="commandline-installation"></span><h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<section id="option-1-dnx-recommended-net-sdk-10">
+<span id="commandline-dnx"></span><h3>Option 1: dnx (recommended, .NET SDK 10+)<a class="headerlink" href="#option-1-dnx-recommended-net-sdk-10" title="Link to this heading"></a></h3>
+<p>.NET SDK 10 introduced <a class="reference external" href="https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-dnx">dnx</a>, a runner for .NET tools
+similar to <code class="docutils literal notranslate"><span class="pre">npx</span></code>. It downloads and executes the tool on demand without registering it in the global or local tool
+manifest. Nothing to install, nothing to add to <code class="docutils literal notranslate"><span class="pre">PATH</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># run any charon command</span>
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span>--help
+
+<span class="c1"># use this form when dnx is not registered in PATH</span>
+dotnet<span class="w"> </span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span>--help
+</pre></div>
+</div>
+<p>Everything after <code class="docutils literal notranslate"><span class="pre">--</span></code> is passed to Charon. The tool is cached by NuGet after the first run, so subsequent
+invocations start immediately.</p>
+<p>Pin a version for reproducible builds:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon@2026.3.4<span class="w"> </span>--<span class="w"> </span>VERSION
+</pre></div>
+</div>
+<p>This is the notation used throughout the rest of the documentation. If you installed Charon in another way, see
+<a class="reference internal" href="#commandline-invocation"><span class="std std-ref">Choosing how to invoke Charon</span></a> for the equivalent command.</p>
+</section>
+<section id="option-2-dotnet-tool-net-sdk-8">
+<span id="commandline-dotnettool"></span><h3>Option 2: dotnet tool (.NET SDK 8+)<a class="headerlink" href="#option-2-dotnet-tool-net-sdk-8" title="Link to this heading"></a></h3>
+<p>Installs Charon into the global tool store or into a local tool manifest next to your project.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># install charon globally</span>
+dotnet<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>--global<span class="w"> </span>dotnet-charon
+
+<span class="c1"># install charon in current working directory</span>
+dotnet<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>dotnet-charon<span class="w"> </span>--local<span class="w"> </span>--create-manifest-if-needed
+
+<span class="c1"># pin a specific version (recommended for CI)</span>
+dotnet<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>--global<span class="w"> </span>dotnet-charon<span class="w"> </span>--version<span class="w"> </span><span class="m">2026</span>.3.4
+</pre></div>
+</div>
+<p>If the repository already contains a <code class="docutils literal notranslate"><span class="pre">.config/dotnet-tools.json</span></code> manifest, you do not install anything — just
+restore it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dotnet<span class="w"> </span>tool<span class="w"> </span>restore
+</pre></div>
+</div>
+<p>To update an installed tool:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># update global tool</span>
+dotnet<span class="w"> </span>tool<span class="w"> </span>update<span class="w"> </span>--global<span class="w"> </span>dotnet-charon
+
+<span class="c1"># update local tool</span>
+dotnet<span class="w"> </span>tool<span class="w"> </span>update<span class="w"> </span>dotnet-charon<span class="w"> </span>--local
+</pre></div>
+</div>
+<p>To remove it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dotnet<span class="w"> </span>tool<span class="w"> </span>uninstall<span class="w"> </span>--global<span class="w"> </span>dotnet-charon
+dotnet<span class="w"> </span>tool<span class="w"> </span>uninstall<span class="w"> </span>dotnet-charon<span class="w"> </span>--local
+</pre></div>
+</div>
+<section id="adding-the-global-tool-to-path">
+<span id="commandline-path"></span><h4>Adding the global tool to PATH<a class="headerlink" href="#adding-the-global-tool-to-path" title="Link to this heading"></a></h4>
+<p>A <strong>global</strong> tool is launched by the bare <code class="docutils literal notranslate"><span class="pre">charon</span></code> command, but only if the .NET tools directory is on <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.
+On Windows this normally happens automatically; on macOS and Linux you have to do it yourself.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+Windows</label><div class="sd-tab-content docutils">
+<p>The installer adds <code class="docutils literal notranslate"><span class="pre">%USERPROFILE%\.dotnet\tools</span></code> to <code class="docutils literal notranslate"><span class="pre">PATH</span></code>. Open a <strong>new</strong> terminal window after
+installing so it picks up the change. To add it manually:</p>
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>setx PATH <span class="s2">"</span><span class="nv">%PATH%</span><span class="s2">;</span><span class="nv">%USERPROFILE%</span><span class="s2">\.dotnet\tools"</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+macOS</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">'export PATH="$PATH:$HOME/.dotnet/tools"'</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.zshrc
+<span class="nb">source</span><span class="w"> </span>~/.zshrc
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+Linux</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">'export PATH="$PATH:$HOME/.dotnet/tools"'</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+</pre></div>
+</div>
+</div>
+</div>
+<p>A <strong>local</strong> tool is never placed on <code class="docutils literal notranslate"><span class="pre">PATH</span></code>. It is always invoked through <code class="docutils literal notranslate"><span class="pre">dotnet</span></code> from the directory containing
+the manifest — see <a class="reference internal" href="#commandline-invocation"><span class="std std-ref">Choosing how to invoke Charon</span></a>.</p>
+</section>
+</section>
+<section id="option-3-bootstrap-scripts-net-sdk-8">
+<span id="commandline-bootstrap"></span><h3>Option 3: Bootstrap scripts (.NET SDK 8+)<a class="headerlink" href="#option-3-bootstrap-scripts-net-sdk-8" title="Link to this heading"></a></h3>
+<p>Use this when <code class="docutils literal notranslate"><span class="pre">dnx</span></code> is unavailable (.NET SDK 8 or 9) and you would rather not manage the tool manifest yourself.
+The scripts create a local tool manifest, install or update Charon in it, and then run it.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.bat">RunCharon.bat (Windows)</a></p></li>
+<li><p><a class="reference external" href="https://github.com/gamedevware/charon/blob/main/scripts/bootstrap/RunCharon.sh">RunCharon.sh (Linux, macOS)</a></p></li>
+</ul>
+</div></blockquote>
+<p>Both scripts require the <a class="reference external" href="https://dotnet.microsoft.com/en-us/download">dotnet</a> tool to be included in the system <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-3">
+Windows</label><div class="sd-tab-content docutils">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span><span class="k">mkdir</span> Charon
+<span class="k">cd</span> Charon
+curl -O https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.bat
+
+<span class="c1">REM everything after the script name is your command</span>
+.\RunCharon.bat DATA EXPORT --help
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-4">
+Linux, macOS</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>Charon
+<span class="nb">cd</span><span class="w"> </span>Charon
+curl<span class="w"> </span>-O<span class="w"> </span>https://raw.githubusercontent.com/gamedevware/charon/main/scripts/bootstrap/RunCharon.sh
+
+chmod<span class="w"> </span>+x<span class="w"> </span>./RunCharon.sh
+
+<span class="c1"># everything after the script name is your command</span>
+./RunCharon.sh<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span>--help
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="verifying-the-installation">
+<span id="commandline-verify"></span><h2>Verifying the installation<a class="headerlink" href="#verifying-the-installation" title="Link to this heading"></a></h2>
+<p>Run the <code class="docutils literal notranslate"><span class="pre">VERSION</span></code> command. It prints the tool version and exits with code <code class="docutils literal notranslate"><span class="pre">0</span></code>:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-5" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-5">
+dnx</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>VERSION
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-6" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-6">
+Global tool</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>charon<span class="w"> </span>VERSION
+dotnet<span class="w"> </span>tool<span class="w"> </span>list<span class="w"> </span>--global
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-7" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-7">
+Local tool</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dotnet<span class="w"> </span>charon<span class="w"> </span>VERSION
+dotnet<span class="w"> </span>tool<span class="w"> </span>list<span class="w"> </span>--local
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-8" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-8">
+Bootstrap script</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Windows</span>
+.<span class="se">\R</span>unCharon.bat<span class="w"> </span>VERSION
+
+<span class="c1"># Linux, macOS</span>
+./RunCharon.sh<span class="w"> </span>VERSION
+</pre></div>
+</div>
+</div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">charon</span></code> is reported as an unknown command after a global install, the .NET tools directory is missing from
+<code class="docutils literal notranslate"><span class="pre">PATH</span></code> — see <a class="reference internal" href="#commandline-path"><span class="std std-ref">Adding the global tool to PATH</span></a>.</p>
+</section>
+<section id="choosing-how-to-invoke-charon">
+<span id="commandline-invocation"></span><h2>Choosing how to invoke Charon<a class="headerlink" href="#choosing-how-to-invoke-charon" title="Link to this heading"></a></h2>
+<p>Every example in this documentation is written as <code class="docutils literal notranslate"><span class="pre">dnx</span> <span class="pre">dotnet-charon</span> <span class="pre">--</span> <span class="pre">&lt;VERB&gt;</span></code>. If you installed Charon in
+another way, substitute the leading part of the command:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Installation</p></th>
+<th class="head"><p>Command prefix</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#commandline-dnx"><span class="std std-ref">dnx</span></a> (.NET SDK 10+)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dnx</span> <span class="pre">dotnet-charon</span> <span class="pre">--</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#commandline-dotnettool"><span class="std std-ref">Global tool</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">charon</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#commandline-dotnettool"><span class="std std-ref">Local tool</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dotnet</span> <span class="pre">charon</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#commandline-bootstrap"><span class="std std-ref">Bootstrap script</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">.\RunCharon.bat</span></code> or <code class="docutils literal notranslate"><span class="pre">./RunCharon.sh</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>For example, these four commands are equivalent:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>VALIDATE<span class="w"> </span>--dataBase<span class="w"> </span>./gamedata.json
+charon<span class="w"> </span>DATA<span class="w"> </span>VALIDATE<span class="w"> </span>--dataBase<span class="w"> </span>./gamedata.json
+dotnet<span class="w"> </span>charon<span class="w"> </span>DATA<span class="w"> </span>VALIDATE<span class="w"> </span>--dataBase<span class="w"> </span>./gamedata.json
+./RunCharon.sh<span class="w"> </span>DATA<span class="w"> </span>VALIDATE<span class="w"> </span>--dataBase<span class="w"> </span>./gamedata.json
+</pre></div>
+</div>
+</section>
+<section id="command-syntax">
+<h2>Command Syntax<a class="headerlink" href="#command-syntax" title="Link to this heading"></a></h2>
+<p>Commands have the following syntax:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>VERB<span class="w"> </span><span class="o">[</span>SUB-VERB<span class="o">]</span><span class="w"> </span>--parameterName<span class="w"> </span>&lt;parameter-value&gt;
+
+<span class="c1"># parameters can have more than one value.</span>
+<span class="c1"># Use space to separate values</span>
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span>--schemas<span class="w"> </span>Item<span class="w"> </span>Armor<span class="w"> </span><span class="s2">"Project Settings"</span><span class="w"> </span>Quest
+
+<span class="c1"># if your value contains a space, put it inside the quotation marks.</span>
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span>--dataBase<span class="w"> </span><span class="s2">"c:\my application\gamedata.json"</span>
+
+<span class="c1"># some parameters don't require a value (e.g. flag).</span>
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>VERSION<span class="w"> </span>--verbose
+</pre></div>
+</div>
+<p>Available verbs are <code class="docutils literal notranslate"><span class="pre">INIT</span></code>, <code class="docutils literal notranslate"><span class="pre">DATA</span></code>, <code class="docutils literal notranslate"><span class="pre">GENERATE</span></code>, <code class="docutils literal notranslate"><span class="pre">SERVER</span></code>, <code class="docutils literal notranslate"><span class="pre">MCP</span></code> and <code class="docutils literal notranslate"><span class="pre">VERSION</span></code>. Verbs are case-insensitive;
+they are written in upper case in this documentation to stand out from parameters.</p>
+</section>
+<section id="running-on-windows-macos-and-linux">
+<span id="commandline-shells"></span><h2>Running on Windows, macOS and Linux<a class="headerlink" href="#running-on-windows-macos-and-linux" title="Link to this heading"></a></h2>
+<p>Charon behaves identically on all platforms, but the <em>shell</em> around it does not. Examples in this documentation use
+Bash syntax. Keep the following in mind.</p>
+<p><strong>Splitting a long command across lines.</strong> The trailing <code class="docutils literal notranslate"><span class="pre">\</span></code> used in the examples is a Bash/Zsh continuation
+character. It is not understood by Windows shells:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-9" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-9">
+Bash / Zsh (macOS, Linux)</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span>./gamedata.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>./characters.json
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-10" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-10">
+PowerShell</label><div class="sd-tab-content docutils">
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">dnx</span> <span class="n">dotnet-charon</span> <span class="p">--</span> <span class="n">DATA</span> <span class="n">EXPORT</span> <span class="p">`</span>
+  <span class="p">-</span><span class="n">-dataBase</span> <span class="p">./</span><span class="n">gamedata</span><span class="p">.</span><span class="n">json</span> <span class="p">`</span>
+  <span class="p">-</span><span class="n">-output</span> <span class="p">./</span><span class="n">characters</span><span class="p">.</span><span class="n">json</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-11" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-11">
+Command Prompt</label><div class="sd-tab-content docutils">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>dnx dotnet-charon -- DATA EXPORT <span class="se">^</span>
+<span class="se"> </span> --dataBase .\gamedata.json <span class="se">^</span>
+<span class="se"> </span> --output .\characters.json
+</pre></div>
+</div>
+</div>
+</div>
+<p>When in doubt, put the whole command on a single line — that works in every shell.</p>
+<p><strong>Wildcards.</strong> Parameters like <code class="docutils literal notranslate"><span class="pre">--schemas</span></code> accept <code class="docutils literal notranslate"><span class="pre">*</span></code> wildcards. Bash and Zsh expand <code class="docutils literal notranslate"><span class="pre">*</span></code> against file names
+before Charon ever sees it, so always quote such values:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># correct</span>
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span>--schemas<span class="w"> </span><span class="s2">"Item*"</span>
+
+<span class="c1"># wrong on macOS/Linux — the shell replaces Item* with matching file names</span>
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span>--schemas<span class="w"> </span>Item*
+</pre></div>
+</div>
+<p><strong>Environment variables.</strong> Setting <a class="reference internal" href="commands/universal_parameters.html"><span class="doc">CHARON_API_KEY</span></a> differs per shell:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-12" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-12">
+Bash / Zsh</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">CHARON_API_KEY</span><span class="o">=</span>87758CC0D7C745D0948F2A8AFE61BC81
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-13" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-13">
+PowerShell</label><div class="sd-tab-content docutils">
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$env:CHARON_API_KEY</span> <span class="p">=</span> <span class="s2">"87758CC0D7C745D0948F2A8AFE61BC81"</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-14" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-14">
+Command Prompt</label><div class="sd-tab-content docutils">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nv">CHARON_API_KEY</span><span class="p">=</span>87758CC0D7C745D0948F2A8AFE61BC81
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="absolute-and-relative-paths">
+<h2>Absolute and relative paths<a class="headerlink" href="#absolute-and-relative-paths" title="Link to this heading"></a></h2>
+<p>When running commands, it’s crucial to be aware of whether you are using <a class="reference external" href="https://en.wikipedia.org/wiki/Working_directory">absolute or relative paths</a> to files.</p>
+<section id="understanding-paths">
+<h3>Understanding Paths<a class="headerlink" href="#understanding-paths" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Absolute Path</strong>:
+An absolute path defines a file or directory’s location in relation to the root directory. In Linux and macOS, it starts from the root <code class="docutils literal notranslate"><span class="pre">/</span></code>, while in Windows, it begins with a drive letter (like <code class="docutils literal notranslate"><span class="pre">C:\</span></code>).</p>
+<ul class="simple">
+<li><p>Example for Linux/macOS: <code class="docutils literal notranslate"><span class="pre">/usr/local/share/mygame</span></code></p></li>
+<li><p>Example for Windows: <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\MyGame</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Relative Path</strong>:
+A relative path references a file or directory in relation to the current working directory, without starting with a root slash or drive letter.</p>
+<ul class="simple">
+<li><p>Example: If currently in <code class="docutils literal notranslate"><span class="pre">/home/user/Documents</span></code>, a file in <code class="docutils literal notranslate"><span class="pre">/home/user/Documents/Projects</span></code> would have the relative path <code class="docutils literal notranslate"><span class="pre">Projects/FileName</span></code>.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="usage-in-terminals">
+<h3>Usage in Terminals<a class="headerlink" href="#usage-in-terminals" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Windows (Command Prompt and PowerShell)</strong>:
+Paths use backslashes (<code class="docutils literal notranslate"><span class="pre">\</span></code>). Absolute paths start with a drive letter (like <code class="docutils literal notranslate"><span class="pre">C:\Users\Name</span></code>), while relative
+paths use the file name or paths like <code class="docutils literal notranslate"><span class="pre">subfolder\file.txt</span></code>. Forward slashes are also accepted, so
+<code class="docutils literal notranslate"><span class="pre">./gamedata.json</span></code> works too.</p></li>
+<li><p><strong>macOS/Linux Terminal</strong>:
+Paths are denoted with forward slashes (<code class="docutils literal notranslate"><span class="pre">/</span></code>). Absolute paths begin from the root (<code class="docutils literal notranslate"><span class="pre">/</span></code>), and relative paths use <code class="docutils literal notranslate"><span class="pre">./</span></code> for the current directory or <code class="docutils literal notranslate"><span class="pre">../</span></code> to go up one level.</p></li>
+</ul>
+</section>
+</section>
+<section id="getting-help-text">
+<h2>Getting Help Text<a class="headerlink" href="#getting-help-text" title="Link to this heading"></a></h2>
+<p>To display the list of available commands add <code class="docutils literal notranslate"><span class="pre">--help</span></code> or <code class="docutils literal notranslate"><span class="pre">/?</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>--help
+
+<span class="c1">#&gt; Verbs:</span>
+<span class="c1">#&gt;   INIT        Initialize a new, empty game data file at the specified path.</span>
+<span class="c1">#&gt;   MCP         Start an MCP (Model Context Protocol) server for AI assistant integration via stdio.</span>
+<span class="c1">#&gt;               Usage: claude mcp add --transport stdio charon -- charon MCP</span>
+<span class="c1">#&gt;   SERVER      Commands for starting and managing the embedded HTTP server.</span>
+<span class="c1">#&gt;   DATA        Commands for reading, writing, importing, and exporting game data.</span>
+<span class="c1">#&gt;   GENERATE    Commands for generating typed source code from game data schemas.</span>
+<span class="c1">#&gt;   VERSION     Print current product version.</span>
+</pre></div>
+</div>
+<p>The same flag works for any verb and sub-verb:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>--help
+
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span>--help
+
+<span class="c1">#&gt; Usage:</span>
+<span class="c1">#&gt;   DATA EXPORT --dataBase &lt;URI&gt; [--schemas [&lt;TEXT&gt;]] [--properties [&lt;TEXT&gt;]] [--languages [&lt;TEXT&gt;]] [--output &lt;TEXT&gt;</span>
+<span class="c1">#&gt;               ] [--outputFormat &lt;TEXT&gt;] [--outputFormattingOptions [&lt;TEXT&gt;]] [--mode &lt;EXPORTMODE&gt;] [--credentials [&lt;</span>
+<span class="c1">#&gt;               TEXT&gt;]]</span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound" id="commandline-commands">
+<p class="caption" role="heading"><span class="caption-text">List of Commands</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/version.html">Get Charon Version</a></li>
+</ul>
+</div>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="cicd.html"><span class="doc">CI/CD Integration</span></a></p></li>
+<li><p><a class="reference internal" href="commands/remote_input_output.html"><span class="doc">URL-based Input/Output</span></a></p></li>
+<li><p><a class="reference internal" href="commands/universal_parameters.html"><span class="doc">Universal Parameters</span></a></p></li>
+<li><p><a class="reference internal" href="game_data_structure.html"><span class="doc">Game Data Structure</span></a></p></li>
+<li><p><a class="reference external" href="https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-dnx">dnx documentation</a></p></li>
+<li><p><a class="reference external" href="https://learn.microsoft.com/en-us/dotnet/core/tools/global-tools">dotnet tool documentation</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cicd.html" class="btn btn-neutral float-left" title="CI/CD Integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="commands/data_apply_patch.html" class="btn btn-neutral float-right" title="Apply Patch (Merge)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

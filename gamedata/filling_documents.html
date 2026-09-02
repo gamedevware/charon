@@ -1,0 +1,651 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Filling Documents &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Editing a Document" href="document_form.html" />
+    <link rel="prev" title="Shared Property" href="properties/shared_property.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Filling Documents</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/gamedata/filling_documents.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="filling-documents">
+<h1>Filling Documents<a class="headerlink" href="#filling-documents" title="Link to this heading"></a></h1>
+<p>Schemas describe what a document looks like. The collection page is where documents are actually typed in -
+a spreadsheet-like grid where rows are documents and columns are schema properties. Most day-to-day data
+entry never leaves it; larger batches arrive through import instead.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#where-documents-live" id="id1">Where Documents Live</a></p></li>
+<li><p><a class="reference internal" href="#the-actions-menu" id="id2">The Actions Menu</a></p></li>
+<li><p><a class="reference internal" href="#creating-documents" id="id3">Creating Documents</a></p></li>
+<li><p><a class="reference internal" href="#editing-in-the-grid" id="id4">Editing in the Grid</a></p></li>
+<li><p><a class="reference internal" href="#finding-documents" id="id5">Finding Documents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#filtering-by-column" id="id6">Filtering by Column</a></p></li>
+<li><p><a class="reference internal" href="#writing-filters-by-hand" id="id7">Writing Filters by Hand</a></p></li>
+<li><p><a class="reference internal" href="#sorting-and-column-width" id="id8">Sorting and Column Width</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#choosing-columns" id="id9">Choosing Columns</a></p></li>
+<li><p><a class="reference internal" href="#changing-what-the-columns-are" id="id10">Changing What the Columns Are</a></p></li>
+<li><p><a class="reference internal" href="#deleting-documents" id="id11">Deleting Documents</a></p></li>
+<li><p><a class="reference internal" href="#deleting-a-schema" id="id12">Deleting a Schema</a></p></li>
+<li><p><a class="reference internal" href="#bringing-data-in-from-files" id="id13">Bringing Data In From Files</a></p></li>
+<li><p><a class="reference internal" href="#automating-from-the-cli" id="id14">Automating from the CLI</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id15">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="where-documents-live">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Where Documents Live</a><a class="headerlink" href="#where-documents-live" title="Link to this heading"></a></h2>
+<p>Every schema appears in the left side menu, grouped the way its <strong>Group</strong> field says. Selecting one opens
+its collection page.</p>
+<figure class="align-default">
+<img alt="../_images/filling_documents_side_menu_and_document_collection.png" src="../_images/filling_documents_side_menu_and_document_collection.png" />
+</figure>
+<p>The page has four parts:</p>
+<ul class="simple">
+<li><p><strong>The search field</strong> at the top, scoped to the current collection - the chip in front of it (<code class="docutils literal notranslate"><span class="pre">Items</span> <span class="pre">/</span></code>)
+shows the scope. It does plain-text search and holds filters, see <a class="reference internal" href="#finding-documents">Finding Documents</a>.</p></li>
+<li><p><strong>The toolbar</strong> with <code class="docutils literal notranslate"><span class="pre">Create</span></code>, <code class="docutils literal notranslate"><span class="pre">Edit</span></code>, and <code class="docutils literal notranslate"><span class="pre">Delete</span></code>. <code class="docutils literal notranslate"><span class="pre">Save</span></code> and <code class="docutils literal notranslate"><span class="pre">Discard</span></code> join them as soon as
+something is changed. When the game data is read-only, <code class="docutils literal notranslate"><span class="pre">Edit</span></code> reads <code class="docutils literal notranslate"><span class="pre">View</span></code> and the editing buttons are
+hidden.</p></li>
+<li><p><strong>The grid</strong>, one row per document. It is virtualized, so a collection of any size scrolls in a single page.</p></li>
+<li><p><strong>Filter</strong> and <strong>Actions</strong> on the right.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the web editor the avatars of teammates viewing the same collection appear next to the <code class="docutils literal notranslate"><span class="pre">Filter</span></code>
+button, and the grid marks the fields they are editing.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="the-actions-menu">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">The Actions Menu</a><a class="headerlink" href="#the-actions-menu" title="Link to this heading"></a></h2>
+<p>Everything that is not a per-document edit lives in <code class="docutils literal notranslate"><span class="pre">Actions</span></code>.</p>
+<figure class="align-default">
+<img alt="../_images/filling_documents_actions_menu.png" src="../_images/filling_documents_actions_menu.png" />
+</figure>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Entry</p></th>
+<th class="head"><p>What it does</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Design</span></code></p></td>
+<td><p>Opens the schema of this collection in the schema editor. This is where columns come from - see
+<a class="reference internal" href="#changing-what-the-columns-are">Changing What the Columns Are</a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Clone</span></code></p></td>
+<td><p>Copies the selected document and opens the copy for editing.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Delete</span></code></p></td>
+<td><p>Same as the toolbar button, see <a class="reference internal" href="#deleting-documents">Deleting Documents</a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Refresh</span></code></p></td>
+<td><p>Fetches the latest version of the collection from the server.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Export...</span></code></p></td>
+<td><p>Opens the export wizard with this collection preselected.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Export</span> <span class="pre">To</span></code></p></td>
+<td><p>Exports the collection straight to a JSON, BSON, Message Pack, or spreadsheet file, skipping the
+wizard.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Import...</span></code></p></td>
+<td><p>Opens the import wizard.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Customize</span> <span class="pre">Columns...</span></code></p></td>
+<td><p>Picks which properties are shown as columns, see <a class="reference internal" href="#choosing-columns">Choosing Columns</a>.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Extensions installed in the project add their own entries below the separator - see
+<a class="reference internal" href="../advanced/extensions/custom_actions.html"><span class="doc">Custom Actions</span></a>.</p>
+</section>
+<hr class="docutils" />
+<section id="creating-documents">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Creating Documents</a><a class="headerlink" href="#creating-documents" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Create</span></code> opens an empty <a class="reference internal" href="document_form.html"><span class="doc">document form</span></a> for the collection’s schema. Fill in the fields, press <code class="docutils literal notranslate"><span class="pre">Save</span></code>, and
+the new document appears in the grid.</p>
+<p>For entering many short documents in a row, stay in the grid instead. The <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">New</span> <span class="pre">&lt;Schema&gt;</span></code> button under the
+last row adds a row in place:</p>
+<figure class="align-default">
+<img alt="../_images/filling_documents_create_inline_document.png" src="../_images/filling_documents_create_inline_document.png" />
+</figure>
+<p>The row appears immediately but is not written to the database until you save it, exactly like any other
+grid edit.</p>
+</section>
+<hr class="docutils" />
+<section id="editing-in-the-grid">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Editing in the Grid</a><a class="headerlink" href="#editing-in-the-grid" title="Link to this heading"></a></h2>
+<p>Double-click a cell, or select it and press <kbd class="kbd docutils literal notranslate">Enter</kbd>, to edit it in place. The editor that opens matches
+the property’s <a class="reference internal" href="datatypes/list.html"><span class="doc">data type</span></a> - a text box, a number field, a date picker, a reference
+picker, and so on. Arrow keys and <kbd class="kbd docutils literal notranslate">Tab</kbd> move between cells.</p>
+<figure class="align-default">
+<img alt="../_images/filling_documents_mid_inline_editing.png" src="../_images/filling_documents_mid_inline_editing.png" />
+</figure>
+<p>Edits stay local until they are saved. Changed cells and their rows are marked, and <code class="docutils literal notranslate"><span class="pre">Save</span></code> and <code class="docutils literal notranslate"><span class="pre">Discard</span></code>
+appear in the toolbar:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Save</span></code> writes the changes and makes them visible to everyone else. With rows selected it saves only
+those rows; with nothing selected it saves everything that changed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Discard</span></code> reverts to the last saved state, following the same selection rule.</p></li>
+<li><p>When a changed document fails validation, <code class="docutils literal notranslate"><span class="pre">Save</span></code> becomes <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Anyway</span></code> and carries a badge with the
+number of errors. Charon stores the document anyway.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Broken data is allowed while you work on it.</strong> A reference pointing at a document that does not exist
+yet, a required field still empty, a formula that does not parse - none of that stops a save, in the
+editor or in the CLI. Half-finished data is a normal state during development, and a tool that refuses
+it forces you to invent placeholder values just to close a form.</p>
+<p>The tolerance ends at publication. Generated code and the game-side loaders assume the data satisfies
+the schema, so anything the <a class="reference internal" href="publication.html"><span class="doc">Publication wizard</span></a> reports as a critical issue should be
+fixed before shipping, not after. See <a class="reference internal" href="../advanced/validation.html"><span class="doc">Validation</span></a> for the checks, the two
+severities, and how to gate a build on a clean review.</p>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Action</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Create a document in the form</p></td>
+<td><p><kbd class="kbd docutils literal notranslate">Ctrl/⌘</kbd>+<kbd class="kbd docutils literal notranslate">Alt</kbd>+<kbd class="kbd docutils literal notranslate">N</kbd></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add a row inline</p></td>
+<td><p><kbd class="kbd docutils literal notranslate">Ctrl/⌘</kbd>+<kbd class="kbd docutils literal notranslate">Shift</kbd>+<kbd class="kbd docutils literal notranslate">N</kbd></p></td>
+</tr>
+<tr class="row-even"><td><p>Duplicate the selected document</p></td>
+<td><p><kbd class="kbd docutils literal notranslate">Ctrl/⌘</kbd>+<kbd class="kbd docutils literal notranslate">Shift</kbd>+<kbd class="kbd docutils literal notranslate">D</kbd></p></td>
+</tr>
+<tr class="row-odd"><td><p>Open the edit form</p></td>
+<td><p><kbd class="kbd docutils literal notranslate">Ctrl</kbd> + click on the row</p></td>
+</tr>
+<tr class="row-even"><td><p>Edit a cell in place</p></td>
+<td><p>double click, or <kbd class="kbd docutils literal notranslate">Enter</kbd></p></td>
+</tr>
+<tr class="row-odd"><td><p>Save</p></td>
+<td><p><kbd class="kbd docutils literal notranslate">Ctrl/⌘</kbd>+<kbd class="kbd docutils literal notranslate">S</kbd></p></td>
+</tr>
+<tr class="row-even"><td><p>Save ignoring validation errors</p></td>
+<td><p><kbd class="kbd docutils literal notranslate">Shift</kbd> + click on <code class="docutils literal notranslate"><span class="pre">Save</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Undo / Redo</p></td>
+<td><p><kbd class="kbd docutils literal notranslate">Ctrl/⌘</kbd>+<kbd class="kbd docutils literal notranslate">Z</kbd> / <kbd class="kbd docutils literal notranslate">Ctrl/⌘</kbd>+<kbd class="kbd docutils literal notranslate">Y</kbd></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="finding-documents">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Finding Documents</a><a class="headerlink" href="#finding-documents" title="Link to this heading"></a></h2>
+<p>The search field above the grid does two things: plain-text search over the collection, and structured
+filtering by property.</p>
+<section id="filtering-by-column">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Filtering by Column</a><a class="headerlink" href="#filtering-by-column" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Filter</span></code> is a shortcut that writes the first half of a filter for you. Pick a property, then a comparison:</p>
+<figure class="align-default">
+<img alt="../_images/filling_documents_side_menu_and_document_filter.png" src="../_images/filling_documents_side_menu_and_document_filter.png" />
+</figure>
+<p>Choosing <strong>Name</strong> → <strong>Contains Text</strong> types <code class="docutils literal notranslate"><span class="pre">/Name</span> <span class="pre">contains</span></code> - with a trailing space - into the search
+field and puts the cursor at the end of it. Type the value and press <kbd class="kbd docutils literal notranslate">Enter</kbd>:</p>
+<figure class="align-default">
+<img alt="../_images/filling_documents_side_menu_and_document_filter_typing_value.png" src="../_images/filling_documents_side_menu_and_document_filter_typing_value.png" />
+</figure>
+<p>The finished filter becomes a chip in front of the search field and the grid narrows to the matching rows.
+Repeat to add more filters - they all apply together. Removing a chip removes that filter.</p>
+<p>Properties of an embedded document open a submenu, and the path written into the field points inside the
+document: <code class="docutils literal notranslate"><span class="pre">/Stats/Hp</span> <span class="pre">&gt;</span> <span class="pre">10</span></code>.</p>
+</section>
+<section id="writing-filters-by-hand">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Writing Filters by Hand</a><a class="headerlink" href="#writing-filters-by-hand" title="Link to this heading"></a></h3>
+<p>The menu only saves typing. The same filter can be typed straight into the search field as
+<code class="docutils literal notranslate"><span class="pre">[property]</span> <span class="pre">[operator]</span> <span class="pre">[value]</span></code> followed by <kbd class="kbd docutils literal notranslate">Enter</kbd>. Quote the value if it contains spaces - single
+quotes, double quotes, and backticks all work:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>/Name contains "Ancestor Relic"
+/StackSize &gt;= 5
+/GoldValue != 0
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Comparison</p></th>
+<th class="head"><p>From the menu</p></th>
+<th class="head"><p>Also accepted</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Equal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">=</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">equal</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Not Equal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">!=</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">notequal</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Contains Text</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">contains</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">like</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Greater Than</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">greaterthan</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Greater Than Or Equal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&gt;=</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">greaterthanorequal</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Less Than</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lessthan</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Less Than Or Equal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;=</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lessthanorequal</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>One of a set</p></td>
+<td><p>-</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">in</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Whatever is left in the field that is not a complete filter is used as plain-text search.</p>
+</section>
+<section id="sorting-and-column-width">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Sorting and Column Width</a><a class="headerlink" href="#sorting-and-column-width" title="Link to this heading"></a></h3>
+<p>Click a column header to sort by that column, click again to reverse the direction. Column widths are
+dragged from the right edge of the header.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="choosing-columns">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Choosing Columns</a><a class="headerlink" href="#choosing-columns" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Actions</span></code> → <code class="docutils literal notranslate"><span class="pre">Customize</span> <span class="pre">Columns...</span></code> decides which properties become columns and in which order.</p>
+<figure class="align-default">
+<img alt="../_images/filling_documents_column_selection.png" src="../_images/filling_documents_column_selection.png" />
+</figure>
+<p>Tick a property to show it, drag it by the handle to move it, then press <code class="docutils literal notranslate"><span class="pre">Apply</span></code>. <strong>Reset</strong> returns the
+grid to the schema’s own order.</p>
+<p>Three extra columns are offered besides the schema’s properties: <strong>Display Name</strong> - the document’s rendered
+<a class="reference internal" href="schemas/display_text_template.html"><span class="doc">display text</span></a>, <strong>Path</strong>, and <strong>Error Count</strong>, the number of
+<a class="reference internal" href="../advanced/validation.html"><span class="doc">validation</span></a> issues found in the document.</p>
+</section>
+<hr class="docutils" />
+<section id="changing-what-the-columns-are">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Changing What the Columns Are</a><a class="headerlink" href="#changing-what-the-columns-are" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Customize</span> <span class="pre">Columns...</span></code> can only pick from properties the schema already has. To add a property, rename one,
+or change its data type, use <code class="docutils literal notranslate"><span class="pre">Actions</span></code> → <code class="docutils literal notranslate"><span class="pre">Design</span></code>: it opens the schema of the current collection in the
+schema editor. Saving there updates the grid.</p>
+<p>See <a class="reference internal" href="creating_schema.html"><span class="doc">Creating Document Type (Schema)</span></a> and <a class="reference internal" href="schemas/schema.html"><span class="doc">Schema</span></a> for the
+fields of that form.</p>
+</section>
+<hr class="docutils" />
+<section id="deleting-documents">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Deleting Documents</a><a class="headerlink" href="#deleting-documents" title="Link to this heading"></a></h2>
+<p>Tick the rows and press <code class="docutils literal notranslate"><span class="pre">Delete</span></code> - the button carries the number of selected documents. Deleting more than
+one asks for confirmation first:</p>
+<figure class="align-default">
+<img alt="../_images/filling_documents_delete_multiple.png" src="../_images/filling_documents_delete_multiple.png" />
+</figure>
+<p><strong>Do not ask again about this</strong> stores the answer in your personal preferences for the project, so later
+multi-document deletions run without the dialog.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Deleting a document does not clean up references to it, and the deletion is not blocked by them. They
+stay behind as broken references, which <a class="reference internal" href="../advanced/validation.html"><span class="doc">validation</span></a> reports - the quickest
+way to find everything that pointed at the removed document. Like any other invalid data, they are
+tolerated while you work and should be resolved before publishing.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="deleting-a-schema">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Deleting a Schema</a><a class="headerlink" href="#deleting-a-schema" title="Link to this heading"></a></h2>
+<p>Deleting a schema is a different operation with a much wider blast radius, and it is done from the schema
+list (<strong>Metadata</strong> in the side menu), not from a collection page.</p>
+<figure class="align-default">
+<img alt="../_images/filling_documents_delete_schemas.png" src="../_images/filling_documents_delete_schemas.png" />
+</figure>
+<p>The dialog lists everything the deletion takes with it:</p>
+<ul class="simple">
+<li><p><strong>the schemas themselves</strong>, as chips at the top;</p></li>
+<li><p><strong>Properties to be Deleted</strong> - properties of <em>other</em> schemas that point at the ones being deleted. A
+reference, a reference collection, an embedded document, or a document collection of a deleted schema
+cannot outlive it, so the property is removed from that schema and its values from every document of it;</p></li>
+<li><p><strong>Documents to be Deleted</strong> - how many documents each deleted schema takes down.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>That cascade cannot be undone from the UI. The <code class="docutils literal notranslate"><span class="pre">Delete</span> <span class="pre">Schema(s)</span></code> button stays disabled until you type
+<code class="docutils literal notranslate"><span class="pre">DELETE</span></code> into the confirmation field.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Take a <a class="reference internal" href="../advanced/backup_restore.html"><span class="doc">backup</span></a> before deleting a schema that other schemas reference.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="bringing-data-in-from-files">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Bringing Data In From Files</a><a class="headerlink" href="#bringing-data-in-from-files" title="Link to this heading"></a></h2>
+<p>Typing is one way to fill a collection. The other two are the import wizard and a plain drag and drop:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Actions</span></code> → <code class="docutils literal notranslate"><span class="pre">Import...</span></code> opens the wizard, which chooses between adding, replacing, and updating
+documents.</p></li>
+<li><p>Dragging a file onto the grid starts the same import for the current collection.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Actions</span></code> → <code class="docutils literal notranslate"><span class="pre">Export</span> <span class="pre">To</span></code> → <code class="docutils literal notranslate"><span class="pre">Spreadsheet</span> <span class="pre">(.xlsx)</span></code>, followed by a drop of the edited file back onto the
+grid, makes a round trip through Excel or Google Sheets - still the fastest way to do bulk numeric
+balancing.</p></li>
+</ul>
+<p><a class="reference internal" href="../advanced/commands/data_import.html#commandline-import-structure"><span class="std std-ref">Structure requirements for imported files</span></a> and the full walkthrough of
+both wizards are in <a class="reference internal" href="../advanced/import_export.html"><span class="doc">Importing and Exporting Data</span></a>.</p>
+</section>
+<hr class="docutils" />
+<section id="automating-from-the-cli">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink">Automating from the CLI</a><a class="headerlink" href="#automating-from-the-cli" title="Link to this heading"></a></h2>
+<p>Every grid operation has a command line equivalent, which is what CI jobs and generator scripts use.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># list documents of a collection</span>
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>LIST<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span><span class="s2">"c:\my app\gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--schema<span class="w"> </span>Item
+
+<span class="c1"># create one document from a file</span>
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>CREATE<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span><span class="s2">"c:\my app\gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--schema<span class="w"> </span>Item<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--input<span class="w"> </span><span class="s2">"c:\my app\item.json"</span>
+
+<span class="c1"># update one document</span>
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>UPDATE<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span><span class="s2">"c:\my app\gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--schema<span class="w"> </span>Item<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--input<span class="w"> </span><span class="s2">"c:\my app\item.json"</span>
+
+<span class="c1"># delete one document</span>
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>DELETE<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span><span class="s2">"c:\my app\gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--schema<span class="w"> </span>Item<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--id<span class="w"> </span><span class="s2">"AncestorsRelic"</span>
+</pre></div>
+</div>
+<p>For bulk changes use <a class="reference internal" href="../advanced/commands/data_import.html"><span class="doc">DATA IMPORT</span></a> instead of a loop over
+<code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">CREATE</span></code>.</p>
+</section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="basics.html"><span class="doc">Basic Navigation and User Interface Overview</span></a></p></li>
+<li><p><a class="reference internal" href="document_form.html"><span class="doc">Editing a Document</span></a></p></li>
+<li><p><a class="reference internal" href="creating_schema.html"><span class="doc">Creating Document Type (Schema)</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/import_export.html"><span class="doc">Importing and Exporting Data</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/validation.html"><span class="doc">Validation</span></a></p></li>
+<li><p><a class="reference internal" href="publication.html"><span class="doc">Publishing Game Data</span></a></p></li>
+<li><p><a class="reference internal" href="generating_source_code.html"><span class="doc">Generating Source Code</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="properties/shared_property.html" class="btn btn-neutral float-left" title="Shared Property" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="document_form.html" class="btn btn-neutral float-right" title="Editing a Document" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

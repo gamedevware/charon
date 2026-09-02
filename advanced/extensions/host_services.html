@@ -1,0 +1,624 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Host Services &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Creating a Custom Editor with React" href="creating_react_extension.html" />
+    <link rel="prev" title="Custom Pages" href="custom_pages.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Host Services</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/advanced/extensions/host_services.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="host-services">
+<h1>Host Services<a class="headerlink" href="#host-services" title="Link to this heading"></a></h1>
+<p>Extension code does not talk to Charon’s server or its UI directly. It is handed a set of <strong>services</strong> by the
+host, and reaches everything through them - reading and writing game data, opening dialogs and Charon’s own
+wizards, showing notifications, navigating, and persisting UI state between sessions.</p>
+<p>Which object carries them depends on what the extension is:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 68.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Extension kind</p></th>
+<th class="head"><p>Where the services are</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="custom_actions.html"><span class="doc">Custom action</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">context.services</span></code> on the action context</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="custom_pages.html"><span class="doc">Custom page</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">context.services</span></code> on the page context</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="implementing_schema_editor.html"><span class="doc">Schema editor</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">documentControl.services</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="implementing_property_editor.html"><span class="doc">Property editor</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">getRootDocumentControl(valueControl).services</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>The two sets overlap but are not identical: an action or a page gets the project-level services, a document gets
+the document-level ones. Both are declared <code class="docutils literal notranslate"><span class="pre">Partial</span></code> - <strong>the host populates only what makes sense in the
+context, so check every field before use.</strong></p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">dialog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">services</span><span class="p">.</span><span class="nx">ui</span><span class="o">?</span><span class="p">.</span><span class="nx">dialog</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">dialog</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#what-each-context-carries" id="id1">What Each Context Carries</a></p></li>
+<li><p><a class="reference internal" href="#game-data" id="id2">Game Data</a></p></li>
+<li><p><a class="reference internal" href="#dialogs-and-wizards" id="id3">Dialogs and Wizards</a></p>
+<ul>
+<li><p><a class="reference internal" href="#progress" id="id4">Progress</a></p></li>
+<li><p><a class="reference internal" href="#your-own-dialog" id="id5">Your Own Dialog</a></p></li>
+<li><p><a class="reference internal" href="#charon-s-wizards" id="id6">Charon’s Wizards</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#notifications" id="id7">Notifications</a></p></li>
+<li><p><a class="reference internal" href="#navigation" id="id8">Navigation</a></p></li>
+<li><p><a class="reference internal" href="#persisted-ui-state" id="id9">Persisted UI State</a></p></li>
+<li><p><a class="reference internal" href="#current-user-project-and-workspace" id="id10">Current User, Project, and Workspace</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id11">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="what-each-context-carries">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">What Each Context Carries</a><a class="headerlink" href="#what-each-context-carries" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 35.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Service</p></th>
+<th class="head"><p>Action / page context</p></th>
+<th class="head"><p>Document control</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gameData</span></code></p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ui.dialog</span></code> / <code class="docutils literal notranslate"><span class="pre">ui.snackBar</span></code></p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ui.state</span></code></p></td>
+<td><p>scoped to the package</p></td>
+<td><p>scoped to the document or its schema</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">navigation</span></code></p></td>
+<td><p>yes</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">userService</span></code> / <code class="docutils literal notranslate"><span class="pre">projectService</span></code> / <code class="docutils literal notranslate"><span class="pre">workspaceService</span></code></p></td>
+<td><p>yes</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">undoRedo</span></code></p></td>
+<td><p>-</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">validationProvider</span></code></p></td>
+<td><p>-</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">translationLanguage</span></code></p></td>
+<td><p>-</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">serverApiClient</span></code></p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">serverApiClient</span></code> is the raw HTTP client behind everything else. It is deliberately untyped and its surface is
+not stable - use it only for something the typed services do not cover, and expect it to change.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">services.uiState</span></code> still exists next to <code class="docutils literal notranslate"><span class="pre">services.ui.state</span></code> and is the very same object, kept for
+packages written before <code class="docutils literal notranslate"><span class="pre">ui</span></code> was introduced. New code should use <code class="docutils literal notranslate"><span class="pre">ui.state</span></code>.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="game-data">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Game Data</a><a class="headerlink" href="#game-data" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">GameDataService</span></code> is the project’s data, as the server sees it - not the document currently open in a form.
+Everything returns an observable.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">getMetadata()</span></code></p></td>
+<td><p>The project’s schemas and settings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">list(schema,</span> <span class="pre">parameters?)</span></code></p></td>
+<td><p>Documents of a schema, with <code class="docutils literal notranslate"><span class="pre">skip</span></code>, <code class="docutils literal notranslate"><span class="pre">take</span></code>, <code class="docutils literal notranslate"><span class="pre">query</span></code>, <code class="docutils literal notranslate"><span class="pre">select</span></code>, <code class="docutils literal notranslate"><span class="pre">filters</span></code>, <code class="docutils literal notranslate"><span class="pre">sorters</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">path</span></code> for sub-documents. Returns the documents, their metadata, and the total before paging.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">find(schema,</span> <span class="pre">property,</span> <span class="pre">value)</span></code></p></td>
+<td><p>One document by a unique property value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">query(requests)</span></code></p></td>
+<td><p>Several such lookups in one round trip.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bulkChange(schema,</span> <span class="pre">documents,</span> <span class="pre">importMode,</span> <span class="pre">validationOptions?,</span> <span class="pre">dryRun?)</span></code></p></td>
+<td><p>Create, update, or delete many documents of one schema.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">import(collections,</span> <span class="pre">importMode?,</span> <span class="pre">schemas?,</span> <span class="pre">languages?,</span> <span class="pre">validationOptions?,</span> <span class="pre">dryRun?)</span></code></p></td>
+<td><p>The same across several schemas at once, taking a whole game data document.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">export(exportMode?,</span> <span class="pre">schemas?,</span> <span class="pre">properties?,</span> <span class="pre">languages?)</span></code></p></td>
+<td><p>Read data out in one of the export modes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">validate(validationOptions)</span></code></p></td>
+<td><p>Run <a class="reference internal" href="../validation.html"><span class="doc">validation</span></a> and get the errors per document.</p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">importMode</span></code> is the same choice the <a class="reference internal" href="../import_export.html"><span class="doc">import wizard</span></a> offers -
+<code class="docutils literal notranslate"><span class="pre">createAndUpdate</span></code>, <code class="docutils literal notranslate"><span class="pre">create</span></code>, <code class="docutils literal notranslate"><span class="pre">update</span></code>, <code class="docutils literal notranslate"><span class="pre">safeUpdate</span></code>, <code class="docutils literal notranslate"><span class="pre">replace</span></code>, <code class="docutils literal notranslate"><span class="pre">delete</span></code>. <code class="docutils literal notranslate"><span class="pre">exportMode</span></code> likewise:
+<code class="docutils literal notranslate"><span class="pre">normal</span></code>, <code class="docutils literal notranslate"><span class="pre">publication</span></code>, <code class="docutils literal notranslate"><span class="pre">localization</span></code>, <code class="docutils literal notranslate"><span class="pre">extraction</span></code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><code class="docutils literal notranslate"><span class="pre">dryRun:</span> <span class="pre">true</span></code> on <code class="docutils literal notranslate"><span class="pre">bulkChange</span></code> and <code class="docutils literal notranslate"><span class="pre">import</span></code> validates the whole change and reports what would happen
+without writing anything. Every result carries per-document <code class="docutils literal notranslate"><span class="pre">errors</span></code>, so an extension can show the user
+what it is about to do before it does it.</p>
+</div>
+<p>Results carry a <code class="docutils literal notranslate"><span class="pre">metadataHash</span></code> and a <code class="docutils literal notranslate"><span class="pre">revisionHash</span></code> - the state of the schemas and of the data at the time of
+the call. Comparing them across two calls is how an extension notices that someone else changed the project
+underneath it.</p>
+</section>
+<hr class="docutils" />
+<section id="dialogs-and-wizards">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Dialogs and Wizards</a><a class="headerlink" href="#dialogs-and-wizards" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ui.dialog</span></code> opens modals in the host’s own chrome.</p>
+<section id="progress">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Progress</a><a class="headerlink" href="#progress" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">showProgress(options)</span></code> returns a handle for a long operation - <code class="docutils literal notranslate"><span class="pre">update(percent,</span> <span class="pre">message?,</span> <span class="pre">color?)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">setFaulted()</span></code>, and <code class="docutils literal notranslate"><span class="pre">close(delayMs?)</span></code>. With <code class="docutils literal notranslate"><span class="pre">cancellable:</span> <span class="pre">true</span></code> the dialog can be dismissed and
+<code class="docutils literal notranslate"><span class="pre">closedHandler(cancelled)</span></code> fires. See <a class="reference internal" href="custom_actions.html"><span class="doc">Custom Actions</span></a> for the full pattern.</p>
+</section>
+<section id="your-own-dialog">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Your Own Dialog</a><a class="headerlink" href="#your-own-dialog" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">showCustom(selector,</span> <span class="pre">data?,</span> <span class="pre">options?)</span></code> hosts a custom element your package registered, inside a Charon dialog:</p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">dialogRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dialog</span><span class="p">.</span><span class="nx">showCustom</span><span class="o">&lt;</span><span class="nx">MyResult</span><span class="o">&gt;</span><span class="p">(</span><span class="s1">'ext-my-dialog'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">itemId</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s1">'Pick an item'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">width</span><span class="o">:</span><span class="w"> </span><span class="s1">'600px'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">disableClose</span><span class="o">:</span><span class="w"> </span><span class="kt">false</span><span class="p">,</span>
+<span class="p">});</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">firstValueFrom</span><span class="p">(</span><span class="nx">dialogRef</span><span class="p">.</span><span class="nx">afterClosed</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>The element receives <code class="docutils literal notranslate"><span class="pre">data</span></code> and closes itself through <code class="docutils literal notranslate"><span class="pre">dialogRef.close(result)</span></code>; <code class="docutils literal notranslate"><span class="pre">afterClosed()</span></code> emits
+that result, or <code class="docutils literal notranslate"><span class="pre">undefined</span></code> when the dialog was dismissed.</p>
+<p><code class="docutils literal notranslate"><span class="pre">showCodeSnippet({</span> <span class="pre">sourceCode</span> <span class="pre">})</span></code> is a ready-made read-only viewer with copy-to-clipboard, for showing a
+generated command line or a fragment of JSON.</p>
+</section>
+<section id="charon-s-wizards">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Charon’s Wizards</a><a class="headerlink" href="#charon-s-wizards" title="Link to this heading"></a></h3>
+<p>An extension can open the editor’s own wizards rather than reimplementing them. Each returns a promise that
+resolves <code class="docutils literal notranslate"><span class="pre">true</span></code> when the wizard completed and <code class="docutils literal notranslate"><span class="pre">false</span></code> when it was cancelled:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Opens</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">showImportWizard(options?)</span></code></p></td>
+<td><p><a class="reference internal" href="../import_export.html"><span class="doc">Import</span></a>, optionally pre-loaded with a file or text and a schema</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">showExportWizard(options?)</span></code></p></td>
+<td><p><a class="reference internal" href="../import_export.html"><span class="doc">Export</span></a>, optionally with a schema and format preselected</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">showImportLocalizationWizard(options?)</span></code> / <code class="docutils literal notranslate"><span class="pre">showExportLocalizationWizard(options?)</span></code></p></td>
+<td><p>The <a class="reference internal" href="../internationalization.html"><span class="doc">translation</span></a> round trip</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">showPublicationWizard(options?)</span></code></p></td>
+<td><p><a class="reference internal" href="../../gamedata/publication.html"><span class="doc">Publication</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">showSourceCodeGenerationWizard(options?)</span></code></p></td>
+<td><p><a class="reference internal" href="../../gamedata/generating_source_code.html"><span class="doc">Source code generation</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">showBackupWizard(options?)</span></code> / <code class="docutils literal notranslate"><span class="pre">showRestoreWizard(options?)</span></code></p></td>
+<td><p><a class="reference internal" href="../backup_restore.html"><span class="doc">Backup and restore</span></a></p></td>
+</tr>
+</tbody>
+</table>
+<p>All of them take <code class="docutils literal notranslate"><span class="pre">loadPreferences</span></code> and <code class="docutils literal notranslate"><span class="pre">savePreferences</span></code>, both defaulting to true - the wizard opens filled
+in the way the user last left it, and remembers what they do this time. Pass <code class="docutils literal notranslate"><span class="pre">false</span></code> when the extension is
+driving the wizard with its own values and should not disturb the user’s saved choices.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="notifications">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Notifications</a><a class="headerlink" href="#notifications" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ui.snackBar</span></code> is the host’s transient notification strip, in matched sets of three - <code class="docutils literal notranslate"><span class="pre">loadStarted</span></code> /
+<code class="docutils literal notranslate"><span class="pre">loadSucceed</span></code> / <code class="docutils literal notranslate"><span class="pre">loadFailed(error)</span></code>, and the same for <code class="docutils literal notranslate"><span class="pre">save</span></code>, <code class="docutils literal notranslate"><span class="pre">reload</span></code>, and <code class="docutils literal notranslate"><span class="pre">delete</span></code>. Using them keeps
+an extension’s feedback indistinguishable from the editor’s own, including how errors are rendered.</p>
+</section>
+<hr class="docutils" />
+<section id="navigation">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Navigation</a><a class="headerlink" href="#navigation" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">navigation</span></code> moves around the editor without building URLs. Every method navigates immediately.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Goes to</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dashboard()</span></code></p></td>
+<td><p>The project dashboard.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">settings(section?)</span></code></p></td>
+<td><p>Project settings - <code class="docutils literal notranslate"><span class="pre">general</span></code>, <code class="docutils literal notranslate"><span class="pre">backup</span></code>, <code class="docutils literal notranslate"><span class="pre">publication</span></code>, <code class="docutils literal notranslate"><span class="pre">source-code</span></code>, <code class="docutils literal notranslate"><span class="pre">internationalization</span></code>,
+<code class="docutils literal notranslate"><span class="pre">branches</span></code>, <code class="docutils literal notranslate"><span class="pre">members</span></code>, <code class="docutils literal notranslate"><span class="pre">extensions</span></code>, <code class="docutils literal notranslate"><span class="pre">features</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">documentCollection(schemaName)</span></code></p></td>
+<td><p>A <a class="reference internal" href="../../gamedata/filling_documents.html"><span class="doc">collection page</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">documentForm(schemaName,</span> <span class="pre">id)</span></code></p></td>
+<td><p>A single <a class="reference internal" href="../../gamedata/document_form.html"><span class="doc">document form</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">customPage(packageName,</span> <span class="pre">pageId,</span> <span class="pre">restOfRoute?,</span> <span class="pre">params?)</span></code></p></td>
+<td><p>A <a class="reference internal" href="custom_pages.html"><span class="doc">custom page</span></a> of any installed extension.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">errorPage(error?,</span> <span class="pre">retryRoute?)</span></code></p></td>
+<td><p>The generic error page.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">back()</span></code></p></td>
+<td><p>The previous entry in browser history.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<hr class="docutils" />
+<section id="persisted-ui-state">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Persisted UI State</a><a class="headerlink" href="#persisted-ui-state" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ui.state</span></code> stores small pieces of state - a zoom level, a collapsed panel, a chosen layout - and gives them
+back the next time the extension runs. On an action or page context it is scoped to the extension package; on a
+document control it takes a scope first, <code class="docutils literal notranslate"><span class="pre">'document'</span></code> or <code class="docutils literal notranslate"><span class="pre">'schema'</span></code>.</p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="nx">state</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="s1">'projectPersonal'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">zoom</span><span class="p">,</span><span class="w"> </span><span class="nx">collapsed</span><span class="w"> </span><span class="p">});</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">restored</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">state</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'projectPersonal'</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The layer decides where the value lives and how far it travels. On load, the requested layer is checked first
+and lower-priority layers after it, so a personal value shadows a shared one:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 28.0%" />
+<col style="width: 72.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Layer</p></th>
+<th class="head"><p>Stored in</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">browserSession</span></code></p></td>
+<td><p>Session storage - gone when the tab closes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">browserPersonal</span></code></p></td>
+<td><p>Local storage, this user.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">browserShared</span></code></p></td>
+<td><p>Local storage, everyone using this browser.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">projectPersonal</span></code></p></td>
+<td><p>The server, this user, this project.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">projectTeam</span></code></p></td>
+<td><p>The server, everyone in the project.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">workspacePersonal</span></code></p></td>
+<td><p>The server, this user, across the workspace.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">workspaceTeam</span></code></p></td>
+<td><p>The server, everyone in the workspace.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">default</span></code></p></td>
+<td><p>Fallback, lowest priority.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Use a <code class="docutils literal notranslate"><span class="pre">browser*</span></code> layer for view state nobody else cares about, and a <code class="docutils literal notranslate"><span class="pre">*Team</span></code> layer for something the whole
+project should share - a canvas layout that everyone should see the same way, for instance. <code class="docutils literal notranslate"><span class="pre">save</span></code> with
+<code class="docutils literal notranslate"><span class="pre">null</span></code> clears the value.</p>
+</section>
+<hr class="docutils" />
+<section id="current-user-project-and-workspace">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Current User, Project, and Workspace</a><a class="headerlink" href="#current-user-project-and-workspace" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">userService.currentUser$</span></code>, <code class="docutils literal notranslate"><span class="pre">projectService.currentProject$</span></code>, <code class="docutils literal notranslate"><span class="pre">projectService.currentBranch$</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">workspaceService.currentWorkspace$</span></code> are observables of who and where. The project carries its
+<a class="reference internal" href="../../web/workspaces_and_projects.html"><span class="doc">branches</span></a>, and the branch says whether it is the primary one - enough
+for an extension to warn before writing to production data, or to label what it produces.</p>
+</section>
+<hr class="docutils" />
+<section id="see-also">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="overview.html"><span class="doc">UI Extensions</span></a></p></li>
+<li><p><a class="reference internal" href="custom_actions.html"><span class="doc">Custom Actions</span></a></p></li>
+<li><p><a class="reference internal" href="custom_pages.html"><span class="doc">Custom Pages</span></a></p></li>
+<li><p><a class="reference internal" href="implementing_schema_editor.html"><span class="doc">Implementing a Schema Editor</span></a></p></li>
+<li><p><a class="reference internal" href="implementing_property_editor.html"><span class="doc">Implementing a Property Editor</span></a></p></li>
+<li><p><a class="reference internal" href="../import_export.html"><span class="doc">Importing and Exporting Data</span></a></p></li>
+<li><p><a class="reference internal" href="../validation.html"><span class="doc">Validation</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="custom_pages.html" class="btn btn-neutral float-left" title="Custom Pages" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="creating_react_extension.html" class="btn btn-neutral float-right" title="Creating a Custom Editor with React" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

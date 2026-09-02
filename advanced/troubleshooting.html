@@ -1,0 +1,467 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Troubleshooting Common Issues &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Working with Logs" href="logs.html" />
+    <link rel="prev" title="Creating a Custom Editor with Angular" href="extensions/creating_angular_extension.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Troubleshooting Common Issues</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/advanced/troubleshooting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="troubleshooting-common-issues">
+<h1>Troubleshooting Common Issues<a class="headerlink" href="#troubleshooting-common-issues" title="Link to this heading"></a></h1>
+<p>This page collects the most frequently reported problems and their solutions. Each section starts
+with the symptom or the exact error message, followed by the cause and the fix.</p>
+<p>If your problem is not listed here, check the <a class="reference internal" href="logs.html"><span class="doc">log files</span></a> for errors and
+see <a class="reference internal" href="#nothing-helped">Nothing Helped?</a> below for support channels.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#editor-fails-to-launch-or-gets-stuck-loading" id="id1">Editor Fails to Launch or Gets Stuck Loading</a></p></li>
+<li><p><a class="reference internal" href="#web-ui-shows-http-failure-response-for-api-v1-context-0-unknown-error" id="id2">Web UI Shows “Http failure response for api/v1/context/: 0 Unknown Error”</a></p></li>
+<li><p><a class="reference internal" href="#blank-page-or-extension-fails-to-load" id="id3">Blank Page or Extension Fails to Load</a></p></li>
+<li><p><a class="reference internal" href="#game-data-file-is-corrupted-after-version-control-operations" id="id4">Game Data File Is Corrupted After Version Control Operations</a></p></li>
+<li><p><a class="reference internal" href="#validation-errors-on-system-schemas-schema-projectsettings-schemaproperty" id="id5">Validation Errors on System Schemas (Schema, ProjectSettings, SchemaProperty)</a></p></li>
+<li><p><a class="reference internal" href="#net-sdk-is-not-installed-during-setup" id="id6">“.NET SDK is not installed” During Setup</a></p></li>
+<li><p><a class="reference internal" href="#exported-xlsx-file-contains-an-errors-sheet" id="id7">Exported XLSX File Contains an “Errors” Sheet</a></p></li>
+<li><p><a class="reference internal" href="#game-data-is-read-only-in-the-web-editor" id="id8">Game Data Is Read-Only in the Web Editor</a></p></li>
+<li><p><a class="reference internal" href="#unreal-engine-compile-errors-after-an-engine-upgrade" id="id9">Unreal Engine Compile Errors After an Engine Upgrade</a></p></li>
+<li><p><a class="reference internal" href="#import-regenerates-ids-of-nested-documents" id="id10">Import Regenerates IDs of Nested Documents</a></p></li>
+<li><p><a class="reference internal" href="#nothing-helped" id="id11">Nothing Helped?</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id12">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="editor-fails-to-launch-or-gets-stuck-loading">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Editor Fails to Launch or Gets Stuck Loading</a><a class="headerlink" href="#editor-fails-to-launch-or-gets-stuck-loading" title="Link to this heading"></a></h2>
+<p><strong>Symptom:</strong> The editor window (or browser tab) never finishes loading, or the launch fails with
+a timeout error. Sometimes a retry succeeds.</p>
+<p>Common causes and fixes, in order of likelihood:</p>
+<ol class="arabic simple">
+<li><p><strong>Large game data file exceeds the launch timeout.</strong> The plugin waits a limited time
+(30 seconds by default) for the editor process to load the game data. For large files,
+increase the <em>Idle Close Timeout</em> in the Unity project settings:
+<strong>Edit → Project Settings → Charon</strong>.</p></li>
+<li><p><strong>VPN or proxy software interferes with local connections.</strong> The editor is a local web
+application served on <code class="docutils literal notranslate"><span class="pre">localhost</span></code>. Some VPN clients and system-wide proxies intercept or
+block this traffic. Temporarily disable them and retry.</p></li>
+<li><p><strong>A stale editor process is holding the port.</strong> Restart the Unity/Unreal editor. If that does
+not help, restart the computer to clear orphaned processes.</p></li>
+<li><p><strong>Unreal Engine plugin: the randomly chosen port is unavailable.</strong> The editor picks a random
+local port on each launch, and sometimes that port is already taken or blocked by OS
+permissions. Simply close and reopen the Charon window - a new port is picked on the next
+launch. Check the <em>Output Log</em> console for error messages if the problem persists.</p></li>
+</ol>
+<p>If the problem persists, collect the <a class="reference internal" href="logs.html"><span class="doc">log files</span></a> and repeat the launch with
+verbose logging enabled.</p>
+</section>
+<hr class="docutils" />
+<section id="web-ui-shows-http-failure-response-for-api-v1-context-0-unknown-error">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Web UI Shows “Http failure response for api/v1/context/: 0 Unknown Error”</a><a class="headerlink" href="#web-ui-shows-http-failure-response-for-api-v1-context-0-unknown-error" title="Link to this heading"></a></h2>
+<p><strong>Symptom:</strong> The editor page opens but fails with the error above, while the same project may
+work in another git branch or after a reboot.</p>
+<p>This indicates that the browser could not reach the local editor process at all. Try in order:</p>
+<ol class="arabic simple">
+<li><p>Hard-refresh the page and clear the cache: <kbd class="kbd docutils literal notranslate">Ctrl</kbd>+<kbd class="kbd docutils literal notranslate">F5</kbd> or <kbd class="kbd docutils literal notranslate">Ctrl</kbd>+<kbd class="kbd docutils literal notranslate">Shift</kbd>+<kbd class="kbd docutils literal notranslate">R</kbd>.</p></li>
+<li><p>Disable browser extensions (ad blockers and privacy tools are frequent offenders).</p></li>
+<li><p>Disable VPN/proxy software.</p></li>
+<li><p>Restart the Unity/Unreal editor, then the computer.</p></li>
+</ol>
+<p>If the error reoccurs, save the <a class="reference internal" href="logs.html"><span class="doc">log files</span></a> from the failing session and send them to
+support - this class of problem is hard to reproduce and logs are essential.</p>
+</section>
+<hr class="docutils" />
+<section id="blank-page-or-extension-fails-to-load">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Blank Page or Extension Fails to Load</a><a class="headerlink" href="#blank-page-or-extension-fails-to-load" title="Link to this heading"></a></h2>
+<p><strong>Symptom:</strong> The editor opens as a blank page, or an installed extension (custom document editor,
+property editor) does not appear as an option in the UI.</p>
+<ol class="arabic simple">
+<li><p>Hard-refresh and clear the browser cache: <kbd class="kbd docutils literal notranslate">Ctrl</kbd>+<kbd class="kbd docutils literal notranslate">F5</kbd> or <kbd class="kbd docutils literal notranslate">Ctrl</kbd>+<kbd class="kbd docutils literal notranslate">Shift</kbd>+<kbd class="kbd docutils literal notranslate">R</kbd>.</p></li>
+<li><p>Open the browser developer console (<kbd class="kbd docutils literal notranslate">F12</kbd>) and check for errors. A crashed or blocking
+browser extension is often visible at the top of the console output.</p></li>
+<li><p>Try a private/incognito window or another browser to rule out browser extensions.</p></li>
+<li><p>For Charon extensions: open <strong>Project Settings → Extensions</strong> and verify the package
+downloaded successfully (hover over the status icon, click <em>Recheck</em> if needed).</p></li>
+<li><p>Verify your browser is supported: <strong>Chrome</strong> released 2021 or later, <strong>Firefox</strong> released
+2023 or later. Other Chromium-based browsers (Edge, Opera, Brave…) should be a recent
+version.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="game-data-file-is-corrupted-after-version-control-operations">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Game Data File Is Corrupted After Version Control Operations</a><a class="headerlink" href="#game-data-file-is-corrupted-after-version-control-operations" title="Link to this heading"></a></h2>
+<p><strong>Symptom:</strong> After a merge, rebase, or branch switch, Charon reports that the game data file is
+corrupted or is not valid JSON.</p>
+<p>The file most likely contains unresolved merge conflict markers (<code class="docutils literal notranslate"><span class="pre">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">=======</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span></code>). Charon detects <strong>Git</strong>, <strong>Mercurial</strong>, and <strong>SVN</strong> working copies and reloads the
+game data on checkouts, but it does not detect merge conflicts inside the file - a file with
+conflict markers is simply no longer valid JSON.</p>
+<p><strong>Fix:</strong></p>
+<ul class="simple">
+<li><p>For <strong>JSON</strong> game data: resolve the conflict with your usual text merge tools, the same way as
+for source code.</p></li>
+<li><p>For <strong>binary</strong> formats (MessagePack): merging is not possible. Choose the correct side of the
+conflict entirely (<code class="docutils literal notranslate"><span class="pre">ours</span></code> or <code class="docutils literal notranslate"><span class="pre">theirs</span></code>) and re-apply the other side’s changes in the editor.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>JSON is the default storage format precisely because it can be diffed and merged in version
+control. Keep binary formats for publication output rather than for the editable source file.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="validation-errors-on-system-schemas-schema-projectsettings-schemaproperty">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Validation Errors on System Schemas (Schema, ProjectSettings, SchemaProperty)</a><a class="headerlink" href="#validation-errors-on-system-schemas-schema-projectsettings-schemaproperty" title="Link to this heading"></a></h2>
+<p><strong>Symptom:</strong> Every schema and property in the project shows validation errors such as an invalid
+identifier, including freshly created schemas.</p>
+<p>Charon stores the metadata that describes metadata (the <code class="docutils literal notranslate"><span class="pre">Schema</span></code>, <code class="docutils literal notranslate"><span class="pre">ProjectSettings</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">SchemaProperty</span></code> system schemas) in the same file as your data. Hand-editing the game data
+file can accidentally damage them, which breaks validation for everything defined on top.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Never modify these system documents when editing the game data file manually:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Schema</span></code> - id <code class="docutils literal notranslate"><span class="pre">18d4bf318f3c49688087dbed</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ProjectSettings</span></code> - id <code class="docutils literal notranslate"><span class="pre">55a4f32faca22e191098f3d9</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SchemaProperty</span></code> - id <code class="docutils literal notranslate"><span class="pre">d40d8eb1a23248b69b252eea</span></code></p></li>
+</ul>
+</div>
+<p><strong>Fix:</strong> Create a new, empty game data file (e.g. via your engine plugin or <code class="docutils literal notranslate"><span class="pre">dnx</span> <span class="pre">dotnet-charon</span> <span class="pre">--</span> <span class="pre">INIT</span></code>),
+open both files in a text editor, and copy the three system schema documents from the fresh file
+into your damaged one, replacing the broken versions. Make a backup first.</p>
+</section>
+<hr class="docutils" />
+<section id="net-sdk-is-not-installed-during-setup">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">“.NET SDK is not installed” During Setup</a><a class="headerlink" href="#net-sdk-is-not-installed-during-setup" title="Link to this heading"></a></h2>
+<p><strong>Symptom:</strong> The engine plugin fails to set up the game data editor and complains about a missing
+.NET installation.</p>
+<p>Charon is a .NET tool and requires the <strong>.NET SDK 10 or later</strong> (SDK 8 is the minimum supported,
+but it does not provide <code class="docutils literal notranslate"><span class="pre">dnx</span></code>). Download it from
+<a class="reference external" href="https://dotnet.microsoft.com/download">dotnet.microsoft.com</a> and verify:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dotnet<span class="w"> </span>--list-sdks
+</pre></div>
+</div>
+<p>After installing the SDK, restart the Unity/Unreal editor. If the plugin still does not detect
+it, restart the computer so the updated <code class="docutils literal notranslate"><span class="pre">PATH</span></code> is picked up.</p>
+</section>
+<hr class="docutils" />
+<section id="exported-xlsx-file-contains-an-errors-sheet">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Exported XLSX File Contains an “Errors” Sheet</a><a class="headerlink" href="#exported-xlsx-file-contains-an-errors-sheet" title="Link to this heading"></a></h2>
+<p><strong>Symptom:</strong> A <code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">EXPORT</span></code> or localization export produces a spreadsheet that looks empty
+except for a sheet named <em>Errors</em>.</p>
+<p>The export failed and the error details were written into that sheet instead of the console.
+Open the <em>Errors</em> sheet and read the message - it typically points to the exact document,
+property, and reason.</p>
+</section>
+<hr class="docutils" />
+<section id="game-data-is-read-only-in-the-web-editor">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Game Data Is Read-Only in the Web Editor</a><a class="headerlink" href="#game-data-is-read-only-in-the-web-editor" title="Link to this heading"></a></h2>
+<p><strong>Symptom:</strong> The online editor shows the project as read-only and design changes are rejected,
+with a message about exceeded limits.</p>
+<p>Your workspace has crossed one of its subscription limits. Go to
+<strong>Workspace Settings → Subscriptions</strong> and check which limit is exceeded - <em>Projects</em>, <em>Members</em>,
+or <em>Size</em>. Remove the excess or upgrade the plan; the read-only message disappears once the
+workspace is back within limits.</p>
+</section>
+<hr class="docutils" />
+<section id="unreal-engine-compile-errors-after-an-engine-upgrade">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Unreal Engine Compile Errors After an Engine Upgrade</a><a class="headerlink" href="#unreal-engine-compile-errors-after-an-engine-upgrade" title="Link to this heading"></a></h2>
+<p><strong>Symptom:</strong> After upgrading Unreal Engine, previously generated C++ code or the Charon plugin
+fails to compile.</p>
+<p>New Unreal Engine releases regularly change engine APIs, so support for a new UE version ships in
+a Charon plugin update. The safe upgrade routine is:</p>
+<ol class="arabic simple">
+<li><p><strong>Wait</strong> until the new UE version is officially supported (see the release #announcements channel on Discord or <a class="reference external" href="https://www.gamedevware.com/whats-new">https://www.gamedevware.com/whats-new</a>).</p></li>
+<li><p><strong>Regenerate</strong> the C++ source code while still on your current engine version - generated
+code is backward compatible.</p></li>
+<li><p><strong>Upgrade</strong> the engine and the Charon plugin together, then rebuild.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="import-regenerates-ids-of-nested-documents">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Import Regenerates IDs of Nested Documents</a><a class="headerlink" href="#import-regenerates-ids-of-nested-documents" title="Link to this heading"></a></h2>
+<p><strong>Symptom:</strong> After importing data (e.g. a localization round-trip), embedded documents receive
+new identifiers, which shows up as large diffs in version control.</p>
+<p>The default import mode replaces embedded collections, recreating their documents. To update
+existing documents in place:</p>
+<ul class="simple">
+<li><p>Pass <code class="docutils literal notranslate"><span class="pre">--mode</span> <span class="pre">safeUpdate</span></code> to <a class="reference internal" href="commands/data_import.html"><span class="doc">DATA IMPORT</span></a> - it prevents creation
+and deletion of nested documents.</p></li>
+<li><p>Or use <a class="reference internal" href="commands/data_i18n_import.html"><span class="doc">DATA I18N IMPORT</span></a> for localization round-trips - it is
+a specialized import that only touches translated text.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="nothing-helped">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Nothing Helped?</a><a class="headerlink" href="#nothing-helped" title="Link to this heading"></a></h2>
+<p>If none of the above solves your problem, reach out directly:</p>
+<ul class="simple">
+<li><p><strong>Discord</strong> - join the <a class="reference external" href="https://discord.gg/2quB5vXryd">Charon Discord server</a> and ask in
+the <code class="docutils literal notranslate"><span class="pre">#issues</span></code> channel. This is usually the fastest way to get help.</p></li>
+<li><p><strong>GitHub</strong> - file a work item at
+<a class="reference external" href="https://github.com/gamedevware/charon/issues">github.com/gamedevware/charon/issues</a>.</p></li>
+<li><p><strong>Email</strong> - write to <a class="reference external" href="mailto:support&#37;&#52;&#48;gamedevware&#46;com">support<span>&#64;</span>gamedevware<span>&#46;</span>com</a>.</p></li>
+</ul>
+<p>Whichever channel you choose, attach the <a class="reference internal" href="logs.html"><span class="doc">log files</span></a> and mention your Charon
+version, engine (Unity/Unreal/standalone/web), and operating system - it saves a round-trip.</p>
+</section>
+<hr class="docutils" />
+<section id="see-also">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="logs.html"><span class="doc">Working with Logs</span></a></p></li>
+<li><p><a class="reference internal" href="reset_preferences.html"><span class="doc">Reset UI Preferences</span></a></p></li>
+<li><p><a class="reference internal" href="merge_logic.html"><span class="doc">Merge Logic</span></a></p></li>
+<li><p><a class="reference internal" href="command_line.html"><span class="doc">Command Line Reference</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="extensions/creating_angular_extension.html" class="btn btn-neutral float-left" title="Creating a Custom Editor with Angular" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="logs.html" class="btn btn-neutral float-right" title="Working with Logs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

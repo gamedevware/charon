@@ -1,0 +1,500 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Implementing CharonSchemaEditorElement &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Custom Actions" href="custom_actions.html" />
+    <link rel="prev" title="Implementing CharonPropertyEditorElement" href="implementing_property_editor.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/advanced/extensions/implementing_schema_editor.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="implementing-charonschemaeditorelement">
+<h1>Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code><a class="headerlink" href="#implementing-charonschemaeditorelement" title="Link to this heading"></a></h1>
+<p>A <strong>schema editor</strong> replaces the entire document form for one schema. Where a
+<a class="reference internal" href="implementing_property_editor.html"><span class="doc">property editor</span></a> is handed a single value, a schema editor is handed the
+whole document and decides how all of it is presented - as a node graph, a timeline, a board, a map, whatever
+the data actually is.</p>
+<figure class="align-default">
+<img alt="../../_images/extensions_document_custom_editor_conversation_graph.png" src="../../_images/extensions_document_custom_editor_conversation_graph.png" />
+</figure>
+<p>The screenshot is the <code class="docutils literal notranslate"><span class="pre">charon-conversation-editor</span></code> example: dialogue lines are nodes on a canvas, the links
+between them are edges, and the selected node’s fields are in the panel on the right. Underneath it is an
+ordinary document - the nodes are entries of an embedded document collection - which is why the host’s <code class="docutils literal notranslate"><span class="pre">Save</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Discard</span> <span class="pre">Changes</span></code>, and the <code class="docutils literal notranslate"><span class="pre">Form</span></code> and <code class="docutils literal notranslate"><span class="pre">JSON</span></code> view modes keep working next to it.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#declaring-the-editor" id="id1">Declaring the Editor</a></p></li>
+<li><p><a class="reference internal" href="#the-element-contract" id="id2">The Element Contract</a></p></li>
+<li><p><a class="reference internal" href="#working-with-the-document" id="id3">Working with the Document</a></p>
+<ul>
+<li><p><a class="reference internal" href="#read-only-documents" id="id4">Read-Only Documents</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#document-services" id="id5">Document Services</a></p>
+<ul>
+<li><p><a class="reference internal" href="#undo-and-redo" id="id6">Undo and Redo</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#development" id="id7">Development</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id8">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="declaring-the-editor">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Declaring the Editor</a><a class="headerlink" href="#declaring-the-editor" title="Link to this heading"></a></h2>
+<p>A schema editor is a <code class="docutils literal notranslate"><span class="pre">customEditors</span></code> entry with <code class="docutils literal notranslate"><span class="pre">type:</span> <span class="pre">[&quot;Schema&quot;]</span></code>. <code class="docutils literal notranslate"><span class="pre">dataTypes</span></code> is meaningless here and is
+left out:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"customEditors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ext-conversation-editor"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"selector"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ext-conversation-editor"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Conversation Editor"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"Schema"</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A schema uses it when its <a class="reference internal" href="../../gamedata/schemas/specification.html"><span class="doc">Specification</span></a> contains
+<code class="docutils literal notranslate"><span class="pre">editor=ext-conversation-editor</span></code>. Nothing else opts in - the same editor serves every schema whose
+specification names it, and a project can have several schema editors installed at once.</p>
+<p>Because a schema editor usually needs the document laid out a particular way - specific properties, specific
+data types - packages rarely ask the user to write that specification by hand. They ship a
+<a class="reference internal" href="custom_actions.html"><span class="doc">custom action</span></a> in the <code class="docutils literal notranslate"><span class="pre">new-schema-menu</span></code> that creates the schema, its properties, and the
+<code class="docutils literal notranslate"><span class="pre">editor=</span></code> specification in one step. That is what <strong>Create Conversation Schema</strong> does in the example.</p>
+<p>Once a document of such a schema is opened, the editor appears as the <strong>Graph</strong> view mode in the bottom right
+corner of the form, alongside <strong>Form</strong> and <strong>JSON</strong>. The mode is absent for every other document.</p>
+</section>
+<hr class="docutils" />
+<section id="the-element-contract">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">The Element Contract</a><a class="headerlink" href="#the-element-contract" title="Link to this heading"></a></h2>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="k">export</span><span class="w"> </span><span class="kr">declare</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">CharonSchemaEditorElement</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">documentControl</span><span class="o">:</span><span class="w"> </span><span class="kt">RootDocumentControl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Charon creates the element by its <code class="docutils literal notranslate"><span class="pre">selector</span></code>, sets <code class="docutils literal notranslate"><span class="pre">documentControl</span></code> on it, and appends it to the page. The
+setter runs <strong>before</strong> <code class="docutils literal notranslate"><span class="pre">connectedCallback</span></code>, so mount your framework on whichever of the two comes second:</p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">ConversationEditorElement</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">HTMLElement</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">CharonSchemaEditorElement</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">_documentControl?</span><span class="o">:</span><span class="w"> </span><span class="kt">RootDocumentControl</span><span class="o">&lt;</span><span class="nx">ConversationTree</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">_root?</span><span class="o">:</span><span class="w"> </span><span class="kt">Root</span><span class="p">;</span>
+
+<span class="w">    </span><span class="nx">get</span><span class="w"> </span><span class="nx">documentControl</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">_documentControl</span><span class="o">!</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">set</span><span class="w"> </span><span class="nx">documentControl</span><span class="p">(</span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">RootDocumentControl</span><span class="o">&lt;</span><span class="nx">ConversationTree</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">is</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">_documentControl</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="nx">_documentControl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">value</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nx">connectedCallback</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nx">disconnectedCallback</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">unmount</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The control can be replaced while the element is alive - navigating to the next document with the <code class="docutils literal notranslate"><span class="pre">‹</span></code> and <code class="docutils literal notranslate"><span class="pre">›</span></code>
+buttons does exactly that - so re-render on assignment rather than only on connect, and drop subscriptions to
+the previous control.</p>
+<p><code class="docutils literal notranslate"><span class="pre">RootDocumentControl</span></code> is generic over the document shape, so declaring your own interface for the schema you
+target gives the whole editor typed access to the document’s properties.</p>
+</section>
+<hr class="docutils" />
+<section id="working-with-the-document">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Working with the Document</a><a class="headerlink" href="#working-with-the-document" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">RootDocumentControl</span></code> is a <code class="docutils literal notranslate"><span class="pre">DocumentControl</span></code> with the schema attached:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Member</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">schema</span></code></p></td>
+<td><p>The full <a class="reference internal" href="../../gamedata/schemas/schema.html"><span class="doc">schema</span></a> - properties, data types, id generator, display
+text template.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">controls</span></code></p></td>
+<td><p>Child controls by property name. A <code class="docutils literal notranslate"><span class="pre">Document</span></code> property gives a <code class="docutils literal notranslate"><span class="pre">DocumentControl</span></code>, a document
+collection gives a <code class="docutils literal notranslate"><span class="pre">DocumentCollectionControl</span></code>, a reference collection gives a
+<code class="docutils literal notranslate"><span class="pre">ReferenceCollectionControl</span></code>, everything else a <code class="docutils literal notranslate"><span class="pre">ValueControl</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">value</span></code> / <code class="docutils literal notranslate"><span class="pre">setValue</span></code> / <code class="docutils literal notranslate"><span class="pre">patchValue</span></code></p></td>
+<td><p>The document as data, and the two ways to write it back.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">valueChanges</span></code> / <code class="docutils literal notranslate"><span class="pre">statusChanges</span></code></p></td>
+<td><p>Streams to bind your own state to.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">getByPath</span></code></p></td>
+<td><p>A control by JSON Pointer, for editors that address the document by path.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">errors</span></code> / <code class="docutils literal notranslate"><span class="pre">status</span></code> / <code class="docutils literal notranslate"><span class="pre">addValidators</span></code></p></td>
+<td><p>Validation state, shared with the host’s error counter.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">readOnly</span></code> / <code class="docutils literal notranslate"><span class="pre">disabled</span></code> / <code class="docutils literal notranslate"><span class="pre">dirty</span></code> / <code class="docutils literal notranslate"><span class="pre">touched</span></code></p></td>
+<td><p>UI state, also shared with the host.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">services</span></code></p></td>
+<td><p>The document-scoped host services, below.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Collections are edited through the collection control rather than by replacing the array: <code class="docutils literal notranslate"><span class="pre">append</span></code>,
+<code class="docutils literal notranslate"><span class="pre">insertAt</span></code>, <code class="docutils literal notranslate"><span class="pre">swap</span></code>, <code class="docutils literal notranslate"><span class="pre">removeAt</span></code>, and <code class="docutils literal notranslate"><span class="pre">remove</span></code> keep the child controls, their validation, and the host’s
+change tracking intact. Adding a node to a graph is an <code class="docutils literal notranslate"><span class="pre">append</span></code>; dragging one node before another is a
+<code class="docutils literal notranslate"><span class="pre">swap</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A schema editor never saves. It edits controls; the host’s <code class="docutils literal notranslate"><span class="pre">Save</span></code> button writes the document, and only the
+fields that actually changed. The same applies to <code class="docutils literal notranslate"><span class="pre">Discard</span> <span class="pre">Changes</span></code>, which resets the controls under you -
+another reason to render from <code class="docutils literal notranslate"><span class="pre">valueChanges</span></code> rather than from a copy taken once at mount.</p>
+</div>
+<section id="read-only-documents">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Read-Only Documents</a><a class="headerlink" href="#read-only-documents" title="Link to this heading"></a></h3>
+<p>Honour <code class="docutils literal notranslate"><span class="pre">readOnly</span></code> and <code class="docutils literal notranslate"><span class="pre">disabled</span></code>. The host hides its own editing buttons when the game data is read-only or
+the user lacks permission, but it cannot stop a custom canvas from letting people drag things around - and edits
+made in that state are lost. See
+<a class="reference internal" href="../../gamedata/document_form.html"><span class="doc">When the Form Is Read-Only</span></a>.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="document-services">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Document Services</a><a class="headerlink" href="#document-services" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">documentControl.services</span></code> carries what the host can offer for the document being edited. Every field is
+optional - check before use:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Service</p></th>
+<th class="head"><p>What it gives you</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">validationProvider</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">getDocumentValue(path,</span> <span class="pre">'base'</span> <span class="pre">|</span> <span class="pre">'starting'</span> <span class="pre">|</span> <span class="pre">'current')</span></code> for comparing against the server state or the
+state at the start of the session, plus <code class="docutils literal notranslate"><span class="pre">listDocuments</span></code>, <code class="docutils literal notranslate"><span class="pre">listLocalDocuments</span></code>, and <code class="docutils literal notranslate"><span class="pre">findDocument</span></code>
+for validators that need to look elsewhere.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">translationLanguage</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">primaryLanguage$</span></code>, <code class="docutils literal notranslate"><span class="pre">languages$</span></code>, <code class="docutils literal notranslate"><span class="pre">currentLanguage$</span></code>, and <code class="docutils literal notranslate"><span class="pre">selectLanguage</span></code> - so an editor showing
+localized text follows the language the rest of the form is on.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gameData</span></code></p></td>
+<td><p>The project-wide <a class="reference internal" href="host_services.html"><span class="doc">game data service</span></a> - querying, importing, exporting, validating.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">undoRedo</span></code></p></td>
+<td><p>The host’s undo/redo history, below.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ui.state</span></code></p></td>
+<td><p>Persisted UI state scoped to this document or its schema - see <a class="reference internal" href="host_services.html"><span class="doc">Host Services</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ui.dialog</span></code> / <code class="docutils literal notranslate"><span class="pre">ui.snackBar</span></code></p></td>
+<td><p>Dialogs, wizards, and notifications.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="undo-and-redo">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Undo and Redo</a><a class="headerlink" href="#undo-and-redo" title="Link to this heading"></a></h3>
+<p>The host’s <kbd class="kbd docutils literal notranslate">Ctrl/⌘</kbd>+<kbd class="kbd docutils literal notranslate">Z</kbd> and <kbd class="kbd docutils literal notranslate">Ctrl/⌘</kbd>+<kbd class="kbd docutils literal notranslate">Y</kbd> drive the same <code class="docutils literal notranslate"><span class="pre">UndoRedoService</span></code> your editor sees, so changes
+made through the controls are undone by the toolbar and the keyboard without any work on your side. Reach for
+the service only when an interaction is not a plain control write:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">push({</span> <span class="pre">redo,</span> <span class="pre">undo</span> <span class="pre">},</span> <span class="pre">batcher?)</span></code> records a step of your own - a node moved on the canvas, a layout
+recalculated. The optional <code class="docutils literal notranslate"><span class="pre">batcher</span></code> receives the previous entry and the milliseconds since it was pushed;
+returning that same object by reference merges the two into one undo step, which is how a drag becomes one
+step instead of forty.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">barrier()</span></code> forces the next change to start a new step, ending any automatic batching.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clear()</span></code> throws the history away.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not maintain a private undo stack. Two histories over one document diverge as soon as the user presses
+the toolbar button instead of yours.</p>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="development">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Development</a><a class="headerlink" href="#development" title="Link to this heading"></a></h2>
+<p>A schema editor is harder to iterate on inside Charon than a property editor, so both example packages ship a
+development harness: <code class="docutils literal notranslate"><span class="pre">main.tsx</span></code> detects <code class="docutils literal notranslate"><span class="pre">import.meta.env.MODE</span> <span class="pre">===</span> <span class="pre">'development'</span></code>, builds a stub
+<code class="docutils literal notranslate"><span class="pre">documentControl</span></code> over a sample document, persists it to <code class="docutils literal notranslate"><span class="pre">localStorage</span></code>, and mounts the element standalone.
+<code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">dev</span></code> then gives the editor in a browser with no Charon at all, and the same bundle is what gets
+packed for release.</p>
+<p>Wrap the editor in an error boundary. An exception thrown while rendering a canvas takes the whole form down
+otherwise, and the user is left with a blank page and a console message.</p>
+<p>When the editor does need to run inside Charon, build it, <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">pack</span></code> it, and use <strong>Upload NPM Package…</strong> on
+the <a class="reference internal" href="overview.html"><span class="doc">Extensions settings page</span></a>.</p>
+</section>
+<hr class="docutils" />
+<section id="see-also">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="overview.html"><span class="doc">UI Extensions</span></a></p></li>
+<li><p><a class="reference internal" href="implementing_property_editor.html"><span class="doc">Implementing a Property Editor</span></a></p></li>
+<li><p><a class="reference internal" href="custom_actions.html"><span class="doc">Custom Actions</span></a></p></li>
+<li><p><a class="reference internal" href="host_services.html"><span class="doc">Host Services</span></a></p></li>
+<li><p><a class="reference internal" href="../../gamedata/document_form.html"><span class="doc">Editing a Document</span></a></p></li>
+<li><p><a class="reference internal" href="../../gamedata/schemas/schema.html"><span class="doc">Schema</span></a></p></li>
+<li><p><a class="reference external" href="https://github.com/gamedevware/charon-extensions/tree/main/src/charon-conversation-editor">charon-conversation-editor (GitHub)</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="implementing_property_editor.html" class="btn btn-neutral float-left" title="Implementing CharonPropertyEditorElement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="custom_actions.html" class="btn btn-neutral float-right" title="Custom Actions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

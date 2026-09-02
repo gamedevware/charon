@@ -1,0 +1,574 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Internationalization (i18n) &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Validation" href="validation.html" />
+    <link rel="prev" title="Document Merge Logic" href="merge_logic.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Internationalization (i18n)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/advanced/internationalization.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="internationalization-i18n">
+<h1>Internationalization (i18n)<a class="headerlink" href="#internationalization-i18n" title="Link to this heading"></a></h1>
+<p>Charon supports localization by enabling text data to be stored in multiple languages using the <a class="reference internal" href="../gamedata/datatypes/all/localized_text.html"><span class="doc">Localized Text</span></a> data type. This allows game data to be exported for translation, modified externally, and imported back after localization.</p>
+<p>Supported interchange formats are <a class="reference external" href="https://en.wikipedia.org/wiki/XLIFF">XLIFF</a> (XML Localization Interchange File Format) version 1 and 2, <a class="reference external" href="https://en.wikipedia.org/wiki/Office_Open_XML">XLSX</a> spreadsheets and <a class="reference external" href="https://www.json.org/json-en.html">JSON</a>. These formats are suitable for translation workflows involving external tools or localization teams.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Everything related to translation lives on one page: <strong>Settings</strong> → <strong>Internationalization</strong>. It has three
+sections, which also correspond to the three stages of a localization workflow:</p>
+<ul class="simple">
+<li><p><strong>Internationalization (i18n)</strong> - which languages the project has.</p></li>
+<li><p><strong>Localization (l10n)</strong> - export text for translators, import it back.</p></li>
+<li><p><strong>Machine Translation</strong> - optional automatic pre-translation, when the feature is enabled.</p></li>
+</ul>
+<p>Every action on this page has a CLI counterpart except machine translation, so the same workflow can be
+automated in a CI/CD pipeline. See <a class="reference internal" href="cicd.html"><span class="doc">CI/CD</span></a>.</p>
+<p>Common use cases include:</p>
+<ul class="simple">
+<li><p>Managing multi-language game content.</p></li>
+<li><p>Sending text data to third-party localization vendors.</p></li>
+<li><p>Automating translation pipelines with CLI tools.</p></li>
+</ul>
+</section>
+<section id="configuring-languages">
+<h2>Configuring Languages<a class="headerlink" href="#configuring-languages" title="Link to this heading"></a></h2>
+<p>Open <strong>Settings</strong> → <strong>Internationalization</strong> and use the first card to declare the project’s languages.</p>
+<figure class="align-default">
+<img alt="../_images/internationalization_languages.png" src="../_images/internationalization_languages.png" />
+</figure>
+<ul class="simple">
+<li><p><strong>Primary Language</strong> - the language content is authored in. It is the display language in the UI and the
+default source language for translation export and import.</p></li>
+<li><p><strong>Translation Languages</strong> - the target languages. Start typing in the field and pick a language from the
+autocomplete; remove one with the cross button on its chip.</p></li>
+<li><p><strong>Update Languages</strong> - saves the change. The button stays disabled until something is modified.</p></li>
+</ul>
+<p>Adding a language does not create any text - it makes the language available as a slot on every
+<a class="reference internal" href="../gamedata/datatypes/all/localized_text.html"><span class="doc">Localized Text</span></a> field and as a target in the export, import
+and machine translation wizards.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Removing a translation language hides its text from the UI. Export the language before removing it if
+the translated content still matters.</p>
+</div>
+<p><strong>CLI equivalent</strong></p>
+<p>List the configured languages (the primary language always comes first):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>I18N<span class="w"> </span>LANGUAGES<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span><span class="s2">"gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>out<span class="w"> </span>--outputFormat<span class="w"> </span>table
+</pre></div>
+</div>
+<p>Add target languages:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>I18N<span class="w"> </span>ADDLANGUAGE<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span><span class="s2">"gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--languages<span class="w"> </span><span class="s2">"es-ES"</span><span class="w"> </span><span class="s2">"fr-FR"</span>
+</pre></div>
+</div>
+<p>Language values are <a class="reference external" href="https://en.wikipedia.org/wiki/IETF_language_tag">BCP 47</a> tags, e.g. <code class="docutils literal notranslate"><span class="pre">en-US</span></code>,
+<code class="docutils literal notranslate"><span class="pre">es-ES</span></code>, <code class="docutils literal notranslate"><span class="pre">fr</span></code>.</p>
+</section>
+<section id="localization-l10n">
+<h2>Localization (l10n)<a class="headerlink" href="#localization-l10n" title="Link to this heading"></a></h2>
+<p>The <strong>Localization (l10n)</strong> card is the entry point for the export/import round trip.</p>
+<figure class="align-default">
+<img alt="../_images/internationalization_import_export.png" src="../_images/internationalization_import_export.png" />
+</figure>
+<ul class="simple">
+<li><p><strong>Export Text</strong> - collects every localizable text entry and writes it to a file for translators.</p></li>
+<li><p><strong>Import Text</strong> - reads a translated file back into the game data.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Keep the document structure stable between export and import. If schemas and documents change
+significantly in the meantime, some translated entries can no longer be matched and will be lost.</p>
+</div>
+</section>
+<section id="exporting-translatable-text">
+<h2>Exporting Translatable Text<a class="headerlink" href="#exporting-translatable-text" title="Link to this heading"></a></h2>
+<p>Click <strong>Export Text</strong> to open the <strong>Export Localization Data</strong> wizard.</p>
+<section id="step-1-pick-format">
+<h3>Step 1. Pick Format<a class="headerlink" href="#step-1-pick-format" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/internationalization_export_window.png" src="../_images/internationalization_export_window.png" />
+</figure>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Format</p></th>
+<th class="head"><p>When to use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>XLIFF ver.2</p></td>
+<td><p>Default choice for professional translation tools and vendors.</p></td>
+</tr>
+<tr class="row-odd"><td><p>XLIFF ver.1</p></td>
+<td><p>Older tools that do not accept XLIFF 2.</p></td>
+</tr>
+<tr class="row-even"><td><p>Spreadsheet (.xlsx)</p></td>
+<td><p>Translators working directly in Excel or Google Sheets.</p></td>
+</tr>
+<tr class="row-odd"><td><p>JSON</p></td>
+<td><p>Custom scripts and in-house translation pipelines.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="step-2-languages">
+<h3>Step 2. Languages<a class="headerlink" href="#step-2-languages" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/internationalization_export_languages_window.png" src="../_images/internationalization_export_languages_window.png" />
+</figure>
+<p>Pick the <strong>Source Language</strong> (the text translators will read, usually the primary language) and one or more
+<strong>Target Languages</strong>. Existing translations for the target languages are included in the file, so translators
+see what is already done.</p>
+</section>
+<section id="step-3-select-collections">
+<h3>Step 3. Select Collections<a class="headerlink" href="#step-3-select-collections" title="Link to this heading"></a></h3>
+<p>Limit the export to specific document collections, or leave everything selected to export all localizable
+text. Narrowing the scope keeps vendor files small when only part of the content changed.</p>
+</section>
+<section id="step-4-summary">
+<h3>Step 4. Summary<a class="headerlink" href="#step-4-summary" title="Link to this heading"></a></h3>
+<p>Review the choices and start the export. The resulting file is downloaded through the browser.</p>
+<p><strong>CLI equivalent</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>I18N<span class="w"> </span>EXPORT<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span><span class="s2">"gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--sourceLanguage<span class="w"> </span>en-US<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--targetLanguage<span class="w"> </span>fr<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span><span class="s2">"en_fr_texts.xliff"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--outputFormat<span class="w"> </span>xliff
+</pre></div>
+</div>
+<p>Key parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--sourceLanguage</span></code> - language of the original text.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--targetLanguage</span></code> - language the content is translated into.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--schemas</span></code> - optional list of schemas, matching the <em>Select Collections</em> step.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--outputFormat</span></code> - <code class="docutils literal notranslate"><span class="pre">xliff</span></code> (alias of <code class="docutils literal notranslate"><span class="pre">xliff2</span></code>), <code class="docutils literal notranslate"><span class="pre">xliff1</span></code>, <code class="docutils literal notranslate"><span class="pre">xslx</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code>.</p></li>
+</ul>
+<p>See <a class="reference internal" href="commands/data_i18n_export.html"><span class="doc">DATA I18N EXPORT</span></a> for the full parameter list.</p>
+</section>
+</section>
+<section id="importing-translated-data">
+<h2>Importing Translated Data<a class="headerlink" href="#importing-translated-data" title="Link to this heading"></a></h2>
+<p>Click <strong>Import Text</strong> to open the <strong>Import Localization Data</strong> wizard.</p>
+<section id="step-1-from">
+<h3>Step 1. From<a class="headerlink" href="#step-1-from" title="Link to this heading"></a></h3>
+<p>Choose where the translated data comes from - a <strong>File</strong> on your device, or the <strong>Clipboard</strong> for pasted
+JSON text.</p>
+</section>
+<section id="step-2-file-input">
+<h3>Step 2. File Input<a class="headerlink" href="#step-2-file-input" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/internationalization_import_window.png" src="../_images/internationalization_import_window.png" />
+</figure>
+<p>Browse for the file returned by the translators. Accepted formats are JSON (<code class="docutils literal notranslate"><span class="pre">.json</span></code>), MessagePack
+(<code class="docutils literal notranslate"><span class="pre">.msgpack</span></code>), BSON (<code class="docutils literal notranslate"><span class="pre">.bson</span></code>), Spreadsheet (<code class="docutils literal notranslate"><span class="pre">.xslx</span></code>), XLIFF ver.1 (<code class="docutils literal notranslate"><span class="pre">.xliff1</span></code>) and XLIFF ver.2
+(<code class="docutils literal notranslate"><span class="pre">.xliff2</span></code>, <code class="docutils literal notranslate"><span class="pre">.xlf</span></code>).</p>
+<p>Two options are available on this step:</p>
+<ul class="simple">
+<li><p><strong>Ignore consistency errors in imported data</strong> - accepts data that fails validation. Useful for
+work-in-progress translations.</p></li>
+<li><p><strong>Perform a dry run and don’t persist changes</strong> - runs the whole import and reports what would happen
+without writing anything. Always worth doing before the first import of a vendor’s file.</p></li>
+</ul>
+</section>
+<section id="id1">
+<h3>Step 3. Select Collections<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Restrict the import to specific collections, if the file covers more than you want to update.</p>
+</section>
+<section id="step-4-languages">
+<h3>Step 4. Languages<a class="headerlink" href="#step-4-languages" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/internationalization_import_languages_window.png" src="../_images/internationalization_import_languages_window.png" />
+</figure>
+<p>The language list is read from the file being imported, not from project settings. Tick only the languages
+relevant to this import - typically the target language alone, leaving the source language untouched.
+<strong>Translation Notes</strong> carries translator comments back into the data. Languages that are not yet in project
+settings are added automatically when the import completes.</p>
+</section>
+<section id="step-5-summary">
+<h3>Step 5. Summary<a class="headerlink" href="#step-5-summary" title="Link to this heading"></a></h3>
+<p>Review and run the import.</p>
+<p><strong>CLI equivalent</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>I18N<span class="w"> </span>IMPORT<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span><span class="s2">"gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--input<span class="w"> </span><span class="s2">"en_fr_translated.xliff"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--inputFormat<span class="w"> </span>xliff<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--languages<span class="w"> </span>fr<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dryRun
+</pre></div>
+</div>
+<p>Key parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--inputFormat</span></code> - <code class="docutils literal notranslate"><span class="pre">auto</span></code> by default, detected from the file extension.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--languages</span></code> - languages to import; <code class="docutils literal notranslate"><span class="pre">*</span></code> imports all languages found in the file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--validationOptions</span> <span class="pre">None</span></code> - the CLI equivalent of <em>Ignore consistency errors</em>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dryRun</span></code> - the CLI equivalent of <em>Perform a dry run</em>. Drop it to persist the changes.</p></li>
+</ul>
+<p>See <a class="reference internal" href="commands/data_i18n_import.html"><span class="doc">DATA I18N IMPORT</span></a> for the full parameter list.</p>
+</section>
+</section>
+<section id="machine-translation">
+<h2>Machine Translation<a class="headerlink" href="#machine-translation" title="Link to this heading"></a></h2>
+<p>Machine translation pre-populates target language fields as a <strong>first draft</strong> for translators to review. It
+speeds up the initial pass on large amounts of text but does not replace professional translation for final
+copy.</p>
+<p>The feature is available in the cloud and server editions and is enabled per-project by an Administrator.
+When it is off, the <strong>Machine Translation</strong> card is not shown.</p>
+<section id="translating-the-whole-project">
+<h3>Translating the Whole Project<a class="headerlink" href="#translating-the-whole-project" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/internationalization_machine_translation.png" src="../_images/internationalization_machine_translation.png" />
+</figure>
+<p><strong>Translate Text</strong> opens the <strong>Machine Translate Text</strong> wizard.</p>
+<figure class="align-default">
+<img alt="../_images/internationalization_machine_translation_window.png" src="../_images/internationalization_machine_translation_window.png" />
+</figure>
+<p>Step 1 selects the <strong>Source Language</strong> and <strong>Target Languages</strong>. Step 2 selects the scope:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Scope</p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Translate all texts</p></td>
+<td><p>Overwrites every target text, including reviewed translations.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Translate stale texts</p></td>
+<td><p>Retranslates entries whose primary language text changed after the
+translation was made, plus missing ones.</p></td>
+</tr>
+<tr class="row-even"><td><p>Translate only missing texts</p></td>
+<td><p>Fills empty entries only, never touching existing translations.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Step 3 shows progress. A project-wide translation scans all documents and may take a while; the progress bar
+on the settings card reflects the running operation.</p>
+</section>
+<section id="translating-a-single-document">
+<h3>Translating a Single Document<a class="headerlink" href="#translating-a-single-document" title="Link to this heading"></a></h3>
+<p>The same three scopes are available for one document from the document form’s <strong>Actions</strong> menu →
+<strong>Translate Texts</strong>.</p>
+<figure class="align-default">
+<img alt="../_images/internationalization_machine_translation_document_menu.png" src="../_images/internationalization_machine_translation_document_menu.png" />
+</figure>
+<p>This is the fast path when a designer edits one document’s primary text and wants the other languages
+refreshed immediately.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Machine translation has no CLI command. For automated pipelines, use the export/import workflow with an
+external translation service.</p>
+</div>
+</section>
+</section>
+<section id="working-with-translation-teams">
+<h2>Working with Translation Teams<a class="headerlink" href="#working-with-translation-teams" title="Link to this heading"></a></h2>
+<p>The standard human-translation workflow with Charon:</p>
+<ol class="arabic">
+<li><p>Designers fill the <strong>primary language</strong> for all content.</p></li>
+<li><p>Optionally run <strong>Machine Translation</strong> with <em>Translate only missing texts</em> to give translators a draft to
+edit instead of a blank file.</p></li>
+<li><p><strong>Export Text</strong> in XLIFF ver.2 for each target language, or run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>I18N<span class="w"> </span>EXPORT<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span><span class="s2">"gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--sourceLanguage<span class="w"> </span>en-US<span class="w"> </span>--targetLanguage<span class="w"> </span>fr<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>en_fr.xliff<span class="w"> </span>--outputFormat<span class="w"> </span>xliff
+</pre></div>
+</div>
+</li>
+<li><p>Send the <code class="docutils literal notranslate"><span class="pre">.xliff</span></code> file to your localization vendor or translation management system
+(Crowdin, Lokalise, POEditor, or any XLIFF-compatible tool).</p></li>
+<li><p>Receive the translated file back from the vendor.</p></li>
+<li><p><strong>Import Text</strong> with <em>Perform a dry run</em> first, then again without it, or run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>I18N<span class="w"> </span>IMPORT<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--dataBase<span class="w"> </span><span class="s2">"gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--input<span class="w"> </span>en_fr_translated.xliff<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--languages<span class="w"> </span>fr
+</pre></div>
+</div>
+</li>
+<li><p>Repeat for each target language. CI/CD scripts can automate steps 3 and 6 for continuous localization
+pipelines.</p></li>
+</ol>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Use <strong>XLIFF</strong> for integration with professional translation software or localization platforms.</p></li>
+<li><p>Use <strong>Spreadsheet (.xlsx)</strong> when working with translators familiar with spreadsheet tools.</p></li>
+<li><p>Always run a <strong>dry run</strong> before importing a vendor’s file into production data.</p></li>
+<li><p>Export a language before removing it from <strong>Translation Languages</strong>.</p></li>
+<li><p>Keep schema changes and translation rounds apart - restructuring documents between export and import
+loses translated entries.</p></li>
+</ul>
+</section>
+<section id="unsupported-formats">
+<h2>Unsupported Formats<a class="headerlink" href="#unsupported-formats" title="Link to this heading"></a></h2>
+<p>While Charon may accept other serialization formats (e.g., BSON, MsgPack) on import, compatibility for
+internationalization workflows is only guaranteed for XLIFF, XLSX and JSON.</p>
+</section>
+<section id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="import_export.html"><span class="doc">Importing and Exporting Data</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_export.html"><span class="doc">DATA EXPORT</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_import.html"><span class="doc">DATA IMPORT</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_i18n_export.html"><span class="doc">DATA I18N EXPORT</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_i18n_import.html"><span class="doc">DATA I18N IMPORT</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_i18n_languages.html"><span class="doc">DATA I18N LANGUAGES</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_i18n_add_language.html"><span class="doc">DATA I18N ADDLANGUAGE</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="merge_logic.html" class="btn btn-neutral float-left" title="Document Merge Logic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="validation.html" class="btn btn-neutral float-right" title="Validation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

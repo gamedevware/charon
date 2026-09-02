@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UI Extensions &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Implementing CharonPropertyEditorElement" href="implementing_property_editor.html" />
+    <link rel="prev" title="Formula Expression AST" href="../formula_expression_ast.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">UI Extensions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/advanced/extensions/overview.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ui-extensions">
+<h1>UI Extensions<a class="headerlink" href="#ui-extensions" title="Link to this heading"></a></h1>
+<p>An <strong>extension</strong> is a package of your own code that Charon loads into the editor at runtime. It can replace the
+editor of a single field, replace the whole document form with a graph or a node editor, add entries to Charon’s
+menus, and add pages of its own to the side navigation.</p>
+<p>Extensions are <strong>Web Components</strong> packaged as <strong>NPM modules</strong>. Nothing about them is framework-specific - React,
+Angular, Vue, or plain JavaScript all work - and they are installed per project, so everyone working on that
+project gets the same set.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#what-an-extension-can-add" id="id1">What an Extension Can Add</a></p></li>
+<li><p><a class="reference internal" href="#how-extensions-are-declared" id="id2">How Extensions Are Declared</a></p>
+<ul>
+<li><p><a class="reference internal" href="#choosing-an-editor-for-a-property" id="id3">Choosing an Editor for a Property</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#installing-an-extension" id="id4">Installing an Extension</a></p></li>
+<li><p><a class="reference internal" href="#consent-and-trust" id="id5">Consent and Trust</a></p></li>
+<li><p><a class="reference internal" href="#when-an-extension-fails-to-load" id="id6">When an Extension Fails to Load</a></p></li>
+<li><p><a class="reference internal" href="#packaging-and-publishing" id="id7">Packaging and Publishing</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id8">Examples</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id9">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="what-an-extension-can-add">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">What an Extension Can Add</a><a class="headerlink" href="#what-an-extension-can-add" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 48.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Kind</p></th>
+<th class="head"><p>What it replaces or adds</p></th>
+<th class="head"><p>Declared in <code class="docutils literal notranslate"><span class="pre">package.json</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Property editor</strong></p></td>
+<td><p>The input for one field of a document form.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">config.customEditors</span></code>, <code class="docutils literal notranslate"><span class="pre">type:</span> <span class="pre">[&quot;Property&quot;]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Grid editor</strong></p></td>
+<td><p>The cell editor for the same property in the collection grid.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">config.customEditors</span></code>, <code class="docutils literal notranslate"><span class="pre">type:</span> <span class="pre">[&quot;Grid&quot;]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Schema editor</strong></p></td>
+<td><p>The entire editing view of a document - see
+<a class="reference internal" href="implementing_schema_editor.html"><span class="doc">Implementing a Schema Editor</span></a>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">config.customEditors</span></code>, <code class="docutils literal notranslate"><span class="pre">type:</span> <span class="pre">[&quot;Schema&quot;]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Custom action</strong></p></td>
+<td><p>A menu entry in one of four places in the UI - see <a class="reference internal" href="custom_actions.html"><span class="doc">Custom Actions</span></a>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">config.customActions</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Custom page</strong></p></td>
+<td><p>A routed, bookmarkable page of its own - see <a class="reference internal" href="custom_pages.html"><span class="doc">Custom Pages</span></a>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">config.customPages</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>A property editor is the smallest of these and the usual starting point. The colour picker below is one - the
+field is an ordinary <code class="docutils literal notranslate"><span class="pre">Text</span></code> property, and the extension supplies the swatch and the picker popup:</p>
+<figure class="align-default">
+<img alt="../../_images/extension_custom_field.png" src="../../_images/extension_custom_field.png" />
+</figure>
+<p>Whatever the kind, the extension gets the host’s services along with it: game data queries, dialogs and wizards,
+notifications, navigation, and persisted UI state. See <a class="reference internal" href="host_services.html"><span class="doc">Host Services</span></a>.</p>
+</section>
+<hr class="docutils" />
+<section id="how-extensions-are-declared">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">How Extensions Are Declared</a><a class="headerlink" href="#how-extensions-are-declared" title="Link to this heading"></a></h2>
+<p>Everything Charon needs to know about a package is in its <code class="docutils literal notranslate"><span class="pre">package.json</span></code>, under <code class="docutils literal notranslate"><span class="pre">config</span></code>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charon-color-picker"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.24"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"main"</span><span class="p">:</span><span class="w"> </span><span class="s2">"main.js"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"customEditors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ext-color-picker-hex"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"selector"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ext-color-picker-editor"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Color Picker (Hex)"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"specification"</span><span class="p">:</span><span class="w"> </span><span class="s2">"format=hex"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"Property"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Grid"</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">"dataTypes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"Text"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Integer"</span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> is how the editor is referenced from a schema or property, and must be unique across every extension
+installed in the project.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">selector</span></code> is the custom element name the package registers with <code class="docutils literal notranslate"><span class="pre">customElements.define</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> is what the user sees when picking the editor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataTypes</span></code> limits which <a class="reference internal" href="../../gamedata/datatypes/list.html"><span class="doc">data types</span></a> the editor is offered for.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">specification</span></code> is extra configuration in <code class="docutils literal notranslate"><span class="pre">URLSearchParams</span></code> form. It is merged into the property’s
+<a class="reference internal" href="../../gamedata/schemas/specification.html"><span class="doc">Specification</span></a> when the editor is picked, which is how one
+custom element can back three entries - <code class="docutils literal notranslate"><span class="pre">format=hex</span></code>, <code class="docutils literal notranslate"><span class="pre">format=hsla</span></code>, <code class="docutils literal notranslate"><span class="pre">format=rgba</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">icon</span></code> is optional and takes a Charon icon reference, <code class="docutils literal notranslate"><span class="pre">&lt;set&gt;/&lt;name&gt;</span></code>: <code class="docutils literal notranslate"><span class="pre">svg/</span></code> for Charon’s own icons,
+<code class="docutils literal notranslate"><span class="pre">emoji/</span></code> for an emoji by its short name (<code class="docutils literal notranslate"><span class="pre">emoji/speech_balloon</span></code>), <code class="docutils literal notranslate"><span class="pre">material/</span></code> for a Material icon. The
+default is <code class="docutils literal notranslate"><span class="pre">svg/extensions</span></code>.</p></li>
+</ul>
+<p>The full JSON schema for the <code class="docutils literal notranslate"><span class="pre">config</span></code> section, including custom actions and custom pages, is
+<a class="reference external" href="https://github.com/gamedevware/charon-extensions/blob/main/package.json.schema.json">package.json.schema.json</a>
+in the examples repository. Point your editor at it for completion and validation while writing.</p>
+<section id="choosing-an-editor-for-a-property">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Choosing an Editor for a Property</a><a class="headerlink" href="#choosing-an-editor-for-a-property" title="Link to this heading"></a></h3>
+<p>Installed editors appear in the <strong>Data Type</strong> picker of the property form, nested under the data types they
+declared in <code class="docutils literal notranslate"><span class="pre">dataTypes</span></code>. Picking one writes <code class="docutils literal notranslate"><span class="pre">editor=&lt;id&gt;</span></code> into the property’s
+<a class="reference internal" href="../../gamedata/schemas/specification.html"><span class="doc">Specification</span></a>, together with whatever the extension declared in
+its own <code class="docutils literal notranslate"><span class="pre">specification</span></code> field.</p>
+<p>A <strong>Schema</strong> editor is selected the same way but on the schema, by putting <code class="docutils literal notranslate"><span class="pre">editor=&lt;id&gt;</span></code> into the schema’s
+Specification. An extension that ships a schema editor usually creates the schema for you through a
+<a class="reference internal" href="custom_actions.html"><span class="doc">custom action</span></a> instead of asking you to type that in.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="installing-an-extension">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Installing an Extension</a><a class="headerlink" href="#installing-an-extension" title="Link to this heading"></a></h2>
+<p>Open <strong>Project Settings</strong> → <strong>Extensions</strong>. Each row is an NPM package name and a version; leave the version
+empty to track the latest published one. The name field completes against the configured registry as you type.</p>
+<p>Press <strong>Update</strong> to save the list. The status icon at the end of each row says what happened:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Status</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Loaded</p></td>
+<td><p>The package was downloaded and its code is running. The tooltip names the exact version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Extension not declared in project settings</p></td>
+<td><p>The package is present on the server but not in this project’s list.</p></td>
+</tr>
+<tr class="row-even"><td><p>Extension package not found</p></td>
+<td><p>No such package in the registry.</p></td>
+</tr>
+<tr class="row-odd"><td><p>No compatible version available</p></td>
+<td><p>The requested version does not exist, or is not compatible with this Charon build.</p></td>
+</tr>
+<tr class="row-even"><td><p>Failed to download from registry</p></td>
+<td><p>The registry was unreachable or rejected the request.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Package exceeds size limit</p></td>
+<td><p>The archive is larger than the server allows.</p></td>
+</tr>
+<tr class="row-even"><td><p>Invalid or corrupted package archive</p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">.tgz</span></code> could not be unpacked.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Re-Check</strong> asks the server whether newer versions of the installed packages are available. <strong>Upload NPM
+Package…</strong> takes a <code class="docutils literal notranslate"><span class="pre">.tgz</span></code> built locally with <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">pack</span></code> and installs it into the server’s extension folder
+- convenient while developing, but the upload is per installation, so other users of a shared project will not
+get it. Publish to a registry for anything the team relies on.</p>
+<p>The list itself is stored in the project settings inside the game data, so it travels with the data and applies
+to everyone who opens the project.</p>
+</section>
+<hr class="docutils" />
+<section id="consent-and-trust">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Consent and Trust</a><a class="headerlink" href="#consent-and-trust" title="Link to this heading"></a></h2>
+<p>Extension code runs inside the editor with the same access as the editor itself - your game data and your
+credentials. Charon therefore asks before loading anything, the first time a project’s extension list is seen:</p>
+<figure class="align-default">
+<img alt="../../_images/extension_loading_warning.png" src="../../_images/extension_loading_warning.png" />
+</figure>
+<ul class="simple">
+<li><p><strong>Don’t Load</strong> - the editor starts without them. Nothing else breaks; only the extensions’ own features are
+missing.</p></li>
+<li><p><strong>Allow Once</strong> - loads them for this session and asks again next time.</p></li>
+<li><p><strong>Always Allow</strong> - remembers the decision for that exact set of packages. A green tick next to a name in a
+later prompt means it was part of a previously allowed set.</p></li>
+</ul>
+<p>Both allow buttons stay disabled for a few seconds so the dialog cannot be clicked through by accident. The
+remembered decision is tied to the list of package names: adding or removing an extension makes Charon ask
+again. <strong>Allow loading these extensions without asking again</strong> on the settings page is the same decision, and
+clearing it brings the prompt back.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Install extensions the way you would install a dependency into your build: from a source you trust, at a
+version you have looked at. A malicious extension can read everything you can read and act as you.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="when-an-extension-fails-to-load">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">When an Extension Fails to Load</a><a class="headerlink" href="#when-an-extension-fails-to-load" title="Link to this heading"></a></h2>
+<p>A failure is reported in the notifications area and does not stop the editor:</p>
+<figure class="align-default">
+<img alt="../../_images/extension_failed_to_load_notification.png" src="../../_images/extension_failed_to_load_notification.png" />
+</figure>
+<p>The browser console (<kbd class="kbd docutils literal notranslate">F12</kbd>) carries the actual error. Common causes:</p>
+<ul class="simple">
+<li><p><strong>the package could not be fetched or unpacked</strong> - the row’s status icon on the settings page says which of
+those it was;</p></li>
+<li><p><strong>an id or selector collision</strong> - two installed packages declare the same editor <code class="docutils literal notranslate"><span class="pre">id</span></code>, the same element
+<code class="docutils literal notranslate"><span class="pre">selector</span></code>, or the same page <code class="docutils literal notranslate"><span class="pre">id</span></code>. Charon refuses to load the second one and logs which package it
+conflicted with;</p></li>
+<li><p><strong>the entry point threw</strong> while registering its custom elements;</p></li>
+<li><p><strong>a missing export</strong> - a custom action naming a <code class="docutils literal notranslate"><span class="pre">functionName</span></code> that the bundle does not export is skipped,
+with a warning naming the function;</p></li>
+<li><p><strong>a dangling page reference</strong> - a custom action naming a <code class="docutils literal notranslate"><span class="pre">pageId</span></code> that is not in the same package’s own
+<code class="docutils literal notranslate"><span class="pre">customPages</span></code> produces a link that does not resolve.</p></li>
+</ul>
+<p>If nothing loads at all, check that the <code class="docutils literal notranslate"><span class="pre">uiExtensions</span></code> feature is enabled for your installation and that the
+consent prompt was not answered with <strong>Don’t Load</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="packaging-and-publishing">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Packaging and Publishing</a><a class="headerlink" href="#packaging-and-publishing" title="Link to this heading"></a></h2>
+<p>Build the package, then produce an archive:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>run<span class="w"> </span>build
+npm<span class="w"> </span>pack
+</pre></div>
+</div>
+<p>That writes a <code class="docutils literal notranslate"><span class="pre">.tgz</span></code> next to the build output, ready for <strong>Upload NPM Package…</strong>. To publish for the whole
+team instead:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>publish
+</pre></div>
+</div>
+<p>Remove <code class="docutils literal notranslate"><span class="pre">&quot;private&quot;:</span> <span class="pre">true</span></code> first, and make sure <code class="docutils literal notranslate"><span class="pre">main</span></code> points at the built entry file. Any <code class="docutils literal notranslate"><span class="pre">.css</span></code> file listed
+in the package’s <code class="docutils literal notranslate"><span class="pre">files</span></code> array is fetched and injected by Charon along with the code, which is how a bundled
+stylesheet reaches the page.</p>
+<p>Versions are resolved when the project loads, so publishing a new version rolls out to everyone with an empty
+version field the next time they open the editor. Pin a version in the settings row when you need that not to
+happen.</p>
+</section>
+<hr class="docutils" />
+<section id="examples">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Examples</a><a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>The <a class="reference external" href="https://github.com/gamedevware/charon-extensions/">charon-extensions repository</a> holds the type
+definitions and four complete example packages:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 68.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Package</p></th>
+<th class="head"><p>What it demonstrates</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">charon-extensions</span></code></p></td>
+<td><p>The API contract itself - every interface described in these pages.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">charon-logical-toggle</span></code></p></td>
+<td><p>The simplest property editor, in React.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">charon-color-picker</span></code></p></td>
+<td><p>A property editor in Angular, including the zoneless setup.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">charon-conversation-editor</span></code></p></td>
+<td><p>A full schema editor with a node graph, plus a custom action that creates its schema.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">charon-schema-graph</span></code></p></td>
+<td><p>A custom page with a side-navigation entry.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Two scaffolders generate a ready-to-build property editor package:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>node<span class="w"> </span>src/create-charon-react-extension/index.js<span class="w"> </span>my-extension
+node<span class="w"> </span>src/create-charon-angular-extension/index.js<span class="w"> </span>my-extension
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="see-also">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="implementing_property_editor.html"><span class="doc">Implementing a Property Editor</span></a></p></li>
+<li><p><a class="reference internal" href="implementing_schema_editor.html"><span class="doc">Implementing a Schema Editor</span></a></p></li>
+<li><p><a class="reference internal" href="custom_actions.html"><span class="doc">Custom Actions</span></a></p></li>
+<li><p><a class="reference internal" href="custom_pages.html"><span class="doc">Custom Pages</span></a></p></li>
+<li><p><a class="reference internal" href="host_services.html"><span class="doc">Host Services</span></a></p></li>
+<li><p><a class="reference internal" href="creating_react_extension.html"><span class="doc">Creating a Custom Editor with React</span></a></p></li>
+<li><p><a class="reference internal" href="creating_angular_extension.html"><span class="doc">Creating a Custom Editor with Angular</span></a></p></li>
+<li><p><a class="reference external" href="https://github.com/gamedevware/charon-extensions/">Example Projects (GitHub)</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../formula_expression_ast.html" class="btn btn-neutral float-left" title="Formula Expression AST" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="implementing_property_editor.html" class="btn btn-neutral float-right" title="Implementing CharonPropertyEditorElement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

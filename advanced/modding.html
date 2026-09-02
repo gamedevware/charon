@@ -1,0 +1,403 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modding Support &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CI/CD Integration" href="cicd.html" />
+    <link rel="prev" title="Patch and Diff Workflow" href="patch_diff.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Modding Support</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/advanced/modding.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="modding-support">
+<h1>Modding Support<a class="headerlink" href="#modding-support" title="Link to this heading"></a></h1>
+<p>The free version of Charon can be distributed together with your shipped game, letting players
+edit game data with the same editor your team used to build it. Combined with patch files,
+this enables a full modding pipeline: players edit a copy of the game data, changes are captured
+as a small patch, and the game loads the base data with any number of patches applied on top.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
+<li><p><a class="reference internal" href="#shipping-the-editor-with-your-game" id="id2">Shipping the Editor with Your Game</a></p></li>
+<li><p><a class="reference internal" href="#capturing-mod-changes-as-a-patch" id="id3">Capturing Mod Changes as a Patch</a></p></li>
+<li><p><a class="reference internal" href="#loading-mods-at-runtime" id="id4">Loading Mods at Runtime</a></p></li>
+<li><p><a class="reference internal" href="#how-patches-are-merged-at-load-time" id="id5">How Patches Are Merged at Load Time</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id6">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="overview">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>A typical modding setup consists of three parts:</p>
+<ol class="arabic simple">
+<li><p><strong>The base game data file</strong> (e.g. <code class="docutils literal notranslate"><span class="pre">gamedata.json</span></code>), shipped with the game or provided in a
+separate mod kit.</p></li>
+<li><p><strong>The Charon editor</strong>, launched locally by the player (or by your game) against a copy of that
+file, with schema editing disabled.</p></li>
+<li><p><strong>Patch files</strong> describing the mod’s changes relative to the base data, loaded by the game at
+startup through the generated <code class="docutils literal notranslate"><span class="pre">Load()</span></code> code.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="shipping-the-editor-with-your-game">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Shipping the Editor with Your Game</a><a class="headerlink" href="#shipping-the-editor-with-your-game" title="Link to this heading"></a></h2>
+<p>Charon is a .NET tool, so the player’s machine needs .NET installed. What exactly is required depends
+on which of the two options below you pick. Verify what is present with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dotnet<span class="w"> </span>--list-sdks
+dotnet<span class="w"> </span>--list-runtimes
+</pre></div>
+</div>
+<p>If .NET is missing, direct the player to the
+<a class="reference external" href="https://dotnet.microsoft.com/download">.NET download page</a>. Some distribution platforms
+(e.g. Steam) can install the .NET Runtime automatically as a game dependency.</p>
+<p>There are two ways to run the editor:</p>
+<p><strong>On-demand via the .NET SDK (simplest, requires the .NET SDK 10 or later):</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>SERVER<span class="w"> </span>START<span class="w"> </span>--dataBase<span class="w"> </span><span class="s2">"./gamedata.json"</span><span class="w"> </span>--denySchemaEditing<span class="w"> </span>--launchDefaultBrowser
+</pre></div>
+</div>
+<p><strong>A bundled copy of a specific version (full control, only the .NET 8 Runtime required):</strong></p>
+<p>Download the <code class="docutils literal notranslate"><span class="pre">dotnet-charon</span></code> package from
+<a class="reference external" href="https://www.nuget.org/packages/dotnet-charon/">nuget.org</a> (a <code class="docutils literal notranslate"><span class="pre">.nupkg</span></code> file is a ZIP archive)
+and ship the contents of <code class="docutils literal notranslate"><span class="pre">tools/net8.0/any/</span></code> with your game, then launch it via the runtime:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dotnet<span class="w"> </span><span class="s2">"&lt;game folder&gt;/Charon/Charon.dll"</span><span class="w"> </span>SERVER<span class="w"> </span>START<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span><span class="s2">"./mods/gamedata_copy.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8080</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--denySchemaEditing<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--launchDefaultBrowser
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">--denySchemaEditing</span></code> flag is important for modding scenarios: it locks the data
+<em>structure</em> (schemas), so mods can change values and documents but cannot break the shape of
+the data your compiled game expects. See <a class="reference internal" href="commands/serve.html"><span class="doc">SERVER START</span></a> for all flags.</p>
+</section>
+<hr class="docutils" />
+<section id="capturing-mod-changes-as-a-patch">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Capturing Mod Changes as a Patch</a><a class="headerlink" href="#capturing-mod-changes-as-a-patch" title="Link to this heading"></a></h2>
+<p>Instead of shipping a whole modified game data file, a mod can be a small <strong>patch file</strong> -
+the difference between the base data and the modified copy. Creating patches is currently
+a CLI-only operation - there is no UI action for it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>CREATEPATCH<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase1<span class="w"> </span><span class="s2">"./gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase2<span class="w"> </span><span class="s2">"./mods/gamedata_copy.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span><span class="s2">"./mods/my_mod.gdpatch"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--outputFormat<span class="w"> </span>json
+</pre></div>
+</div>
+<p>Patch files are small, composable, and independent of each other as long as they touch
+different documents. See <a class="reference internal" href="patch_diff.html"><span class="doc">Patch and Diff Workflow</span></a> for the format details
+and conflict behavior.</p>
+</section>
+<hr class="docutils" />
+<section id="loading-mods-at-runtime">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Loading Mods at Runtime</a><a class="headerlink" href="#loading-mods-at-runtime" title="Link to this heading"></a></h2>
+<p>The generated source code loads patches alongside the base game data - pass patch streams in
+the load options. Patches are applied in the order given, and each patch is merged into the
+data following the default <a class="reference internal" href="merge_logic.html"><span class="doc">merge rules</span></a>. Patching during load is supported
+by all Tier 1 code generators:
+<strong>C# 4.0</strong>, <strong>C# 7.3</strong>, <strong>TypeScript</strong>, and <strong>Unreal Engine C++</strong> (see
+<a class="reference internal" href="../gamedata/generating_source_code.html"><span class="doc">Generating Source Code</span></a>).</p>
+<p>C# example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span><span class="w"> </span><span class="n">gameData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">GameData</span><span class="p">(</span><span class="n">gameDataStream</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Formatters</span><span class="p">.</span><span class="n">GameDataLoadOptions</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Formatters</span><span class="p">.</span><span class="n">Format</span><span class="p">.</span><span class="n">Json</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Patches</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">[]</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">modPatchStream1</span><span class="p">,</span><span class="w"> </span><span class="n">modPatchStream2</span><span class="w"> </span><span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>A simple mod-loading convention: scan a <code class="docutils literal notranslate"><span class="pre">mods/</span></code> folder for patch files at startup and pass
+them all to <code class="docutils literal notranslate"><span class="pre">Load()</span></code> in a deterministic order (e.g. alphabetical, or driven by a mod manifest).</p>
+</section>
+<hr class="docutils" />
+<section id="how-patches-are-merged-at-load-time">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">How Patches Are Merged at Load Time</a><a class="headerlink" href="#how-patches-are-merged-at-load-time" title="Link to this heading"></a></h2>
+<p>Runtime patching follows the same deterministic principles as the editor-side
+<a class="reference internal" href="merge_logic.html"><span class="doc">document merge logic</span></a>. The core rules, in short:</p>
+<ul class="simple">
+<li><p>If the patch <strong>provides a value</strong> for a property → the result uses the patch value.</p></li>
+<li><p>If the patch <strong>does not provide a value</strong> (the property key is absent) → the original
+value is kept.</p></li>
+<li><p>A property present with an explicit <code class="docutils literal notranslate"><span class="pre">null</span></code> is an <strong>intentional deletion</strong>, not a
+missing value.</p></li>
+<li><p>The rules apply recursively: embedded documents are merged property-by-property, and
+collections are merged item-by-item using the document’s <code class="docutils literal notranslate"><span class="pre">Id</span></code> as the key.</p></li>
+</ul>
+<p>On top of that, for whole documents inside a patch, the <strong>presence of the</strong> <code class="docutils literal notranslate"><span class="pre">Id</span></code> <strong>field</strong>
+decides how the entry is applied - the <code class="docutils literal notranslate"><span class="pre">Id</span></code> <em>value</em> is irrelevant:</p>
+<p><strong>No</strong> <code class="docutils literal notranslate"><span class="pre">Id</span></code> <strong>field</strong> - a <em>partial update</em>. The entry’s fields are merged into the existing
+document. A partial update cannot resurrect a deleted document - if the document was removed
+by an earlier patch, it stays deleted:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>original     patch 1    patch 2     patch 3     result
+{ Id: 1 }  →  null   →  { ... }  →  { ... }  =  null
+</pre></div>
+</div>
+<p><strong>Has an</strong> <code class="docutils literal notranslate"><span class="pre">Id</span></code> <strong>field</strong> - a <em>full replacement</em>. The document is replaced entirely.
+A replacement can also resurrect a previously deleted document:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>original     patch 1    patch 2       patch 3       result
+{ Id: 1 }  →  null   →  { Id: 2 }  →  { Id: 3 }  =  { Id: 3 }
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="merge_logic.html"><span class="doc">Document Merge Logic</span></a> for the full property-level rules
+(<code class="docutils literal notranslate"><span class="pre">LocalizedText</span></code> per-language merging, collection modes, and validation caveats when a
+patch recreates a document with missing required fields).</p>
+</section>
+<hr class="docutils" />
+<section id="see-also">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="commands/serve.html"><span class="doc">SERVER START Command</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_create_patch.html"><span class="doc">DATA CREATEPATCH Command</span></a></p></li>
+<li><p><a class="reference internal" href="patch_diff.html"><span class="doc">Patch and Diff Workflow</span></a></p></li>
+<li><p><a class="reference internal" href="merge_logic.html"><span class="doc">Merge Logic</span></a></p></li>
+<li><p><a class="reference internal" href="../gamedata/generating_source_code.html"><span class="doc">Generating Source Code</span></a></p></li>
+<li><p><a class="reference internal" href="../gamedata/publication.html"><span class="doc">Publishing Game Data</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="patch_diff.html" class="btn btn-neutral float-left" title="Patch and Diff Workflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cicd.html" class="btn btn-neutral float-right" title="CI/CD Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

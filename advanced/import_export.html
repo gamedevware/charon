@@ -1,0 +1,689 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Importing and Exporting Data &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Document Merge Logic" href="merge_logic.html" />
+    <link rel="prev" title="Publishing Game Data" href="../gamedata/publication.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Importing and Exporting Data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/advanced/import_export.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="importing-and-exporting-data">
+<h1>Importing and Exporting Data<a class="headerlink" href="#importing-and-exporting-data" title="Link to this heading"></a></h1>
+<p>Export writes documents out of a project into a file; import reads them back in. The round trip is how game
+data leaves the editor for version control, bulk edits in external tools, or a script, and how externally
+produced data gets in.</p>
+<p>Both directions are wizards in the editor, and both have a CLI equivalent for automation. See
+<a class="reference internal" href="cicd.html"><span class="doc">CI/CD</span></a> for pipeline examples.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Export is not <a class="reference internal" href="../gamedata/publication.html"><span class="doc">publication</span></a>. An export is a full-fidelity copy that Charon
+can read back. A publication strips everything the game does not need and is meant for the generated
+code, not for re-import.</p>
+</div>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#where-import-and-export-live" id="id1">Where Import and Export Live</a></p></li>
+<li><p><a class="reference internal" href="#exporting-data" id="id2">Exporting Data</a></p>
+<ul>
+<li><p><a class="reference internal" href="#step-1-select-collections" id="id3">Step 1. Select Collections</a></p></li>
+<li><p><a class="reference internal" href="#step-2-pick-format" id="id4">Step 2. Pick Format</a></p></li>
+<li><p><a class="reference internal" href="#step-3-summary" id="id5">Step 3. Summary</a></p></li>
+<li><p><a class="reference internal" href="#quick-export-without-the-wizard" id="id6">Quick Export Without the Wizard</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#importing-data" id="id7">Importing Data</a></p>
+<ul>
+<li><p><a class="reference internal" href="#step-1-import-mode" id="id8">Step 1. Import Mode</a></p></li>
+<li><p><a class="reference internal" href="#step-2-from" id="id9">Step 2. From</a></p></li>
+<li><p><a class="reference internal" href="#step-3-file-input-clipboard-input" id="id10">Step 3. File Input / Clipboard Input</a></p></li>
+<li><p><a class="reference internal" href="#step-4-select-collections" id="id11">Step 4. Select Collections</a></p></li>
+<li><p><a class="reference internal" href="#step-5-summary" id="id12">Step 5. Summary</a></p></li>
+<li><p><a class="reference internal" href="#faster-paths" id="id13">Faster Paths</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#validation-during-import" id="id14">Validation During Import</a></p></li>
+<li><p><a class="reference internal" href="#working-with-exported-data" id="id15">Working with Exported Data</a></p>
+<ul>
+<li><p><a class="reference internal" href="#modifying-exported-data" id="id16">Modifying Exported Data</a></p></li>
+<li><p><a class="reference internal" href="#creating-data-from-scratch" id="id17">Creating Data from Scratch</a></p></li>
+<li><p><a class="reference internal" href="#document-identification" id="id18">Document Identification</a></p></li>
+<li><p><a class="reference internal" href="#partial-updates" id="id19">Partial Updates</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#see-also" id="id20">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="where-import-and-export-live">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Where Import and Export Live</a><a class="headerlink" href="#where-import-and-export-live" title="Link to this heading"></a></h2>
+<p>Both operations have two entry points.</p>
+<p>The <strong>Start</strong> panel on the dashboard works on the whole project:</p>
+<figure class="align-default">
+<img alt="../_images/export_import_buttons_dashboard.png" src="../_images/export_import_buttons_dashboard.png" />
+</figure>
+<p><strong>Export Documents</strong> and <strong>Import Documents</strong> open the wizards with nothing preselected, so you choose the
+collections inside. <strong>Import Documents</strong> is disabled when the data source is read-only.</p>
+<p>A document list has the same two operations scoped to one collection, in its <strong>Actions</strong> menu:</p>
+<figure class="align-default">
+<img alt="../_images/export_import_action_menu_document_collection.png" src="../_images/export_import_action_menu_document_collection.png" />
+</figure>
+<p><strong>Export…</strong> and <strong>Import…</strong> open the same wizards with the current collection already selected.
+<strong>Export To</strong> skips the wizard entirely - see <a class="reference internal" href="#quick-export-without-the-wizard">Quick Export Without the Wizard</a>.</p>
+</section>
+<hr class="docutils" />
+<section id="exporting-data">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Exporting Data</a><a class="headerlink" href="#exporting-data" title="Link to this heading"></a></h2>
+<section id="step-1-select-collections">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Step 1. Select Collections</a><a class="headerlink" href="#step-1-select-collections" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/export_collections_window.png" src="../_images/export_collections_window.png" />
+</figure>
+<p>Collections are shown as a tree, grouped into folders, each with its document count. The <strong>All</strong> checkbox at
+the top toggles everything, and shows a dash when the selection is partial. Expand a folder to pick
+individual collections. At least one is required to continue.</p>
+<p>The <strong>Metadata</strong> folder holds the project’s schema definitions. Leave it ticked when the file should
+describe its own structure, untick it to export documents alone.</p>
+</section>
+<section id="step-2-pick-format">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Step 2. Pick Format</a><a class="headerlink" href="#step-2-pick-format" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/export_format_window.png" src="../_images/export_format_window.png" />
+</figure>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Format</p></th>
+<th class="head"><p>When to use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>JSON
+<em>(recommended)</em></p></td>
+<td><p>Default. Readable, diffable, and accepted by every external tool.
+Keep it unless you have a reason not to.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Message Pack</p></td>
+<td><p>Compact binary. Smaller and faster to parse, not human-readable.</p></td>
+</tr>
+<tr class="row-even"><td><p>BSON</p></td>
+<td><p>Binary JSON, for pipelines that already speak it.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Spreadsheet (.xlsx)</p></td>
+<td><p>One sheet per collection, for review or editing by people who do not
+work in JSON. Round-trips back through import.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="step-3-summary">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Step 3. Summary</a><a class="headerlink" href="#step-3-summary" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/export_summary_window.png" src="../_images/export_summary_window.png" />
+</figure>
+<p>The file is offered as a download, named <code class="docutils literal notranslate"><span class="pre">export_&lt;year&gt;_&lt;month&gt;_&lt;day&gt;_&lt;hour&gt;_&lt;minute&gt;.&lt;extension&gt;</span></code> and
+annotated with its size. The download arrow next to it turns into a green check once you have taken it.</p>
+<p>The <strong>⋮</strong> menu holds <strong>Copy CLI Export Command</strong>, which puts the exact CLI equivalent of the choices you
+just made on the clipboard, and a <strong>Documentation</strong> submenu linking to this page and the command reference.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The wizard remembers the collections and format you picked last time, so a repeated export is
+<strong>Next</strong>, <strong>Next</strong>, <strong>Export</strong>.</p>
+</div>
+<p><strong>CLI equivalent</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>EXPORT<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span><span class="s2">"gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--schemas<span class="w"> </span>Item<span class="w"> </span>Character<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span><span class="s2">"items.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--outputFormat<span class="w"> </span>json
+</pre></div>
+</div>
+<p>Key parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--schemas</span></code> - collections to export. Supports wildcards (<code class="docutils literal notranslate"><span class="pre">*Item*</span></code>) and exclusion (<code class="docutils literal notranslate"><span class="pre">!Deprecated</span></code>).
+Omit it to export everything.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--properties</span></code> - narrows the export to specific properties. There is no equivalent in the wizard, which
+always exports whole documents.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--outputFormat</span></code> - <code class="docutils literal notranslate"><span class="pre">json</span></code>, <code class="docutils literal notranslate"><span class="pre">bson</span></code>, <code class="docutils literal notranslate"><span class="pre">msgpack</span></code> or <code class="docutils literal notranslate"><span class="pre">xlsx</span></code>.</p></li>
+</ul>
+<p>See <a class="reference internal" href="commands/data_export.html"><span class="doc">DATA EXPORT</span></a> for the full parameter list.</p>
+</section>
+<section id="quick-export-without-the-wizard">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Quick Export Without the Wizard</a><a class="headerlink" href="#quick-export-without-the-wizard" title="Link to this heading"></a></h3>
+<p><strong>Export To</strong> in a collection’s <strong>Actions</strong> menu downloads that collection immediately in the chosen format -
+JSON, Message Pack, BSON or Spreadsheet - with no steps to click through. It is the fast path when you just
+want the current collection on disk.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="importing-data">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Importing Data</a><a class="headerlink" href="#importing-data" title="Link to this heading"></a></h2>
+<section id="step-1-import-mode">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Step 1. Import Mode</a><a class="headerlink" href="#step-1-import-mode" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/import_mode_selection_window.png" src="../_images/import_mode_selection_window.png" />
+</figure>
+<p>The mode decides how incoming documents meet the ones already in the project.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">--mode</span></code> value</p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Create and Update</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">createAndUpdate</span></code></p></td>
+<td><p>Default. Creates documents that do not exist yet, updates
+the ones that do.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Create Only</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">create</span></code></p></td>
+<td><p>Creates new documents. Existing documents are never
+touched.</p></td>
+</tr>
+<tr class="row-even"><td><p>Update Only</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">update</span></code></p></td>
+<td><p>Updates existing documents. Nothing new is added.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Safe Update</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">safeUpdate</span></code></p></td>
+<td><p>Updates existing documents without adding, removing or
+reordering embedded documents. The mode to use when the
+document structure must survive intact - imported
+translations, for example.</p></td>
+</tr>
+<tr class="row-even"><td><p>Replace All</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">replace</span></code></p></td>
+<td><p>Replaces the collection with the imported documents.
+Everything currently in it is removed.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Delete</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">delete</span></code></p></td>
+<td><p>Deletes the documents listed in the file. Nothing is
+created or updated.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Replace All</strong> removes every document in the selected collections that is not in the file. Run it as a
+dry run first.</p>
+</div>
+<p>Two checkboxes on this step change how the import behaves:</p>
+<ul class="simple">
+<li><p><strong>Ignore consistency errors in imported data</strong> - drops the integrity checks and keeps only the repairs.
+See <a class="reference internal" href="#validation-during-import">Validation During Import</a> for exactly what this trades away.</p></li>
+<li><p><strong>Perform a dry run and don’t persist changes</strong> - runs the entire import, produces the full report, and
+writes nothing. Worth doing before any import you have not run before.</p></li>
+</ul>
+</section>
+<section id="step-2-from">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Step 2. From</a><a class="headerlink" href="#step-2-from" title="Link to this heading"></a></h3>
+<p>Choose <strong>File</strong> to pick a file from your device, or <strong>Clipboard</strong> to paste JSON text directly into the
+wizard.</p>
+</section>
+<section id="step-3-file-input-clipboard-input">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Step 3. File Input / Clipboard Input</a><a class="headerlink" href="#step-3-file-input-clipboard-input" title="Link to this heading"></a></h3>
+<p>For <strong>File</strong>, browse to the file. Accepted formats are JSON (<code class="docutils literal notranslate"><span class="pre">.json</span></code>), Message Pack (<code class="docutils literal notranslate"><span class="pre">.msgpack</span></code>), BSON
+(<code class="docutils literal notranslate"><span class="pre">.bson</span></code>) and Spreadsheet (<code class="docutils literal notranslate"><span class="pre">.xlsx</span></code>); anything else is rejected on this step with an <em>Unknown file
+format</em> error. For <strong>Clipboard</strong>, paste a JSON object into the text area - it is checked as valid JSON when
+you leave the field.</p>
+</section>
+<section id="step-4-select-collections">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Step 4. Select Collections</a><a class="headerlink" href="#step-4-select-collections" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/import_collections_window.png" src="../_images/import_collections_window.png" />
+</figure>
+<p>The same collection tree as in the export wizard, with one difference worth knowing: the document counts
+come from <strong>the file being imported</strong>, not from the project. Charon reads the file’s structure to build this
+list, which doubles as a sanity check - in the screenshot above, <strong>Metadata</strong> carries no count because the
+file contains no schema definitions.</p>
+<p>If the file cannot be read, this step shows <em>Failed to peek into imported data</em> with the server error, plus
+<strong>Retry</strong> and <strong>Ignore and Continue</strong>. Continuing is valid - the import itself may still succeed - but you
+lose the ability to narrow the collection list.</p>
+</section>
+<section id="step-5-summary">
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">Step 5. Summary</a><a class="headerlink" href="#step-5-summary" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../_images/import_summary_filtered_updated_window.png" src="../_images/import_summary_filtered_updated_window.png" />
+</figure>
+<p>Every affected document is listed with its status, searchable by name and filterable by status. The filter
+carries counts, so the shape of the import is visible before you read a single row - the screenshot above is
+filtered to the 12 updated documents out of a run that also skipped 82 and left 39 unchanged.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Status</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Created</p></td>
+<td><p>The document did not exist and was added.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Updated</p></td>
+<td><p>An existing document was changed.</p></td>
+</tr>
+<tr class="row-even"><td><p>Deleted</p></td>
+<td><p>The document was removed - <code class="docutils literal notranslate"><span class="pre">delete</span></code> or <code class="docutils literal notranslate"><span class="pre">replace</span></code> mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Failed</p></td>
+<td><p>The document was rejected. The row carries the reason.</p></td>
+</tr>
+<tr class="row-even"><td><p>Skipped</p></td>
+<td><p>The mode did not apply to this document - a new document in <code class="docutils literal notranslate"><span class="pre">update</span></code> mode,
+for instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Unchanged</p></td>
+<td><p>The document matched what was already stored.</p></td>
+</tr>
+</tbody>
+</table>
+<p>An import that finishes entirely as <em>Unchanged</em> usually means the file matched the project exactly, not that
+something went wrong.</p>
+<p>After a dry run the report is the same, with a banner making clear that nothing was written and a
+<strong>Re-run With Save</strong> button to commit the same import for real:</p>
+<figure class="align-default">
+<img alt="../_images/import_summary_actions_menu_window.png" src="../_images/import_summary_actions_menu_window.png" />
+</figure>
+<p>The <strong>⋮</strong> menu offers:</p>
+<ul class="simple">
+<li><p><strong>Copy CLI Import Command</strong> - the CLI equivalent of this import, ready for a build script.</p></li>
+<li><p><strong>Re-run Ignoring Consistency Errors</strong> - retries without integrity checks. Available only when the run
+actually produced failures and the checks were on, which is why it is greyed out above.</p></li>
+<li><p><strong>Re-run With Save</strong> - re-runs a dry run for real. Available only after a dry run.</p></li>
+</ul>
+</section>
+<section id="faster-paths">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Faster Paths</a><a class="headerlink" href="#faster-paths" title="Link to this heading"></a></h3>
+<p>Dragging a data file onto a document list - the grid turns into a <em>Drop files here to import</em> target -
+opens the import wizard with the file, the collection and <strong>Create and Update</strong> already filled in, so it
+starts at <em>Select Collections</em>:</p>
+<figure class="align-default">
+<img alt="../_images/export_import_drag_n_drop_document_collection.png" src="../_images/export_import_drag_n_drop_document_collection.png" />
+</figure>
+<p>Pasting a JSON array of documents while a document list is focused does the same with the clipboard text.
+Neither shortcut is a way to write data without seeing the report - both still finish on the summary step.</p>
+<p><strong>CLI equivalent</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>IMPORT<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span><span class="s2">"gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--schemas<span class="w"> </span>Item<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--input<span class="w"> </span><span class="s2">"items.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--inputFormat<span class="w"> </span>auto<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--mode<span class="w"> </span>safeUpdate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dryRun
+</pre></div>
+</div>
+<p>Key parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--inputFormat</span></code> - <code class="docutils literal notranslate"><span class="pre">auto</span></code> by default, detected from the file extension.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--mode</span></code> - see the table above.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dryRun</span></code> - the CLI equivalent of <em>Perform a dry run</em>. Drop it to persist the changes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--output</span></code> - where the import report goes. Without it the report is discarded <strong>and the command fails if
+any document failed to import</strong>, which is what makes an import usable as a CI step.</p></li>
+</ul>
+<p>See <a class="reference internal" href="commands/data_import.html"><span class="doc">DATA IMPORT</span></a> for the full parameter list.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="validation-during-import">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink">Validation During Import</a><a class="headerlink" href="#validation-during-import" title="Link to this heading"></a></h2>
+<p>Imported documents pass through the same validation engine as documents edited in the UI, but the profile
+differs between the wizard and the command line - and the two defaults are opposites.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Situation</p></th>
+<th class="head"><p>Checks and repairs applied</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Import wizard, default</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">repair</span></code>, <code class="docutils literal notranslate"><span class="pre">repairRequiredWithDefaults</span></code>, and all six integrity
+checks: <code class="docutils literal notranslate"><span class="pre">checkRequirements</span></code>, <code class="docutils literal notranslate"><span class="pre">checkFormat</span></code>, <code class="docutils literal notranslate"><span class="pre">checkUniqueness</span></code>,
+<code class="docutils literal notranslate"><span class="pre">checkReferences</span></code>, <code class="docutils literal notranslate"><span class="pre">checkSpecification</span></code>, <code class="docutils literal notranslate"><span class="pre">checkConstraints</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Import wizard, <em>Ignore
+consistency errors</em> checked</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">repair</span></code>, <code class="docutils literal notranslate"><span class="pre">repairRequiredWithDefaults</span></code>, <code class="docutils literal notranslate"><span class="pre">deduplicateIds</span></code>,
+<code class="docutils literal notranslate"><span class="pre">resolveConflictingUnions</span></code> - <strong>no integrity checks</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">IMPORT</span></code>, default</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">repair</span></code>, <code class="docutils literal notranslate"><span class="pre">repairRequiredWithDefaults</span></code>, <code class="docutils literal notranslate"><span class="pre">deduplicateIds</span></code>,
+<code class="docutils literal notranslate"><span class="pre">resolveConflictingUnions</span></code> - <strong>no integrity checks</strong></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">IMPORT</span></code> defaults to repairs without integrity checks. A file with dangling references or missing
+required values is accepted quietly, and the problem surfaces later as an error count in the editor or a
+failure in the game. Whenever the input is not fully trusted, ask for the checks explicitly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>IMPORT<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataBase<span class="w"> </span><span class="s2">"gamedata.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--input<span class="w"> </span><span class="s2">"items.json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--validationOptions<span class="w"> </span>repair<span class="w"> </span>repairRequiredWithDefaults<span class="w"> </span><span class="se">\</span>
+<span class="w">                      </span>checkRequirements<span class="w"> </span>checkFormat<span class="w"> </span>checkUniqueness<span class="w"> </span><span class="se">\</span>
+<span class="w">                      </span>checkReferences<span class="w"> </span>checkSpecification<span class="w"> </span>checkConstraints
+</pre></div>
+</div>
+<p>Following the import with a <code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">VALIDATE</span></code> run achieves the same thing in two steps.</p>
+</div>
+<p>To go the other way in the UI - accept data that fails the checks - tick <em>Ignore consistency errors in
+imported data</em>, or use <strong>Re-run Ignoring Consistency Errors</strong> on the summary once you have seen what failed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Schema definitions are always validated in full. The relaxed profiles apply to documents only.</p>
+</div>
+<p>See <a class="reference internal" href="validation.html"><span class="doc">Validation</span></a> for what each flag does.</p>
+</section>
+<hr class="docutils" />
+<section id="working-with-exported-data">
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">Working with Exported Data</a><a class="headerlink" href="#working-with-exported-data" title="Link to this heading"></a></h2>
+<section id="modifying-exported-data">
+<h3><a class="toc-backref" href="#id16" role="doc-backlink">Modifying Exported Data</a><a class="headerlink" href="#modifying-exported-data" title="Link to this heading"></a></h3>
+<p>Exported data can be edited by hand or with a script. A single value with <cite>yq</cite>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>yq<span class="w"> </span>-i<span class="w"> </span><span class="s1">'.Collections.Item[0].Damage = 5'</span><span class="w"> </span>items.json
+</pre></div>
+</div>
+<p>The same file can be converted to another format, restructured, or generated from a spreadsheet, as long as
+what comes back matches the expected shape.</p>
+</section>
+<section id="creating-data-from-scratch">
+<h3><a class="toc-backref" href="#id17" role="doc-backlink">Creating Data from Scratch</a><a class="headerlink" href="#creating-data-from-scratch" title="Link to this heading"></a></h3>
+<p>Data files can be authored externally and imported, provided they conform to the required structure: a
+<code class="docutils literal notranslate"><span class="pre">Collections</span></code> object holding an array of documents per schema.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"Collections"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"Item"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nt">"Id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BronzeSword"</span><span class="p">,</span><span class="w"> </span><span class="nt">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bronze Sword"</span><span class="p">,</span><span class="w"> </span><span class="nt">"Damage"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="game_data_structure.html"><span class="doc">Game Data Structure</span></a> for the full format specification.</p>
+</section>
+<section id="document-identification">
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Document Identification</a><a class="headerlink" href="#document-identification" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Omit <code class="docutils literal notranslate"><span class="pre">Id</span></code> and one is generated.</p></li>
+<li><p>Provide <code class="docutils literal notranslate"><span class="pre">Id</span></code> if the document is referenced elsewhere in the data.</p></li>
+<li><p>Use a temporary identifier of the form <code class="docutils literal notranslate"><span class="pre">_ID_&lt;UNIQUE&gt;</span></code> when a document needs to be referenced by another
+document in the same file - including itself, as in a tree node pointing at its own parent. Every
+occurrence of the same placeholder resolves to the same generated identifier across the whole import.</p></li>
+</ul>
+</section>
+<section id="partial-updates">
+<h3><a class="toc-backref" href="#id19" role="doc-backlink">Partial Updates</a><a class="headerlink" href="#partial-updates" title="Link to this heading"></a></h3>
+<p>In the update modes documents need not be complete. A file containing only the identifier and the changed
+properties is enough:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nt">"Id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"IronSword"</span><span class="p">,</span><span class="w"> </span><span class="nt">"Damage"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Everything not mentioned keeps its current value.</p>
+</section>
+</section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id20" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="validation.html"><span class="doc">Validation</span></a></p></li>
+<li><p><a class="reference internal" href="../gamedata/publication.html"><span class="doc">Publishing Game Data</span></a></p></li>
+<li><p><a class="reference internal" href="internationalization.html"><span class="doc">Internationalization (i18n)</span></a></p></li>
+<li><p><a class="reference internal" href="game_data_structure.html"><span class="doc">Game Data Structure</span></a></p></li>
+<li><p><a class="reference internal" href="cicd.html"><span class="doc">CI/CD</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_export.html"><span class="doc">DATA EXPORT</span></a></p></li>
+<li><p><a class="reference internal" href="commands/data_import.html"><span class="doc">DATA IMPORT</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../gamedata/publication.html" class="btn btn-neutral float-left" title="Publishing Game Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="merge_logic.html" class="btn btn-neutral float-right" title="Document Merge Logic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

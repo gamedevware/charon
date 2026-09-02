@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Custom Actions &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Custom Pages" href="custom_pages.html" />
+    <link rel="prev" title="Implementing CharonSchemaEditorElement" href="implementing_schema_editor.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Custom Actions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/advanced/extensions/custom_actions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="custom-actions">
+<h1>Custom Actions<a class="headerlink" href="#custom-actions" title="Link to this heading"></a></h1>
+<p>A <strong>custom action</strong> is an entry an extension adds to one of Charon’s menus. Clicking it either calls a function
+the package exports, or navigates to a <a class="reference internal" href="custom_pages.html"><span class="doc">custom page</span></a> the package declares.</p>
+<p>Actions are how an extension does work that is not tied to editing one value: generating schemas, running a
+bulk change, exporting into a format of your own, opening a tool. The function receives a context object with
+the host’s services, so it can read and write game data, show dialogs and wizards, report progress, and
+navigate.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#declaring-an-action" id="id1">Declaring an Action</a></p></li>
+<li><p><a class="reference internal" href="#where-actions-appear" id="id2">Where Actions Appear</a></p>
+<ul>
+<li><p><a class="reference internal" href="#grouping-side-navigation-entries" id="id3">Grouping Side Navigation Entries</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#the-action-context" id="id4">The Action Context</a></p></li>
+<li><p><a class="reference internal" href="#reporting-progress" id="id5">Reporting Progress</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id6">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="declaring-an-action">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Declaring an Action</a><a class="headerlink" href="#declaring-an-action" title="Link to this heading"></a></h2>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"customActions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Create Conversation Schema"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"functionName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"createConversationSchema"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"new-schema-menu"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"icon"</span><span class="p">:</span><span class="w"> </span><span class="s2">"emoji/speech_balloon"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 78.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>The menu entry’s text. Required.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">location</span></code></p></td>
+<td><p>Which menu it goes in. Required, one of the four below.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">functionName</span></code></p></td>
+<td><p>The function exported from the package entry point to call. Mutually exclusive with <code class="docutils literal notranslate"><span class="pre">pageId</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pageId</span></code></p></td>
+<td><p>The id of a page in this same package’s <code class="docutils literal notranslate"><span class="pre">customPages</span></code>. Clicking navigates there instead of calling
+anything. Mutually exclusive with <code class="docutils literal notranslate"><span class="pre">functionName</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">icon</span></code></p></td>
+<td><p>Optional icon reference, <code class="docutils literal notranslate"><span class="pre">&lt;set&gt;/&lt;name&gt;</span></code> - <code class="docutils literal notranslate"><span class="pre">svg/</span></code> for Charon’s own icons, <code class="docutils literal notranslate"><span class="pre">emoji/</span></code> for an emoji by
+short name, <code class="docutils literal notranslate"><span class="pre">material/</span></code> for a Material icon. Defaults to <code class="docutils literal notranslate"><span class="pre">svg/extensions</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">tooltip</span></code></p></td>
+<td><p>Optional hover text.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Exactly one of <code class="docutils literal notranslate"><span class="pre">functionName</span></code> and <code class="docutils literal notranslate"><span class="pre">pageId</span></code> must be set. Declaring both makes Charon use <code class="docutils literal notranslate"><span class="pre">pageId</span></code> and warn;
+declaring neither leaves an entry that does nothing but log a warning when clicked.</p>
+<p>The named function must be exported from the module Charon loads - the file <code class="docutils literal notranslate"><span class="pre">main</span></code> points at. Bundlers
+tree-shake exports that nothing imports, so keep a reference to it; the example packages assign it to <code class="docutils literal notranslate"><span class="pre">window</span></code>
+for exactly that reason.</p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="k">export</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">createConversationSchema</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'./schema.validation/migrate.schema.ts'</span><span class="p">;</span>
+
+<span class="c1">// keeps the bundler from dropping it</span>
+<span class="p">(</span><span class="nb">window</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">any</span><span class="p">).</span><span class="nx">createConversationSchema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">createConversationSchema</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="where-actions-appear">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Where Actions Appear</a><a class="headerlink" href="#where-actions-appear" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">location</span></code></p></th>
+<th class="head"><p>Where it shows up</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">new-schema-menu</span></code></p></td>
+<td><p>The dropdown of the <strong>New Schema</strong> button on the project dashboard, below the built-in entries.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">document-action-menu</span></code></p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">Actions</span></code> menu of the <a class="reference internal" href="../../gamedata/document_form.html"><span class="doc">document form</span></a>, below the separator.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">document-list-action-menu</span></code></p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">Actions</span></code> menu of a <a class="reference internal" href="../../gamedata/filling_documents.html"><span class="doc">document collection</span></a>, below the
+separator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">side-navigation-menu</span></code></p></td>
+<td><p>A permanent entry in the left side navigation.</p></td>
+</tr>
+</tbody>
+</table>
+<figure class="align-default">
+<img alt="../../_images/extension_custom_new_schema_menu_item.png" src="../../_images/extension_custom_new_schema_menu_item.png" />
+</figure>
+<p><strong>Create Conversation Schema</strong> in the screenshot sits under <strong>New Schema</strong> next to Charon’s own
+<strong>Create New Schema (Default)</strong> and <strong>Import from TS Interface</strong>, and creates a schema already configured to use
+the package’s <a class="reference internal" href="implementing_schema_editor.html"><span class="doc">schema editor</span></a>.</p>
+<section id="grouping-side-navigation-entries">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Grouping Side Navigation Entries</a><a class="headerlink" href="#grouping-side-navigation-entries" title="Link to this heading"></a></h3>
+<p>A <code class="docutils literal notranslate"><span class="pre">side-navigation-menu</span></code> action whose <code class="docutils literal notranslate"><span class="pre">name</span></code> contains a <code class="docutils literal notranslate"><span class="pre">/</span></code> is filed under a section: <code class="docutils literal notranslate"><span class="pre">Tools/Schema</span>
+<span class="pre">Graph</span></code> puts <strong>Schema Graph</strong> into a <strong>Tools</strong> section of the side navigation. A name without a <code class="docutils literal notranslate"><span class="pre">/</span></code> sits in the
+top group with <strong>Dashboard</strong> and <strong>Metadata</strong>.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="the-action-context">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">The Action Context</a><a class="headerlink" href="#the-action-context" title="Link to this heading"></a></h2>
+<p>The function is called with one argument, whose shape follows the <code class="docutils literal notranslate"><span class="pre">location</span></code> it was declared for:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32.0%" />
+<col style="width: 68.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Context</p></th>
+<th class="head"><p>Extra fields beyond <code class="docutils literal notranslate"><span class="pre">services</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NewSchemaActionContext</span></code></p></td>
+<td><p>none</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DocumentActionContext</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">documentControl</span></code> - the <code class="docutils literal notranslate"><span class="pre">RootDocumentControl</span></code> of the document open in the form</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DocumentListActionContext</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema</span></code> of the listed collection, and <code class="docutils literal notranslate"><span class="pre">selection</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SideNavigationActionContext</span></code></p></td>
+<td><p>none</p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">selection</span></code> reports the grid’s current rows: <code class="docutils literal notranslate"><span class="pre">selected</span></code> holds the ids, <code class="docutils literal notranslate"><span class="pre">changed</span></code> emits the ids added and
+removed by each change, and <code class="docutils literal notranslate"><span class="pre">isAllSelected</span></code> is true when the user chose <em>select all</em> for the whole filtered
+collection. In that case treat the selection as “every document in the current view” - <code class="docutils literal notranslate"><span class="pre">selected</span></code> can be empty
+while it is true, because the rows were never all loaded.</p>
+<p>Every context carries <code class="docutils literal notranslate"><span class="pre">services</span></code>, and every field of it is optional. The host populates only what makes sense
+where the action was triggered, so check before use:</p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="k">export</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">createConversationSchema</span><span class="p">(</span><span class="nx">context</span><span class="o">:</span><span class="w"> </span><span class="kt">ExtensionActionContext</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">progressRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">services</span><span class="p">.</span><span class="nx">ui</span><span class="o">?</span><span class="p">.</span><span class="nx">dialog</span><span class="o">?</span><span class="p">.</span><span class="nx">showProgress</span><span class="p">({</span>
+<span class="w">        </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s1">'Creating Conversation Schemas'</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">progressMode</span><span class="o">:</span><span class="w"> </span><span class="s1">'determinate'</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">cancellable</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">closedHandler</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">abortController</span><span class="p">.</span><span class="nx">abort</span><span class="p">()</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The services themselves - game data, dialogs, wizards, notifications, navigation, persisted UI state - are
+described in <a class="reference internal" href="host_services.html"><span class="doc">Host Services</span></a>.</p>
+</section>
+<hr class="docutils" />
+<section id="reporting-progress">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Reporting Progress</a><a class="headerlink" href="#reporting-progress" title="Link to this heading"></a></h2>
+<p>Anything that takes more than a moment should say so. <code class="docutils literal notranslate"><span class="pre">services.ui.dialog.showProgress</span></code> returns a handle with
+<code class="docutils literal notranslate"><span class="pre">update(percent,</span> <span class="pre">message)</span></code>, <code class="docutils literal notranslate"><span class="pre">setFaulted()</span></code>, and <code class="docutils literal notranslate"><span class="pre">close(delayMs?)</span></code>:</p>
+<figure class="align-default">
+<img alt="../../_images/extension_custom_progress_dialog.png" src="../../_images/extension_custom_progress_dialog.png" />
+</figure>
+<p>With <code class="docutils literal notranslate"><span class="pre">cancellable:</span> <span class="pre">true</span></code> the dialog gets a close button, and <code class="docutils literal notranslate"><span class="pre">closedHandler(cancelled)</span></code> fires when the user
+uses it - abort the work there rather than letting it run on invisibly. The pattern the examples follow is to
+report success through the snack bar, and on failure to mark the dialog faulted and let it close itself a few
+seconds later:</p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">doTheWork</span><span class="p">(</span><span class="nx">progressRef</span><span class="p">,</span><span class="w"> </span><span class="nx">abortController</span><span class="p">.</span><span class="nx">signal</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">context</span><span class="p">.</span><span class="nx">services</span><span class="p">.</span><span class="nx">ui</span><span class="o">?</span><span class="p">.</span><span class="nx">snackBar</span><span class="o">?</span><span class="p">.</span><span class="nx">saveSucceed</span><span class="p">();</span>
+<span class="w">    </span><span class="nx">progressRef</span><span class="o">?</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+<span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">abortController</span><span class="p">.</span><span class="nx">signal</span><span class="p">.</span><span class="nx">aborted</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">context</span><span class="p">.</span><span class="nx">services</span><span class="p">.</span><span class="nx">ui</span><span class="o">?</span><span class="p">.</span><span class="nx">snackBar</span><span class="o">?</span><span class="p">.</span><span class="nx">saveFailed</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">progressRef</span><span class="o">?</span><span class="p">.</span><span class="nx">setFaulted</span><span class="p">();</span>
+<span class="w">    </span><span class="nx">progressRef</span><span class="o">?</span><span class="p">.</span><span class="nx">close</span><span class="p">(</span><span class="mf">3000</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="see-also">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="overview.html"><span class="doc">UI Extensions</span></a></p></li>
+<li><p><a class="reference internal" href="custom_pages.html"><span class="doc">Custom Pages</span></a></p></li>
+<li><p><a class="reference internal" href="host_services.html"><span class="doc">Host Services</span></a></p></li>
+<li><p><a class="reference internal" href="implementing_schema_editor.html"><span class="doc">Implementing a Schema Editor</span></a></p></li>
+<li><p><a class="reference internal" href="../../gamedata/filling_documents.html"><span class="doc">Filling Documents</span></a></p></li>
+<li><p><a class="reference internal" href="../../gamedata/document_form.html"><span class="doc">Editing a Document</span></a></p></li>
+<li><p><a class="reference external" href="https://github.com/gamedevware/charon-extensions/tree/main/src/charon-conversation-editor">charon-conversation-editor (GitHub)</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="implementing_schema_editor.html" class="btn btn-neutral float-left" title="Implementing CharonSchemaEditorElement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="custom_pages.html" class="btn btn-neutral float-right" title="Custom Pages" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
