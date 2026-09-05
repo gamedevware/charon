@@ -173,5 +173,6 @@ See also
 - :doc:`GENERATE CSHARPCODE <generate_csharp_code>`
 - :doc:`GENERATE UECPPCODE <generate_uecpp_code>`
 - :doc:`GENERATE HAXECODE <generate_haxe_code>`
+- :doc:`GENERATE JSONSCHEMA <generate_json_schema>`
 - :doc:`Publication <../../gamedata/publication>`
 

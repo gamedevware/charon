@@ -185,6 +185,7 @@ See also
 - :doc:`Working with Unreal Engine C++ Code <../../gamedata/working_with_uecpp_code>`
 - :doc:`GENERATE CSHARPCODE <generate_csharp_code>`
 - :doc:`GENERATE TYPESCRIPTCODE <generate_typescript_code>`
+- :doc:`GENERATE JSONSCHEMA <generate_json_schema>`
 - :doc:`GENERATE HAXECODE <generate_haxe_code>`
 - :doc:`Publication <../../gamedata/publication>`
 

@@ -204,6 +204,7 @@ See also
 - :doc:`Working with Source Code (C# 4.0) <../../gamedata/working_with_csharp_code_4_0>`
 - :doc:`Publishing Game Data <../../gamedata/publication>`
 - :doc:`GENERATE TYPESCRIPTCODE <generate_typescript_code>`
+- :doc:`GENERATE JSONSCHEMA <generate_json_schema>`
 - :doc:`GENERATE UECPP <generate_uecpp_code>`
 - :doc:`GENERATE HAXE <generate_haxe_code>`
 

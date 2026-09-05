@@ -191,6 +191,7 @@ See also
 - :doc:`Working with Haxe Code <../../gamedata/working_with_haxe_code>`
 - :doc:`GENERATE CSHARPCODE <generate_csharp_code>`
 - :doc:`GENERATE TYPESCRIPTCODE <generate_typescript_code>`
+- :doc:`GENERATE JSONSCHEMA <generate_json_schema>`
 - :doc:`GENERATE UECPPCODE <generate_uecpp_code>`
 - :doc:`Publication <../../gamedata/publication>`
 
