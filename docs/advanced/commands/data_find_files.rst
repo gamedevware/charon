@@ -28,8 +28,8 @@ Scans a folder for game data files and returns discovered paths with their colle
 
 Use this command to bootstrap work in an unfamiliar directory tree - "what game data lives here?" - before
 picking a file to pass to :doc:`DATA EXAMINE <data_examine>`, :doc:`DATA LIST <data_list>`, or
-:doc:`DATA SEARCH <data_search>`. Only files with recognized formatter extensions (``.json``, ``.bson``,
-``.msgpack``, ``.xlsx``, ...) are considered, and each candidate is probed - reading only its first 4 KB
+:doc:`DATA SEARCH <data_search>`. Only files with recognized formatter extensions (``.json``, ``.gdjs``,
+``.msgpack``, ``.gdmp``, ...) are considered, and each candidate is probed - reading only its first 4 KB
 for the ``Collections`` marker - before a full load, so the scan stays fast even on large directory trees
 full of unrelated files.
 
@@ -98,10 +98,6 @@ full of unrelated files.
      # remote location with authentication (FTP)
      --output "ftp://user:password@example.com/found-files.json"
 
---credentials
-   Supplies authentication credentials for accessing discovered files if they're located on a remote server.
-   Credentials can also be provided via the ``CHARON_API_KEY`` environment variable.
-
 This command supports :doc:`universal parameters <universal_parameters>`.
 
 ------------------
@@ -123,7 +119,7 @@ maps each schema name found in that file to its document count:
       }
     },
     {
-      "path": "C:/my app/game-content/quests.xlsx",
+      "path": "C:/my app/game-content/quests.gdjs",
       "collections":
       {
         "Quest": 56
@@ -137,7 +133,7 @@ piping into ``xargs`` or a shell ``for`` loop:
 .. code-block:: text
 
   C:/my app/game-content/characters.json
-  C:/my app/game-content/quests.xlsx
+  C:/my app/game-content/quests.gdjs
 
 See also
 --------
