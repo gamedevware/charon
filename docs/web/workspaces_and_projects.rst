@@ -56,6 +56,7 @@ A **Branch** is a named, independently editable snapshot of game data inside a p
   ``https://charon.live/view/data/<project>/<branch>/``
 - Branches enable parallel development: designers work on feature branches, then merge
   changes back to ``main`` using Charon's :doc:`patch/diff <../advanced/patch_diff>` tooling.
+  The web editor can also review and merge them through a :doc:`change request <change_requests>`.
 
 ----
 
