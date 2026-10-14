@@ -168,8 +168,10 @@ can be resolved with one call. Failures use the usual :doc:`error body <rest>` w
      - Operation
    * - GET
      - ``/``
-     - ``listChangeRequests`` - query ``state`` (``open``, ``merged``, ``closed``), ``branchName``, ``skip``,
-       ``take``. Newest first.
+     - ``listChangeRequests`` - query ``filters``, ``query``, ``skip``, ``take``. Newest first. ``filters`` takes
+       ``property operator value`` triplets, as the history search does, over ``state``, ``kind``, ``authorId``,
+       ``branchName`` (source or target), ``createdAt`` and ``updatedAt``; ``query`` matches the title, the
+       description or the number.
    * - POST
      - ``/``
      - ``createChangeRequest`` - body ``CreateChangeRequest``: ``kind``, ``title``, ``description``, ``origin``,
@@ -216,6 +218,26 @@ A decision is ``accept`` or ``reject`` for an *incoming* row and ``takeSource`` 
 row. A typical client reads the schema changes, posts the schema decisions to ``analysis``, pages through
 ``changes`` with the returned ``analysisId``, calls ``validate``, and finally calls ``complete`` with all decisions.
 An ``analysisId`` is kept for a few minutes; when it has expired, post the analysis again.
+
+Every change to a request, and every new commit on the source or target branch of an open request, raises a
+``ChangeRequestChangedNotification`` carrying only identifiers: the request id and number, both branch ids, and the
+head the event moved. Clients read the request again to see what changed.
+
+----
+
+In the Web Application
+----------------------
+
+- **Change Requests** in the side navigation lists the requests of the project, open ones by default. The **Filter**
+  menu narrows the list by state (including *archived*, which means merged or closed), kind, author, branch and time.
+- **Create Change Request...** is offered on that page, on **Project Settings - Branches** (for the whole project and
+  for each branch), and in the **Actions** menu of the change history. The dialog asks for the source and target
+  branches, a title and a description. With **Complete if no conflicts**, the request is completed at once accepting
+  every change; a request with conflicts, schema deletions or validation errors stays open for review instead.
+- A request page has a **Summary** tab and, while the request is open, a review tab. The review tab is labeled
+  *Conflicts* while conflicts exist and *Changes* otherwise, and shows each change side by side with its decision.
+  Decisions are kept in the browser session until the request is completed.
+- When a branch moves during a review, the page says so and offers to review again.
 
 See also
 --------
