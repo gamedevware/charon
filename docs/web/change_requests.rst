@@ -139,9 +139,11 @@ Limits
 - A branch request needs a revision both branches share. It cannot be opened when history deletion detached
   one of them.
 - Change requests between branches are part of the **Studio** and **Enterprise** subscriptions. Studio allows
-  50 open branch requests per project; Enterprise has no limit. On other subscriptions, or when the server
-  administrator turns the feature off, new branch requests cannot be opened and closed ones cannot be reopened.
-  Proposals need no subscription, and requests that are already open can still be completed or closed.
+  50 open branch requests per project; Enterprise has no limit. On other subscriptions new branch requests cannot
+  be opened and closed ones cannot be reopened. Proposals need no subscription, and requests that are already
+  open can still be completed or closed.
+- The server administrator can turn change requests off with ``ChangeRequests:IsEnabled`` set to ``false``.
+  Every change request operation, proposals included, then answers *not supported*.
 - A project can hold a limited number of open proposals at once (50 by default). The history a proposal adds is
   charged to the target branch's history size and the workspace quota.
 - Merged and closed requests are removed after a retention period (180 days by default, configured by the
