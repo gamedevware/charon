@@ -51,19 +51,24 @@ Reviewing in Three Stages
 The server keeps no review state. The review is a sequence of three stages, and the decisions you make are held by
 the client until you complete the request.
 
-1. **Schema.** Changes to document types (schemas), their properties and the project settings are compared first, and
-   each is decided as a whole. A schema change reshapes the data of every document of that schema, so schema is settled
+1. **Schema.** Changes to document types (schemas), their properties, shared properties and the project settings are
+   compared first, and each is decided as a whole. A schema change reshapes the data of every document of that schema, so schema is settled
    before data is compared. Each schema item is one of:
 
    - *incoming* - changed on the source only. Decide ``accept`` or ``reject``.
    - *conflict* - changed differently on both sides, or two different items added under one name. Decide
      ``takeSource`` or ``takeTarget``.
    - *converged* - identical on both sides. No decision.
-   - *deleted* - a schema or property deleted on either side. **Deletions always win**: the item is deleted in the
+   - *deleted* - a schema, property or shared property deleted on either side. **Deletions always win**: the item is deleted in the
      result whatever the other side did to it, because a deletion removes dependent data and references that cannot
      be brought back along with it. A deleted item is listed together with the number of documents and dependent
      properties that go with it, but takes no decision. To keep the item, stop the deletion at its source or close
      the change request.
+
+   A property linked to a shared property takes its data type, size, reference, specification, requirement, uniqueness
+   and default value from the shared property, so those follow the decision on the shared property item. The
+   property's own item decides its name, display name, description and link. A link to a deleted shared property is
+   removed.
 
 2. **Data.** Once schema decisions are known, the documents of the three states are reshaped to the resulting
    schema and compared document by document. Each document is *incoming*, *conflict* or *converged*, with the same
@@ -133,6 +138,10 @@ Limits
   assistant-suggested changes.
 - A branch request needs a revision both branches share. It cannot be opened when history deletion detached
   one of them.
+- Change requests between branches are part of the **Studio** and **Enterprise** subscriptions. Studio allows
+  50 open branch requests per project; Enterprise has no limit. On other subscriptions, or when the server
+  administrator turns the feature off, new branch requests cannot be opened and closed ones cannot be reopened.
+  Proposals need no subscription, and requests that are already open can still be completed or closed.
 - A project can hold a limited number of open proposals at once (50 by default). The history a proposal adds is
   charged to the target branch's history size and the workspace quota.
 - Merged and closed requests are removed after a retention period (180 days by default, configured by the
