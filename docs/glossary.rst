@@ -125,7 +125,7 @@ Branch
    In the web application, a branch is a specific variant of game data within a project. It can be used to manage different versions or stages of the game data.
 
 Change Request
-   In the web application, a proposal to move changes into a branch, either from another branch or as a set of suggested edits. Its changes are reviewed one by one, and the accepted ones are applied to the target branch as a single commit. See :doc:`web/change_requests`.
+   In the web application, a proposal to move changes into a branch, either from another branch or from an import held for review. Its changes are reviewed one by one, and the accepted ones are applied to the target branch as a single commit. See :doc:`web/change_requests`.
 
 API Key
    A unique identifier generated for a user in the User's Profile "API Keys" section, which can be used to access the REST API and CLI for various operations. It allows for automation of game build processes, such as pushing game data to local GIT repositories.

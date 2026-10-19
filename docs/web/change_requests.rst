@@ -15,7 +15,7 @@ What a Change Request Is
 ------------------------
 
 Every change request has a **target branch** - the branch that receives the changes - a title, a description, and a
-state: *open*, *merged*, or *closed*. Each request also gets a project-local number such as ``#12`` for display.
+state: *open*, *merged*, or *closed*. Each branch request also gets a project-local number such as ``#12`` for display.
 Two kinds exist:
 
 .. list-table::
@@ -30,13 +30,23 @@ Two kinds exist:
        there show up in the review without recreating anything.
      - A designer finishing work on a feature branch.
    * - ``proposal``
-     - A single set of changes submitted together with the request, based on a specific revision of the target branch.
-     - An AI assistant suggesting edits for the user to accept or reject.
+     - The result of an import, run against the target branch head without applying it.
+     - A user who wants to check an import before it lands in the branch.
 
 Both kinds are reviewed and completed the same way. The source branch is never modified by a change request.
 
 A branch change request cannot be opened when the source branch has nothing the target lacks, nor from a branch into
 itself. Only one open branch request can exist for a given pair of branches.
+
+Proposals are short-lived
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A proposal is kept in the server's memory only. It has no number (it reads ``0``), it is not listed with the other
+requests, and it leaves no record behind once it is gone. It is addressed by its id, so it can be shared as a link with
+anyone who can view the target branch.
+
+A proposal is discarded **one hour after it was last opened**. Reading it, or any step of its review, starts the hour
+again. A merged or closed proposal stays readable for the same hour. A server restart discards every proposal.
 
 Changes are compared against the **merge base** - the latest revision both branches share. A change counts as
 *incoming* when only the source changed it, as a *conflict* when both sides changed it differently, and as
@@ -106,15 +116,12 @@ Other ways a request ends
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - **Close** closes an open request as rejected. A closed branch request can be reopened while both branches
-  still exist; a closed proposal cannot.
+  still exist; a closed proposal cannot, and its imported changes are discarded.
 - Deleting the source or the target branch closes the request.
 - Restoring the project from a restore point closes all of its requests.
 - Deleting the project deletes its requests.
 - If the source head is already contained in the target - for example because the branches were merged another
   way - the request is marked merged on its next read.
-
-A proposal can be **revised**: a follow-up set of changes against the current proposal state is appended to it,
-without creating a new request.
 
 ----
 
@@ -134,8 +141,7 @@ Limits
 ------
 
 - Change requests work only in **journaled projects**, that is, with change history enabled on the branch. Otherwise
-  the request is refused and the branch capabilities report ``changeRequests: false``, which also disables
-  assistant-suggested changes.
+  the request is refused and the branch capabilities report ``journaling: false``.
 - A branch request needs a revision both branches share. It cannot be opened when history deletion detached
   one of them.
 - Change requests between branches are part of the **Studio** and **Enterprise** subscriptions. Studio allows
@@ -144,8 +150,7 @@ Limits
   open can still be completed or closed.
 - The server administrator can turn change requests off with ``ChangeRequests:IsEnabled`` set to ``false``.
   Every change request operation, proposals included, then answers *not supported*.
-- A project can hold a limited number of open proposals at once (50 by default). The history a proposal adds is
-  charged to the target branch's history size and the workspace quota.
+- A project can hold a limited number of open proposals at once (50 by default). A proposal writes no history.
 - Merged and closed requests are removed after a retention period (180 days by default, configured by the
   server administrator).
 
@@ -156,8 +161,13 @@ REST API
 
 All operations are under ``/project/{projectId}/change-request/`` (OpenAPI tag ``ChangeRequest``) and are
 addressed by ``changeRequestId``, the identifier returned by the create and list calls. Only
-``getChangeRequest`` additionally accepts the display number (``12``), so a link such as ``/change-request/12``
-can be resolved with one call. Failures use the usual :doc:`error body <rest>` with an error code.
+``getChangeRequest`` additionally accepts the display number (``12``) of a branch request, so a link such as
+``/change-request/12`` can be resolved with one call. Failures use the usual :doc:`error body <rest>` with an error code.
+
+A proposal is opened by ``importAsChangeRequest``: ``PUT /datasource/{dataSourceId}/change-request/`` takes the same
+parameters and body as the ``import`` operation, minus ``dryRun``, and returns the import ``report`` with the new
+``changeRequest``. ``changeRequest`` is null when the import failed or changed nothing. Every operation below then
+works on it by its id.
 
 .. list-table::
    :header-rows: 1
@@ -169,14 +179,13 @@ can be resolved with one call. Failures use the usual :doc:`error body <rest>` w
    * - GET
      - ``/``
      - ``listChangeRequests`` - query ``filters``, ``query``, ``skip``, ``take``. Newest first. ``filters`` takes
-       ``property operator value`` triplets, as the history search does, over ``state``, ``kind``, ``authorId``,
+       ``property operator value`` triplets, as the history search does, over ``state``, ``authorId``,
        ``branchName`` (source or target), ``createdAt`` and ``updatedAt``; ``query`` matches the title, the
-       description or the number.
+       description or the number. Proposals are never listed.
    * - POST
      - ``/``
-     - ``createChangeRequest`` - body ``CreateChangeRequest``: ``kind``, ``title``, ``description``, ``origin``,
-       ``targetBranchName``; ``sourceBranchName`` for a branch request; ``patch`` and optional
-       ``baseRevisionHash`` (defaults to the target head) for a proposal.
+     - ``createChangeRequest`` - opens a branch request; body ``CreateChangeRequest``: ``title``, ``description``,
+       ``targetBranchName``, ``sourceBranchName``.
    * - GET
      - ``/{changeRequestId}/``
      - ``getChangeRequest`` - the record plus its live status (revisions and mergeability) while open.
@@ -210,9 +219,6 @@ can be resolved with one call. Failures use the usual :doc:`error body <rest>` w
    * - POST
      - ``/{changeRequestId}/reopen/``
      - ``reopenChangeRequest`` - branch requests only.
-   * - POST
-     - ``/{changeRequestId}/revisions/``
-     - ``reviseChangeRequest`` - proposals only; body ``expectedProposalRevisionHash`` and ``patch``.
 
 A decision is ``accept`` or ``reject`` for an *incoming* row and ``takeSource`` or ``takeTarget`` for a *conflict*
 row. A typical client reads the schema changes, posts the schema decisions to ``analysis``, pages through
@@ -229,7 +235,7 @@ In the Web Application
 ----------------------
 
 - **Change Requests** in the side navigation lists the requests of the project, open ones by default. The **Filter**
-  menu narrows the list by state (including *archived*, which means merged or closed), kind, author, branch and time.
+  menu narrows the list by state (including *archived*, which means merged or closed), author, branch and time.
 - **Create Change Request...** is offered on that page, on **Project Settings - Branches** (for the whole project and
   for each branch), and in the **Actions** menu of the change history. The dialog asks for the source and target
   branches, a title and a description. With **Complete if no conflicts**, the request is completed at once accepting
@@ -238,6 +244,8 @@ In the Web Application
   *Conflicts* while conflicts exist and *Changes* otherwise, and shows each change side by side with its decision.
   Decisions are kept in the browser session until the request is completed.
 - When a branch moves during a review, the page says so and offers to review again.
+- In the **Import Data** wizard, **Review the changes before applying them** opens the import as a proposal instead
+  of applying it, and takes you to its page. A proposal that has expired shows a notice to import the file again.
 
 See also
 --------
