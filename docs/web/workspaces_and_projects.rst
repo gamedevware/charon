@@ -94,7 +94,7 @@ Managing Branches in the Editor
 *Primary* marks the branch a project cannot be without - it cannot be deleted - and *Current* marks the one
 open in the editor. A project is limited to three branches at the time of writing.
 
-**Create Branch...** asks only for a name:
+**Create Branch...** asks for a name and a source branch. The new branch starts as the source's current state and shares its history, so its change history begins with the source's.
 
 .. figure:: ./workspaces_and_projects_create_branch_window.png
 
@@ -156,6 +156,10 @@ How a push works
 A push copies the complete content of one branch into another, replacing the
 destination entirely. There is no partial merge - every document in the
 destination is overwritten.
+
+On a server with change history enabled, a push does not copy data: the destination moves onto the source's latest
+revision and continues its history from there. The destination's own changes since the last push leave its timeline
+but stay recoverable for the history retention period. Open transactions on the destination are aborted.
 
 Three ways to trigger a push are available:
 
