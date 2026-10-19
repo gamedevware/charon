@@ -391,6 +391,7 @@ To display the list of available commands add ``--help`` or ``/?``.
   #>   SERVER      Commands for starting and managing the embedded HTTP server.
   #>   DATA        Commands for reading, writing, importing, and exporting game data.
   #>   GENERATE    Commands for generating typed source code from game data schemas.
+  #>   EXTENSION   Commands for installing, listing and removing UI extension packages in the local extension directory.
   #>   VERSION     Print current product version.
 
 The same flag works for any verb and sub-verb:
