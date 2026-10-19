@@ -56,6 +56,93 @@ service.
 
 ----
 
+Safety Snapshots
+----------------
+
+Apart from the backups a workspace configures for itself, the server keeps a short-lived local copy of
+every project so an operator can undo a destructive action. These copies are not shown to users and do
+not count against a workspace's backup storage.
+
+A snapshot holds the game data of every branch of one project. It is taken:
+
+- before a project is restored from a backup;
+- before a project or a branch is deleted;
+- before a branch is rolled back to an earlier revision;
+- on a schedule, for each project in use that changed since its last snapshot.
+
+Snapshots are written to ``<Location>/<project id>/<UTC time>-<reason>-<suffix>.tar.zst``. They are
+configured in the ``ArchiveStorage:SafetySnapshots`` section of ``appsettings.json``:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 25 50
+
+   * - Setting
+     - Default
+     - Meaning
+   * - ``IsEnabled``
+     - ``true``
+     - Turns safety snapshots on or off.
+   * - ``Location``
+     - ``./data/safety-snapshots``
+     - Directory the snapshots are kept in.
+   * - ``RetentionDays``
+     - ``7``
+     - A snapshot older than this is deleted.
+   * - ``MaxTotalSize``
+     - ``5368709120`` (5 GB)
+     - Size limit, in bytes, for all snapshots on the server. Past it the oldest are deleted first.
+   * - ``Schedule``
+     - ``0 * * * *``
+     - Cron schedule of the periodic snapshot.
+
+A snapshot that cannot be written is logged as a warning and never blocks the action it precedes.
+
+To recover a project, pick the snapshot taken before the damage and send the file as the raw body of
+``POST /project/{projectId}/archives/upload-restore/``, as a workspace administrator. A snapshot restores
+only over the project it was taken from, so the data of a deleted project has to be imported branch by
+branch into a new one instead. The file is a Zstandard-compressed TAR of BSON documents, one
+``snapshots/<branch id>/gamedata.bson`` per branch.
+
+----
+
+Backup Payload Cache
+--------------------
+
+Only the newest backup of a project is stored whole. When a new one is written, the one before it is
+rewritten as a binary delta against it, which costs roughly what changed between the two. Restoring,
+verifying or downloading an older backup rebuilds it from the newest one through the deltas between them,
+on the spool volume.
+
+To write that delta the server needs the previous backup, so it keeps the newest backup of each project
+on local disk instead of downloading it again. The cache is configured in the
+``ArchiveStorage:PayloadCache`` section of ``appsettings.json``:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 25 50
+
+   * - Setting
+     - Default
+     - Meaning
+   * - ``IsEnabled``
+     - ``true``
+     - Turns the cache on or off. With it off, every backup run downloads the previous backup.
+   * - ``Location``
+     - ``./data/archive-payload-cache``
+     - Directory the cached backups are kept in, one subdirectory per project.
+   * - ``RetentionDays``
+     - ``3``
+     - A cached backup older than this is deleted, so projects nobody edits stop using disk.
+   * - ``MaxTotalSize``
+     - ``5368709120`` (5 GB)
+     - Size limit, in bytes, for all cached backups on the server. Past it the oldest are deleted first.
+
+A backup whose uncompressed size passes 200 MB is logged as a warning, and past 300 MB as an error: the
+delta encoder holds an index of the newest backup in memory, about one to two and a half times its size.
+
+----
+
 Contingency Plan
 ----------------
 
