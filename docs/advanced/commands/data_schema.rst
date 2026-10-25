@@ -70,6 +70,20 @@ Every write takes ``--dryRun``, which validates and prints the same summary with
      - ``--schema``, ``--property``, ``--allowDataLoss``
      - ``schema_property_remove``
 
+Option values and defaults:
+
+- ``--schemaType`` (``CREATE``, ``UPDATE``): ``Normal`` (default), ``Component`` (always embedded in other documents),
+  ``Settings`` (one document only) or ``Union``.
+- ``--idGenerator`` (``CREATE``, ``UPDATE``): how the ``Id`` of new documents is produced. ``None`` (default, you
+  supply every Id), ``ObjectId``, ``Guid``, ``Sequence`` (per schema) or ``GlobalSequence`` (across the project).
+- ``--cascade`` (``DELETE``): what happens to properties of *other* schemas that reference or embed the deleted
+  schema, including shared properties. ``Deny`` (default) refuses the delete and lists them; ``Cascade`` removes
+  them along with the schema.
+- ``--allowDataLoss``: needed only when the edited schema has documents (embedded ones included). On an empty
+  schema every command runs without it.
+- ``--requirement``: ``None`` (default), ``NotNull`` or ``NotEmpty``. ``--uniqueness``: ``None`` (default),
+  ``Unique`` or ``UniqueInCollection``.
+
 Rules shared by all commands:
 
 - ``--schema`` and ``--property`` take exact names or Ids. ``GET``, ``ADD``, ``UPDATE``, ``CHANGETYPE`` and
@@ -218,7 +232,7 @@ The examples run against a copy of the RPG sample project.
   #> Target: Quest
   #> Change: updated schema Quest: DisplayName, Icon scroll
 
-**DELETE**:
+**DELETE** - an empty schema needs no extra options:
 
 .. code-block:: bash
 
@@ -227,6 +241,39 @@ The examples run against a copy of the RPG sample project.
   #> Target: Quest
   #> Change: deleted schema Quest
   #> Documents: 0 (incl. embedded)
+
+A schema with documents needs ``--allowDataLoss``; its documents are deleted with it:
+
+.. code-block:: bash
+
+  dnx dotnet-charon -- DATA SCHEMA DELETE --dataBase rpg.json --schema Quirk
+
+  #> Schema `Quirk` has 8 documents (incl. embedded). Pass allowDataLoss to delete them with the schema.
+
+  dnx dotnet-charon -- DATA SCHEMA DELETE --dataBase rpg.json --schema Quirk --allowDataLoss
+
+  #> Target: Quirk
+  #> Change: deleted schema Quirk
+  #> Documents: 8 (incl. embedded)
+
+A schema other schemas reference is refused until ``--cascade Cascade`` allows removing those properties:
+
+.. code-block:: bash
+
+  dnx dotnet-charon -- DATA SCHEMA DELETE --dataBase rpg.json --schema Item --allowDataLoss
+
+  #> Schema `Item` is referenced by property CurioCleansingOption.Item, property ItemWithCount.Item,
+  #> property Provision.Item, property Trinket.Item. Set cascade to Cascade to remove these properties too.
+
+  dnx dotnet-charon -- DATA SCHEMA DELETE --dataBase rpg.json --schema Item --allowDataLoss --cascade Cascade
+
+  #> Target: Item
+  #> Change: deleted schema Item
+  #> Change: removed property CurioCleansingOption.Item
+  #> Change: removed property ItemWithCount.Item
+  #> Change: removed property Provision.Item
+  #> Change: removed property Trinket.Item
+  #> Documents: 39 (incl. embedded)
 
 **PROPERTY GET**:
 
