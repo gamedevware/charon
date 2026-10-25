@@ -74,7 +74,8 @@ Rules shared by all commands:
 
 - ``--schema`` and ``--property`` take exact names or Ids. ``GET``, ``ADD``, ``UPDATE``, ``CHANGETYPE`` and
   ``REMOVE`` accept a space-separated list (``--schema Quest QuestStep``) or ``'*'`` alone for all. Other commands
-  take exactly one.
+  take exactly one. On writes ``'*'`` skips the ``Id`` property; on ``GET`` it lists it too. Schema ``'*'`` never
+  selects the system schemas (``Schema``, ``SchemaProperty``, ``ProjectSettings``).
 - There are no patterns: ``Quest*`` is an unknown name, and ``!`` exclusions are not supported. Every listed name
   must exist, otherwise nothing is written and the error names the missing ones.
 - Quote ``'*'``: a bare ``*`` is expanded to file names by the shell before Charon sees it.
@@ -151,9 +152,11 @@ option, so both need ``--allowDataLoss`` while the schema has documents.
 These are allowed while the schema has no documents.
 
 Lossy changes need ``--allowDataLoss`` while documents exist: text to number, logical, date, time or pick list;
-``Number`` to ``Integer``; any type to a pick list; a smaller size or text limit, or a limit added to unlimited
+``Number`` to ``Integer``; number to logical, date or time and back; any type to a pick list; a smaller size or text limit, or a limit added to unlimited
 text; a new reference target; options dropped by a full option list replacement. The decision uses the change and
 the document count only. Values that do not convert stay as they are and leave documents invalid until edited.
+A changed type drops ``pick.*`` entries the new type does not use and formula entries (``param.*``,
+``resultType``, ``knownType``). For a shared property, documents of every schema using it count.
 
 To check that a schema is empty, run :doc:`DATA LIST <data_list>` with ``--path '*' --take 0``.
 
