@@ -423,5 +423,6 @@ See also
 - :doc:`URL-based Input/Output <commands/remote_input_output>`
 - :doc:`Universal Parameters <commands/universal_parameters>`
 - :doc:`Game Data Structure <game_data_structure>`
+- :doc:`Schema Editing <commands/data_schema>` - change schemas and properties one command at a time
 - `dnx documentation <https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-dnx>`_
 - `dotnet tool documentation <https://learn.microsoft.com/en-us/dotnet/core/tools/global-tools>`_

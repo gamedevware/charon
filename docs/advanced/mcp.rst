@@ -8,7 +8,7 @@ is opened and no extra infrastructure is required.
 
 With the MCP server running, an AI assistant can:
 
-- Discover and inspect schemas
+- Discover, inspect and change schemas (``schema_*`` tools, see :doc:`Schema Editing <commands/data_schema>`)
 - Query, create, update, and delete game data documents
 - Import and export data in multiple formats
 - Generate typed source code (C#, TypeScript, Unreal C++, Haxe, Lua)
