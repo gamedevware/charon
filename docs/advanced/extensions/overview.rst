@@ -148,6 +148,33 @@ to everyone who opens the project.
 
 ----
 
+Private Packages
+----------------
+
+On an online server, **Upload NPM Package...** stores the ``.tgz`` privately for the whole workspace, so every
+project in it gets the package. It requires administer rights on the project and on the workspace (owner or workspace
+administrator), because every project in the workspace runs the uploaded code. There is one version per package
+name: uploading the same name again replaces the stored one.
+
+A workspace's private package takes priority over the package with the same name in the public NPM registry.
+
+How many packages a workspace can hold and their total size depend on its subscription plan. On the Free plan
+private packages are not available and the upload button is disabled. An upload over the limit is refused with an
+error.
+
+A standalone (offline) installation has no workspaces: the upload saves the package locally.
+
+Private packages are kept until deleted, and are removed together with their workspace. The UI has no delete
+button; use the REST API. Listing needs view rights on the workspace; deleting needs modify rights:
+
+.. code-block:: text
+
+   GET    /workspace/{workspaceId}/extensions/packages/                 list the packages
+   DELETE /workspace/{workspaceId}/extensions/packages/{packageName}    delete one package
+   DELETE /workspace/{workspaceId}/extensions/packages/                 delete all, returns the deleted count
+
+----
+
 Consent and Trust
 -----------------
 
