@@ -66,8 +66,10 @@ the client until you complete the request.
    before data is compared. Each schema item is one of:
 
    - *incoming* - changed on the source only. Decide ``accept`` or ``reject``.
-   - *conflict* - changed differently on both sides, or two different items added under one name. Decide
-     ``takeSource`` or ``takeTarget``.
+   - *conflict* - changed differently on both sides, or a *name clash*: the source added or renamed an item to a
+     name the target gave another item. Decide ``takeSource`` or ``takeTarget``. Taking the source in a name clash
+     deletes the target's item of that name, together with its documents or values; the item shows how many.
+     Keeping the target leaves the source's change out.
    - *converged* - identical on both sides. No decision.
    - *deleted* - a schema, property or shared property deleted on either side. **Deletions always win**: the item is deleted in the
      result whatever the other side did to it, because a deletion removes dependent data and references that cannot
@@ -79,6 +81,10 @@ the client until you complete the request.
    and default value from the shared property, so those follow the decision on the shared property item. The
    property's own item decides its name, display name, description and link. A link to a deleted shared property is
    removed.
+
+   Decisions that would leave two schemas, two properties of one schema, or two shared properties with the same
+   name are refused with ``changeRequestNameClash``, naming them. This happens when, for example, you reject the
+   source's rename of a schema but accept a new schema it added under the old name.
 
 2. **Data.** Once schema decisions are known, the documents of the three states are reshaped to the resulting
    schema and compared document by document. Each document is *incoming*, *conflict* or *converged*, with the same
