@@ -140,7 +140,7 @@ See :doc:`Roles and Permissions <permission_and_roles>` for what each role grant
 Limits
 ------
 
-- Change requests work only in **journaled projects**, that is, with change history enabled on the branch. Otherwise
+- Change requests work only in **journaled projects**, that is, with :doc:`change history <change_history>` enabled on the branch. Otherwise
   the request is refused and the branch capabilities report ``journaling: false``.
 - A branch request needs a revision both branches share. It cannot be opened when history deletion detached
   one of them.

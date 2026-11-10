@@ -94,7 +94,7 @@ Managing Branches in the Editor
 *Primary* marks the branch a project cannot be without - it cannot be deleted - and *Current* marks the one
 open in the editor. A project is limited to three branches at the time of writing.
 
-**Create Branch...** asks for a name and a source branch. The new branch starts as the source's current state and shares its history, so its change history begins with the source's.
+**Create Branch...** asks for a name and a source branch. The new branch starts as the source's current state and shares its history, so its :doc:`change history <change_history>` begins with the source's.
 
 .. figure:: ./workspaces_and_projects_create_branch_window.png
 
