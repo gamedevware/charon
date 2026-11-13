@@ -194,6 +194,9 @@ Creating and Editing Game Data
 Any empty **gamedata.json** file could be used as starting point for standalone application launch. 
 The editor will automatically fill the empty file with the initial data.  
 
+Instead of creating the empty file first, you can pass ``--createIfNotExists`` to the editor shortcut to
+have it create a missing game data file automatically: ``charon ./gamedata.json --createIfNotExists``.
+
 .. tab-set::
 
    .. tab-item:: Windows

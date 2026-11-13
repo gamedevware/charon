@@ -62,6 +62,14 @@ Starts Charon in standalone mode for specified game data. Path to game data coul
 
      --changesFile "./player-changes.patch.json"
 
+--createIfNotExists
+   Create the game data file if it does not exist. Applies only to local game data files. An empty file is
+   created and the editor fills it with the initial data on first save.
+
+   .. code-block:: bash
+
+     --createIfNotExists
+
 This command supports :doc:`universal parameters <universal_parameters>`.
 
 See also
