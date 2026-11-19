@@ -157,13 +157,28 @@ another branch still builds on.
 Truncation and rollback cannot be undone. Both dialogs offer to back up the project first; the operation then starts
 only once the backup completes. When no backup destination is set up, the dialogs link to the backup settings instead.
 
+When the history is full
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The history of every project in a workspace counts towards the workspace's history storage quota. Once it is exceeded,
+every branch of the workspace becomes read-only, the same way it does when the game data storage limit is reached, and
+a *History Limit Reached* notification explains why. Viewing, rollback and truncation keep working, so the workspace
+can get out of it:
+
+- **Truncate** old history on the branches that hold the most of it. The freed storage is measured again shortly after,
+  and editing resumes once the total is back under the quota; this can take a few minutes.
+- Delete branches that are no longer needed, or upgrade the subscription to get more history storage.
+
+A rollback does not free storage right away: detached changes keep counting until their retention period ends.
+
 ----
 
 Limits
 ------
 
 - Change history is a server feature. The administrator turns it off with ``DataSources:History:IsEnabled`` set to
-  ``false``; the history menu items, change requests and history links are then hidden.
+  ``false``; the history menu items, change requests and history links are then hidden. Only turning it on later is
+  supported: a server that has recorded history must not have it turned off again.
 - A branch that keeps its game data in an external MongoDB database records no change history.
 
 ----
