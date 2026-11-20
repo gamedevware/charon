@@ -32,14 +32,19 @@ Every write takes ``--dryRun``, which validates and prints the same summary with
      - ``--schema``, ``--details``
      - ``schema_get``
    * - ``DATA SCHEMA CREATE``
-     - ``--name``, ``--schemaType``, ``--idGenerator``, ``--displayName``, ``--description``, ``--group``, ``--icon``
+     - ``--name``, ``--schemaType``, ``--idGenerator``, ``--displayName``, ``--description``, ``--group``, ``--icon``,
+       ``--displayTextTemplate``, ``--menuVisibility``, ``--property``
      - ``schema_create``
    * - ``DATA SCHEMA RENAME``
      - ``--schema``, ``--newName``
      - ``schema_rename``
    * - ``DATA SCHEMA UPDATE``
-     - ``--schema``, ``--displayName``, ``--description``, ``--schemaType``, ``--idGenerator``, ``--group``, ``--icon``
+     - ``--schema``, ``--displayName``, ``--description``, ``--schemaType``, ``--idGenerator``, ``--group``, ``--icon``,
+       ``--displayTextTemplate``, ``--menuVisibility``
      - ``schema_update``
+   * - ``DATA SCHEMA UPDATESPECIFICATION``
+     - ``--schema``, ``--specification`` or ``--set`` / ``--remove``
+     - ``schema_update_specification``
    * - ``DATA SCHEMA RELATIONS``
      - ``--schema``, ``--direction Incoming|Outgoing|Both``, ``--kind Reference|Document``, ``--recursive``,
        ``--depth``, ``--format List|Table|Tree``, ``--details``, ``--counts``
@@ -52,17 +57,18 @@ Every write takes ``--dryRun``, which validates and prints the same summary with
      - ``schema_property_get``
    * - ``DATA SCHEMA PROPERTY ADD``
      - ``--schema``, ``--name``, ``--type``, ``--requirement``, ``--uniqueness``, ``--default``, ``--after``,
-       ``--displayName``, ``--description``
+       ``--displayName``, ``--description``, ``--shared``, ``--specification``, ``--allowDataLoss``
      - ``schema_property_add``
    * - ``DATA SCHEMA PROPERTY RENAME``
      - ``--schema``, ``--property``, ``--newName``
      - ``schema_property_rename``
    * - ``DATA SCHEMA PROPERTY UPDATE``
      - ``--schema``, ``--property``, ``--requirement``, ``--uniqueness``, ``--default``, ``--after``,
-       ``--displayName``, ``--description``
+       ``--displayName``, ``--description``, ``--shared``, ``--allowDataLoss``
      - ``schema_property_update``
    * - ``DATA SCHEMA PROPERTY UPDATESPECIFICATION``
-     - ``--schema``, ``--property``, ``--specification``, ``--preservePickList``, ``--preserveFormula``
+     - ``--schema``, ``--property``, ``--specification`` or ``--set`` / ``--remove``, ``--preservePickList``,
+       ``--preserveFormula``
      - ``schema_property_update_specification``
    * - ``DATA SCHEMA PROPERTY UPDATEPICKLIST``
      - ``--schema``, ``--property``, ``--changes``, ``--allowDataLoss``
@@ -87,6 +93,10 @@ Option values and defaults:
   schema every command runs without it.
 - ``--requirement``: ``None`` (default), ``NotNull`` or ``NotEmpty``. ``--uniqueness``: ``None`` (default),
   ``Unique`` or ``UniqueInCollection``.
+- ``--displayTextTemplate`` (``CREATE``, ``UPDATE``): the text shown for a document in references and lists, e.g.
+  ``'{Name} ({Level})'``. A template that does not parse is refused; an empty value removes it.
+- ``--menuVisibility`` (``CREATE``, ``UPDATE``): ``Visible`` or ``Hidden`` in the UI navigation menu; ``Unset``
+  removes the setting.
 
 Rules shared by all commands:
 
@@ -134,6 +144,83 @@ form, so a printed type passed back to ``CHANGETYPE`` changes nothing.
 
 The type fully determines size and reference target: ``Integer 8`` changed to ``Text`` becomes an unlimited
 ``Text``, not ``Text 8``. ``Formula`` is not supported by the grammar.
+
+-----------------------
+ Properties in CREATE
+-----------------------
+
+``CREATE --property`` takes one quoted value per property, in the line form ``GET`` prints, so a printed line can be
+passed back:
+
+.. code-block:: bash
+
+  dotnet charon DATA SCHEMA CREATE --dataBase data.gdjs --name Quest --idGenerator ObjectId \
+    --property "Title, Type: LocalizedText 200, Requirement: NotEmpty" \
+               "Note, Type: Text, Default: one, two" \
+               "Publication, Shared: PublicationOptions"
+
+- Form: ``[Property: ]Name[, Label: value]...`` with the labels ``Type``, ``Requirement``, ``Uniqueness``,
+  ``Default``, ``Shared``, ``DisplayName``, ``Description``, ``Specification``.
+- A value ends only at ``, <Label>:`` for one of those labels, so commas inside defaults or formula signatures need no
+  escaping. JSON-quoted values (as ``GET`` prints free text) are unquoted.
+- ``Type`` is required unless ``Shared`` names an existing shared property. Properties keep their order; ``Id`` is
+  added automatically and cannot be listed.
+- Unknown or repeated labels and truncated values (ending in ``…``) are errors.
+
+-----------------------
+ Specifications
+-----------------------
+
+Schemas and properties keep extra settings in a raw ``key=value&key=value`` specification. ``GET --details`` prints
+it last as ``Specification:``, in the exact form ``--specification`` accepts back.
+
+``UPDATESPECIFICATION`` (schema or property) takes either:
+
+- ``--specification`` - replaces the whole specification; on properties ``--preservePickList`` and
+  ``--preserveFormula`` keep the current options or formula entries, or
+- ``--set 'key=value'`` and ``--remove key`` (each repeatable, space separated) - removes apply first, then each set
+  key gets exactly the given value; every other key stays. Values are plain text and encoded for you.
+
+Prefer the typed options where they exist: ``--type`` for options and formula signatures, ``--group``, ``--icon``,
+``--displayTextTemplate`` and ``--menuVisibility`` for schemas.
+
+-----------------------
+ Shared Properties
+-----------------------
+
+A shared property keeps type, requirement, uniqueness and default in sync across every schema property linked to it;
+names, display names and descriptions stay per schema. ``GET`` prints the link as ``Shared: <Name>``. Link with
+``--shared <Name>``:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Command
+     - Shared name exists
+     - Shared name is new
+   * - ``PROPERTY ADD`` / ``CREATE --property``, no type
+     - adopt the shared definition
+     - error
+   * - ... with a type
+     - every passed field must match the shared definition, else refused
+     - created from this property
+   * - ``PROPERTY ADD`` with a type and ``--allowDataLoss``
+     - push: this definition overwrites every schema sharing it
+     - created
+   * - ``PROPERTY UPDATE --shared <Name>``
+     - adopt; a type change, so ``--allowDataLoss`` is needed when it may lose data
+     - created from the property
+   * - ``PROPERTY UPDATE --shared ''``
+     - unlink; the property keeps its definition
+     - \-
+
+- ``CREATE`` never pushes. To push from an existing property, adopt with ``UPDATE --shared``, then ``CHANGETYPE``.
+- ``UPDATE --shared`` cannot be combined with ``--requirement``, ``--uniqueness`` or ``--default``.
+- A push with documents is refused for the same type pairs as ``CHANGETYPE``, checked on every sharing schema.
+- Editing a property that is already shared (``CHANGETYPE``, ``UPDATE``, ``UPDATEPICKLIST``,
+  ``UPDATESPECIFICATION``) changes every sharing schema; the summary lists them as ``also changed ...``.
+- When ``UPDATE --shared ''``, ``PROPERTY REMOVE`` or ``DELETE`` leaves a shared property with no links, it is
+  deleted in the same write.
 
 -----------------------
  Pick List Changes
@@ -203,9 +290,11 @@ has its own collection: the documents stored at that path inside that owner. It 
  Read Format
 -----------------------
 
-One line per schema and property, labels equal to the write parameter names, defaults omitted. Property attributes
-print in the order ``Property``, ``Type``, ``Requirement``, ``Uniqueness``, ``Auto-Generated``, ``Default``,
-``Shared``, then with ``--details`` ``DisplayName`` and ``Description``.
+One line per schema and property, labels equal to the write parameter names, defaults omitted. Schema attributes
+print in the order ``Schema``, ``SchemaType``, ``IdGenerator``, ``Group``, ``Icon``, ``DisplayTextTemplate``,
+``MenuVisibility``. Property attributes print in the order ``Property``, ``Type``, ``Requirement``, ``Uniqueness``,
+``Auto-Generated``, ``Default``, ``Shared``. With ``--details`` both add ``DisplayName``, ``Description`` and
+``Specification``.
 
 Free text is JSON-quoted and single-line. Without ``--details`` a ``Default`` longer than 80 characters is cut and
 ends in ``…``; such a value is truncated and must not be passed back.
