@@ -1,0 +1,560 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Change Requests &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=6a604523" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../_static/design-tabs.js?v=fcb327ea"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CLI Access to charon.live" href="cli_access_to_web_project.html" />
+    <link rel="prev" title="Change History" href="change_history.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_history.html">Change History</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Change Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_schema.html">Schema Editing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/extension_install.html">Install UI Extension</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/extension_list.html">List UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/extension_uninstall.html">Uninstall UI Extension</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/extension_upload.html">Upload UI Extension</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/extension_version.html">UI Extension Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_json_schema.html">Generate JSON Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Change Requests</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/web/change_requests.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="change-requests">
+<h1>Change Requests<a class="headerlink" href="#change-requests" title="Link to this heading"></a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version vNext.</span></p>
+</div>
+<p>A <strong>change request</strong> proposes moving changes into a branch. Instead of overwriting a branch the way a
+push does (see <a class="reference internal" href="workspaces_and_projects.html"><span class="doc">Workspaces, Projects, and Branches</span></a>), you review the proposed changes
+one by one, accept or reject each of them, and the accepted ones land in the target branch as a single validated commit.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#what-a-change-request-is" id="id1">What a Change Request Is</a></p>
+<ul>
+<li><p><a class="reference internal" href="#proposals-are-short-lived" id="id2">Proposals are short-lived</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#reviewing-in-three-stages" id="id3">Reviewing in Three Stages</a></p></li>
+<li><p><a class="reference internal" href="#completing" id="id4">Completing</a></p>
+<ul>
+<li><p><a class="reference internal" href="#other-ways-a-request-ends" id="id5">Other ways a request ends</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#permissions" id="id6">Permissions</a></p></li>
+<li><p><a class="reference internal" href="#limits" id="id7">Limits</a></p></li>
+<li><p><a class="reference internal" href="#rest-api" id="id8">REST API</a></p></li>
+<li><p><a class="reference internal" href="#in-the-web-application" id="id9">In the Web Application</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id10">See also</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="what-a-change-request-is">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">What a Change Request Is</a><a class="headerlink" href="#what-a-change-request-is" title="Link to this heading"></a></h2>
+<p>Every change request has a <strong>target branch</strong> - the branch that receives the changes - a title, a description, and a
+state: <em>open</em>, <em>merged</em>, or <em>closed</em>. Each branch request also gets a project-local number such as <code class="docutils literal notranslate"><span class="pre">#12</span></code> for display.
+Two kinds exist:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 55.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Kind</p></th>
+<th class="head"><p>Where the changes come from</p></th>
+<th class="head"><p>Typical author</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">branch</span></code></p></td>
+<td><p>Another branch of the same project. The request is live: it follows the source branch, so new commits
+there show up in the review without recreating anything.</p></td>
+<td><p>A designer finishing work on a feature branch.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">proposal</span></code></p></td>
+<td><p>The result of an import, run against the target branch head without applying it.</p></td>
+<td><p>A user who wants to check an import before it lands in the branch.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Both kinds are reviewed and completed the same way. The source branch is never modified by a change request.</p>
+<p>A branch change request cannot be opened when the source branch has nothing the target lacks, nor from a branch into
+itself. Only one open branch request can exist for a given pair of branches.</p>
+<section id="proposals-are-short-lived">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">Proposals are short-lived</a><a class="headerlink" href="#proposals-are-short-lived" title="Link to this heading"></a></h3>
+<p>A proposal is kept in the server’s memory only. It has no number (it reads <code class="docutils literal notranslate"><span class="pre">0</span></code>), it is not listed with the other
+requests, and it leaves no record behind once it is gone. It is addressed by its id, so it can be shared as a link with
+anyone who can view the target branch.</p>
+<p>A proposal is discarded <strong>one hour after it was last opened</strong>. Reading it, or any step of its review, starts the hour
+again. A merged or closed proposal stays readable for the same hour. A server restart discards every proposal.</p>
+<p>Changes are compared against the <strong>merge base</strong> - the latest revision both branches share. A change counts as
+<em>incoming</em> when only the source changed it, as a <em>conflict</em> when both sides changed it differently, and as
+<em>converged</em> when both sides ended up with the same result. Converged changes need no decision. Changes made only
+on the target are not listed. Comparisons are exact: <code class="docutils literal notranslate"><span class="pre">null</span></code> and an empty text are different values.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="reviewing-in-three-stages">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Reviewing in Three Stages</a><a class="headerlink" href="#reviewing-in-three-stages" title="Link to this heading"></a></h2>
+<p>The server keeps no review state. The review is a sequence of three stages, and the decisions you make are held by
+the client until you complete the request.</p>
+<ol class="arabic">
+<li><p><strong>Schema.</strong> Changes to document types (schemas), their properties, shared properties and the project settings are
+compared first, and each is decided as a whole. A schema change reshapes the data of every document of that schema, so schema is settled
+before data is compared. Each schema item is one of:</p>
+<ul class="simple">
+<li><p><em>incoming</em> - changed on the source only. Decide <code class="docutils literal notranslate"><span class="pre">accept</span></code> or <code class="docutils literal notranslate"><span class="pre">reject</span></code>.</p></li>
+<li><p><em>conflict</em> - changed differently on both sides, or a <em>name clash</em>: the source added or renamed an item to a
+name the target gave another item. Decide <code class="docutils literal notranslate"><span class="pre">takeSource</span></code> or <code class="docutils literal notranslate"><span class="pre">takeTarget</span></code>. Taking the source in a name clash
+deletes the target’s item of that name, together with its documents or values; the item shows how many.
+Keeping the target leaves the source’s change out.</p></li>
+<li><p><em>converged</em> - identical on both sides. No decision.</p></li>
+<li><p><em>deleted</em> - a schema, property or shared property deleted on either side. <strong>Deletions always win</strong>: the item is deleted in the
+result whatever the other side did to it, because a deletion removes dependent data and references that cannot
+be brought back along with it. A deleted item is listed together with the number of documents and dependent
+properties that go with it, but takes no decision. To keep the item, stop the deletion at its source or close
+the change request.</p></li>
+</ul>
+<p>A property linked to a shared property takes its data type, size, reference, specification, requirement, uniqueness
+and default value from the shared property, so those follow the decision on the shared property item. The
+property’s own item decides its name, display name, description and link. A link to a deleted shared property is
+removed.</p>
+<p>Decisions that would leave two schemas, two properties of one schema, or two shared properties with the same
+name are refused with <code class="docutils literal notranslate"><span class="pre">changeRequestNameClash</span></code>, naming them. This happens when, for example, you reject the
+source’s rename of a schema but accept a new schema it added under the old name.</p>
+</li>
+<li><p><strong>Data.</strong> Once schema decisions are known, the documents of the three states are reshaped to the resulting
+schema and compared document by document. Each document is <em>incoming</em>, <em>conflict</em> or <em>converged</em>, with the same
+decisions as above. Changing a schema decision requires a new data analysis.</p></li>
+<li><p><strong>Review.</strong> Both lists are shown with their decisions, and a validation dry run reports what completion would
+break, without changing anything.</p></li>
+</ol>
+<p>If either branch moves while you review, the request reports the new revisions, and decisions made against older
+ones should be looked at again.</p>
+</section>
+<hr class="docutils" />
+<section id="completing">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Completing</a><a class="headerlink" href="#completing" title="Link to this heading"></a></h2>
+<p>Completion is a single call that carries the reviewed revisions of both branches and a decision for <strong>every</strong>
+incoming and conflicting schema item and document. A missing decision is refused, and so is a decision that is
+not allowed for its row.</p>
+<ul class="simple">
+<li><p>The accepted changes are applied to the target as <strong>one merge commit</strong> that carries schema and data together, so
+the target never sits in a half-merged state. Open transactions on the target are not aborted.</p></li>
+<li><p>The commit is validated like any bulk edit. When validation fails, the request stays open and nothing is
+written; fix the cause or change a decision and complete again.</p></li>
+<li><p>If you <strong>reject everything</strong>, no commit is made and the request is closed as rejected.</p></li>
+<li><p>If either branch <strong>moved</strong> since the revisions you reviewed, completion is refused and a new review is required.</p></li>
+<li><p>Rejecting an incoming document of a branch request is permanent in the usual version-control sense: after a merge
+the merge base moves past it, so a later request from the same branch does not offer it again.</p></li>
+</ul>
+<p>The result reports the state, the merge revision, and how many changes were accepted and rejected.
+A merged branch request records the source branch as a second parent in the target’s history, which can be
+filtered with <code class="docutils literal notranslate"><span class="pre">kind:merge</span></code>.</p>
+<section id="other-ways-a-request-ends">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Other ways a request ends</a><a class="headerlink" href="#other-ways-a-request-ends" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Close</strong> closes an open request as rejected. A closed branch request can be reopened while both branches
+still exist; a closed proposal cannot, and its imported changes are discarded.</p></li>
+<li><p>Deleting the source or the target branch closes the request.</p></li>
+<li><p>Restoring the project from a restore point closes all of its requests.</p></li>
+<li><p>Deleting the project deletes its requests.</p></li>
+<li><p>If the source head is already contained in the target - for example because the branches were merged another
+way - the request is marked merged on its next read.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="permissions">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Permissions</a><a class="headerlink" href="#permissions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Anyone who can view the project can list and read change requests.</p></li>
+<li><p><strong>Edit</strong> access to the target branch is enough to create, update, complete, close and reopen a request.</p></li>
+<li><p>Accepting a <strong>schema</strong> change additionally needs <strong>design</strong> access to the target branch. Completion is refused
+when the resulting schema differs from the target’s current one and the caller lacks it.</p></li>
+</ul>
+<p>See <a class="reference internal" href="permission_and_roles.html"><span class="doc">Roles and Permissions</span></a> for what each role grants.</p>
+</section>
+<hr class="docutils" />
+<section id="limits">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Limits</a><a class="headerlink" href="#limits" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Change requests work only in <strong>journaled projects</strong>, that is, with <a class="reference internal" href="change_history.html"><span class="doc">change history</span></a> enabled on the branch. Otherwise
+the request is refused and the branch capabilities report <code class="docutils literal notranslate"><span class="pre">journaling:</span> <span class="pre">false</span></code>.</p></li>
+<li><p>A branch request needs a revision both branches share. It cannot be opened when history deletion detached
+one of them.</p></li>
+<li><p>Change requests between branches are part of the <strong>Studio</strong> and <strong>Enterprise</strong> subscriptions. Studio allows
+50 open branch requests per project; Enterprise has no limit. On other subscriptions new branch requests cannot
+be opened and closed ones cannot be reopened. Proposals need no subscription, and requests that are already
+open can still be completed or closed.</p></li>
+<li><p>The server administrator can turn change requests off with <code class="docutils literal notranslate"><span class="pre">ChangeRequests:IsEnabled</span></code> set to <code class="docutils literal notranslate"><span class="pre">false</span></code>.
+Every change request operation, proposals included, then answers <em>not supported</em>.</p></li>
+<li><p>A project can hold a limited number of open proposals at once (50 by default). A proposal writes no history.</p></li>
+<li><p>Merged and closed requests are removed after a retention period (180 days by default, configured by the
+server administrator).</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="rest-api">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">REST API</a><a class="headerlink" href="#rest-api" title="Link to this heading"></a></h2>
+<p>All operations are under <code class="docutils literal notranslate"><span class="pre">/project/{projectId}/change-request/</span></code> (OpenAPI tag <code class="docutils literal notranslate"><span class="pre">ChangeRequest</span></code>) and are
+addressed by <code class="docutils literal notranslate"><span class="pre">changeRequestId</span></code>, the identifier returned by the create and list calls. Only
+<code class="docutils literal notranslate"><span class="pre">getChangeRequest</span></code> additionally accepts the display number (<code class="docutils literal notranslate"><span class="pre">12</span></code>) of a branch request, so a link such as
+<code class="docutils literal notranslate"><span class="pre">/change-request/12</span></code> can be resolved with one call. Failures use the usual <a class="reference internal" href="rest.html"><span class="doc">error body</span></a> with an error code.</p>
+<p>A proposal is opened by <code class="docutils literal notranslate"><span class="pre">importAsChangeRequest</span></code>: <code class="docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/datasource/{dataSourceId}/change-request/</span></code> takes the same
+parameters and body as the <code class="docutils literal notranslate"><span class="pre">import</span></code> operation, minus <code class="docutils literal notranslate"><span class="pre">dryRun</span></code>, and returns the import <code class="docutils literal notranslate"><span class="pre">report</span></code> with the new
+<code class="docutils literal notranslate"><span class="pre">changeRequest</span></code>. <code class="docutils literal notranslate"><span class="pre">changeRequest</span></code> is null when the import failed or changed nothing. Every operation below then
+works on it by its id.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 8.0%" />
+<col style="width: 32.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Path</p></th>
+<th class="head"><p>Operation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">listChangeRequests</span></code> - query <code class="docutils literal notranslate"><span class="pre">filters</span></code>, <code class="docutils literal notranslate"><span class="pre">query</span></code>, <code class="docutils literal notranslate"><span class="pre">skip</span></code>, <code class="docutils literal notranslate"><span class="pre">take</span></code>. Newest first. <code class="docutils literal notranslate"><span class="pre">filters</span></code> takes
+<code class="docutils literal notranslate"><span class="pre">property</span> <span class="pre">operator</span> <span class="pre">value</span></code> triplets, as the history search does, over <code class="docutils literal notranslate"><span class="pre">state</span></code>, <code class="docutils literal notranslate"><span class="pre">authorId</span></code>,
+<code class="docutils literal notranslate"><span class="pre">branchName</span></code> (source or target), <code class="docutils literal notranslate"><span class="pre">createdAt</span></code> and <code class="docutils literal notranslate"><span class="pre">updatedAt</span></code>; <code class="docutils literal notranslate"><span class="pre">query</span></code> matches the title, the
+description or the number. Proposals are never listed.</p></td>
+</tr>
+<tr class="row-odd"><td><p>POST</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">createChangeRequest</span></code> - opens a branch request; body <code class="docutils literal notranslate"><span class="pre">CreateChangeRequest</span></code>: <code class="docutils literal notranslate"><span class="pre">title</span></code>, <code class="docutils literal notranslate"><span class="pre">description</span></code>,
+<code class="docutils literal notranslate"><span class="pre">targetBranchName</span></code>, <code class="docutils literal notranslate"><span class="pre">sourceBranchName</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{changeRequestId}/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">getChangeRequest</span></code> - the record plus its live status (revisions and mergeability) while open.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PATCH</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{changeRequestId}/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">updateChangeRequest</span></code> - <code class="docutils literal notranslate"><span class="pre">title</span></code> and <code class="docutils literal notranslate"><span class="pre">description</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{changeRequestId}/schema-changes/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">getChangeRequestSchemaChanges</span></code> - stage 1 items for the current revisions, each with its base, source and
+target bodies.</p></td>
+</tr>
+<tr class="row-odd"><td><p>POST</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{changeRequestId}/analysis/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">analyzeChangeRequest</span></code> - body: <code class="docutils literal notranslate"><span class="pre">expectedSourceRevisionHash</span></code>, <code class="docutils literal notranslate"><span class="pre">expectedTargetRevisionHash</span></code>,
+<code class="docutils literal notranslate"><span class="pre">schemaDecisions</span></code>. Returns <code class="docutils literal notranslate"><span class="pre">analysisId</span></code> with <code class="docutils literal notranslate"><span class="pre">incoming</span></code>, <code class="docutils literal notranslate"><span class="pre">conflicts</span></code> and <code class="docutils literal notranslate"><span class="pre">converged</span></code> counts.</p></td>
+</tr>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{changeRequestId}/changes/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">getChangeRequestChanges</span></code> - query <code class="docutils literal notranslate"><span class="pre">analysisId</span></code>, <code class="docutils literal notranslate"><span class="pre">filter</span></code> (<code class="docutils literal notranslate"><span class="pre">all</span></code>, <code class="docutils literal notranslate"><span class="pre">incoming</span></code>, <code class="docutils literal notranslate"><span class="pre">conflict</span></code>,
+<code class="docutils literal notranslate"><span class="pre">converged</span></code>), <code class="docutils literal notranslate"><span class="pre">schemaId</span></code>, <code class="docutils literal notranslate"><span class="pre">skip</span></code>, <code class="docutils literal notranslate"><span class="pre">take</span></code>. A page of document rows.</p></td>
+</tr>
+<tr class="row-odd"><td><p>POST</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{changeRequestId}/validate/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">validateChangeRequest</span></code> - body <code class="docutils literal notranslate"><span class="pre">CompleteChangeRequest</span></code>. Dry run: returns <code class="docutils literal notranslate"><span class="pre">isValid</span></code> and a <code class="docutils literal notranslate"><span class="pre">report</span></code>,
+changes nothing.</p></td>
+</tr>
+<tr class="row-even"><td><p>POST</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{changeRequestId}/complete/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">completeChangeRequest</span></code> - body <code class="docutils literal notranslate"><span class="pre">CompleteChangeRequest</span></code>: both <code class="docutils literal notranslate"><span class="pre">expected...RevisionHash</span></code> values,
+<code class="docutils literal notranslate"><span class="pre">schemaDecisions</span></code> (<code class="docutils literal notranslate"><span class="pre">itemId</span></code>, <code class="docutils literal notranslate"><span class="pre">decision</span></code>) and <code class="docutils literal notranslate"><span class="pre">dataDecisions</span></code> (<code class="docutils literal notranslate"><span class="pre">schemaId</span></code>, <code class="docutils literal notranslate"><span class="pre">documentId</span></code>,
+<code class="docutils literal notranslate"><span class="pre">decision</span></code>). Returns <code class="docutils literal notranslate"><span class="pre">state</span></code>, <code class="docutils literal notranslate"><span class="pre">mergeRevisionHash</span></code>, <code class="docutils literal notranslate"><span class="pre">acceptedCount</span></code>, <code class="docutils literal notranslate"><span class="pre">rejectedCount</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>POST</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{changeRequestId}/close/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">closeChangeRequest</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>POST</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{changeRequestId}/reopen/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reopenChangeRequest</span></code> - branch requests only.</p></td>
+</tr>
+</tbody>
+</table>
+<p>A decision is <code class="docutils literal notranslate"><span class="pre">accept</span></code> or <code class="docutils literal notranslate"><span class="pre">reject</span></code> for an <em>incoming</em> row and <code class="docutils literal notranslate"><span class="pre">takeSource</span></code> or <code class="docutils literal notranslate"><span class="pre">takeTarget</span></code> for a <em>conflict</em>
+row. A typical client reads the schema changes, posts the schema decisions to <code class="docutils literal notranslate"><span class="pre">analysis</span></code>, pages through
+<code class="docutils literal notranslate"><span class="pre">changes</span></code> with the returned <code class="docutils literal notranslate"><span class="pre">analysisId</span></code>, calls <code class="docutils literal notranslate"><span class="pre">validate</span></code>, and finally calls <code class="docutils literal notranslate"><span class="pre">complete</span></code> with all decisions.
+An <code class="docutils literal notranslate"><span class="pre">analysisId</span></code> is kept for a few minutes; when it has expired, post the analysis again.</p>
+<p>Every change to a request, and every new commit on the source or target branch of an open request, raises a
+<code class="docutils literal notranslate"><span class="pre">ChangeRequestChangedNotification</span></code> carrying only identifiers: the request id and number, both branch ids, and the
+head the event moved. Clients read the request again to see what changed.</p>
+</section>
+<hr class="docutils" />
+<section id="in-the-web-application">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">In the Web Application</a><a class="headerlink" href="#in-the-web-application" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Change Requests</strong> in the side navigation lists the requests of the project, open ones by default. The <strong>Filter</strong>
+menu narrows the list by state (including <em>archived</em>, which means merged or closed), author, branch and time.</p></li>
+<li><p><strong>Create Change Request…</strong> is offered on that page, on <strong>Project Settings - Branches</strong> (for the whole project and
+for each branch), and in the <strong>Actions</strong> menu of the change history. The dialog asks for the source and target
+branches, a title and a description. With <strong>Complete if no conflicts</strong>, the request is completed at once accepting
+every change; a request with conflicts, schema deletions or validation errors stays open for review instead.</p></li>
+<li><p>A request page has a <strong>Summary</strong> tab and, while the request is open, a review tab. The review tab is labeled
+<em>Conflicts</em> while conflicts exist and <em>Changes</em> otherwise, and shows each change side by side with its decision.
+Decisions are kept in the browser session until the request is completed.</p></li>
+<li><p>When a branch moves during a review, the page says so and offers to review again.</p></li>
+<li><p>In the <strong>Import Data</strong> wizard, <strong>Review the changes before applying them</strong> opens the import as a proposal instead
+of applying it, and takes you to its page. A proposal that has expired shows a notice to import the file again.</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="workspaces_and_projects.html"><span class="doc">Workspaces, Projects, and Branches</span></a></p></li>
+<li><p><a class="reference internal" href="permission_and_roles.html"><span class="doc">Roles and Permissions</span></a></p></li>
+<li><p><a class="reference internal" href="rest.html"><span class="doc">REST API</span></a></p></li>
+<li><p><a class="reference internal" href="../advanced/patch_diff.html"><span class="doc">Patch and Diff</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="change_history.html" class="btn btn-neutral float-left" title="Change History" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cli_access_to_web_project.html" class="btn btn-neutral float-right" title="CLI Access to charon.live" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

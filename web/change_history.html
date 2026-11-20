@@ -1,0 +1,534 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Change History &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=6a604523" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../_static/design-tabs.js?v=fcb327ea"></script>
+      <script src="../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Change Requests" href="change_requests.html" />
+    <link rel="prev" title="Web Application Overview" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Web Application Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Change History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_requests.html">Change Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_schema.html">Schema Editing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/extension_install.html">Install UI Extension</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/extension_list.html">List UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/extension_uninstall.html">Uninstall UI Extension</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/extension_upload.html">Upload UI Extension</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/extension_version.html">UI Extension Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_json_schema.html">Generate JSON Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/commands/version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Change History</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/web/change_history.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="change-history">
+<h1>Change History<a class="headerlink" href="#change-history" title="Link to this heading"></a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version vNext.</span></p>
+</div>
+<p>On a server with change history enabled, every commit to a branch is recorded as a <strong>change</strong>: who made it, when, which
+documents it touched, and the patch that reproduces it. The history lets you see what happened to the game data,
+compare any two revisions, restore a single document, roll the branch back, or start a new branch from a past revision.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#revisions-and-changes" id="id1">Revisions and Changes</a></p></li>
+<li><p><a class="reference internal" href="#browsing-the-history" id="id2">Browsing the History</a></p>
+<ul>
+<li><p><a class="reference internal" href="#searching" id="id3">Searching</a></p></li>
+<li><p><a class="reference internal" href="#viewing-a-change" id="id4">Viewing a change</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#undoing-changes" id="id5">Undoing Changes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#restoring-one-document" id="id6">Restoring one document</a></p></li>
+<li><p><a class="reference internal" href="#rolling-back-a-branch" id="id7">Rolling back a branch</a></p></li>
+<li><p><a class="reference internal" href="#detached-changes" id="id8">Detached changes</a></p></li>
+<li><p><a class="reference internal" href="#starting-a-branch-from-a-past-revision" id="id9">Starting a branch from a past revision</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#truncating-the-history" id="id10">Truncating the History</a></p>
+<ul>
+<li><p><a class="reference internal" href="#when-the-history-is-full" id="id11">When the history is full</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#limits" id="id12">Limits</a></p></li>
+<li><p><a class="reference internal" href="#rest-api" id="id13">REST API</a></p></li>
+</ul>
+</nav>
+<hr class="docutils" />
+<section id="revisions-and-changes">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Revisions and Changes</a><a class="headerlink" href="#revisions-and-changes" title="Link to this heading"></a></h2>
+<p>Each change produces a new <strong>revision</strong> of the branch, identified by a revision hash. The latest revision is the
+branch <strong>head</strong>. Changes come in several kinds:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 85.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Kind</p></th>
+<th class="head"><p>Recorded when</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Edit</span></code></p></td>
+<td><p>Documents are created, updated or deleted, including schema changes and imports.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Restore</span></code></p></td>
+<td><p>The branch is restored from a backup file, which replaces its game data in one change.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Rollback</span></code></p></td>
+<td><p>The branch is rolled back to an earlier revision. The record carries the reason given for it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Merge</span></code></p></td>
+<td><p>A <a class="reference internal" href="change_requests.html"><span class="doc">change request</span></a> is completed. A merge from another branch also records the source
+revision it took the changes from.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Gap</span></code></p></td>
+<td><p>The server could not record what happened between two revisions, for example after the data was changed
+outside the server. The gap marks where the history is incomplete.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Branches share history. A branch created from another one starts at the source’s head and keeps the source’s earlier
+changes on its own timeline, so its history begins with the source’s (see
+<a class="reference internal" href="workspaces_and_projects.html"><span class="doc">Workspaces, Projects, and Branches</span></a>).</p>
+</section>
+<hr class="docutils" />
+<section id="browsing-the-history">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Browsing the History</a><a class="headerlink" href="#browsing-the-history" title="Link to this heading"></a></h2>
+<p>Open <strong>Change History</strong> from the branch’s actions menu in the side navigation. The page lists the branch’s changes,
+newest first, with their kind, author, time and the collections they touched. More changes load as you scroll.</p>
+<p>To see the history of one collection, use <strong>History</strong> in that collection’s document list. The collection page lists
+every change that touched a document of the collection, one row per document. Pick a document there to narrow it to
+that document alone. A collection deleted since still has its history.</p>
+<section id="searching">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Searching</a><a class="headerlink" href="#searching" title="Link to this heading"></a></h3>
+<p>The search field matches the text each change wrote or removed, the ids of the documents it touched, the names of
+their collections, the reason a change was detached, and the start of a revision hash. Words match loosely, so a small
+typo still finds the change. The <strong>Filter</strong> menu adds conditions such as the
+author, the change kind, a time range (<em>Today</em>, <em>Since…</em>, <em>Before…</em>), the collection or the document.</p>
+<p>A search over a long history runs in steps. When it has not reached the oldest change yet, the page says how far back
+it searched and offers <strong>Search older</strong> to continue.</p>
+<p>Filters are written as <code class="docutils literal notranslate"><span class="pre">property</span> <span class="pre">operator</span> <span class="pre">value</span></code> triplets separated by spaces, the same way the REST API takes them:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">revisionHash</span></code></p></td>
+<td><p>A full revision hash, or its first characters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">committedAt</span></code></p></td>
+<td><p>A date and time, compared with <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">authorId</span></code></p></td>
+<td><p>The author’s user id.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">changeKind</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Edit</span></code>, <code class="docutils literal notranslate"><span class="pre">Restore</span></code>, <code class="docutils literal notranslate"><span class="pre">Rollback</span></code>, <code class="docutils literal notranslate"><span class="pre">Merge</span></code> or <code class="docutils literal notranslate"><span class="pre">Gap</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">schemaId</span></code></p></td>
+<td><p>A collection’s schema id. Matches changes that touched one of its documents.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">documentId</span></code></p></td>
+<td><p>A document id.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">detached</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>. See <em>Detached changes</em> below.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Operators are <code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">!=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">contains</span></code> and <code class="docutils literal notranslate"><span class="pre">in</span></code>. For example,
+<code class="docutils literal notranslate"><span class="pre">changeKind</span> <span class="pre">=</span> <span class="pre">Merge</span> <span class="pre">committedAt</span> <span class="pre">&gt;=</span> <span class="pre">2026-11-01</span></code> lists the merges since the first of November.</p>
+</section>
+<section id="viewing-a-change">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Viewing a change</a><a class="headerlink" href="#viewing-a-change" title="Link to this heading"></a></h3>
+<p>Open a change to see every document it changed, before and after, side by side. Unchanged parts of each document are
+folded. Use the arrows to step to the previous or next change, and the search field to find a document in a large
+change. <strong>Compare</strong> on the history page does the same for any two revisions: select two or more changes and it compares
+the oldest with the newest of them.</p>
+<p><strong>Download Patch</strong> saves the change as a patch file, which can be applied to other game data with an import.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="undoing-changes">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Undoing Changes</a><a class="headerlink" href="#undoing-changes" title="Link to this heading"></a></h2>
+<section id="restoring-one-document">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Restoring one document</a><a class="headerlink" href="#restoring-one-document" title="Link to this heading"></a></h3>
+<p>On a document’s history, <strong>Restore As Before…</strong> and <strong>Restore As After…</strong> bring that document back to its version
+before or after the selected change. A document that did not exist at that revision is deleted, and a deleted one is
+created again. The restore is saved as a new change; other documents and the rest of the history stay as they are. The
+restored document must still pass validation against the current schema.</p>
+</section>
+<section id="rolling-back-a-branch">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Rolling back a branch</a><a class="headerlink" href="#rolling-back-a-branch" title="Link to this heading"></a></h3>
+<p><strong>Rollback to Here…</strong> returns the whole branch to its state right after the selected change. A reason is required and
+is kept in the history.</p>
+<ul class="simple">
+<li><p>Every later change leaves the timeline and becomes <em>detached</em>. Detached changes stay readable for a while and are
+then deleted for good.</p></li>
+<li><p>The rollback is recorded as a <code class="docutils literal notranslate"><span class="pre">Rollback</span></code> change, so the history shows what happened and why.</p></li>
+<li><p>With <strong>Abort pending transactions</strong>, edits in progress on the branch are aborted so they cannot hold the rollback up.
+Otherwise the rollback waits for them to finish.</p></li>
+</ul>
+</section>
+<section id="detached-changes">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Detached changes</a><a class="headerlink" href="#detached-changes" title="Link to this heading"></a></h3>
+<p>A rollback, or a push onto a branch, takes changes off the branch’s timeline. These changes are <em>detached</em>: hidden by
+default, shown with <strong>Show detached</strong>, and still readable until the retention period ends (30 days by default,
+configured by the server administrator with <code class="docutils literal notranslate"><span class="pre">DataSources:History:DetachedRetention</span></code>). After that they are deleted.
+To keep a detached state for longer, create a branch or a backup from it before it expires.</p>
+</section>
+<section id="starting-a-branch-from-a-past-revision">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Starting a branch from a past revision</a><a class="headerlink" href="#starting-a-branch-from-a-past-revision" title="Link to this heading"></a></h3>
+<p><strong>Branch from Here…</strong> creates a new branch whose data is the state right after the selected change. The current
+branch is not modified. It is not offered for detached changes. This is the way to recover something from the past without rolling back everyone’s work.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="truncating-the-history">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Truncating the History</a><a class="headerlink" href="#truncating-the-history" title="Link to this heading"></a></h2>
+<p>History takes storage, which counts towards the workspace quota. <strong>Truncate to Here…</strong> deletes the selected change and
+every change before it from the branch’s history:</p>
+<ul class="simple">
+<li><p>The next newer revision becomes the oldest one in the history.</p></li>
+<li><p>Deleted revisions can no longer be viewed, compared or rolled back to, and detached changes made before that revision
+are deleted as well.</p></li>
+<li><p>The game data itself does not change.</p></li>
+</ul>
+<p>Truncation is refused at the branch head, for history the branch inherited from its source branch, and for history
+another branch still builds on.</p>
+<p>Truncation and rollback cannot be undone. Both dialogs offer to back up the project first; the operation then starts
+only once the backup completes. When no backup destination is set up, the dialogs link to the backup settings instead.</p>
+<section id="when-the-history-is-full">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">When the history is full</a><a class="headerlink" href="#when-the-history-is-full" title="Link to this heading"></a></h3>
+<p>The history of every project in a workspace counts towards the workspace’s history storage quota. Once it is exceeded,
+every branch of the workspace becomes read-only, the same way it does when the game data storage limit is reached, and
+a <em>History Limit Reached</em> notification explains why. Viewing, rollback and truncation keep working, so the workspace
+can get out of it:</p>
+<ul class="simple">
+<li><p><strong>Truncate</strong> old history on the branches that hold the most of it. The freed storage is measured again shortly after,
+and editing resumes once the total is back under the quota; this can take a few minutes.</p></li>
+<li><p>Delete branches that are no longer needed, or upgrade the subscription to get more history storage.</p></li>
+</ul>
+<p>A rollback does not free storage right away: detached changes keep counting until their retention period ends.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="limits">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Limits</a><a class="headerlink" href="#limits" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Change history is a server feature. The administrator turns it off with <code class="docutils literal notranslate"><span class="pre">DataSources:History:IsEnabled</span></code> set to
+<code class="docutils literal notranslate"><span class="pre">false</span></code>; the history menu items, change requests and history links are then hidden. Only turning it on later is
+supported: a server that has recorded history must not have it turned off again.</p></li>
+<li><p>A branch that keeps its game data in an external MongoDB database records no change history.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="rest-api">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">REST API</a><a class="headerlink" href="#rest-api" title="Link to this heading"></a></h2>
+<p>All operations are under <code class="docutils literal notranslate"><span class="pre">/datasource/{dataSourceId}/history/</span></code> (OpenAPI tag <code class="docutils literal notranslate"><span class="pre">DataSourceHistory</span></code>). Revisions are addressed by
+their revision hash. Failures use the usual <a class="reference internal" href="rest.html"><span class="doc">error body</span></a> with an error code.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 8.0%" />
+<col style="width: 32.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Path</p></th>
+<th class="head"><p>Operation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">getHistory</span></code> - streams the branch timeline, newest first. Query <code class="docutils literal notranslate"><span class="pre">fromRevision</span></code>, <code class="docutils literal notranslate"><span class="pre">limit</span></code>,
+<code class="docutils literal notranslate"><span class="pre">includeDetached</span></code>, <code class="docutils literal notranslate"><span class="pre">filters</span></code>, <code class="docutils literal notranslate"><span class="pre">query</span></code> and <code class="docutils literal notranslate"><span class="pre">parts</span></code>. A <code class="docutils literal notranslate"><span class="pre">query</span></code> that is a bare revision hash with no
+filters returns that revision directly.</p></td>
+</tr>
+<tr class="row-odd"><td><p>GET</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/documents/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">getDocumentHistory</span></code> - streams the changes of one collection (<code class="docutils literal notranslate"><span class="pre">schemaId</span></code>) or one document
+(<code class="docutils literal notranslate"><span class="pre">documentId</span></code>), resuming at <code class="docutils literal notranslate"><span class="pre">fromRevision</span></code> and <code class="docutils literal notranslate"><span class="pre">fromDocumentIndex</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{revisionHash}/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">getChange</span></code> - one change with its forward patch.</p></td>
+</tr>
+<tr class="row-odd"><td><p>DELETE</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{revisionHash}/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">deleteHistory</span></code> - truncates: deletes the revision and all history before it.</p></td>
+</tr>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{revisionHash}/diff/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">getChangeDiff</span></code> - the patch between this revision and the one given in <code class="docutils literal notranslate"><span class="pre">vs</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>GET</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{revisionHash}/changeset/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">getChangeSet</span></code> - the documents the revision changed, before and after, paged with <code class="docutils literal notranslate"><span class="pre">skip</span></code> and <code class="docutils literal notranslate"><span class="pre">take</span></code>.
+<code class="docutils literal notranslate"><span class="pre">vs</span></code> picks another revision as the <em>before</em> state.</p></td>
+</tr>
+<tr class="row-even"><td><p>POST</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/{revisionHash}/rollback/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rollback</span></code> - body <code class="docutils literal notranslate"><span class="pre">reason</span></code> and <code class="docutils literal notranslate"><span class="pre">rejectAllTransactions</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+<p>The data source capabilities report <code class="docutils literal notranslate"><span class="pre">journaling:</span> <span class="pre">true</span></code> for a branch that records history.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="overview.html" class="btn btn-neutral float-left" title="Web Application Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="change_requests.html" class="btn btn-neutral float-right" title="Change Requests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

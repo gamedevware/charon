@@ -1,0 +1,767 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schema Editing &mdash; Charon 2026.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d4e7f533"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../_static/design-tabs.js?v=fcb327ea"></script>
+      <script src="../../_static/js/cloudflare_analytics.js?v=06bfe0c4"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Search Documents" href="data_search.html" />
+    <link rel="prev" title="Restore from Backup" href="data_restore.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Charon
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Unreal Engine Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html">Unreal Engine Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unreal_engine/creating_game_data.html">How to Create Game Data File</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Unity Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html">Unity Plugin Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#working-with-the-plugin">Working with the Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/overview.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/charon_cli.html">CharonCli Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_from_legacy_version.html">Migration from Legacy Version (Before 2025.1.*)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../unity/migrating_to_web.html">Migrating to Web Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standalone Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html">Standalone &amp; CLI Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#installation-and-updates">Installation and Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standalone/overview.html#creating-and-editing-game-data">Creating and Editing Game Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Web / Cloud Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../web/overview.html">Web Application Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/change_history.html">Change History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/change_requests.html">Change Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/cli_access_to_web_project.html">CLI Access to charon.live</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/migrating_to_web.html">Migrating to Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/permission_and_roles.html">Roles and Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/rest.html">REST API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web/workspaces_and_projects.html">Workspaces, Projects, and Branches</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Server Edition</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../server/overview.html">Server Edition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../server/on_premises.html">On-Premises Deployment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Modeling</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/basics.html">Basic Navigation and User Interface Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/creating_schema.html">Creating Document Type (Schema)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/filling_documents.html">Filling Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/document_form.html">Editing a Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/inheritance.html">Implementing Inheritance</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schemas, Properties &amp; Types</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/schema.html">Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/schema_types.html">Schema Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/display_text_template.html">Display Text Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/schemas/specification.html">Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/property.html">Schema Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/id_property.html">Id Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/properties/shared_property.html">Shared Property</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/datatypes/list.html">Data Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source Code Generation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/generating_source_code.html">Generating Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_7_3.html">Working with Source Code (C# 7.3)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_csharp_code_4_0.html">Working with Source Code (C# 4.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_type_script_code.html">Working with Source Code (Type Script)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_uecpp_code.html">Working with Source Code (UE C++)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_haxe_code.html">Working with Source Code (Haxe)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/working_with_lua_code.html">Working with Source Code (Lua)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Workflows</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gamedata/publication.html">Publishing Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../import_export.html">Importing and Exporting Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../merge_logic.html">Document Merge Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internationalization.html">Internationalization (i18n)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validation.html">Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../backup_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../patch_diff.html">Patch and Diff Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modding.html">Modding Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cicd.html">CI/CD Integration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Integration &amp; Automation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../command_line.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mcp.html">MCP Server (AI Assistant Integration)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_data_structure.html">Game Data Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../formula_expression_ast.html">Formula Expression AST</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extending Charon</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../extensions/overview.html">UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions/implementing_property_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonPropertyEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions/implementing_schema_editor.html">Implementing <code class="docutils literal notranslate"><span class="pre">CharonSchemaEditorElement</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions/custom_actions.html">Custom Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions/custom_pages.html">Custom Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions/host_services.html">Host Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions/creating_react_extension.html">Creating a Custom Editor with React</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions/creating_angular_extension.html">Creating a Custom Editor with Angular</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration &amp; Troubleshooting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting Common Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logs.html">Working with Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reset_preferences.html">Resetting UI Preferences</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CLI Command Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="data_apply_patch.html">Apply Patch (Merge)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_backup.html">Create Backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_create.html">Create Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_create_patch.html">Create Patch (Diff)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_delete.html">Delete Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_examine.html">Examine Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_export.html">Export Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_find.html">Find Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_find_files.html">Find Game Data Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_i18n_add_language.html">Add Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_i18n_export.html">Export Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_i18n_import.html">Importing Translated Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_i18n_languages.html">List Translation Languages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_import.html">Import Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_list.html">List Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_list_schemas.html">List Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_project_settings.html">Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_restore.html">Restore from Backup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Schema Editing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_search.html">Search Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_update.html">Update Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_update_project_settings.html">Update Project Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_validate.html">Validate Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extension_install.html">Install UI Extension</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extension_list.html">List UI Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extension_uninstall.html">Uninstall UI Extension</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extension_upload.html">Upload UI Extension</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extension_version.html">UI Extension Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_csharp_code.html">Generate C# Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_haxe_code.html">Generate Haxe Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_json_schema.html">Generate JSON Schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_lua_code.html">Generate Lua Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_templates.html">Export Code Generation Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_text.html">Generate Text from Templates (Obsolete)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_typescript_code.html">Generate TypeScript Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_uecpp_code.html">Generate Unreal Engine C++ Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="init.html">Initialize Game Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remote_input_output.html">URL input/output parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serve.html">Start in Standalone Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="universal_parameters.html">Universal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="universal_parameters.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="version.html">Get Charon Version</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Charon</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../command_line.html">Command Line Interface (CLI)</a></li>
+      <li class="breadcrumb-item active">Schema Editing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/advanced/commands/data_schema.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="schema-editing">
+<h1>Schema Editing<a class="headerlink" href="#schema-editing" title="Link to this heading"></a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version vNext.</span></p>
+</div>
+<p>Reads and changes schemas (document types) and their properties, one small command per change: rename a
+property, add a field, change a type, edit pick list options.</p>
+<p>These commands are built for <strong>agents and scripts</strong>. People editing schemas by hand should use the
+<a class="reference internal" href="../../gamedata/creating_schema.html"><span class="doc">schema editor in the UI</span></a>.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../command_line.html#commandline-installation"><span class="std std-ref">CLI Installation</span></a></p></li>
+<li><p><a class="reference internal" href="../command_line.html#commandline-commands"><span class="std std-ref">Commands Reference</span></a></p></li>
+<li><p><a class="reference internal" href="universal_parameters.html"><span class="doc">Universal Parameters</span></a></p></li>
+<li><p><a class="reference internal" href="../mcp.html"><span class="doc">MCP Server</span></a> - the same operations as <code class="docutils literal notranslate"><span class="pre">schema_*</span></code> tools</p></li>
+</ul>
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading"></a></h2>
+<p>All commands take <code class="docutils literal notranslate"><span class="pre">--dataBase</span></code> (file path or remote URL) and <code class="docutils literal notranslate"><span class="pre">--credentials</span></code> (for remote sources).
+Every write takes <code class="docutils literal notranslate"><span class="pre">--dryRun</span></code>, which validates and prints the same summary without writing.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 45.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Parameters</p></th>
+<th class="head"><p>MCP tool</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">GET</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--details</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_get</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">CREATE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--name</span></code>, <code class="docutils literal notranslate"><span class="pre">--schemaType</span></code>, <code class="docutils literal notranslate"><span class="pre">--idGenerator</span></code>, <code class="docutils literal notranslate"><span class="pre">--displayName</span></code>, <code class="docutils literal notranslate"><span class="pre">--description</span></code>, <code class="docutils literal notranslate"><span class="pre">--group</span></code>, <code class="docutils literal notranslate"><span class="pre">--icon</span></code>,
+<code class="docutils literal notranslate"><span class="pre">--displayTextTemplate</span></code>, <code class="docutils literal notranslate"><span class="pre">--menuVisibility</span></code>, <code class="docutils literal notranslate"><span class="pre">--property</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_create</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">RENAME</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--newName</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_rename</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">UPDATE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--displayName</span></code>, <code class="docutils literal notranslate"><span class="pre">--description</span></code>, <code class="docutils literal notranslate"><span class="pre">--schemaType</span></code>, <code class="docutils literal notranslate"><span class="pre">--idGenerator</span></code>, <code class="docutils literal notranslate"><span class="pre">--group</span></code>, <code class="docutils literal notranslate"><span class="pre">--icon</span></code>,
+<code class="docutils literal notranslate"><span class="pre">--displayTextTemplate</span></code>, <code class="docutils literal notranslate"><span class="pre">--menuVisibility</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_update</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">UPDATESPECIFICATION</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--specification</span></code> or <code class="docutils literal notranslate"><span class="pre">--set</span></code> / <code class="docutils literal notranslate"><span class="pre">--remove</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_update_specification</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">RELATIONS</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--direction</span> <span class="pre">Incoming|Outgoing|Both</span></code>, <code class="docutils literal notranslate"><span class="pre">--kind</span> <span class="pre">Reference|Document</span></code>, <code class="docutils literal notranslate"><span class="pre">--recursive</span></code>,
+<code class="docutils literal notranslate"><span class="pre">--depth</span></code>, <code class="docutils literal notranslate"><span class="pre">--format</span> <span class="pre">List|Table|Tree</span></code>, <code class="docutils literal notranslate"><span class="pre">--details</span></code>, <code class="docutils literal notranslate"><span class="pre">--counts</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_relations</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">DELETE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--allowDataLoss</span></code>, <code class="docutils literal notranslate"><span class="pre">--cascade</span> <span class="pre">Deny|Cascade</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_delete</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">PROPERTY</span> <span class="pre">GET</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--property</span></code>, <code class="docutils literal notranslate"><span class="pre">--details</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_property_get</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">PROPERTY</span> <span class="pre">ADD</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--name</span></code>, <code class="docutils literal notranslate"><span class="pre">--type</span></code>, <code class="docutils literal notranslate"><span class="pre">--requirement</span></code>, <code class="docutils literal notranslate"><span class="pre">--uniqueness</span></code>, <code class="docutils literal notranslate"><span class="pre">--default</span></code>, <code class="docutils literal notranslate"><span class="pre">--after</span></code>,
+<code class="docutils literal notranslate"><span class="pre">--displayName</span></code>, <code class="docutils literal notranslate"><span class="pre">--description</span></code>, <code class="docutils literal notranslate"><span class="pre">--shared</span></code>, <code class="docutils literal notranslate"><span class="pre">--specification</span></code>, <code class="docutils literal notranslate"><span class="pre">--allowDataLoss</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_property_add</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">PROPERTY</span> <span class="pre">RENAME</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--property</span></code>, <code class="docutils literal notranslate"><span class="pre">--newName</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_property_rename</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">PROPERTY</span> <span class="pre">UPDATE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--property</span></code>, <code class="docutils literal notranslate"><span class="pre">--requirement</span></code>, <code class="docutils literal notranslate"><span class="pre">--uniqueness</span></code>, <code class="docutils literal notranslate"><span class="pre">--default</span></code>, <code class="docutils literal notranslate"><span class="pre">--after</span></code>,
+<code class="docutils literal notranslate"><span class="pre">--displayName</span></code>, <code class="docutils literal notranslate"><span class="pre">--description</span></code>, <code class="docutils literal notranslate"><span class="pre">--shared</span></code>, <code class="docutils literal notranslate"><span class="pre">--allowDataLoss</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_property_update</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">PROPERTY</span> <span class="pre">UPDATESPECIFICATION</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--property</span></code>, <code class="docutils literal notranslate"><span class="pre">--specification</span></code> or <code class="docutils literal notranslate"><span class="pre">--set</span></code> / <code class="docutils literal notranslate"><span class="pre">--remove</span></code>, <code class="docutils literal notranslate"><span class="pre">--preservePickList</span></code>,
+<code class="docutils literal notranslate"><span class="pre">--preserveFormula</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_property_update_specification</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">PROPERTY</span> <span class="pre">UPDATEPICKLIST</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--property</span></code>, <code class="docutils literal notranslate"><span class="pre">--changes</span></code>, <code class="docutils literal notranslate"><span class="pre">--allowDataLoss</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_property_update_picklist</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">PROPERTY</span> <span class="pre">CHANGETYPE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--property</span></code>, <code class="docutils literal notranslate"><span class="pre">--type</span></code>, <code class="docutils literal notranslate"><span class="pre">--default</span></code>, <code class="docutils literal notranslate"><span class="pre">--allowDataLoss</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_property_change_type</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATA</span> <span class="pre">SCHEMA</span> <span class="pre">PROPERTY</span> <span class="pre">REMOVE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code>, <code class="docutils literal notranslate"><span class="pre">--property</span></code>, <code class="docutils literal notranslate"><span class="pre">--allowDataLoss</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">schema_property_remove</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Option values and defaults:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--schemaType</span></code> (<code class="docutils literal notranslate"><span class="pre">CREATE</span></code>, <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>): <code class="docutils literal notranslate"><span class="pre">Normal</span></code> (default), <code class="docutils literal notranslate"><span class="pre">Component</span></code> (always embedded in other documents),
+<code class="docutils literal notranslate"><span class="pre">Settings</span></code> (one document only) or <code class="docutils literal notranslate"><span class="pre">Union</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--idGenerator</span></code> (<code class="docutils literal notranslate"><span class="pre">CREATE</span></code>, <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>): how the <code class="docutils literal notranslate"><span class="pre">Id</span></code> of new documents is produced. <code class="docutils literal notranslate"><span class="pre">None</span></code> (default, you
+supply every Id), <code class="docutils literal notranslate"><span class="pre">ObjectId</span></code>, <code class="docutils literal notranslate"><span class="pre">Guid</span></code>, <code class="docutils literal notranslate"><span class="pre">Sequence</span></code> (per schema) or <code class="docutils literal notranslate"><span class="pre">GlobalSequence</span></code> (across the project).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--cascade</span></code> (<code class="docutils literal notranslate"><span class="pre">DELETE</span></code>): what happens to properties of <em>other</em> schemas that reference or embed the deleted
+schema, including shared properties. <code class="docutils literal notranslate"><span class="pre">Deny</span></code> (default) refuses the delete and lists them; <code class="docutils literal notranslate"><span class="pre">Cascade</span></code> removes
+them along with the schema.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--allowDataLoss</span></code>: needed only when the edited schema has documents (embedded ones included). On an empty
+schema every command runs without it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--requirement</span></code>: <code class="docutils literal notranslate"><span class="pre">None</span></code> (default), <code class="docutils literal notranslate"><span class="pre">NotNull</span></code> or <code class="docutils literal notranslate"><span class="pre">NotEmpty</span></code>. <code class="docutils literal notranslate"><span class="pre">--uniqueness</span></code>: <code class="docutils literal notranslate"><span class="pre">None</span></code> (default),
+<code class="docutils literal notranslate"><span class="pre">Unique</span></code> or <code class="docutils literal notranslate"><span class="pre">UniqueInCollection</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--displayTextTemplate</span></code> (<code class="docutils literal notranslate"><span class="pre">CREATE</span></code>, <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>): the text shown for a document in references and lists, e.g.
+<code class="docutils literal notranslate"><span class="pre">'{Name}</span> <span class="pre">({Level})'</span></code>. A template that does not parse is refused; an empty value removes it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--menuVisibility</span></code> (<code class="docutils literal notranslate"><span class="pre">CREATE</span></code>, <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>): <code class="docutils literal notranslate"><span class="pre">Visible</span></code> or <code class="docutils literal notranslate"><span class="pre">Hidden</span></code> in the UI navigation menu; <code class="docutils literal notranslate"><span class="pre">Unset</span></code>
+removes the setting.</p></li>
+</ul>
+<p>Rules shared by all commands:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--schema</span></code> and <code class="docutils literal notranslate"><span class="pre">--property</span></code> take exact names or Ids. <code class="docutils literal notranslate"><span class="pre">GET</span></code>, <code class="docutils literal notranslate"><span class="pre">ADD</span></code>, <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>, <code class="docutils literal notranslate"><span class="pre">CHANGETYPE</span></code> and
+<code class="docutils literal notranslate"><span class="pre">REMOVE</span></code> accept a space-separated list (<code class="docutils literal notranslate"><span class="pre">--schema</span> <span class="pre">Quest</span> <span class="pre">QuestStep</span></code>) or <code class="docutils literal notranslate"><span class="pre">'*'</span></code> alone for all. Other commands
+take exactly one. On writes <code class="docutils literal notranslate"><span class="pre">'*'</span></code> skips the <code class="docutils literal notranslate"><span class="pre">Id</span></code> property; on <code class="docutils literal notranslate"><span class="pre">GET</span></code> it lists it too. Schema <code class="docutils literal notranslate"><span class="pre">'*'</span></code> never
+selects the system schemas (<code class="docutils literal notranslate"><span class="pre">Schema</span></code>, <code class="docutils literal notranslate"><span class="pre">SchemaProperty</span></code>, <code class="docutils literal notranslate"><span class="pre">ProjectSettings</span></code>).</p></li>
+<li><p>There are no patterns: <code class="docutils literal notranslate"><span class="pre">Quest*</span></code> is an unknown name, and <code class="docutils literal notranslate"><span class="pre">!</span></code> exclusions are not supported. Every listed name
+must exist, otherwise nothing is written and the error names the missing ones.</p></li>
+<li><p>Quote <code class="docutils literal notranslate"><span class="pre">'*'</span></code>: a bare <code class="docutils literal notranslate"><span class="pre">*</span></code> is expanded to file names by the shell before Charon sees it.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Id</span></code> property cannot be renamed, removed or moved.</p></li>
+<li><p>Unknown options fail these commands (<code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> instead of <code class="docutils literal notranslate"><span class="pre">--dryRun</span></code> is an error, not a silent real
+write). Other <code class="docutils literal notranslate"><span class="pre">DATA</span></code> commands keep ignoring unknown options.</p></li>
+<li><p>Write output is a short summary: targets, changes, affected document count and warnings. Errors go to stderr
+with exit code <code class="docutils literal notranslate"><span class="pre">2</span></code>.</p></li>
+</ul>
+</section>
+<section id="type-grammar">
+<h2>Type Grammar<a class="headerlink" href="#type-grammar" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">--type</span></code> takes one quoted string <code class="docutils literal notranslate"><span class="pre">&lt;DataType&gt;</span> <span class="pre">[size]</span> <span class="pre">[schema]</span> <span class="pre">[options]</span></code>. <code class="docutils literal notranslate"><span class="pre">GET</span></code> prints types in the same
+form, so a printed type passed back to <code class="docutils literal notranslate"><span class="pre">CHANGETYPE</span></code> changes nothing.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Form</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Text</span></code>, <code class="docutils literal notranslate"><span class="pre">Text</span> <span class="pre">100</span></code>, <code class="docutils literal notranslate"><span class="pre">LocalizedText</span> <span class="pre">500</span></code></p></td>
+<td><p>optional maximum length</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Logical</span></code>, <code class="docutils literal notranslate"><span class="pre">Date</span></code>, <code class="docutils literal notranslate"><span class="pre">Time</span></code></p></td>
+<td><p>no arguments</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Integer</span> <span class="pre">4</span></code>, <code class="docutils literal notranslate"><span class="pre">Number</span> <span class="pre">8</span></code></p></td>
+<td><p>size in bytes, 1-8; omitted size is 4</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Reference</span> <span class="pre">Item</span></code>, <code class="docutils literal notranslate"><span class="pre">ReferenceCollection</span> <span class="pre">Item</span></code></p></td>
+<td><p>referenced schema name, required</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Document</span> <span class="pre">Quest</span></code>, <code class="docutils literal notranslate"><span class="pre">DocumentCollection</span> <span class="pre">Reward</span></code></p></td>
+<td><p>embedded schema name, required</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ReferenceCollection</span> <span class="pre">10</span> <span class="pre">Item</span></code>, <code class="docutils literal notranslate"><span class="pre">DocumentCollection</span> <span class="pre">10</span> <span class="pre">Reward</span></code></p></td>
+<td><p>optional maximum item count before the schema name</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PickList</span> <span class="pre">Common=0</span> <span class="pre">Rare=1</span> <span class="pre">Epic=2</span></code></p></td>
+<td><p>options; omitted values are assigned 0, 1, 2…</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MultiPickList</span> <span class="pre">Fire=1</span> <span class="pre">Ice=2</span> <span class="pre">Poison=4</span></code></p></td>
+<td><p>options; omitted values are assigned as powers of two</p></td>
+</tr>
+</tbody>
+</table>
+<p>The type fully determines size and reference target: <code class="docutils literal notranslate"><span class="pre">Integer</span> <span class="pre">8</span></code> changed to <code class="docutils literal notranslate"><span class="pre">Text</span></code> becomes an unlimited
+<code class="docutils literal notranslate"><span class="pre">Text</span></code>, not <code class="docutils literal notranslate"><span class="pre">Text</span> <span class="pre">8</span></code>. <code class="docutils literal notranslate"><span class="pre">Formula</span></code> is not supported by the grammar.</p>
+</section>
+<section id="properties-in-create">
+<h2>Properties in CREATE<a class="headerlink" href="#properties-in-create" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">--property</span></code> takes one quoted value per property, in the line form <code class="docutils literal notranslate"><span class="pre">GET</span></code> prints, so a printed line can be
+passed back:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dotnet<span class="w"> </span>charon<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>CREATE<span class="w"> </span>--dataBase<span class="w"> </span>data.gdjs<span class="w"> </span>--name<span class="w"> </span>Quest<span class="w"> </span>--idGenerator<span class="w"> </span>ObjectId<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--property<span class="w"> </span><span class="s2">"Title, Type: LocalizedText 200, Requirement: NotEmpty"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">             </span><span class="s2">"Note, Type: Text, Default: one, two"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">             </span><span class="s2">"Publication, Shared: PublicationOptions"</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Form: <code class="docutils literal notranslate"><span class="pre">[Property:</span> <span class="pre">]Name[,</span> <span class="pre">Label:</span> <span class="pre">value]...</span></code> with the labels <code class="docutils literal notranslate"><span class="pre">Type</span></code>, <code class="docutils literal notranslate"><span class="pre">Requirement</span></code>, <code class="docutils literal notranslate"><span class="pre">Uniqueness</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Default</span></code>, <code class="docutils literal notranslate"><span class="pre">Shared</span></code>, <code class="docutils literal notranslate"><span class="pre">DisplayName</span></code>, <code class="docutils literal notranslate"><span class="pre">Description</span></code>, <code class="docutils literal notranslate"><span class="pre">Specification</span></code>.</p></li>
+<li><p>A value ends only at <code class="docutils literal notranslate"><span class="pre">,</span> <span class="pre">&lt;Label&gt;:</span></code> for one of those labels, so commas inside defaults or formula signatures need no
+escaping. JSON-quoted values (as <code class="docutils literal notranslate"><span class="pre">GET</span></code> prints free text) are unquoted.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Type</span></code> is required unless <code class="docutils literal notranslate"><span class="pre">Shared</span></code> names an existing shared property. Properties keep their order; <code class="docutils literal notranslate"><span class="pre">Id</span></code> is
+added automatically and cannot be listed.</p></li>
+<li><p>Unknown or repeated labels and truncated values (ending in <code class="docutils literal notranslate"><span class="pre">…</span></code>) are errors.</p></li>
+</ul>
+</section>
+<section id="specifications">
+<h2>Specifications<a class="headerlink" href="#specifications" title="Link to this heading"></a></h2>
+<p>Schemas and properties keep extra settings in a raw <code class="docutils literal notranslate"><span class="pre">key=value&amp;key=value</span></code> specification. <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">--details</span></code> prints
+it last as <code class="docutils literal notranslate"><span class="pre">Specification:</span></code>, in the exact form <code class="docutils literal notranslate"><span class="pre">--specification</span></code> accepts back.</p>
+<p><code class="docutils literal notranslate"><span class="pre">UPDATESPECIFICATION</span></code> (schema or property) takes either:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--specification</span></code> - replaces the whole specification; on properties <code class="docutils literal notranslate"><span class="pre">--preservePickList</span></code> and
+<code class="docutils literal notranslate"><span class="pre">--preserveFormula</span></code> keep the current options or formula entries, or</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">'key=value'</span></code> and <code class="docutils literal notranslate"><span class="pre">--remove</span> <span class="pre">key</span></code> (each repeatable, space separated) - removes apply first, then each set
+key gets exactly the given value; every other key stays. Values are plain text and encoded for you.</p></li>
+</ul>
+<p>Prefer the typed options where they exist: <code class="docutils literal notranslate"><span class="pre">--type</span></code> for options and formula signatures, <code class="docutils literal notranslate"><span class="pre">--group</span></code>, <code class="docutils literal notranslate"><span class="pre">--icon</span></code>,
+<code class="docutils literal notranslate"><span class="pre">--displayTextTemplate</span></code> and <code class="docutils literal notranslate"><span class="pre">--menuVisibility</span></code> for schemas.</p>
+</section>
+<section id="shared-properties">
+<h2>Shared Properties<a class="headerlink" href="#shared-properties" title="Link to this heading"></a></h2>
+<p>A shared property keeps type, requirement, uniqueness and default in sync across every schema property linked to it;
+names, display names and descriptions stay per schema. <code class="docutils literal notranslate"><span class="pre">GET</span></code> prints the link as <code class="docutils literal notranslate"><span class="pre">Shared:</span> <span class="pre">&lt;Name&gt;</span></code>. Link with
+<code class="docutils literal notranslate"><span class="pre">--shared</span> <span class="pre">&lt;Name&gt;</span></code>:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Shared name exists</p></th>
+<th class="head"><p>Shared name is new</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PROPERTY</span> <span class="pre">ADD</span></code> / <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">--property</span></code>, no type</p></td>
+<td><p>adopt the shared definition</p></td>
+<td><p>error</p></td>
+</tr>
+<tr class="row-odd"><td><p>… with a type</p></td>
+<td><p>every passed field must match the shared definition, else refused</p></td>
+<td><p>created from this property</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PROPERTY</span> <span class="pre">ADD</span></code> with a type and <code class="docutils literal notranslate"><span class="pre">--allowDataLoss</span></code></p></td>
+<td><p>push: this definition overwrites every schema sharing it</p></td>
+<td><p>created</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PROPERTY</span> <span class="pre">UPDATE</span> <span class="pre">--shared</span> <span class="pre">&lt;Name&gt;</span></code></p></td>
+<td><p>adopt; a type change, so <code class="docutils literal notranslate"><span class="pre">--allowDataLoss</span></code> is needed when it may lose data</p></td>
+<td><p>created from the property</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PROPERTY</span> <span class="pre">UPDATE</span> <span class="pre">--shared</span> <span class="pre">''</span></code></p></td>
+<td><p>unlink; the property keeps its definition</p></td>
+<td><p>-</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CREATE</span></code> never pushes. To push from an existing property, adopt with <code class="docutils literal notranslate"><span class="pre">UPDATE</span> <span class="pre">--shared</span></code>, then <code class="docutils literal notranslate"><span class="pre">CHANGETYPE</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UPDATE</span> <span class="pre">--shared</span></code> cannot be combined with <code class="docutils literal notranslate"><span class="pre">--requirement</span></code>, <code class="docutils literal notranslate"><span class="pre">--uniqueness</span></code> or <code class="docutils literal notranslate"><span class="pre">--default</span></code>.</p></li>
+<li><p>A push with documents is refused for the same type pairs as <code class="docutils literal notranslate"><span class="pre">CHANGETYPE</span></code>, checked on every sharing schema.</p></li>
+<li><p>Editing a property that is already shared (<code class="docutils literal notranslate"><span class="pre">CHANGETYPE</span></code>, <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>, <code class="docutils literal notranslate"><span class="pre">UPDATEPICKLIST</span></code>,
+<code class="docutils literal notranslate"><span class="pre">UPDATESPECIFICATION</span></code>) changes every sharing schema; the summary lists them as <code class="docutils literal notranslate"><span class="pre">also</span> <span class="pre">changed</span> <span class="pre">...</span></code>.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">UPDATE</span> <span class="pre">--shared</span> <span class="pre">''</span></code>, <code class="docutils literal notranslate"><span class="pre">PROPERTY</span> <span class="pre">REMOVE</span></code> or <code class="docutils literal notranslate"><span class="pre">DELETE</span></code> leaves a shared property with no links, it is
+deleted in the same write.</p></li>
+</ul>
+</section>
+<section id="pick-list-changes">
+<h2>Pick List Changes<a class="headerlink" href="#pick-list-changes" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">UPDATEPICKLIST</span></code> edits options partially. Put all changes in one quoted <code class="docutils literal notranslate"><span class="pre">--changes</span></code> value; unquoted, the
+shell would split them.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Token</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">+Name=value</span></code></p></td>
+<td><p>add an option</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">+Name</span></code></p></td>
+<td><p>add with the next free value (next free power of two for <code class="docutils literal notranslate"><span class="pre">MultiPickList</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-Name</span></code></p></td>
+<td><p>remove by name</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-Name=value</span></code></p></td>
+<td><p>remove and assert the current value; fails when it differs (stale view guard)</p></td>
+</tr>
+</tbody>
+</table>
+<p>Removals apply before additions. A removal and an addition with the same value is a <strong>rename</strong>
+(<code class="docutils literal notranslate"><span class="pre">-HP=2</span> <span class="pre">+HealthPoints=2</span></code>); documents store values, so nothing else changes. The same name with a new value is a
+<strong>renumber</strong> (<code class="docutils literal notranslate"><span class="pre">-A=1</span> <span class="pre">+A=3</span></code>). Stored values are never migrated: after a renumber or removal they no longer match an
+option, so both need <code class="docutils literal notranslate"><span class="pre">--allowDataLoss</span></code> while the schema has documents.</p>
+</section>
+<section id="data-loss-guard">
+<h2>Data Loss Guard<a class="headerlink" href="#data-loss-guard" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">CHANGETYPE</span></code> with documents (embedded ones included) rejects changes to or from <code class="docutils literal notranslate"><span class="pre">Document</span></code>,
+<code class="docutils literal notranslate"><span class="pre">DocumentCollection</span></code>, <code class="docutils literal notranslate"><span class="pre">Reference</span></code>, <code class="docutils literal notranslate"><span class="pre">ReferenceCollection</span></code>, <code class="docutils literal notranslate"><span class="pre">Formula</span></code>, and from <code class="docutils literal notranslate"><span class="pre">LocalizedText</span></code>.
+These are allowed while the schema has no documents.</p>
+<p>Lossy changes need <code class="docutils literal notranslate"><span class="pre">--allowDataLoss</span></code> while documents exist: text to number, logical, date, time or pick list;
+<code class="docutils literal notranslate"><span class="pre">Number</span></code> to <code class="docutils literal notranslate"><span class="pre">Integer</span></code>; number to logical, date or time and back; any type to a pick list; a smaller size or text limit, or a limit added to unlimited
+text; a new reference target; options dropped by a full option list replacement. The decision uses the change and
+the document count only. Values that do not convert stay as they are and leave documents invalid until edited.
+A changed type drops <code class="docutils literal notranslate"><span class="pre">pick.*</span></code> entries the new type does not use and formula entries (<code class="docutils literal notranslate"><span class="pre">param.*</span></code>,
+<code class="docutils literal notranslate"><span class="pre">resultType</span></code>, <code class="docutils literal notranslate"><span class="pre">knownType</span></code>). For a shared property, documents of every schema using it count.</p>
+<p>To check that a schema is empty, run <a class="reference internal" href="data_list.html"><span class="doc">DATA LIST</span></a> with <code class="docutils literal notranslate"><span class="pre">--path</span> <span class="pre">'*'</span> <span class="pre">--take</span> <span class="pre">0</span></code>.</p>
+</section>
+<section id="relations">
+<h2>Relations<a class="headerlink" href="#relations" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">RELATIONS</span></code> answers two questions: where documents of a schema can be found, and which properties point at it.
+Each line is one property link:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Incoming</span></code> (default) - other schemas reference (<code class="docutils literal notranslate"><span class="pre">Reference</span></code>, <code class="docutils literal notranslate"><span class="pre">ReferenceCollection</span></code>) or embed (<code class="docutils literal notranslate"><span class="pre">Document</span></code>,
+<code class="docutils literal notranslate"><span class="pre">DocumentCollection</span></code>) the schema. <code class="docutils literal notranslate"><span class="pre">Owner</span></code> is the schema whose documents hold the link.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Outgoing</span></code> - what the schema references or embeds.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--recursive</span></code> follows embedding chains: incoming ones up to the schemas that embed the owner, outgoing ones down
+into embedded schemas. <code class="docutils literal notranslate"><span class="pre">--depth</span></code> caps the path length and implies <code class="docutils literal notranslate"><span class="pre">--recursive</span></code>. An embedding that returns to
+a schema already on the path is marked <code class="docutils literal notranslate"><span class="pre">Cycle</span></code> and not followed further.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Path</span></code> is the logical path, a JSON Pointer of property names from the owner’s root document without collection
+indexes, e.g. <code class="docutils literal notranslate"><span class="pre">/Item/ActivationEffects</span></code>. It is the value <a class="reference internal" href="data_list.html"><span class="doc">DATA LIST</span></a> takes in <code class="docutils literal notranslate"><span class="pre">--path</span></code>. A
+<code class="docutils literal notranslate"><span class="pre">Component</span></code> owner has no collection of its own; follow <code class="docutils literal notranslate"><span class="pre">--recursive</span></code> to the owners that do.</p>
+<p><code class="docutils literal notranslate"><span class="pre">--counts</span></code> adds <code class="docutils literal notranslate"><span class="pre">Documents</span></code> to the header (root documents) and to each incoming <code class="docutils literal notranslate"><span class="pre">Document</span></code> line whose owner
+has its own collection: the documents stored at that path inside that owner. It runs one query per line.</p>
+</section>
+<section id="read-format">
+<h2>Read Format<a class="headerlink" href="#read-format" title="Link to this heading"></a></h2>
+<p>One line per schema and property, labels equal to the write parameter names, defaults omitted. Schema attributes
+print in the order <code class="docutils literal notranslate"><span class="pre">Schema</span></code>, <code class="docutils literal notranslate"><span class="pre">SchemaType</span></code>, <code class="docutils literal notranslate"><span class="pre">IdGenerator</span></code>, <code class="docutils literal notranslate"><span class="pre">Group</span></code>, <code class="docutils literal notranslate"><span class="pre">Icon</span></code>, <code class="docutils literal notranslate"><span class="pre">DisplayTextTemplate</span></code>,
+<code class="docutils literal notranslate"><span class="pre">MenuVisibility</span></code>. Property attributes print in the order <code class="docutils literal notranslate"><span class="pre">Property</span></code>, <code class="docutils literal notranslate"><span class="pre">Type</span></code>, <code class="docutils literal notranslate"><span class="pre">Requirement</span></code>, <code class="docutils literal notranslate"><span class="pre">Uniqueness</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Auto-Generated</span></code>, <code class="docutils literal notranslate"><span class="pre">Default</span></code>, <code class="docutils literal notranslate"><span class="pre">Shared</span></code>. With <code class="docutils literal notranslate"><span class="pre">--details</span></code> both add <code class="docutils literal notranslate"><span class="pre">DisplayName</span></code>, <code class="docutils literal notranslate"><span class="pre">Description</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Specification</span></code>.</p>
+<p>Free text is JSON-quoted and single-line. Without <code class="docutils literal notranslate"><span class="pre">--details</span></code> a <code class="docutils literal notranslate"><span class="pre">Default</span></code> longer than 80 characters is cut and
+ends in <code class="docutils literal notranslate"><span class="pre">…</span></code>; such a value is truncated and must not be passed back.</p>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>The examples run against a copy of the RPG sample project.</p>
+<p><strong>GET</strong> - schema with its properties:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>GET<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Quest
+
+<span class="c1">#&gt; Schema: Quest, IdGenerator: ObjectId, Group: Story</span>
+<span class="c1">#&gt;   - Property: Id, Type: Text 24, Requirement: NotNull, Uniqueness: Unique, Auto-Generated</span>
+<span class="c1">#&gt;   - Property: Title, Type: LocalizedText 200, Requirement: NotEmpty</span>
+<span class="c1">#&gt;   - Property: Difficulty, Type: PickList Easy=0 Normal=1 Hard=2, Default: "Normal"</span>
+<span class="c1">#&gt;   - Property: Giver, Type: Reference Hero</span>
+</pre></div>
+</div>
+<p><strong>CREATE</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>CREATE<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--name<span class="w"> </span>Quest<span class="w"> </span>--idGenerator<span class="w"> </span>ObjectId<span class="w"> </span>--group<span class="w"> </span>Story
+
+<span class="c1">#&gt; Target: Quest</span>
+<span class="c1">#&gt; Change: created schema Quest</span>
+</pre></div>
+</div>
+<p><strong>RENAME</strong> (dry run):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>RENAME<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Disease<span class="w"> </span>--newName<span class="w"> </span>Illness<span class="w"> </span>--dryRun
+
+<span class="c1">#&gt; Dry run: nothing was written.</span>
+<span class="c1">#&gt; Target: Disease</span>
+<span class="c1">#&gt; Change: renamed schema Disease to Illness</span>
+<span class="c1">#&gt; Documents: 6 (incl. embedded)</span>
+</pre></div>
+</div>
+<p><strong>UPDATE</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>UPDATE<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Quest<span class="w"> </span>--displayName<span class="w"> </span><span class="s2">"Quests"</span><span class="w"> </span>--icon<span class="w"> </span>scroll
+
+<span class="c1">#&gt; Target: Quest</span>
+<span class="c1">#&gt; Change: updated schema Quest: DisplayName, Icon scroll</span>
+</pre></div>
+</div>
+<p><strong>DELETE</strong> - an empty schema needs no extra options:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>DELETE<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Quest
+
+<span class="c1">#&gt; Target: Quest</span>
+<span class="c1">#&gt; Change: deleted schema Quest</span>
+<span class="c1">#&gt; Documents: 0 (incl. embedded)</span>
+</pre></div>
+</div>
+<p>A schema with documents needs <code class="docutils literal notranslate"><span class="pre">--allowDataLoss</span></code>; its documents are deleted with it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>DELETE<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Quirk
+
+<span class="c1">#&gt; Schema `Quirk` has 8 documents (incl. embedded). Pass allowDataLoss to delete them with the schema.</span>
+
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>DELETE<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Quirk<span class="w"> </span>--allowDataLoss
+
+<span class="c1">#&gt; Target: Quirk</span>
+<span class="c1">#&gt; Change: deleted schema Quirk</span>
+<span class="c1">#&gt; Documents: 8 (incl. embedded)</span>
+</pre></div>
+</div>
+<p>A schema other schemas reference is refused until <code class="docutils literal notranslate"><span class="pre">--cascade</span> <span class="pre">Cascade</span></code> allows removing those properties:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>DELETE<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Item<span class="w"> </span>--allowDataLoss
+
+<span class="c1">#&gt; Schema `Item` is referenced by property CurioCleansingOption.Item, property ItemWithCount.Item,</span>
+<span class="c1">#&gt; property Provision.Item, property Trinket.Item. Set cascade to Cascade to remove these properties too.</span>
+
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>DELETE<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Item<span class="w"> </span>--allowDataLoss<span class="w"> </span>--cascade<span class="w"> </span>Cascade
+
+<span class="c1">#&gt; Target: Item</span>
+<span class="c1">#&gt; Change: deleted schema Item</span>
+<span class="c1">#&gt; Change: removed property CurioCleansingOption.Item</span>
+<span class="c1">#&gt; Change: removed property ItemWithCount.Item</span>
+<span class="c1">#&gt; Change: removed property Provision.Item</span>
+<span class="c1">#&gt; Change: removed property Trinket.Item</span>
+<span class="c1">#&gt; Documents: 39 (incl. embedded)</span>
+</pre></div>
+</div>
+<p><strong>PROPERTY GET</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>PROPERTY<span class="w"> </span>GET<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Monster<span class="w"> </span>--property<span class="w"> </span>Name<span class="w"> </span>Type
+
+<span class="c1">#&gt; Property: Name, Type: LocalizedText 120, Requirement: NotNull</span>
+<span class="c1">#&gt; Property: Type, Type: PickList Human=1 Beast=2 Unholy=3 Eldritch=4 Corpse=5 Carpentry=6 Crockery=7 Ironwork=8 Thatchery=9 Cosmic=10, Requirement: NotNull, Default: "1"</span>
+</pre></div>
+</div>
+<p><strong>PROPERTY ADD</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>PROPERTY<span class="w"> </span>ADD<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Quest<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--name<span class="w"> </span>Difficulty<span class="w"> </span>--type<span class="w"> </span><span class="s2">"PickList Easy Normal Hard"</span><span class="w"> </span>--default<span class="w"> </span>Normal
+
+<span class="c1">#&gt; Target: Quest.Difficulty</span>
+<span class="c1">#&gt; Change: added property Quest.Difficulty (PickList Easy=0 Normal=1 Hard=2)</span>
+</pre></div>
+</div>
+<p><strong>PROPERTY RENAME</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>PROPERTY<span class="w"> </span>RENAME<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Quest<span class="w"> </span>--property<span class="w"> </span>Giver<span class="w"> </span>--newName<span class="w"> </span>QuestGiver
+
+<span class="c1">#&gt; Target: Quest.Giver</span>
+<span class="c1">#&gt; Change: renamed property Quest.Giver to QuestGiver</span>
+<span class="c1">#&gt; Documents: 0 (incl. embedded)</span>
+</pre></div>
+</div>
+<p>The rename keeps the property Id, so stored values move with it. It warns when the old name still appears in the
+schema’s display text template or a formula specification; those are not rewritten.</p>
+<p><strong>PROPERTY UPDATE</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>PROPERTY<span class="w"> </span>UPDATE<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Quest<span class="w"> </span>--property<span class="w"> </span>Difficulty<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--requirement<span class="w"> </span>NotNull<span class="w"> </span>--after<span class="w"> </span>Id
+
+<span class="c1">#&gt; Target: Quest.Difficulty</span>
+<span class="c1">#&gt; Change: updated property Quest.Difficulty: Requirement NotNull, moved after Id</span>
+</pre></div>
+</div>
+<p><strong>PROPERTY UPDATESPECIFICATION</strong> - the only raw <code class="docutils literal notranslate"><span class="pre">key=value</span></code> surface; <code class="docutils literal notranslate"><span class="pre">--preservePickList</span></code> and
+<code class="docutils literal notranslate"><span class="pre">--preserveFormula</span></code> keep the entries the type system owns:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>PROPERTY<span class="w"> </span>UPDATESPECIFICATION<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Quest<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--property<span class="w"> </span>Difficulty<span class="w"> </span>--specification<span class="w"> </span><span class="s2">"editor=radio"</span><span class="w"> </span>--preservePickList
+
+<span class="c1">#&gt; Target: Quest.Difficulty</span>
+<span class="c1">#&gt; Change: set specification of Quest.Difficulty</span>
+</pre></div>
+</div>
+<p><strong>PROPERTY UPDATEPICKLIST</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>PROPERTY<span class="w"> </span>UPDATEPICKLIST<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Quest<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--property<span class="w"> </span>Difficulty<span class="w"> </span>--changes<span class="w"> </span><span class="s2">"-Hard=2 +Heroic=2 +Legendary"</span>
+
+<span class="c1">#&gt; Target: Quest.Difficulty</span>
+<span class="c1">#&gt; Change: renamed option Hard to Heroic (value 2)</span>
+<span class="c1">#&gt; Change: added option Legendary (value 3)</span>
+<span class="c1">#&gt; Documents: 0 (incl. embedded)</span>
+</pre></div>
+</div>
+<p><strong>PROPERTY CHANGETYPE</strong> - a lossy change with documents needs <code class="docutils literal notranslate"><span class="pre">--allowDataLoss</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>PROPERTY<span class="w"> </span>CHANGETYPE<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Hero<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--property<span class="w"> </span>ProvisionsCount<span class="w"> </span>--type<span class="w"> </span><span class="s2">"Integer 2"</span><span class="w"> </span>--dryRun
+
+<span class="c1">#&gt; `Hero.ProvisionsCount` has 3 documents (incl. embedded) and the change may lose data: `Integer 4` → `Integer 2`</span>
+<span class="c1">#&gt; shrinks the size from 4 to 2 bytes. Pass allowDataLoss to proceed; values that do not convert stay as they are</span>
+<span class="c1">#&gt; and leave documents invalid until edited.</span>
+
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>PROPERTY<span class="w"> </span>CHANGETYPE<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Hero<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--property<span class="w"> </span>ProvisionsCount<span class="w"> </span>--type<span class="w"> </span><span class="s2">"Integer 2"</span><span class="w"> </span>--allowDataLoss<span class="w"> </span>--dryRun
+
+<span class="c1">#&gt; Dry run: nothing was written.</span>
+<span class="c1">#&gt; Target: Hero.ProvisionsCount</span>
+<span class="c1">#&gt; Change: changed type of Hero.ProvisionsCount from `Integer 4` to `Integer 2`</span>
+<span class="c1">#&gt; Documents: 3 (incl. embedded)</span>
+<span class="c1">#&gt; Warning: Hero.ProvisionsCount: `Integer 4` → `Integer 2` shrinks the size from 4 to 2 bytes</span>
+</pre></div>
+</div>
+<p><strong>PROPERTY REMOVE</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>PROPERTY<span class="w"> </span>REMOVE<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>Quest<span class="w"> </span>--property<span class="w"> </span>QuestGiver
+
+<span class="c1">#&gt; Target: Quest.QuestGiver</span>
+<span class="c1">#&gt; Change: removed property Quest.QuestGiver</span>
+<span class="c1">#&gt; Documents: 0 (incl. embedded)</span>
+</pre></div>
+</div>
+<p><strong>RELATIONS</strong> - where <code class="docutils literal notranslate"><span class="pre">ParameterValue</span></code> documents live:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>SCHEMA<span class="w"> </span>RELATIONS<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>ParameterValue<span class="w"> </span>--recursive<span class="w"> </span>--format<span class="w"> </span>Tree
+
+<span class="c1">#&gt; Schema: ParameterValue, SchemaType: Component, IdGenerator: Sequence, Icon: fugue16/edit-list</span>
+<span class="c1">#&gt;   Incoming (referenced or embedded by):</span>
+<span class="c1">#&gt;     └ CurioCleansingOption (Component) /Effects — DocumentCollection ParameterValue</span>
+<span class="c1">#&gt;       └ Curio /CleansingOptions/Effects — DocumentCollection 8000 CurioCleansingOption</span>
+<span class="c1">#&gt;     └ Item /ActivationEffects — DocumentCollection ParameterValue</span>
+<span class="c1">#&gt;       └ Trinket /Item/ActivationEffects — Document Item</span>
+<span class="c1">#&gt;     └ Monster /Parameters — DocumentCollection 8000 ParameterValue</span>
+
+dnx<span class="w"> </span>dotnet-charon<span class="w"> </span>--<span class="w"> </span>DATA<span class="w"> </span>LIST<span class="w"> </span>--dataBase<span class="w"> </span>rpg.json<span class="w"> </span>--schema<span class="w"> </span>ParameterValue<span class="w"> </span>--path<span class="w"> </span>/Parameters
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="data_list_schemas.html"><span class="doc">DATA LIST SCHEMAS</span></a> - the raw <code class="docutils literal notranslate"><span class="pre">Schema</span></code> collection documents</p></li>
+<li><p><a class="reference internal" href="../mcp.html"><span class="doc">MCP Server</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="data_restore.html" class="btn btn-neutral float-left" title="Restore from Backup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="data_search.html" class="btn btn-neutral float-right" title="Search Documents" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GameDevWare.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

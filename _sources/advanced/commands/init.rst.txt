@@ -1,0 +1,44 @@
+Initialize Game Data
+====================
+
+Initializes an empty or missing file with initial data. Path to game data should be local file system's file.
+
+- :ref:`CLI Installation <CommandLine_Installation>`
+- :ref:`Commands Reference <CommandLine_Commands>`
+
+---------------
+ Command
+---------------
+
+.. code-block:: bash
+
+  # full path (windows)
+  dnx dotnet-charon -- INIT "c:\my app\gamedata.gdjs"
+  
+  # full path (linux)
+  dnx dotnet-charon -- INIT "/var/mygame/gamedata.json"
+  
+  # relative path
+  dnx dotnet-charon -- INIT mygame/gamedata.json
+
+.. note::
+   The parent directory must already exist - ``INIT`` creates the file, not the folders leading to it.
+
+---------------
+ Parameters
+---------------
+
+--fileName
+   Absolute or relative path to game data file. The directory must already exist. Use quotation marks if your path contains spaces.
+
+   .. code-block:: bash
+   
+     # local file
+     --fileName "c:\my app\gamedata.json"
+
+See also
+--------
+
+- :doc:`Command Line Reference <../command_line>`
+- :doc:`Game Data Structure <../game_data_structure>`
+- :doc:`SERVER START <serve>`
