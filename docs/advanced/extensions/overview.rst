@@ -139,7 +139,11 @@ Press **Update** to save the list. The status icon at the end of each row says w
 **Re-Check** asks the server whether newer versions of the installed packages are available. **Upload NPM
 Package...** takes a ``.tgz`` built locally with ``npm pack`` and installs it into the server's extension folder
 - convenient while developing, but the upload is per installation, so other users of a shared project will not
-get it. Publish to a registry for anything the team relies on. The same folder is managed from the command line
+get it. Publish to a registry for anything the team relies on.
+
+.. versionadded:: vNext
+
+The same folder is managed from the command line
 with :doc:`EXTENSION INSTALL <../commands/extension_install>`, :doc:`LIST <../commands/extension_list>`,
 :doc:`UNINSTALL <../commands/extension_uninstall>` and :doc:`VERSION <../commands/extension_version>`.
 
