@@ -40,6 +40,10 @@ Every write takes ``--dryRun``, which validates and prints the same summary with
    * - ``DATA SCHEMA UPDATE``
      - ``--schema``, ``--displayName``, ``--description``, ``--schemaType``, ``--idGenerator``, ``--group``, ``--icon``
      - ``schema_update``
+   * - ``DATA SCHEMA RELATIONS``
+     - ``--schema``, ``--direction Incoming|Outgoing|Both``, ``--kind Reference|Document``, ``--recursive``,
+       ``--depth``, ``--format List|Table|Tree``, ``--details``, ``--counts``
+     - ``schema_relations``
    * - ``DATA SCHEMA DELETE``
      - ``--schema``, ``--allowDataLoss``, ``--cascade Deny|Cascade``
      - ``schema_delete``
@@ -173,6 +177,27 @@ A changed type drops ``pick.*`` entries the new type does not use and formula en
 ``resultType``, ``knownType``). For a shared property, documents of every schema using it count.
 
 To check that a schema is empty, run :doc:`DATA LIST <data_list>` with ``--path '*' --take 0``.
+
+-----------------------
+ Relations
+-----------------------
+
+``RELATIONS`` answers two questions: where documents of a schema can be found, and which properties point at it.
+Each line is one property link:
+
+- ``Incoming`` (default) - other schemas reference (``Reference``, ``ReferenceCollection``) or embed (``Document``,
+  ``DocumentCollection``) the schema. ``Owner`` is the schema whose documents hold the link.
+- ``Outgoing`` - what the schema references or embeds.
+- ``--recursive`` follows embedding chains: incoming ones up to the schemas that embed the owner, outgoing ones down
+  into embedded schemas. ``--depth`` caps the path length and implies ``--recursive``. An embedding that returns to
+  a schema already on the path is marked ``Cycle`` and not followed further.
+
+``Path`` is the logical path, a JSON Pointer of property names from the owner's root document without collection
+indexes, e.g. ``/Item/ActivationEffects``. It is the value :doc:`DATA LIST <data_list>` takes in ``--path``. A
+``Component`` owner has no collection of its own; follow ``--recursive`` to the owners that do.
+
+``--counts`` adds ``Documents`` to the header (root documents) and to each incoming ``Document`` line whose owner
+has its own collection: the documents stored at that path inside that owner. It runs one query per line.
 
 -----------------------
  Read Format
@@ -369,6 +394,22 @@ schema's display text template or a formula specification; those are not rewritt
   #> Target: Quest.QuestGiver
   #> Change: removed property Quest.QuestGiver
   #> Documents: 0 (incl. embedded)
+
+**RELATIONS** - where ``ParameterValue`` documents live:
+
+.. code-block:: bash
+
+  dnx dotnet-charon -- DATA SCHEMA RELATIONS --dataBase rpg.json --schema ParameterValue --recursive --format Tree
+
+  #> Schema: ParameterValue, SchemaType: Component, IdGenerator: Sequence, Icon: fugue16/edit-list
+  #>   Incoming (referenced or embedded by):
+  #>     └ CurioCleansingOption (Component) /Effects — DocumentCollection ParameterValue
+  #>       └ Curio /CleansingOptions/Effects — DocumentCollection 8000 CurioCleansingOption
+  #>     └ Item /ActivationEffects — DocumentCollection ParameterValue
+  #>       └ Trinket /Item/ActivationEffects — Document Item
+  #>     └ Monster /Parameters — DocumentCollection 8000 ParameterValue
+
+  dnx dotnet-charon -- DATA LIST --dataBase rpg.json --schema ParameterValue --path /Parameters
 
 ---------------
  See also
