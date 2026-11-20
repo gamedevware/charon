@@ -1,6 +1,8 @@
 Install UI Extension
 ====================
 
+.. versionadded:: vNext
+
 Install a UI extension NPM package (``.tgz`` or ``.tar``, as produced by ``npm pack``) into the local extension directory. The package name and version are read from its ``package.json``, and the file is saved as ``<name>-<version>.tgz``. A package with the same name and version is replaced; other versions of the same package are kept, so a project can still pin an older one.
 
 A running Charon server picks up the new package without a restart.

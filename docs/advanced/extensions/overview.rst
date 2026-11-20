@@ -151,6 +151,8 @@ to everyone who opens the project.
 Private Packages
 ----------------
 
+.. versionadded:: vNext
+
 On an online server, **Upload NPM Package...** stores the ``.tgz`` privately for the whole workspace, so every
 project in it gets the package. It requires administer rights on the project and on the workspace (owner or workspace
 administrator), because every project in the workspace runs the uploaded code. There is one version per package

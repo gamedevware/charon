@@ -1,6 +1,8 @@
 UI Extension Version
 ====================
 
+.. versionadded:: vNext
+
 Print the latest installed version of a UI extension package. With ``--online``, the latest version published to the NPM registry is checked too, which shows whether an update is available.
 
 - :ref:`CLI Installation <CommandLine_Installation>`

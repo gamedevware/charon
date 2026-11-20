@@ -1,6 +1,8 @@
 Change History
 ==============
 
+.. versionadded:: vNext
+
 On a server with change history enabled, every commit to a branch is recorded as a **change**: who made it, when, which
 documents it touched, and the patch that reproduces it. The history lets you see what happened to the game data,
 compare any two revisions, restore a single document, roll the branch back, or start a new branch from a past revision.

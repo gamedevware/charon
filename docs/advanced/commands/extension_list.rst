@@ -1,6 +1,8 @@
 List UI Extensions
 ==================
 
+.. versionadded:: vNext
+
 List UI extension packages installed in the local extension directory, one entry per installed version. With ``--online``, packages published to the NPM registry with the ``charon`` and ``extensions`` keywords are listed too, at their latest version.
 
 - :ref:`CLI Installation <CommandLine_Installation>`

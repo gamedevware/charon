@@ -1,6 +1,8 @@
 Change Requests
 ===============
 
+.. versionadded:: vNext
+
 A **change request** proposes moving changes into a branch. Instead of overwriting a branch the way a
 push does (see :doc:`Workspaces, Projects, and Branches <workspaces_and_projects>`), you review the proposed changes
 one by one, accept or reject each of them, and the accepted ones land in the target branch as a single validated commit.

@@ -1,6 +1,8 @@
 Uninstall UI Extension
 ======================
 
+.. versionadded:: vNext
+
 Remove versions of a UI extension package from the local extension directory. Without ``--version``, every installed version of the package is removed.
 
 - :ref:`CLI Installation <CommandLine_Installation>`

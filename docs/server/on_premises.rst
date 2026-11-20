@@ -59,6 +59,8 @@ service.
 Safety Snapshots
 ----------------
 
+.. versionadded:: vNext
+
 Apart from the backups a workspace configures for itself, the server keeps a short-lived local copy of
 every project so an operator can undo a destructive action. These copies are not shown to users and do
 not count against a workspace's backup storage.
@@ -108,6 +110,8 @@ branch into a new one instead. The file is a Zstandard-compressed TAR of BSON do
 
 Backup Payload Cache
 --------------------
+
+.. versionadded:: vNext
 
 Only the newest backup of a project is stored whole. When a new one is written, the one before it is
 rewritten as a binary delta against it, which costs roughly what changed between the two. Restoring,

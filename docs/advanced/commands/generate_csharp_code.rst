@@ -5,6 +5,8 @@ Generates C# source code for game data into output directory.
 
 By default, this command does not delete previously generated files. Use the ``--clearOutputDirectory`` parameter to automatically remove prior generated files before creating new ones.
 
+.. versionadded:: vNext
+
 Every generated file starts with a header that records the command line used to produce it, meant to be run from the output directory (the game data path is relative to it, no API key is included), so the code can be regenerated later, for example by an AI coding agent, without recalling the parameters and without machine-specific paths in version control.
 
 - :ref:`CLI Installation <CommandLine_Installation>`
