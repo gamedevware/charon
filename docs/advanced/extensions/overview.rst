@@ -146,6 +146,7 @@ get it. Publish to a registry for anything the team relies on.
 The same folder is managed from the command line
 with :doc:`EXTENSION INSTALL <../commands/extension_install>`, :doc:`LIST <../commands/extension_list>`,
 :doc:`UNINSTALL <../commands/extension_uninstall>` and :doc:`VERSION <../commands/extension_version>`.
+To share a package with the whole workspace on the server, use :doc:`EXTENSION UPLOAD <../commands/extension_upload>`.
 
 The list itself is stored in the project settings inside the game data, so it travels with the data and applies
 to everyone who opens the project.

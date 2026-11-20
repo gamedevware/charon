@@ -32,11 +32,11 @@ A running Charon server picks up the new package without a restart.
 ---------------
 
 --input
-   Path to the package file. Alternatively, you can read from `Standard Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or a :doc:`URL <remote_input_output>`.
+   Required. Path to the package file. Alternatively, you can read from `Standard Input <https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)>`_ or a :doc:`URL <remote_input_output>`.
 
    .. code-block:: bash
 
-     # standard input (default)
+     # standard input
      --input in
      --input con
 
@@ -66,3 +66,4 @@ See also
 - :doc:`EXTENSION LIST <extension_list>`
 - :doc:`EXTENSION UNINSTALL <extension_uninstall>`
 - :doc:`EXTENSION VERSION <extension_version>`
+- :doc:`EXTENSION UPLOAD <extension_upload>`

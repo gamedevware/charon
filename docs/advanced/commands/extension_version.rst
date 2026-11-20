@@ -54,3 +54,4 @@ See also
 - :doc:`EXTENSION INSTALL <extension_install>`
 - :doc:`EXTENSION LIST <extension_list>`
 - :doc:`EXTENSION UNINSTALL <extension_uninstall>`
+- :doc:`EXTENSION UPLOAD <extension_upload>`
